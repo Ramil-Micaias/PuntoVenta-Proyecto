@@ -125,7 +125,7 @@ namespace Vista
                 int.TryParse(txtStockMinimo.Text.Trim(), out int stockMin);
                 int idCat = cmbCategoria.SelectedValue != null ? Convert.ToInt32(cmbCategoria.SelectedValue) : 0;
 
-                Producto prod = new Producto
+                Producto prod = new Producto()
                 {
                     Id_Producto = idProductoSeleccionado,
                     Codigo_Barras = txtBarra.Text.Trim(), // Asignamos el código de barra en la modificación
