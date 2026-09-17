@@ -152,34 +152,6 @@ namespace Vista
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (idProductoSeleccionado == 0)
-            {
-                MessageBox.Show("Debe seleccionar un producto de la lista para inactivar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (MessageBox.Show("¿Desea inactivar este producto?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                try
-                {
-                    GestorProducto gestor = new GestorProducto();
-                    gestor.InactivarProducto(idProductoSeleccionado);
-
-                    MessageBox.Show("Producto inactivado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Refrescamos grilla y limpiamos campos
-                    CargarProductos();
-                    LimpiarControles();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al inactivar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -243,12 +215,6 @@ namespace Vista
             {
                 MessageBox.Show("Error al buscar productos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        // Evento para el botón Buscar
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            EjecutarBusqueda();
         }
 
         // Evento para filtrar en tiempo real mientras se escribe (opcional pero muy cómodo)

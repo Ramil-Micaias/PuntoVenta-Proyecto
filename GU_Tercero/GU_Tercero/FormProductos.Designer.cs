@@ -40,7 +40,6 @@
             txtNombreProducto = new TextBox();
             lblNombreProducto = new Label();
             btnModificar = new Button();
-            btnEliminar = new Button();
             btnGuardar = new Button();
             btnNuevo = new Button();
             lblCategorias = new Label();
@@ -54,7 +53,6 @@
             txtDescripcion = new TextBox();
             lblDescripcion = new Label();
             dgvProductos = new DataGridView();
-            btnBuscar = new Button();
             txtBuscar = new TextBox();
             lblBuscar = new Label();
             tabPage2 = new TabPage();
@@ -103,7 +101,6 @@
             panelProductos.Controls.Add(lblCatalogoExistencia);
             panelProductos.Controls.Add(panel1);
             panelProductos.Controls.Add(dgvProductos);
-            panelProductos.Controls.Add(btnBuscar);
             panelProductos.Controls.Add(txtBuscar);
             panelProductos.Controls.Add(lblBuscar);
             panelProductos.Dock = DockStyle.Top;
@@ -130,7 +127,6 @@
             panel1.Controls.Add(txtNombreProducto);
             panel1.Controls.Add(lblNombreProducto);
             panel1.Controls.Add(btnModificar);
-            panel1.Controls.Add(btnEliminar);
             panel1.Controls.Add(btnGuardar);
             panel1.Controls.Add(btnNuevo);
             panel1.Controls.Add(lblCategorias);
@@ -206,19 +202,9 @@
             btnModificar.UseVisualStyleBackColor = true;
             btnModificar.Click += btnModificar_Click;
             // 
-            // btnEliminar
-            // 
-            btnEliminar.Location = new Point(698, 57);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(75, 23);
-            btnEliminar.TabIndex = 12;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
-            btnEliminar.Click += btnEliminar_Click;
-            // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(698, 83);
+            btnGuardar.Location = new Point(698, 58);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(75, 23);
             btnGuardar.TabIndex = 11;
@@ -326,19 +312,9 @@
             dgvProductos.TabIndex = 3;
             dgvProductos.CellClick += dgvProductos_CellClick;
             // 
-            // btnBuscar
-            // 
-            btnBuscar.Location = new Point(708, 26);
-            btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(75, 23);
-            btnBuscar.TabIndex = 2;
-            btnBuscar.Text = "Buscar";
-            btnBuscar.UseVisualStyleBackColor = true;
-            btnBuscar.Click += btnBuscar_Click;
-            // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(513, 26);
+            txtBuscar.Location = new Point(592, 6);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(186, 23);
             txtBuscar.TabIndex = 1;
@@ -346,7 +322,7 @@
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(511, 8);
+            lblBuscar.Location = new Point(544, 6);
             lblBuscar.Name = "lblBuscar";
             lblBuscar.Size = new Size(42, 15);
             lblBuscar.TabIndex = 0;
@@ -488,7 +464,6 @@
         private TabPage tabPage2;
         private Panel panelProductos;
         private DataGridView dgvProductos;
-        private Button btnBuscar;
         private TextBox txtBuscar;
         private Label lblBuscar;
         private Panel panel1;
@@ -501,7 +476,6 @@
         private TextBox txtDescripcion;
         private TextBox txtStockActual;
         private Button btnModificar;
-        private Button btnEliminar;
         private Button btnGuardar;
         private Button btnNuevo;
         private Label lblCategorias;

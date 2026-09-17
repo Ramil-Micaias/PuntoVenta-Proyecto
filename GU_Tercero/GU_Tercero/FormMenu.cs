@@ -19,32 +19,46 @@ namespace GU_Tercero
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
+            if (usuarioLogueado != null)
+            {
+                lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
+            }
         }
 
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Usamos ShowDialog sin ocultar el menú de fondo, o Show si es pantalla independiente
+            this.Hide();
+
             using (FormAdmin formAdmin = new FormAdmin())
             {
-                formAdmin.ShowDialog(this);
+                formAdmin.ShowDialog();
             }
+
+            this.Show();
         }
 
         private void configuraciónDelSistemaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Hide();
+
             using (FormConfiguracion configuracion = new FormConfiguracion())
             {
-                configuracion.ShowDialog(this);
+                configuracion.ShowDialog();
             }
+
+            this.Show();
         }
 
         private void productoYStockToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Hide(); // Oculta el Menú Principal
+
             using (FormProductos formProducto = new FormProductos())
             {
-                formProducto.ShowDialog(this);
+                formProducto.ShowDialog();
             }
+
+            this.Show(); // Reaparece el Menú al cerrar Productos
         }
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
