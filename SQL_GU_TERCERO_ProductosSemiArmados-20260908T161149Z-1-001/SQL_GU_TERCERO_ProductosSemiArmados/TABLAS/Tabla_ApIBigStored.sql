@@ -56,18 +56,27 @@ GO
 CREATE TABLE Producto (
     Id_Producto INT IDENTITY(1,1) PRIMARY KEY,
     Id_Categoria INT NOT NULL,
-    Id_Proveedor INT NULL,
-    Codigo_Barras NVARCHAR(50) NULL UNIQUE,
     Nombre_Producto NVARCHAR(50) NULL,
     Descripcion NVARCHAR(120) NOT NULL,
-    Precio_Costo DECIMAL(12,2) NOT NULL,
     Precio_Venta DECIMAL(12,2) NOT NULL,
     Stock_Actual INT DEFAULT 0 NOT NULL,
     Stock_Minimo INT DEFAULT 2 NOT NULL,
     Es_Repuesto BIT DEFAULT 1 NOT NULL,
     Activo BIT DEFAULT 1 NOT NULL,
-    FOREIGN KEY (Id_Categoria) REFERENCES CategoriaProducto(Id_Categoria),
-    FOREIGN KEY (Id_Proveedor) REFERENCES Proveedor(Id_Proveedor)
+    FOREIGN KEY (Id_Categoria) REFERENCES CategoriaProducto(Id_Categoria)
+);
+GO
+
+CREATE TABLE ProductoProveedor (
+    Id_ProductoProveedor INT IDENTITY(1,1) PRIMARY KEY,
+    Id_Producto INT NOT NULL,
+    Id_Proveedor INT NOT NULL,
+    Activo BIT DEFAULT 1 NOT NULL,
+
+    FOREIGN KEY (Id_Producto) REFERENCES Producto(Id_Producto),
+    FOREIGN KEY (Id_Proveedor) REFERENCES Proveedor(Id_Proveedor),
+
+    UNIQUE (Id_Producto, Id_Proveedor)
 );
 GO
 
