@@ -50,13 +50,26 @@ GO
 CREATE TABLE Telefono (
     Id_Telefono INT IDENTITY(1,1) PRIMARY KEY,
     Id_TipoTelefono INT NOT NULL,
-    Id_Persona INT NOT NULL,
     Numero NVARCHAR(15) NOT NULL,
     Activo BIT DEFAULT 1 NOT NULL,
     Fecha_Baja DATETIME NULL,
-    UNIQUE (Id_Persona, Numero),
+
     FOREIGN KEY (Id_TipoTelefono) REFERENCES TipoTelefono(Id_TipoTelefono),
-    FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona)
+
+    UNIQUE (Numero)
+);
+GO
+
+CREATE TABLE PersonaTelefono (
+    Id_PersonaTelefono INT IDENTITY(1,1) PRIMARY KEY,
+    Id_Persona INT NOT NULL,
+    Id_Telefono INT NOT NULL,
+
+    FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona),
+
+    FOREIGN KEY (Id_Telefono) REFERENCES Telefono(Id_Telefono),
+
+    UNIQUE (Id_Persona, Id_Telefono)
 );
 GO
 
@@ -75,7 +88,9 @@ CREATE TABLE Correo (
     Verificado BIT DEFAULT 0 NOT NULL,
     Fecha_Verificacion DATE NULL,
     Activo BIT DEFAULT 1 NOT NULL,
+
     FOREIGN KEY (Id_TipoCorreo) REFERENCES TipoCorreo(Id_TipoCorreo),
+
     FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona)
 );
 GO
@@ -92,7 +107,9 @@ CREATE TABLE Partido (
     Id_Provincia INT NOT NULL,
     Nombre_Partido NVARCHAR(40) NOT NULL,
     Activo BIT DEFAULT 1 NOT NULL,
+
     FOREIGN KEY (Id_Provincia) REFERENCES Provincia(Id_Provincia),
+
     UNIQUE (Id_Provincia, Nombre_Partido)
 );
 GO
@@ -103,7 +120,9 @@ CREATE TABLE Localidad (
     Nombre_Localidad NVARCHAR(40) NOT NULL,
     Codigo_Postal NVARCHAR(10) NOT NULL,
     Activo BIT DEFAULT 1 NOT NULL,
+
     FOREIGN KEY (Id_Partido) REFERENCES Partido(Id_Partido),
+
     UNIQUE (Id_Partido, Nombre_Localidad)
 );
 GO
@@ -111,7 +130,6 @@ GO
 CREATE TABLE Direccion (
     Id_Direccion INT IDENTITY(1,1) PRIMARY KEY,
     Id_Localidad INT NOT NULL,
-    Id_Persona INT NOT NULL,
     Calle NVARCHAR(40) NOT NULL,
     Numero_Calle NVARCHAR(15) NOT NULL,
     Entre_Calles NVARCHAR(80) NULL,
@@ -119,8 +137,21 @@ CREATE TABLE Direccion (
     Piso NVARCHAR(10) NULL,
     Referencia NVARCHAR(100) NULL,
     Activo BIT DEFAULT 1 NOT NULL,
-    FOREIGN KEY (Id_Localidad) REFERENCES Localidad(Id_Localidad),
-    FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona)
+
+    FOREIGN KEY (Id_Localidad) REFERENCES Localidad(Id_Localidad)
+);
+GO
+
+CREATE TABLE PersonaDireccion (
+    Id_PersonaDireccion INT IDENTITY(1,1) PRIMARY KEY,
+    Id_Persona INT NOT NULL,
+    Id_Direccion INT NOT NULL,
+
+    FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona),
+
+    FOREIGN KEY (Id_Direccion) REFERENCES Direccion(Id_Direccion),
+
+    UNIQUE (Id_Persona, Id_Direccion)
 );
 GO
 
