@@ -83,7 +83,7 @@ namespace Vista
                 int.TryParse(txtStockMinimo.Text.Trim(), out int stockMin);
                 int idCat = cmbCategoria.SelectedValue != null ? Convert.ToInt32(cmbCategoria.SelectedValue) : 0;
 
-                Producto prod = new Producto
+                Producto prod = new Producto()
                 {
                     Codigo_Barras = txtBarra.Text.Trim(), // Asignamos el código de barra desde txtBarra
                     Nombre_Producto = txtNombreProducto.Text.Trim(),
@@ -217,7 +217,7 @@ namespace Vista
             }
         }
 
-        // Evento para filtrar en tiempo real mientras se escribe (opcional pero muy cómodo)
+        // Evento para filtrar en tiempo real mientras se escribe
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             EjecutarBusqueda();

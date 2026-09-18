@@ -113,10 +113,15 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Validación opcional: evitar códigos de barra duplicados
-    IF EXISTS (SELECT 1 FROM Producto WHERE Codigo_Barras = @Codigo_Barras)
+-- Validar si ya existe un producto activo con el mismo Código de Barras o Nombre
+    IF EXISTS (
+        SELECT 1 
+        FROM Producto 
+        WHERE (Codigo_Barras = @Codigo_Barras OR Nombre_Producto = @Nombre_Producto)
+          AND Activo = 1
+    )
     BEGIN
-        RAISERROR('El código de barras ya pertenece a otro producto activo o registrado.', 16, 1);
+        RAISERROR('Ya existe un producto registrado con ese código de barras o nombre.', 16, 1);
         RETURN;
     END
 
