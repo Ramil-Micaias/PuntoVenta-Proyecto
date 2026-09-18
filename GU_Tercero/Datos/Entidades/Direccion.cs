@@ -10,7 +10,6 @@ namespace Datos.Entidades
     {
         public int Id_Direccion { get; set; }
         public int Id_Localidad { get; set; }
-        public int Id_Persona { get; set; }
         public string Calle {  get; set; }
         public string Numero_Calle {  get; set; }
         public string Entre_Calles {  get; set; }

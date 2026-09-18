@@ -49,19 +49,13 @@ namespace Logica
 
         private void ValidarProducto(Producto producto)
         {
-            if (string.IsNullOrWhiteSpace(producto.Codigo_Barras))
-                throw new Exception("El código de barras es obligatorio.");
-
-            producto.Codigo_Barras = producto.Codigo_Barras.Trim();
-
             if (string.IsNullOrWhiteSpace(producto.Nombre_Producto))
                 throw new Exception("El nombre del producto es obligatorio.");
 
+            producto.Nombre_Producto = producto.Nombre_Producto.Trim();
+
             if (producto.Id_Categoria <= 0)
                 throw new Exception("Debe seleccionar una categoría.");
-
-            if (producto.Precio_Costo < 0)
-                throw new Exception("El precio de costo no puede ser negativo.");
 
             if (producto.Precio_Venta < 0)
                 throw new Exception("El precio de venta no puede ser negativo.");

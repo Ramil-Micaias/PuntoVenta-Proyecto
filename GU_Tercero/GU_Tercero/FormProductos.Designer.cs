@@ -33,8 +33,6 @@
             panelProductos = new Panel();
             lblCatalogoExistencia = new Label();
             panel1 = new Panel();
-            lblBarra = new Label();
-            txtBarra = new TextBox();
             txtStockMinimo = new TextBox();
             lblStockMinimo = new Label();
             txtNombreProducto = new TextBox();
@@ -114,14 +112,12 @@
             lblCatalogoExistencia.AutoSize = true;
             lblCatalogoExistencia.Location = new Point(4, 6);
             lblCatalogoExistencia.Name = "lblCatalogoExistencia";
-            lblCatalogoExistencia.Size = new Size(127, 15);
+            lblCatalogoExistencia.Size = new Size(126, 15);
             lblCatalogoExistencia.TabIndex = 5;
             lblCatalogoExistencia.Text = "Catologo de Existencia";
             // 
             // panel1
             // 
-            panel1.Controls.Add(lblBarra);
-            panel1.Controls.Add(txtBarra);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
             panel1.Controls.Add(txtNombreProducto);
@@ -143,22 +139,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(776, 171);
             panel1.TabIndex = 4;
-            // 
-            // lblBarra
-            // 
-            lblBarra.AutoSize = true;
-            lblBarra.Location = new Point(204, 8);
-            lblBarra.Name = "lblBarra";
-            lblBarra.Size = new Size(92, 15);
-            lblBarra.TabIndex = 19;
-            lblBarra.Text = "Codigo de Barra";
-            // 
-            // txtBarra
-            // 
-            txtBarra.Location = new Point(302, 5);
-            txtBarra.Name = "txtBarra";
-            txtBarra.Size = new Size(100, 23);
-            txtBarra.TabIndex = 18;
             // 
             // txtStockMinimo
             // 
@@ -494,7 +474,5 @@
         private TextBox txtStockMinimo;
         private Label lblStockMinimo;
         private Label lblCatalogoExistencia;
-        private Label lblBarra;
-        private TextBox txtBarra;
     }
 }

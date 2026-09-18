@@ -10,7 +10,7 @@ namespace Datos.Entidades
     {
         public int Id_Telefono { get; set; }
         public int Id_TipoTelefono { get; set; }
-        public int Id_Persona { get; set; }
+
         public string Numero { get; set; }
 
         public bool Activo {  get; set; }

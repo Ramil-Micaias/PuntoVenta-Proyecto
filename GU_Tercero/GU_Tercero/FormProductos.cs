@@ -36,7 +36,11 @@ namespace Vista
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar las categorías: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error al cargar las categorías: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -45,67 +49,87 @@ namespace Vista
             try
             {
                 GestorProducto gestor = new GestorProducto();
-                dgvProductos.DataSource = gestor.ObtenerProductos();
 
-                // Ocultar la columna Id_Proveedor
-                if (dgvProductos.Columns.Contains("Id_Proveedor"))
-                {
-                    dgvProductos.Columns["Id_Proveedor"].Visible = false;
-                }
+                dgvProductos.DataSource = gestor.ObtenerProductos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar productos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error al cargar productos: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private void LimpiarControles()
         {
             idProductoSeleccionado = 0;
-            txtBarra.Clear();
+
             txtNombreProducto.Clear();
             txtDescripcion.Clear();
-            txtPrecioCosto.Clear();
             txtPrecioVenta.Clear();
             txtStockActual.Clear();
             txtStockMinimo.Clear();
+
             cmbCategoria.SelectedIndex = -1;
-            if (txtBuscar != null) txtBuscar.Clear();
+
+            if (txtBuscar != null)
+                txtBuscar.Clear();
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
-                decimal.TryParse(txtPrecioCosto.Text.Trim(), out decimal costo);
-                decimal.TryParse(txtPrecioVenta.Text.Trim(), out decimal venta);
-                int.TryParse(txtStockActual.Text.Trim(), out int stockAct);
-                int.TryParse(txtStockMinimo.Text.Trim(), out int stockMin);
-                int idCat = cmbCategoria.SelectedValue != null ? Convert.ToInt32(cmbCategoria.SelectedValue) : 0;
+                decimal.TryParse(
+                    txtPrecioVenta.Text.Trim(),
+                    out decimal venta);
+
+                int.TryParse(
+                    txtStockActual.Text.Trim(),
+                    out int stockAct);
+
+                int.TryParse(
+                    txtStockMinimo.Text.Trim(),
+                    out int stockMin);
+
+                int idCat = cmbCategoria.SelectedValue != null
+                    ? Convert.ToInt32(cmbCategoria.SelectedValue)
+                    : 0;
 
                 Producto prod = new Producto()
                 {
-                    Codigo_Barras = txtBarra.Text.Trim(), // Asignamos el código de barra desde txtBarra
                     Nombre_Producto = txtNombreProducto.Text.Trim(),
                     Descripcion = txtDescripcion.Text.Trim(),
                     Id_Categoria = idCat,
-                    Precio_Costo = costo,
                     Precio_Venta = venta,
                     Stock_Actual = stockAct,
                     Stock_Minimo = stockMin,
+                    Es_Repuesto = true,
                     Activo = true
                 };
 
                 GestorProducto gestor = new GestorProducto();
+
                 gestor.RegistrarProducto(prod);
 
-                MessageBox.Show("Producto registrado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Producto registrado con éxito.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 CargarProductos();
                 LimpiarControles();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    ex.Message,
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -113,42 +137,66 @@ namespace Vista
         {
             if (idProductoSeleccionado == 0)
             {
-                MessageBox.Show("Debe seleccionar un producto de la lista para modificar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe seleccionar un producto de la lista para modificar.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
             try
             {
-                decimal.TryParse(txtPrecioCosto.Text.Trim(), out decimal costo);
-                decimal.TryParse(txtPrecioVenta.Text.Trim(), out decimal venta);
-                int.TryParse(txtStockActual.Text.Trim(), out int stockAct);
-                int.TryParse(txtStockMinimo.Text.Trim(), out int stockMin);
-                int idCat = cmbCategoria.SelectedValue != null ? Convert.ToInt32(cmbCategoria.SelectedValue) : 0;
+                decimal.TryParse(
+                    txtPrecioVenta.Text.Trim(),
+                    out decimal venta);
+
+                int.TryParse(
+                    txtStockActual.Text.Trim(),
+                    out int stockAct);
+
+                int.TryParse(
+                    txtStockMinimo.Text.Trim(),
+                    out int stockMin);
+
+                int idCat = cmbCategoria.SelectedValue != null
+                    ? Convert.ToInt32(cmbCategoria.SelectedValue)
+                    : 0;
 
                 Producto prod = new Producto()
                 {
                     Id_Producto = idProductoSeleccionado,
-                    Codigo_Barras = txtBarra.Text.Trim(), // Asignamos el código de barra en la modificación
                     Nombre_Producto = txtNombreProducto.Text.Trim(),
                     Descripcion = txtDescripcion.Text.Trim(),
                     Id_Categoria = idCat,
-                    Precio_Costo = costo,
                     Precio_Venta = venta,
                     Stock_Actual = stockAct,
                     Stock_Minimo = stockMin,
+                    Es_Repuesto = true,
                     Activo = true
                 };
 
                 GestorProducto gestor = new GestorProducto();
+
                 gestor.ModificarProducto(prod);
 
-                MessageBox.Show("Producto modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Producto modificado correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 CargarProductos();
                 LimpiarControles();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    ex.Message,
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -158,19 +206,31 @@ namespace Vista
             {
                 DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
 
-                idProductoSeleccionado = Convert.ToInt32(fila.Cells["Id_Producto"].Value);
+                idProductoSeleccionado =
+                    Convert.ToInt32(fila.Cells["Id_Producto"].Value);
 
-                txtBarra.Text = fila.Cells["Codigo_Barras"].Value != DBNull.Value ? fila.Cells["Codigo_Barras"].Value?.ToString() : "";
-                txtNombreProducto.Text = fila.Cells["Nombre_Producto"].Value?.ToString() ?? "";
-                txtDescripcion.Text = fila.Cells["Descripcion"].Value != DBNull.Value ? fila.Cells["Descripcion"].Value?.ToString() : "";
-                txtPrecioCosto.Text = fila.Cells["Precio_Costo"].Value?.ToString() ?? "0";
-                txtPrecioVenta.Text = fila.Cells["Precio_Venta"].Value?.ToString() ?? "0";
-                txtStockActual.Text = fila.Cells["Stock_Actual"].Value?.ToString() ?? "0";
-                txtStockMinimo.Text = fila.Cells["Stock_Minimo"].Value?.ToString() ?? "0";
+                txtNombreProducto.Text =
+                    fila.Cells["Nombre_Producto"].Value?.ToString() ?? "";
 
-                if (fila.Cells["Id_Categoria"].Value != DBNull.Value && fila.Cells["Id_Categoria"].Value != null)
+                txtDescripcion.Text =
+                    fila.Cells["Descripcion"].Value != DBNull.Value
+                        ? fila.Cells["Descripcion"].Value?.ToString()
+                        : "";
+
+                txtPrecioVenta.Text =
+                    fila.Cells["Precio_Venta"].Value?.ToString() ?? "0";
+
+                txtStockActual.Text =
+                    fila.Cells["Stock_Actual"].Value?.ToString() ?? "0";
+
+                txtStockMinimo.Text =
+                    fila.Cells["Stock_Minimo"].Value?.ToString() ?? "0";
+
+                if (fila.Cells["Id_Categoria"].Value != DBNull.Value &&
+                    fila.Cells["Id_Categoria"].Value != null)
                 {
-                    cmbCategoria.SelectedValue = Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
+                    cmbCategoria.SelectedValue =
+                        Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
                 }
                 else
                 {
@@ -184,7 +244,6 @@ namespace Vista
             LimpiarControles();
         }
 
-        // Método auxiliar para realizar la búsqueda
         private void EjecutarBusqueda()
         {
             try
@@ -195,29 +254,27 @@ namespace Vista
 
                 dgvProductos.DataSource = null;
 
-                // Si la caja de texto está vacía, trae todos los productos
                 if (string.IsNullOrEmpty(filtro))
                 {
-                    dgvProductos.DataSource = gestor.ObtenerProductos();
+                    dgvProductos.DataSource =
+                        gestor.ObtenerProductos();
                 }
                 else
                 {
-                    dgvProductos.DataSource = gestor.BuscarProductos(filtro);
-                }
-
-                // Ocultar columna Id_Proveedor
-                if (dgvProductos.Columns.Contains("Id_Proveedor"))
-                {
-                    dgvProductos.Columns["Id_Proveedor"].Visible = false;
+                    dgvProductos.DataSource =
+                        gestor.BuscarProductos(filtro);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al buscar productos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error al buscar productos: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
-        // Evento para filtrar en tiempo real mientras se escribe
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             EjecutarBusqueda();
