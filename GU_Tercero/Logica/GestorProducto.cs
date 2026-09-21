@@ -49,13 +49,37 @@ namespace Logica
 
         private void ValidarProducto(Producto producto)
         {
+            // Código de barras: Opcional (si no viene, se asigna SIN-CODIGO o vacío)
             if (string.IsNullOrWhiteSpace(producto.Codigo_Barras))
-                throw new Exception("El código de barras es obligatorio.");
-
-            producto.Codigo_Barras = producto.Codigo_Barras.Trim();
+            {
+                producto.Codigo_Barras = "SIN-CODIGO";
+            }
+            else
+            {
+                producto.Codigo_Barras = producto.Codigo_Barras.Trim();
+            }
 
             if (string.IsNullOrWhiteSpace(producto.Nombre_Producto))
                 throw new Exception("El nombre del producto es obligatorio.");
+
+            producto.Nombre_Producto = producto.Nombre_Producto.Trim();
+
+            // Validar que no se registre un producto activo con el mismo Nombre
+            DataTable productosExistentes = productoDAO.ObtenerProductos();
+            if (productosExistentes != null)
+            {
+                foreach (DataRow fila in productosExistentes.Rows)
+                {
+                    int idExistente = Convert.ToInt32(fila["Id_Producto"]);
+                    string nombreExistente = fila["Nombre_Producto"]?.ToString()?.Trim() ?? "";
+
+                    if (idExistente != producto.Id_Producto &&
+                        string.Equals(nombreExistente, producto.Nombre_Producto, StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new Exception($"Ya existe un producto registrado con el nombre '{producto.Nombre_Producto}'.");
+                    }
+                }
+            }
 
             if (producto.Id_Categoria <= 0)
                 throw new Exception("Debe seleccionar una categoría.");

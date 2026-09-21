@@ -2,6 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 using Datos.Entidades;
+using GU_Tercero;
 using Logica;
 
 namespace Vista
@@ -182,6 +183,17 @@ namespace Vista
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarControles();
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Está seguro de que desea cerrar la sesión?", "Cerrar Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Form1 login = new Form1();
+                login.Show();
+                this.Close();
+            }
         }
 
         // Método auxiliar para realizar la búsqueda

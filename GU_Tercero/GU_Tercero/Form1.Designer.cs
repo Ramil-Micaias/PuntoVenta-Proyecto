@@ -40,33 +40,40 @@
             // btnIngresar
             // 
             btnIngresar.Anchor = AnchorStyles.None;
-            btnIngresar.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnIngresar.Location = new Point(289, 213);
+            btnIngresar.BackColor = Color.FromArgb(37, 99, 235);
+            btnIngresar.FlatAppearance.BorderSize = 0;
+            btnIngresar.FlatStyle = FlatStyle.Flat;
+            btnIngresar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnIngresar.ForeColor = Color.White;
+            btnIngresar.Location = new Point(255, 240);
             btnIngresar.Margin = new Padding(2, 1, 2, 1);
             btnIngresar.Name = "btnIngresar";
-            btnIngresar.Size = new Size(81, 22);
-            btnIngresar.TabIndex = 0;
-            btnIngresar.Text = "Iniciar ";
-            btnIngresar.UseVisualStyleBackColor = true;
+            btnIngresar.Size = new Size(170, 35);
+            btnIngresar.TabIndex = 2;
+            btnIngresar.Text = "Iniciar Sesión";
+            btnIngresar.UseVisualStyleBackColor = false;
             btnIngresar.Click += btnIngresar_Click_1;
             // 
             // txtPassword
             // 
             txtPassword.Anchor = AnchorStyles.None;
-            txtPassword.Location = new Point(273, 159);
+            txtPassword.Font = new Font("Segoe UI", 10F);
+            txtPassword.Location = new Point(255, 160);
             txtPassword.Margin = new Padding(2, 1, 2, 1);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(110, 23);
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(170, 25);
             txtPassword.TabIndex = 1;
             // 
             // txtUsuario
             // 
             txtUsuario.Anchor = AnchorStyles.None;
-            txtUsuario.Location = new Point(274, 113);
+            txtUsuario.Font = new Font("Segoe UI", 10F);
+            txtUsuario.Location = new Point(255, 105);
             txtUsuario.Margin = new Padding(2, 1, 2, 1);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(110, 23);
-            txtUsuario.TabIndex = 2;
+            txtUsuario.Size = new Size(170, 25);
+            txtUsuario.TabIndex = 0;
             // 
             // llb_OlvidoContraseña
             // 
@@ -75,10 +82,11 @@
             llb_OlvidoContraseña.BackColor = Color.Transparent;
             llb_OlvidoContraseña.DisabledLinkColor = Color.Silver;
             llb_OlvidoContraseña.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            llb_OlvidoContraseña.Location = new Point(265, 189);
+            llb_OlvidoContraseña.LinkColor = Color.FromArgb(37, 99, 235);
+            llb_OlvidoContraseña.Location = new Point(275, 195);
             llb_OlvidoContraseña.Name = "llb_OlvidoContraseña";
-            llb_OlvidoContraseña.Size = new Size(127, 15);
-            llb_OlvidoContraseña.TabIndex = 4;
+            llb_OlvidoContraseña.Size = new Size(130, 15);
+            llb_OlvidoContraseña.TabIndex = 3;
             llb_OlvidoContraseña.TabStop = true;
             llb_OlvidoContraseña.Text = "¿Olvidó su contraseña?";
             llb_OlvidoContraseña.LinkClicked += llb_OlvidoContraseña_LinkClicked;
@@ -88,41 +96,48 @@
             lblNombreUsuario.Anchor = AnchorStyles.None;
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.BackColor = Color.Transparent;
-            lblNombreUsuario.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblNombreUsuario.Location = new Point(282, 92);
+            lblNombreUsuario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblNombreUsuario.ForeColor = Color.FromArgb(30, 41, 59);
+            lblNombreUsuario.Location = new Point(255, 85);
             lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(92, 15);
-            lblNombreUsuario.TabIndex = 6;
-            lblNombreUsuario.Text = "Nombre Usuario";
+            lblNombreUsuario.Size = new Size(111, 17);
+            lblNombreUsuario.TabIndex = 0;
+            lblNombreUsuario.TabStop = false;
+            lblNombreUsuario.Text = "Nombre Usuario:";
             // 
             // lblPassword
             // 
             lblPassword.Anchor = AnchorStyles.None;
             lblPassword.AutoSize = true;
             lblPassword.BackColor = Color.Transparent;
-            lblPassword.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblPassword.Location = new Point(291, 140);
+            lblPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPassword.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPassword.Location = new Point(255, 140);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(68, 15);
-            lblPassword.TabIndex = 7;
-            lblPassword.Text = "Contraseña";
+            lblPassword.Size = new Size(80, 17);
+            lblPassword.TabIndex = 0;
+            lblPassword.TabStop = false;
+            lblPassword.Text = "Contraseña:";
             // 
             // lblTitulo
             // 
+            lblTitulo.Anchor = AnchorStyles.None;
             lblTitulo.AutoSize = true;
             lblTitulo.BackColor = Color.Transparent;
-            lblTitulo.Font = new Font("Segoe UI Semibold", 24.75F, FontStyle.Bold | FontStyle.Italic);
-            lblTitulo.Location = new Point(279, 30);
+            lblTitulo.Font = new Font("Segoe UI Bold", 22F);
+            lblTitulo.ForeColor = Color.FromArgb(15, 23, 42);
+            lblTitulo.Location = new Point(245, 28);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(102, 45);
-            lblTitulo.TabIndex = 8;
-            lblTitulo.Text = "Login";
+            lblTitulo.Size = new Size(190, 41);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.TabStop = false;
+            lblTitulo.Text = "Iniciar Sesión";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(680, 388);
             Controls.Add(lblTitulo);
             Controls.Add(lblPassword);
@@ -132,7 +147,7 @@
             Controls.Add(txtPassword);
             Controls.Add(btnIngresar);
             Font = new Font("Segoe UI", 9F);
-            IsMdiContainer = true;
+            IsMdiContainer = false;
             Margin = new Padding(2, 1, 2, 1);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
