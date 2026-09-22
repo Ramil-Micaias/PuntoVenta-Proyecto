@@ -144,15 +144,6 @@
             panel1.Size = new Size(776, 171);
             panel1.TabIndex = 4;
             // 
-            // lblBarra
-            // 
-            lblBarra.AutoSize = true;
-            lblBarra.Location = new Point(204, 8);
-            lblBarra.Name = "lblBarra";
-            lblBarra.Size = new Size(92, 15);
-            lblBarra.TabIndex = 19;
-            lblBarra.Text = "Codigo de Barra";
-            // 
             // txtNombreProducto
             // 
             txtNombreProducto.Location = new Point(85, 3);
@@ -210,38 +201,123 @@
             cmbCategoria.Size = new Size(179, 23);
             cmbCategoria.TabIndex = 7;
             // 
+            // lblBarra
+            // 
+            lblBarra.AutoSize = true;
+            lblBarra.Location = new Point(204, 8);
+            lblBarra.Name = "lblBarra";
+            lblBarra.Size = new Size(92, 15);
+            lblBarra.TabIndex = 19;
+            lblBarra.TabStop = false;
+            lblBarra.Text = "Codigo de Barra";
+            // 
+            // lblStockMinimo
+            // 
+            lblStockMinimo.AutoSize = true;
+            lblStockMinimo.Location = new Point(1, 145);
+            lblStockMinimo.Name = "lblStockMinimo";
+            lblStockMinimo.Size = new Size(81, 15);
+            lblStockMinimo.TabIndex = 16;
+            lblStockMinimo.TabStop = false;
+            lblStockMinimo.Text = "Stock Minimo";
+            // 
+            // lblNombreProducto
+            // 
+            lblNombreProducto.AutoSize = true;
+            lblNombreProducto.Location = new Point(28, 7);
+            lblNombreProducto.Name = "lblNombreProducto";
+            lblNombreProducto.Size = new Size(51, 15);
+            lblNombreProducto.TabIndex = 14;
+            lblNombreProducto.TabStop = false;
+            lblNombreProducto.Text = "Nombre";
+            // 
             // btnNuevo
             // 
+            btnNuevo.BackColor = Color.FromArgb(71, 85, 105);
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnNuevo.ForeColor = Color.White;
             btnNuevo.Location = new Point(698, 4);
             btnNuevo.Name = "btnNuevo";
             btnNuevo.Size = new Size(75, 23);
             btnNuevo.TabIndex = 8;
             btnNuevo.TabStop = false;
             btnNuevo.Text = "Nuevo";
-            btnNuevo.UseVisualStyleBackColor = true;
+            btnNuevo.UseVisualStyleBackColor = false;
             btnNuevo.Click += btnNuevo_Click;
             // 
             // btnModificar
             // 
+            btnModificar.BackColor = Color.FromArgb(37, 99, 235);
+            btnModificar.FlatAppearance.BorderSize = 0;
+            btnModificar.FlatStyle = FlatStyle.Flat;
+            btnModificar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnModificar.ForeColor = Color.White;
             btnModificar.Location = new Point(698, 30);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(75, 23);
             btnModificar.TabIndex = 9;
             btnModificar.TabStop = false;
             btnModificar.Text = "Modificar";
-            btnModificar.UseVisualStyleBackColor = true;
+            btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
             // 
             // btnGuardar
             // 
+            btnGuardar.BackColor = Color.FromArgb(22, 163, 74);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnGuardar.ForeColor = Color.White;
             btnGuardar.Location = new Point(698, 58);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(75, 23);
             btnGuardar.TabIndex = 10;
             btnGuardar.TabStop = false;
             btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
+            // 
+            // lblCategorias
+            // 
+            lblCategorias.AutoSize = true;
+            lblCategorias.Location = new Point(439, 11);
+            lblCategorias.Name = "lblCategorias";
+            lblCategorias.Size = new Size(63, 15);
+            lblCategorias.TabIndex = 9;
+            lblCategorias.TabStop = false;
+            lblCategorias.Text = "Categorias";
+            // 
+            // lblStockActual
+            // 
+            lblStockActual.AutoSize = true;
+            lblStockActual.Location = new Point(10, 119);
+            lblStockActual.Name = "lblStockActual";
+            lblStockActual.Size = new Size(73, 15);
+            lblStockActual.TabIndex = 6;
+            lblStockActual.TabStop = false;
+            lblStockActual.Text = "Stock Actual";
+            // 
+            // lblPrecioVenta
+            // 
+            lblPrecioVenta.AutoSize = true;
+            lblPrecioVenta.Location = new Point(11, 91);
+            lblPrecioVenta.Name = "lblPrecioVenta";
+            lblPrecioVenta.Size = new Size(72, 15);
+            lblPrecioVenta.TabIndex = 4;
+            lblPrecioVenta.TabStop = false;
+            lblPrecioVenta.Text = "Precio Venta";
+            // 
+            // lblPrecioCosto
+            // 
+            lblPrecioCosto.AutoSize = true;
+            lblPrecioCosto.Location = new Point(11, 62);
+            lblPrecioCosto.Name = "lblPrecioCosto";
+            lblPrecioCosto.Size = new Size(74, 15);
+            lblPrecioCosto.TabIndex = 2;
+            lblPrecioCosto.TabStop = false;
+            lblPrecioCosto.Text = "Precio Costo";
             // 
             // lblDescripcion
             // 
@@ -250,6 +326,7 @@
             lblDescripcion.Name = "lblDescripcion";
             lblDescripcion.Size = new Size(69, 15);
             lblDescripcion.TabIndex = 0;
+            lblDescripcion.TabStop = false;
             lblDescripcion.Text = "Descripción";
             // 
             // dgvProductos
