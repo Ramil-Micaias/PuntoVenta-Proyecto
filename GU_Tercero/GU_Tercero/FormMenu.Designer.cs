@@ -116,7 +116,7 @@
             lblNombreUsuario.ForeColor = Color.FromArgb(37, 99, 235);
             lblNombreUsuario.Location = new Point(390, 140);
             lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(98, 37);
+            lblNombreUsuario.Size = new Size(160, 37);
             lblNombreUsuario.TabIndex = 2;
             lblNombreUsuario.Text = "admin";
             // 
