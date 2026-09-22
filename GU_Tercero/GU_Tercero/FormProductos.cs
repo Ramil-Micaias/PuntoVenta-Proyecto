@@ -2,7 +2,6 @@
 using System.Data;
 using System.Windows.Forms;
 using Datos.Entidades;
-using GU_Tercero;
 using Logica;
 
 namespace Vista
@@ -183,11 +182,6 @@ namespace Vista
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarControles();
-        }
-
-        private void btnVolverMenu_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         // Método auxiliar para realizar la búsqueda
