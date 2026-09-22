@@ -65,7 +65,7 @@
             lblNombreCategoria = new Label();
             lblListadoCategoria = new Label();
             dataGridView1 = new DataGridView();
-            btnCerrarSesion = new Button();
+            btnVolverMenu = new Button();
             tabProductoCategoria.SuspendLayout();
             tabPage1.SuspendLayout();
             panelProductos.SuspendLayout();
@@ -123,7 +123,7 @@
             // 
             panel1.BackColor = Color.FromArgb(248, 250, 252);
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(btnCerrarSesion);
+            panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(lblBarra);
             panel1.Controls.Add(txtBarra);
             panel1.Controls.Add(txtStockMinimo);
@@ -148,20 +148,20 @@
             panel1.Size = new Size(776, 171);
             panel1.TabIndex = 0;
             // 
-            // btnCerrarSesion
+            // btnVolverMenu
             // 
-            btnCerrarSesion.BackColor = Color.FromArgb(220, 38, 38);
-            btnCerrarSesion.FlatAppearance.BorderSize = 0;
-            btnCerrarSesion.FlatStyle = FlatStyle.Flat;
-            btnCerrarSesion.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnCerrarSesion.ForeColor = Color.White;
-            btnCerrarSesion.Location = new Point(660, 125);
-            btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new Size(105, 32);
-            btnCerrarSesion.TabIndex = 11;
-            btnCerrarSesion.Text = "Cerrar Sesión";
-            btnCerrarSesion.UseVisualStyleBackColor = false;
-            btnCerrarSesion.Click += btnCerrarSesion_Click;
+            btnVolverMenu.BackColor = Color.FromArgb(71, 85, 105);
+            btnVolverMenu.FlatAppearance.BorderSize = 0;
+            btnVolverMenu.FlatStyle = FlatStyle.Flat;
+            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnVolverMenu.ForeColor = Color.White;
+            btnVolverMenu.Location = new Point(660, 125);
+            btnVolverMenu.Name = "btnVolverMenu";
+            btnVolverMenu.Size = new Size(105, 32);
+            btnVolverMenu.TabIndex = 11;
+            btnVolverMenu.Text = "Volver al Menú";
+            btnVolverMenu.UseVisualStyleBackColor = false;
+            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // lblBarra
             // 
@@ -418,7 +418,7 @@
 
         #endregion
 
-        private Button btnCerrarSesion;
+        private Button btnVolverMenu;
         private TabControl tabProductoCategoria;
         private TabPage tabPage1;
         private TabPage tabPage2;

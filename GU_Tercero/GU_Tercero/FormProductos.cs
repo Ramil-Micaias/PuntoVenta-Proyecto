@@ -185,15 +185,9 @@ namespace Vista
             LimpiarControles();
         }
 
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        private void btnVolverMenu_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("¿Está seguro de que desea cerrar la sesión?", "Cerrar Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Form1 login = new Form1();
-                login.Show();
-                this.Close();
-            }
+            this.Close();
         }
 
         // Método auxiliar para realizar la búsqueda
