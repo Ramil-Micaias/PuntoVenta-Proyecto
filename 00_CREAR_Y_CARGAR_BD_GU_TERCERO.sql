@@ -532,9 +532,9 @@ INSERT INTO Correo (Id_Persona, Id_TipoCorreo, Direccion_Correo, Verificado, Act
 INSERT INTO Rol (Nombre_Rol) VALUES ('Administrador'), ('Usuario');
 DECLARE @idRolAdmin INT = (SELECT Id_Rol FROM Rol WHERE Nombre_Rol = 'Administrador');
 
--- Hash exacto de "admin" + "Esty123" = "adminEsty123" en SHA256: 0a693dfbf15ff71bd0e4f2a5dd1821cfdfc4e43ed7942e7efd1eeab4e2dc3dbe
+-- Hash exacto de "admin" + "Esty123" = "adminEsty123" en SHA256: 032af98435e4af8ea959c0242b1427191d9c1aeeb485b9db7d99de8c58997e24
 INSERT INTO Usuario (Id_Persona, Nombre_Usuario, PasswordHash, Es_Primer_Ingreso, Debe_Cambiar_Password, Bloqueado, Intentos_Fallidos, Activo)
-VALUES (@idPersona, 'admin', '0a693dfbf15ff71bd0e4f2a5dd1821cfdfc4e43ed7942e7efd1eeab4e2dc3dbe', 0, 0, 0, 0, 1);
+VALUES (@idPersona, 'admin', '032af98435e4af8ea959c0242b1427191d9c1aeeb485b9db7d99de8c58997e24', 0, 0, 0, 0, 1);
 DECLARE @idUsuario INT = SCOPE_IDENTITY();
 
 INSERT INTO UsuarioRol (Id_Usuario, Id_Rol) VALUES (@idUsuario, @idRolAdmin);
