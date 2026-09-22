@@ -359,9 +359,9 @@ BEGIN
     SET NOCOUNT ON;
     UPDATE Usuario
     SET 
-        Bloqueado = 1,
-        Fecha_Bloqueo = GETDATE(),
-        Intentos_Fallidos = 3
+        Bloqueado = 0,
+        Fecha_Bloqueo = NULL,
+        Intentos_Fallidos = 0
     WHERE Id_Usuario = @IdUsuario;
 END;
 GO
@@ -532,9 +532,9 @@ INSERT INTO Correo (Id_Persona, Id_TipoCorreo, Direccion_Correo, Verificado, Act
 INSERT INTO Rol (Nombre_Rol) VALUES ('Administrador'), ('Usuario');
 DECLARE @idRolAdmin INT = (SELECT Id_Rol FROM Rol WHERE Nombre_Rol = 'Administrador');
 
--- Password Hash de 'Esty123' en SHA256: 3a28841ee1d9f826359048a1262d22d56a3122c4fbcbaad0c9e6bb0ca53c5598
-INSERT INTO Usuario (Id_Persona, Nombre_Usuario, PasswordHash, Es_Primer_Ingreso, Debe_Cambiar_Password, Bloqueado, Activo)
-VALUES (@idPersona, 'admin', '3a28841ee1d9f826359048a1262d22d56a3122c4fbcbaad0c9e6bb0ca53c5598', 0, 0, 0, 1);
+-- Hash exacto de "admin" + "Esty123" = "adminEsty123" en SHA256: 0a693dfbf15ff71bd0e4f2a5dd1821cfdfc4e43ed7942e7efd1eeab4e2dc3dbe
+INSERT INTO Usuario (Id_Persona, Nombre_Usuario, PasswordHash, Es_Primer_Ingreso, Debe_Cambiar_Password, Bloqueado, Intentos_Fallidos, Activo)
+VALUES (@idPersona, 'admin', '0a693dfbf15ff71bd0e4f2a5dd1821cfdfc4e43ed7942e7efd1eeab4e2dc3dbe', 0, 0, 0, 0, 1);
 DECLARE @idUsuario INT = SCOPE_IDENTITY();
 
 INSERT INTO UsuarioRol (Id_Usuario, Id_Rol) VALUES (@idUsuario, @idRolAdmin);

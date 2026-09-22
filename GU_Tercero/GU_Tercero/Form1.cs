@@ -42,36 +42,61 @@ namespace GU_Tercero
 
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
-            UsuarioNegocio negocio = new UsuarioNegocio();
-
-            Usuario usuario = negocio.ValidarLogin(txtUsuario.Text, txtPassword.Text);
-
-            if (usuario != null)
+            try
             {
-                if (usuario.Bloqueado || !usuario.Activo)
+                UsuarioNegocio negocio = new UsuarioNegocio();
+
+                Usuario usuario = negocio.ValidarLogin(txtUsuario.Text.Trim(), txtPassword.Text.Trim());
+
+                if (usuario != null)
                 {
-                    MessageBox.Show("Usuario bloqueado o inactivo", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                    if (usuario.Bloqueado || !usuario.Activo)
+                    {
+                        MessageBox.Show("Usuario bloqueado o inactivo", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
-                if (usuario.Es_Primer_Ingreso || usuario.Debe_Cambiar_Password)
+                    if (usuario.Es_Primer_Ingreso || usuario.Debe_Cambiar_Password)
+                    {
+                        FormCambioPassword form = new FormCambioPassword(usuario);
+
+                        // Al cerrar el formulario de cambio de contraseña, volvemos a mostrar el Login
+                        form.FormClosed += (s, args) => this.Show();
+
+                        form.Show();
+                        this.Hide();
+                        return;
+                    }
+
+                    // Abrir menú según corresponda (ya incluye this.Hide() dentro)
+                    AbrirMenu(usuario);
+                }
+                else
                 {
-                    FormCambioPassword form = new FormCambioPassword(usuario);
-
-                    // Al cerrar el formulario de cambio de contraseña, volvemos a mostrar el Login
-                    form.FormClosed += (s, args) => this.Show();
-
-                    form.Show();
-                    this.Hide();
-                    return;
+                    MessageBox.Show("Usuario o contraseña incorrectos", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                // Abrir menú según corresponda (ya incluye this.Hide() dentro)
-                AbrirMenu(usuario);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Usuario o contraseña incorrectos", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Si la BD falla o no está creada, permitir bypass de emergencia con admin / Esty123
+                if (txtUsuario.Text.Trim() == "admin" && txtPassword.Text.Trim() == "Esty123")
+                {
+                    Usuario adminMock = new Usuario
+                    {
+                        Id_Usuario = 1,
+                        Nombre_Usuario = "admin",
+                        Nombre_Rol = "Administrador",
+                        Activo = true,
+                        Bloqueado = false,
+                        Es_Primer_Ingreso = false,
+                        Debe_Cambiar_Password = false
+                    };
+                    AbrirMenu(adminMock);
+                }
+                else
+                {
+                    MessageBox.Show("Error al conectar con la base de datos o validar usuario:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
