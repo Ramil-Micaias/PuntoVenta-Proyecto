@@ -36,8 +36,8 @@ GO
 CREATE OR ALTER PROCEDURE sp_GuardarConfiguracion
 (
     @Id_Configuracion INT,
-    @Nombre_Empresa VARCHAR(100),
-    @Email_Emisor VARCHAR(150),
+    @Nombre_Empresa NVARCHAR(100),
+    @Email_Emisor NVARCHAR(150),
     @Min_Caracteres INT,
     @Requiere_Mayusculas BIT,
     @Requiere_Numeros BIT,
@@ -119,12 +119,12 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_InsertarUsuario
 (
-    @Apellido VARCHAR(100),
-    @Nombre VARCHAR(100),
-    @DNI VARCHAR(20),
-    @Direccion_Correo VARCHAR(150),
-    @NombreUsuario VARCHAR(50),
-    @PasswordHash VARCHAR(255),
+    @Apellido NVARCHAR(100),
+    @Nombre NVARCHAR(100),
+    @DNI NVARCHAR(20),
+    @Direccion_Correo NVARCHAR(150),
+    @NombreUsuario NVARCHAR(50),
+    @PasswordHash NVARCHAR(255),
     @IdRol INT
 )
 AS
@@ -198,11 +198,11 @@ GO
 CREATE OR ALTER PROCEDURE sp_ModificarUsuario
 (
     @IdUsuario INT,
-    @Apellido VARCHAR(100),
-    @Nombre VARCHAR(100),
-    @DNI VARCHAR(20),
-    @Correo VARCHAR(150),
-    @NombreUsuario VARCHAR(50),
+    @Apellido NVARCHAR(100),
+    @Nombre NVARCHAR(100),
+    @DNI NVARCHAR(20),
+    @Correo NVARCHAR(150),
+    @NombreUsuario NVARCHAR(50),
     @IdRol INT,
     @Activo BIT,
     @Bloqueado BIT
@@ -304,7 +304,7 @@ GO
 -----------
 
 CREATE OR ALTER PROCEDURE sp_LoginUsuario
-    @NombreUsuario VARCHAR(50)
+    @NombreUsuario NVARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -390,7 +390,7 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_CambiarPassword
     @IdUsuario INT,
-    @PasswordHash VARCHAR(255)
+    @PasswordHash NVARCHAR(255)
 AS 
 BEGIN
     SET NOCOUNT ON; 
@@ -407,7 +407,7 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_RegistrarHistorialPassword
     @IdUsuario INT,
-    @PasswordHash VARCHAR(255)
+    @PasswordHash NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -419,7 +419,7 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_ExistePasswordHistorial
     @IdUsuario INT,
-    @PasswordHash VARCHAR(255)
+    @PasswordHash NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -480,8 +480,8 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_RegistrarHistorialUsuario
     @IdUsuario INT,
-    @TipoMovimiento VARCHAR(50),
-    @Motivo VARCHAR(255)
+    @TipoMovimiento NVARCHAR(50),
+    @Motivo NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -512,9 +512,9 @@ GO
 --------------------------------
 
 CREATE OR ALTER PROCEDURE sp_ValidarPreguntaSeguridad
-    @NombreUsuario VARCHAR(50),
+    @NombreUsuario NVARCHAR(50),
     @IdPregunta INT,
-    @RespuestaHash VARCHAR(255)
+    @RespuestaHash NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -531,7 +531,7 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_GenerarCodigo2FA
     @IdUsuario INT,
-    @Codigo VARCHAR(10)
+    @Codigo NVARCHAR(10)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -543,7 +543,7 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_ValidarCodigo2FA
     @IdUsuario INT,
-    @Codigo VARCHAR(10)
+    @Codigo NVARCHAR(10)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -558,8 +558,8 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_ReestablecerPassword
-    @NombreUsuario VARCHAR(50),
-    @PasswordHash VARCHAR(255)
+    @NombreUsuario NVARCHAR(50),
+    @PasswordHash NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -588,7 +588,7 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_ObtenerPreguntasUsuario
-    @NombreUsuario VARCHAR(50)
+    @NombreUsuario NVARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -619,7 +619,7 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_ObtenerCorreoUsuario
-    @NombreUsuario VARCHAR(50)
+    @NombreUsuario NVARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -740,7 +740,7 @@ GO
 CREATE OR ALTER PROCEDURE sp_GuardarPreguntaSeguridad
     @IdUsuario INT,
     @IdPregunta INT,
-    @RespuestaHash VARCHAR(255)
+    @RespuestaHash NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;

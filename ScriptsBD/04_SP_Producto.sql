@@ -4,11 +4,7 @@ GO
 -- =============================================
 -- 1. SP: Obtener Productos
 -- =============================================
-IF OBJECT_ID('sp_ObtenerProductos', 'P') IS NOT NULL
-    DROP PROCEDURE sp_ObtenerProductos;
-GO
-
-CREATE PROCEDURE sp_ObtenerProductos
+CREATE OR ALTER PROCEDURE sp_ObtenerProductos
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -31,17 +27,13 @@ BEGIN
     INNER JOIN CategoriaProducto c ON p.Id_Categoria = c.Id_Categoria
     WHERE p.Activo = 1
     ORDER BY p.Nombre_Producto ASC;
-END
+END;
 GO
 
 -- =============================================
 -- 2. SP: Obtener Categorías
 -- =============================================
-IF OBJECT_ID('sp_ObtenerCategorias', 'P') IS NOT NULL
-    DROP PROCEDURE sp_ObtenerCategorias;
-GO
-
-CREATE PROCEDURE sp_ObtenerCategorias
+CREATE OR ALTER PROCEDURE sp_ObtenerCategorias
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -52,17 +44,13 @@ BEGIN
     FROM CategoriaProducto
     WHERE Activo = 1
     ORDER BY Nombre_Categoria ASC;
-END
+END;
 GO
 
 -- =============================================
 -- 3. SP: Buscar Productos (Por nombre o código de barras)
 -- =============================================
-IF OBJECT_ID('sp_BuscarProductos', 'P') IS NOT NULL
-    DROP PROCEDURE sp_BuscarProductos;
-GO
-
-CREATE PROCEDURE sp_BuscarProductos
+CREATE OR ALTER PROCEDURE sp_BuscarProductos
     @Filtro NVARCHAR(100)
 AS
 BEGIN
@@ -86,22 +74,18 @@ BEGIN
     INNER JOIN CategoriaProducto c ON p.Id_Categoria = c.Id_Categoria
     WHERE p.Activo = 1 
       AND (p.Nombre_Producto LIKE '%' + @Filtro + '%' 
-       OR p.Codigo_Barras LIKE '%' + @Filtro + '%')
+        OR p.Codigo_Barras LIKE '%' + @Filtro + '%')
     ORDER BY p.Nombre_Producto ASC;
-END
+END;
 GO
 
 -- =============================================
 -- 4. SP: Insertar Producto (Código de barras OBLIGATORIO)
 -- =============================================
-IF OBJECT_ID('sp_InsertarProducto', 'P') IS NOT NULL
-    DROP PROCEDURE sp_InsertarProducto;
-GO
-
-CREATE PROCEDURE sp_InsertarProducto
+CREATE OR ALTER PROCEDURE sp_InsertarProducto
     @Id_Categoria INT,
     @Id_Proveedor INT = NULL,
-    @Codigo_Barras NVARCHAR(50), -- OBLIGATORIO (Se quitó el = NULL)
+    @Codigo_Barras NVARCHAR(50),
     @Nombre_Producto NVARCHAR(50),
     @Descripcion NVARCHAR(120),
     @Precio_Costo DECIMAL(12,2),
@@ -113,7 +97,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
--- Validar si ya existe un producto activo con el mismo Código de Barras o Nombre
+    -- Validar si ya existe un producto activo con el mismo Código de Barras o Nombre
     IF EXISTS (
         SELECT 1 
         FROM Producto 
@@ -121,8 +105,7 @@ BEGIN
           AND Activo = 1
     )
     BEGIN
-        RAISERROR('Ya existe un producto registrado con ese código de barras o nombre.', 16, 1);
-        RETURN;
+        THROW 50000, 'Ya existe un producto registrado con ese código de barras o nombre.', 1;
     END
 
     INSERT INTO Producto (
@@ -151,21 +134,17 @@ BEGIN
         @Es_Repuesto,
         1
     );
-END
+END;
 GO
 
 -- =============================================
 -- 5. SP: Modificar Producto (Código de barras OBLIGATORIO)
 -- =============================================
-IF OBJECT_ID('sp_ModificarProducto', 'P') IS NOT NULL
-    DROP PROCEDURE sp_ModificarProducto;
-GO
-
-CREATE PROCEDURE sp_ModificarProducto
+CREATE OR ALTER PROCEDURE sp_ModificarProducto
     @Id_Producto INT,
     @Id_Categoria INT,
     @Id_Proveedor INT = NULL,
-    @Codigo_Barras NVARCHAR(50), -- OBLIGATORIO (Se quitó el = NULL)
+    @Codigo_Barras NVARCHAR(50),
     @Nombre_Producto NVARCHAR(50),
     @Descripcion NVARCHAR(120),
     @Precio_Costo DECIMAL(12,2),
@@ -181,8 +160,7 @@ BEGIN
     -- Validar que no se intente poner un código de barras de OTRO producto
     IF EXISTS (SELECT 1 FROM Producto WHERE Codigo_Barras = @Codigo_Barras AND Id_Producto <> @Id_Producto)
     BEGIN
-        RAISERROR('El código de barras ya pertenece a otro producto registrado.', 16, 1);
-        RETURN;
+        THROW 50000, 'El código de barras ya pertenece a otro producto registrado.', 1;
     END
 
     UPDATE Producto
@@ -199,17 +177,13 @@ BEGIN
         Es_Repuesto = @Es_Repuesto,
         Activo = @Activo
     WHERE Id_Producto = @Id_Producto;
-END
+END;
 GO
 
 -- =============================================
 -- 6. SP: Inactivar Producto (Baja lógica)
 -- =============================================
-IF OBJECT_ID('sp_InactivarProducto', 'P') IS NOT NULL
-    DROP PROCEDURE sp_InactivarProducto;
-GO
-
-CREATE PROCEDURE sp_InactivarProducto
+CREATE OR ALTER PROCEDURE sp_InactivarProducto
     @Id_Producto INT
 AS
 BEGIN
@@ -218,5 +192,5 @@ BEGIN
     UPDATE Producto
     SET Activo = 0
     WHERE Id_Producto = @Id_Producto;
-END
+END;
 GO
