@@ -100,29 +100,31 @@
             // 
             lblBienvenido.Anchor = AnchorStyles.None;
             lblBienvenido.AutoSize = true;
-            lblBienvenido.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold | FontStyle.Italic);
-            lblBienvenido.Location = new Point(233, 160);
+            lblBienvenido.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblBienvenido.ForeColor = Color.FromArgb(15, 23, 42);
+            lblBienvenido.Location = new Point(230, 140);
             lblBienvenido.Name = "lblBienvenido";
-            lblBienvenido.Size = new Size(153, 37);
+            lblBienvenido.Size = new Size(160, 37);
             lblBienvenido.TabIndex = 1;
-            lblBienvenido.Text = "Bienvenido";
+            lblBienvenido.Text = "Bienvenido,";
             // 
             // lblNombreUsuario
             // 
             lblNombreUsuario.Anchor = AnchorStyles.None;
             lblNombreUsuario.AutoSize = true;
-            lblNombreUsuario.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblNombreUsuario.Location = new Point(418, 160);
+            lblNombreUsuario.Font = new Font("Segoe UI Bold", 20F);
+            lblNombreUsuario.ForeColor = Color.FromArgb(37, 99, 235);
+            lblNombreUsuario.Location = new Point(390, 140);
             lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(88, 37);
+            lblNombreUsuario.Size = new Size(98, 37);
             lblNombreUsuario.TabIndex = 2;
-            lblNombreUsuario.Text = "label1";
+            lblNombreUsuario.Text = "admin";
             // 
             // picLogoMenu
             // 
             picLogoMenu.Anchor = AnchorStyles.None;
             picLogoMenu.BackColor = Color.Transparent;
-            picLogoMenu.Location = new Point(296, 220);
+            picLogoMenu.Location = new Point(296, 200);
             picLogoMenu.Name = "picLogoMenu";
             picLogoMenu.Size = new Size(200, 160);
             picLogoMenu.TabIndex = 3;
