@@ -177,8 +177,12 @@ CREATE TABLE Usuario (
     Debe_Cambiar_Password BIT DEFAULT 0 NOT NULL,
     Intentos_Fallidos INT DEFAULT 0 NOT NULL,
     Bloqueado BIT DEFAULT 0 NOT NULL,
+    Fecha_Alta DATETIME DEFAULT GETDATE() NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE() NOT NULL,
+    Fecha_Bloqueo DATETIME NULL,
+    Ultimo_Login DATETIME NULL,
     Fecha_UltimoIngreso DATETIME NULL,
+    Fecha_Ultimo_Cambio DATETIME NULL,
     Activo BIT DEFAULT 1 NOT NULL,
     FOREIGN KEY (Id_Persona) REFERENCES Persona(Id_Persona)
 );
@@ -298,6 +302,92 @@ CREATE TABLE Producto (
     FOREIGN KEY (Id_Categoria) REFERENCES CategoriaProducto(Id_Categoria),
     FOREIGN KEY (Id_Proveedor) REFERENCES Proveedor(Id_Proveedor)
 );
+GO
+
+----------------------------------------
+-- STORED PROCEDURES USUARIO & LOGIN
+----------------------------------------
+CREATE PROCEDURE sp_LoginUsuario
+    @NombreUsuario VARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT
+        U.Id_Usuario,
+        U.Nombre_Usuario,
+        U.PasswordHash,
+        U.Activo,
+        U.Bloqueado,
+        U.Intentos_Fallidos,
+        U.Debe_Cambiar_Password,
+        U.Es_Primer_Ingreso,
+        R.Id_Rol,
+        R.Nombre_Rol
+    FROM Usuario U
+    INNER JOIN UsuarioRol UR ON U.Id_Usuario = UR.Id_Usuario
+    INNER JOIN Rol R ON UR.Id_Rol = R.Id_Rol
+    WHERE U.Nombre_Usuario = @NombreUsuario;
+END;
+GO
+
+CREATE PROCEDURE sp_AumentarIntentos
+    @IdUsuario INT 
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    UPDATE Usuario
+    SET Intentos_Fallidos = Intentos_Fallidos + 1
+    WHERE Id_Usuario = @IdUsuario;
+END;
+GO
+
+CREATE PROCEDURE sp_ReiniciarIntentos
+    @IdUsuario INT
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    UPDATE Usuario 
+    SET Intentos_Fallidos = 0
+    WHERE Id_Usuario = @IdUsuario;
+END;
+GO
+
+CREATE PROCEDURE sp_BloquearUsuario
+    @IdUsuario INT
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    UPDATE Usuario
+    SET 
+        Bloqueado = 1,
+        Fecha_Bloqueo = GETDATE(),
+        Intentos_Fallidos = 3
+    WHERE Id_Usuario = @IdUsuario;
+END;
+GO
+
+CREATE PROCEDURE sp_ActualizarUltimoLogin
+    @IdUsuario INT
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    UPDATE Usuario
+    SET Ultimo_Login = GETDATE()
+    WHERE Id_Usuario = @IdUsuario;
+END;
+GO
+
+CREATE PROCEDURE sp_ObtenerConfiguracion
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 1
+        Id_Configuracion, Nombre_Empresa, Email_Emisor, Min_Caracteres,
+        Requiere_Mayusculas, Requiere_Numeros, Requiere_Especial,
+        Habilitar_2fa, Validar_DatosPersonales, No_repetirPasswords,
+        Cantidad_HistorialPasswords, Cantidad_Preguntas
+    FROM ConfiguracionSistema;
+END;
 GO
 
 ----------------------------------------
@@ -434,6 +524,10 @@ INSERT INTO ConfiguracionSistema (Nombre_Empresa, Email_Emisor) VALUES ('ApIBigS
 
 INSERT INTO Persona (Apellido, Nombre, DNI) VALUES ('Administrador', 'Sistema', '11111111');
 DECLARE @idPersona INT = SCOPE_IDENTITY();
+
+INSERT INTO TipoCorreo (Descripcion) VALUES ('Principal');
+DECLARE @idTipoCorreo INT = SCOPE_IDENTITY();
+INSERT INTO Correo (Id_Persona, Id_TipoCorreo, Direccion_Correo, Verificado, Activo) VALUES (@idPersona, @idTipoCorreo, 'admin@apibigstore.com', 1, 1);
 
 INSERT INTO Rol (Nombre_Rol) VALUES ('Administrador'), ('Usuario');
 DECLARE @idRolAdmin INT = (SELECT Id_Rol FROM Rol WHERE Nombre_Rol = 'Administrador');
