@@ -100,13 +100,13 @@
             // 
             lblBienvenido.Anchor = AnchorStyles.None;
             lblBienvenido.AutoSize = true;
-            lblBienvenido.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblBienvenido.Font = new Font("Segoe UI Semibold", 22F, FontStyle.Bold);
             lblBienvenido.ForeColor = Color.FromArgb(15, 23, 42);
-            lblBienvenido.Location = new Point(230, 140);
+            lblBienvenido.Location = new Point(250, 130);
             lblBienvenido.Name = "lblBienvenido";
-            lblBienvenido.Size = new Size(160, 37);
+            lblBienvenido.Size = new Size(270, 41);
             lblBienvenido.TabIndex = 1;
-            lblBienvenido.Text = "Bienvenido,";
+            lblBienvenido.Text = "Bienvenido, admin";
             // 
             // lblNombreUsuario
             // 
