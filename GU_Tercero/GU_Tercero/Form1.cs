@@ -22,8 +22,20 @@ namespace GU_Tercero
             {
                 FormMenu menu = new FormMenu(usuario);
 
-                // Cuando el usuario cierre el menú principal, se cierra toda la aplicación
-                menu.FormClosed += (s, args) => this.Close();
+                // Al cerrar el menú, volvemos a mostrar la pantalla de Login limpia (o la cerramos si fue por X)
+                menu.FormClosed += (s, args) =>
+                {
+                    if (menu.EsCierreSesion)
+                    {
+                        txtUsuario.Clear();
+                        txtPassword.Clear();
+                        this.Show();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                };
 
                 menu.Show();
                 this.Hide();

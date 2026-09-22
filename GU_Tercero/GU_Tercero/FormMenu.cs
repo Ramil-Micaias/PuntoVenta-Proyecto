@@ -9,7 +9,7 @@ namespace GU_Tercero
     public partial class FormMenu : Form
     {
         private Usuario usuarioLogueado;
-        private bool esCierreSesion = false;
+        public bool EsCierreSesion { get; private set; } = false;
 
         public FormMenu(Usuario usuario)
         {
@@ -93,20 +93,14 @@ namespace GU_Tercero
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            esCierreSesion = true;
-
-            // Abrimos un nuevo Login limpio para iniciar sesión con otra cuenta
-            Form1 login = new Form1();
-            login.Show();
-
-            // Cerramos el menú actual sin matar el nuevo Login
+            EsCierreSesion = true;
             this.Close();
         }
 
         private void FormMenu_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Si la ventana se cierra por la cruz (X) y NO por cerrar sesión, salimos del proceso completo
-            if (!esCierreSesion)
+            if (!EsCierreSesion)
             {
                 Application.Exit();
             }
