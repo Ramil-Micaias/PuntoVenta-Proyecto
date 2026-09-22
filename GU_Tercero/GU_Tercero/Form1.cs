@@ -77,7 +77,32 @@ namespace GU_Tercero
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            CargarLogo();
+        }
 
+        private void CargarLogo()
+        {
+            try
+            {
+                string rutaLogo = System.IO.Path.Combine(Application.StartupPath, "loguito trtansparente.png");
+                if (!System.IO.File.Exists(rutaLogo))
+                {
+                    // Buscar en la raíz del proyecto si estamos en debug
+                    rutaLogo = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\loguito trtansparente.png");
+                }
+
+                if (!System.IO.File.Exists(rutaLogo))
+                {
+                    rutaLogo = @"C:\Users\LanzceTest\Desktop\correciones para el martes creo q 23-09\loguito trtansparente.png";
+                }
+
+                if (System.IO.File.Exists(rutaLogo))
+                {
+                    picLogo.Image = System.Drawing.Image.FromFile(rutaLogo);
+                    picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+            }
+            catch { }
         }
 
         private void llb_OlvidoContraseña_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -35,6 +35,8 @@
             lblNombreUsuario = new Label();
             lblPassword = new Label();
             lblTitulo = new Label();
+            picLogo = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // btnIngresar
@@ -133,12 +135,23 @@
             lblTitulo.TabStop = false;
             lblTitulo.Text = "Iniciar Sesión";
             // 
+            // picLogo
+            // 
+            picLogo.Anchor = AnchorStyles.None;
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Location = new Point(45, 75);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(180, 180);
+            picLogo.TabIndex = 9;
+            picLogo.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(680, 388);
+            Controls.Add(picLogo);
             Controls.Add(lblTitulo);
             Controls.Add(lblPassword);
             Controls.Add(lblNombreUsuario);
@@ -153,6 +166,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -166,5 +180,6 @@
         private Label lblNombreUsuario;
         private Label lblPassword;
         private Label lblTitulo;
+        private PictureBox picLogo;
     }
 }

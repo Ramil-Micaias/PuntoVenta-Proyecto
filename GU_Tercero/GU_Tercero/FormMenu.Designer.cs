@@ -37,6 +37,8 @@
             productoYStockToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
+            picLogoMenu = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)picLogoMenu).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -116,12 +118,23 @@
             lblNombreUsuario.TabIndex = 2;
             lblNombreUsuario.Text = "label1";
             // 
+            // picLogoMenu
+            // 
+            picLogoMenu.Anchor = AnchorStyles.None;
+            picLogoMenu.BackColor = Color.Transparent;
+            picLogoMenu.Location = new Point(296, 220);
+            picLogoMenu.Name = "picLogoMenu";
+            picLogoMenu.Size = new Size(200, 160);
+            picLogoMenu.TabIndex = 3;
+            picLogoMenu.TabStop = false;
+            // 
             // FormMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Gainsboro;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(793, 432);
+            Controls.Add(picLogoMenu);
             Controls.Add(lblNombreUsuario);
             Controls.Add(lblBienvenido);
             Controls.Add(menuStrip1);
@@ -130,6 +143,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormMenu";
             Load += FormMenu_Load;
+            ((System.ComponentModel.ISupportInitialize)picLogoMenu).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -147,5 +161,6 @@
         private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem configuraciónDelSistemaToolStripMenuItem;
         private ToolStripMenuItem productoYStockToolStripMenuItem;
+        private PictureBox picLogoMenu;
     }
 }

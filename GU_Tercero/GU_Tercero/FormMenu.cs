@@ -23,6 +23,31 @@ namespace GU_Tercero
             {
                 lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
             }
+            CargarLogo();
+        }
+
+        private void CargarLogo()
+        {
+            try
+            {
+                string rutaLogo = System.IO.Path.Combine(Application.StartupPath, "loguito trtansparente.png");
+                if (!System.IO.File.Exists(rutaLogo))
+                {
+                    rutaLogo = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\loguito trtansparente.png");
+                }
+
+                if (!System.IO.File.Exists(rutaLogo))
+                {
+                    rutaLogo = @"C:\Users\LanzceTest\Desktop\correciones para el martes creo q 23-09\loguito trtansparente.png";
+                }
+
+                if (System.IO.File.Exists(rutaLogo))
+                {
+                    picLogoMenu.Image = System.Drawing.Image.FromFile(rutaLogo);
+                    picLogoMenu.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+            }
+            catch { }
         }
 
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
