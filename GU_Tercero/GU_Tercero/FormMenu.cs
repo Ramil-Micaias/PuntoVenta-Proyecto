@@ -21,13 +21,13 @@ namespace GU_Tercero
         {
             if (usuarioLogueado != null)
             {
-                lblBienvenido.Text = "Bienvenido, " + usuarioLogueado.Nombre_Usuario;
+                lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
             }
             else
             {
-                lblBienvenido.Text = "Bienvenido, admin";
+                lblNombreUsuario.Text = "admin";
             }
-            lblNombreUsuario.Visible = false;
+            lblNombreUsuario.Visible = true;
             CargarLogo();
         }
 
