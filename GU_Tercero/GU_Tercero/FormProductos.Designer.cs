@@ -65,6 +65,7 @@
             lblNombreCategoria = new Label();
             lblListadoCategoria = new Label();
             dataGridView1 = new DataGridView();
+            btnVolverMenu = new Button();
             tabProductoCategoria.SuspendLayout();
             tabPage1.SuspendLayout();
             panelProductos.SuspendLayout();
@@ -120,6 +121,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(lblBarra);
             panel1.Controls.Add(txtBarra);
             panel1.Controls.Add(txtStockMinimo);
@@ -200,6 +202,22 @@
             cmbCategoria.Name = "cmbCategoria";
             cmbCategoria.Size = new Size(179, 23);
             cmbCategoria.TabIndex = 7;
+            // 
+            // btnVolverMenu
+            // 
+            btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
+            btnVolverMenu.FlatAppearance.BorderSize = 0;
+            btnVolverMenu.FlatStyle = FlatStyle.Flat;
+            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnVolverMenu.ForeColor = Color.White;
+            btnVolverMenu.Location = new Point(698, 86);
+            btnVolverMenu.Name = "btnVolverMenu";
+            btnVolverMenu.Size = new Size(75, 23);
+            btnVolverMenu.TabIndex = 11;
+            btnVolverMenu.TabStop = false;
+            btnVolverMenu.Text = "Volver";
+            btnVolverMenu.UseVisualStyleBackColor = false;
+            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // lblBarra
             // 
@@ -522,5 +540,6 @@
         private Label lblCatalogoExistencia;
         private Label lblBarra;
         private TextBox txtBarra;
+        private Button btnVolverMenu;
     }
 }

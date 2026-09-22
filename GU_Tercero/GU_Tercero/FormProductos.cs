@@ -184,6 +184,11 @@ namespace Vista
             LimpiarControles();
         }
 
+        private void btnVolverMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         // Método auxiliar para realizar la búsqueda
         private void EjecutarBusqueda()
         {
