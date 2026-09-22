@@ -171,30 +171,6 @@
             lblBarra.TabStop = false;
             lblBarra.Text = "Codigo de Barra";
             // 
-            // txtBarra
-            // 
-            txtBarra.Location = new Point(302, 5);
-            txtBarra.Name = "txtBarra";
-            txtBarra.Size = new Size(100, 23);
-            txtBarra.TabIndex = 1;
-            // 
-            // txtStockMinimo
-            // 
-            txtStockMinimo.Location = new Point(85, 142);
-            txtStockMinimo.Name = "txtStockMinimo";
-            txtStockMinimo.Size = new Size(100, 23);
-            txtStockMinimo.TabIndex = 7;
-            // 
-            // lblStockMinimo
-            // 
-            lblStockMinimo.AutoSize = true;
-            lblStockMinimo.Location = new Point(1, 145);
-            lblStockMinimo.Name = "lblStockMinimo";
-            lblStockMinimo.Size = new Size(81, 15);
-            lblStockMinimo.TabIndex = 16;
-            lblStockMinimo.TabStop = false;
-            lblStockMinimo.Text = "Stock Minimo";
-            // 
             // txtNombreProducto
             // 
             txtNombreProducto.Location = new Point(85, 3);
@@ -202,15 +178,71 @@
             txtNombreProducto.Size = new Size(100, 23);
             txtNombreProducto.TabIndex = 0;
             // 
-            // lblNombreProducto
+            // txtDescripcion
             // 
-            lblNombreProducto.AutoSize = true;
-            lblNombreProducto.Location = new Point(28, 7);
-            lblNombreProducto.Name = "lblNombreProducto";
-            lblNombreProducto.Size = new Size(51, 15);
-            lblNombreProducto.TabIndex = 14;
-            lblNombreProducto.TabStop = false;
-            lblNombreProducto.Text = "Nombre";
+            txtDescripcion.Location = new Point(85, 31);
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(100, 23);
+            txtDescripcion.TabIndex = 1;
+            // 
+            // txtPrecioCosto
+            // 
+            txtPrecioCosto.Location = new Point(85, 59);
+            txtPrecioCosto.Name = "txtPrecioCosto";
+            txtPrecioCosto.Size = new Size(100, 23);
+            txtPrecioCosto.TabIndex = 2;
+            // 
+            // txtPrecioVenta
+            // 
+            txtPrecioVenta.Location = new Point(85, 87);
+            txtPrecioVenta.Name = "txtPrecioVenta";
+            txtPrecioVenta.Size = new Size(100, 23);
+            txtPrecioVenta.TabIndex = 3;
+            // 
+            // txtStockActual
+            // 
+            txtStockActual.Location = new Point(85, 115);
+            txtStockActual.Name = "txtStockActual";
+            txtStockActual.Size = new Size(100, 23);
+            txtStockActual.TabIndex = 4;
+            // 
+            // txtStockMinimo
+            // 
+            txtStockMinimo.Location = new Point(85, 142);
+            txtStockMinimo.Name = "txtStockMinimo";
+            txtStockMinimo.Size = new Size(100, 23);
+            txtStockMinimo.TabIndex = 5;
+            // 
+            // txtBarra
+            // 
+            txtBarra.Location = new Point(302, 5);
+            txtBarra.Name = "txtBarra";
+            txtBarra.Size = new Size(100, 23);
+            txtBarra.TabIndex = 6;
+            // 
+            // cmbCategoria
+            // 
+            cmbCategoria.FormattingEnabled = true;
+            cmbCategoria.Location = new Point(508, 5);
+            cmbCategoria.Name = "cmbCategoria";
+            cmbCategoria.Size = new Size(179, 23);
+            cmbCategoria.TabIndex = 7;
+            // 
+            // btnNuevo
+            // 
+            btnNuevo.BackColor = Color.FromArgb(71, 85, 105);
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnNuevo.ForeColor = Color.White;
+            btnNuevo.Location = new Point(698, 4);
+            btnNuevo.Name = "btnNuevo";
+            btnNuevo.Size = new Size(75, 23);
+            btnNuevo.TabIndex = 8;
+            btnNuevo.TabStop = false;
+            btnNuevo.Text = "Nuevo";
+            btnNuevo.UseVisualStyleBackColor = false;
+            btnNuevo.Click += btnNuevo_Click;
             // 
             // btnModificar
             // 
@@ -223,6 +255,7 @@
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(75, 23);
             btnModificar.TabIndex = 9;
+            btnModificar.TabStop = false;
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
@@ -238,100 +271,26 @@
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(75, 23);
             btnGuardar.TabIndex = 10;
+            btnGuardar.TabStop = false;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
-            // btnNuevo
+            // btnVolverMenu
             // 
-            btnNuevo.BackColor = Color.FromArgb(71, 85, 105);
-            btnNuevo.FlatAppearance.BorderSize = 0;
-            btnNuevo.FlatStyle = FlatStyle.Flat;
-            btnNuevo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnNuevo.ForeColor = Color.White;
-            btnNuevo.Location = new Point(698, 4);
-            btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(75, 23);
-            btnNuevo.TabIndex = 8;
-            btnNuevo.Text = "Nuevo";
-            btnNuevo.UseVisualStyleBackColor = false;
-            btnNuevo.Click += btnNuevo_Click;
-            // 
-            // lblCategorias
-            // 
-            lblCategorias.AutoSize = true;
-            lblCategorias.Location = new Point(439, 11);
-            lblCategorias.Name = "lblCategorias";
-            lblCategorias.Size = new Size(63, 15);
-            lblCategorias.TabIndex = 9;
-            lblCategorias.TabStop = false;
-            lblCategorias.Text = "Categorias";
-            // 
-            // cmbCategoria
-            // 
-            cmbCategoria.FormattingEnabled = true;
-            cmbCategoria.Location = new Point(508, 5);
-            cmbCategoria.Name = "cmbCategoria";
-            cmbCategoria.Size = new Size(179, 23);
-            cmbCategoria.TabIndex = 3;
-            // 
-            // txtStockActual
-            // 
-            txtStockActual.Location = new Point(85, 115);
-            txtStockActual.Name = "txtStockActual";
-            txtStockActual.Size = new Size(100, 23);
-            txtStockActual.TabIndex = 6;
-            // 
-            // lblStockActual
-            // 
-            lblStockActual.AutoSize = true;
-            lblStockActual.Location = new Point(10, 119);
-            lblStockActual.Name = "lblStockActual";
-            lblStockActual.Size = new Size(73, 15);
-            lblStockActual.TabIndex = 6;
-            lblStockActual.TabStop = false;
-            lblStockActual.Text = "Stock Actual";
-            // 
-            // txtPrecioVenta
-            // 
-            txtPrecioVenta.Location = new Point(85, 87);
-            txtPrecioVenta.Name = "txtPrecioVenta";
-            txtPrecioVenta.Size = new Size(100, 23);
-            txtPrecioVenta.TabIndex = 5;
-            // 
-            // lblPrecioVenta
-            // 
-            lblPrecioVenta.AutoSize = true;
-            lblPrecioVenta.Location = new Point(11, 91);
-            lblPrecioVenta.Name = "lblPrecioVenta";
-            lblPrecioVenta.Size = new Size(72, 15);
-            lblPrecioVenta.TabIndex = 4;
-            lblPrecioVenta.TabStop = false;
-            lblPrecioVenta.Text = "Precio Venta";
-            // 
-            // txtPrecioCosto
-            // 
-            txtPrecioCosto.Location = new Point(85, 59);
-            txtPrecioCosto.Name = "txtPrecioCosto";
-            txtPrecioCosto.Size = new Size(100, 23);
-            txtPrecioCosto.TabIndex = 2;
-            // 
-            // lblPrecioCosto
-            // 
-            lblPrecioCosto.AutoSize = true;
-            lblPrecioCosto.Location = new Point(11, 62);
-            lblPrecioCosto.Name = "lblPrecioCosto";
-            lblPrecioCosto.Size = new Size(74, 15);
-            lblPrecioCosto.TabIndex = 2;
-            lblPrecioCosto.TabStop = false;
-            lblPrecioCosto.Text = "Precio Costo";
-            // 
-            // txtDescripcion
-            // 
-            txtDescripcion.Location = new Point(85, 31);
-            txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(100, 23);
-            txtDescripcion.TabIndex = 4;
+            btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
+            btnVolverMenu.FlatAppearance.BorderSize = 0;
+            btnVolverMenu.FlatStyle = FlatStyle.Flat;
+            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnVolverMenu.ForeColor = Color.White;
+            btnVolverMenu.Location = new Point(698, 86);
+            btnVolverMenu.Name = "btnVolverMenu";
+            btnVolverMenu.Size = new Size(75, 23);
+            btnVolverMenu.TabIndex = 11;
+            btnVolverMenu.TabStop = false;
+            btnVolverMenu.Text = "Volver";
+            btnVolverMenu.UseVisualStyleBackColor = false;
+            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // lblDescripcion
             // 

@@ -102,7 +102,7 @@
             lblBienvenido.AutoSize = true;
             lblBienvenido.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
             lblBienvenido.ForeColor = Color.FromArgb(15, 23, 42);
-            lblBienvenido.Location = new Point(233, 160);
+            lblBienvenido.Location = new Point(240, 160);
             lblBienvenido.Name = "lblBienvenido";
             lblBienvenido.Size = new Size(160, 37);
             lblBienvenido.TabIndex = 1;
@@ -114,9 +114,9 @@
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.Font = new Font("Segoe UI Bold", 20F);
             lblNombreUsuario.ForeColor = Color.FromArgb(37, 99, 235);
-            lblNombreUsuario.Location = new Point(393, 160);
+            lblNombreUsuario.Location = new Point(395, 160);
             lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(160, 37);
+            lblNombreUsuario.Size = new Size(98, 37);
             lblNombreUsuario.TabIndex = 2;
             lblNombreUsuario.Text = "admin";
             // 
