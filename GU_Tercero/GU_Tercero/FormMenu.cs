@@ -105,5 +105,17 @@ namespace GU_Tercero
                 Application.Exit();
             }
         }
+
+        private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide(); 
+
+            using (FormProveedores formProveedores = new FormProveedores())
+            {
+                formProveedores.ShowDialog();
+            }
+
+            this.Show(); 
+        }
     }
 }
