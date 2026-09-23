@@ -11,8 +11,16 @@ namespace GU_Tercero
         public Form1()
         {
             InitializeComponent();
-            // Nota: Recordá quitar o comentar el MessageBox de prueba en producción
-            // MessageBox.Show(HashHelper.GenerarSHA256("adminEsty123"));
+            txtUsuario.KeyDown += txtUsuario_KeyDown;
+        }
+
+        private void txtUsuario_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Evita el sonido beep de Windows
+                txtPassword.Focus();
+            }
         }
 
         private void LimpiarCampos()
