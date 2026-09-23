@@ -93,6 +93,8 @@
             Name = "FormCambioPassword";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormCambioPassword";
+            FormClosing += FormCambioPassword_FormClosing;
+            Load += FormCambioPassword_Load;
             ResumeLayout(false);
             PerformLayout();
         }

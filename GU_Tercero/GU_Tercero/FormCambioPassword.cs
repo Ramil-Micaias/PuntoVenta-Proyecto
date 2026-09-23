@@ -1,11 +1,11 @@
-﻿using Datos.Entidades;
+﻿using System;
+using System.Windows.Forms;
+using Datos.Entidades;
 using Logica;
 using Logica.Seguridad;
 
 namespace GU_Tercero
 {
-    // FormCambioPassword: Este formulario implementa una política de seguridad obligando al usuario a modificar 
-    // la contraseña inicial o temporal antes de utilizar el sistema.
     public partial class FormCambioPassword : Form
     {
         private Usuario usuarioLogueado;
@@ -14,6 +14,40 @@ namespace GU_Tercero
         {
             InitializeComponent();
             usuarioLogueado = usuario;
+        }
+
+        private void FormCambioPassword_Load(object sender, EventArgs e)
+        {
+            // Si es primer ingreso o debe cambiar la contraseña, deshabilitamos Cancelar
+            if (usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
+            {
+                btnCancelar.Enabled = false;
+            }
+        }
+
+        private void FormCambioPassword_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Si aún debe cambiar la contraseña y el cierre fue iniciado por el usuario (la cruz X)
+            if ((usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
+                && e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult respuesta = MessageBox.Show(
+                    "Debe cambiar su contraseña para continuar. ¿Desea salir del sistema?",
+                    "Cambio Obligatorio",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (respuesta == DialogResult.Yes)
+                {
+                    // Si decide salir, cerramos la aplicación completa para no dejar el Login colgado
+                    Application.Exit();
+                }
+                else
+                {
+                    // Cancelamos el evento de cierre y permanece en la pantalla de cambio
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void btnCambiarPassword_Click(object sender, EventArgs e)
@@ -41,45 +75,26 @@ namespace GU_Tercero
             negocio.CambiarPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
             negocio.RegistrarHistorialPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
 
-            MessageBox.Show("Contraseña cambiada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Contraseña cambiada correctamente. Inicie sesión con sus nuevas credenciales.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             usuarioLogueado.Debe_Cambiar_Password = false;
 
+            // Si le faltan preguntas de seguridad, las responde primero
             if (!negocio.UsuarioTienePreguntas(usuarioLogueado.Id_Usuario))
             {
-                FormPreguntasSeguridad preguntas = new FormPreguntasSeguridad(usuarioLogueado);
-
-                // Si entra a preguntas de seguridad, al cerrar esa ventana se vuelve al Login o se cierra la app
-                preguntas.FormClosed += (s, args) => this.Close();
-                preguntas.Show();
-                this.Hide(); // Mantenemos oculto mientras completa las preguntas
-            }
-            else
-            {
-                if (usuarioLogueado.Nombre_Rol == "Administrador")
+                using (FormPreguntasSeguridad preguntas = new FormPreguntasSeguridad(usuarioLogueado))
                 {
-                    FormMenu menu = new FormMenu(usuarioLogueado);
-
-                    // Al cerrar el menú principal desde este flujo, cerramos toda la aplicación
-                    menu.FormClosed += (s, args) => Application.Exit();
-                    menu.Show();
+                    this.Hide();
+                    preguntas.ShowDialog();
                 }
-                else
-                {
-                    FormUsuario formUsuario = new FormUsuario(usuarioLogueado);
-
-                    formUsuario.FormClosed += (s, args) => Application.Exit();
-                    formUsuario.Show();
-                }
-
-                // Cerramos este formulario de cambio de contraseña
-                this.Close();
             }
+
+            // Al cerrar este formulario, el evento FormClosed en Form1 se ejecuta y reaccede al Login original limpiando los campos.
+            this.Close();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Cerramos la ventana. El evento FormClosed en Form1 se encargará de re-mostrar el Login original.
             this.Close();
         }
     }
