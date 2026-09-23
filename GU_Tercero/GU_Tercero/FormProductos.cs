@@ -21,8 +21,18 @@ namespace Vista
 
         private void FormProductos_Load(object sender, EventArgs e)
         {
+            ConfigurarGrid();
             CargarCategorias();
             CargarProductos();
+        }
+
+        private void ConfigurarGrid()
+        {
+            dgvProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProductos.MultiSelect = false;
+            dgvProductos.ReadOnly = true;
+            dgvProductos.AllowUserToAddRows = false;
+            dgvProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void CargarCategorias()
@@ -47,13 +57,23 @@ namespace Vista
             }
         }
 
+        private void OcultarColumnas()
+        {
+            if (dgvProductos.Columns.Contains("Id_Producto"))
+                dgvProductos.Columns["Id_Producto"].Visible = false;
+
+            if (dgvProductos.Columns.Contains("Id_Categoria"))
+                dgvProductos.Columns["Id_Categoria"].Visible = false;
+        }
+
         private void CargarProductos()
         {
             try
             {
                 GestorProducto gestor = new GestorProducto();
-
                 dgvProductos.DataSource = gestor.ObtenerProductos();
+
+                OcultarColumnas();
             }
             catch (Exception ex)
             {
@@ -217,10 +237,9 @@ namespace Vista
             }
         }
 
-        private void dgvProductos_CellClick(
-            object sender,
-            DataGridViewCellEventArgs e)
+        private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Escudo protector contra clics en los encabezados de columna
             if (e.RowIndex < 0)
             {
                 return;
@@ -228,31 +247,34 @@ namespace Vista
 
             DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
 
-            idProductoSeleccionado =
-                Convert.ToInt32(fila.Cells["Id_Producto"].Value);
-
-            txtNombreProducto.Text =
-                fila.Cells["Nombre_Producto"].Value?.ToString() ?? "";
-
-            txtDescripcion.Text =
-                fila.Cells["Descripcion"].Value != DBNull.Value
-                    ? fila.Cells["Descripcion"].Value?.ToString()
-                    : "";
-
-            txtPrecioVenta.Text =
-                fila.Cells["Precio_Venta"].Value?.ToString() ?? "0";
-
-            txtStockActual.Text =
-                fila.Cells["Stock_Actual"].Value?.ToString() ?? "0";
-
-            txtStockMinimo.Text =
-                fila.Cells["Stock_Minimo"].Value?.ToString() ?? "0";
-
-            if (fila.Cells["Id_Categoria"].Value != DBNull.Value &&
-                fila.Cells["Id_Categoria"].Value != null)
+            if (fila.Cells["Id_Producto"].Value != null && fila.Cells["Id_Producto"].Value != DBNull.Value)
             {
-                cmbCategoria.SelectedValue =
-                    Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
+                idProductoSeleccionado = Convert.ToInt32(fila.Cells["Id_Producto"].Value);
+            }
+
+            txtNombreProducto.Text = fila.Cells["Nombre_Producto"].Value != DBNull.Value
+                ? fila.Cells["Nombre_Producto"].Value?.ToString() ?? ""
+                : "";
+
+            txtDescripcion.Text = fila.Cells["Descripcion"].Value != DBNull.Value
+                ? fila.Cells["Descripcion"].Value?.ToString() ?? ""
+                : "";
+
+            txtPrecioVenta.Text = fila.Cells["Precio_Venta"].Value != DBNull.Value
+                ? fila.Cells["Precio_Venta"].Value?.ToString() ?? "0"
+                : "0";
+
+            txtStockActual.Text = fila.Cells["Stock_Actual"].Value != DBNull.Value
+                ? fila.Cells["Stock_Actual"].Value?.ToString() ?? "0"
+                : "0";
+
+            txtStockMinimo.Text = fila.Cells["Stock_Minimo"].Value != DBNull.Value
+                ? fila.Cells["Stock_Minimo"].Value?.ToString() ?? "0"
+                : "0";
+
+            if (fila.Cells["Id_Categoria"].Value != null && fila.Cells["Id_Categoria"].Value != DBNull.Value)
+            {
+                cmbCategoria.SelectedValue = Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
             }
             else
             {
@@ -275,21 +297,20 @@ namespace Vista
             try
             {
                 string filtro = txtBuscar.Text.Trim();
-
                 GestorProducto gestor = new GestorProducto();
 
                 dgvProductos.DataSource = null;
 
                 if (string.IsNullOrEmpty(filtro))
                 {
-                    dgvProductos.DataSource =
-                        gestor.ObtenerProductos();
+                    dgvProductos.DataSource = gestor.ObtenerProductos();
                 }
                 else
                 {
-                    dgvProductos.DataSource =
-                        gestor.BuscarProductos(filtro);
+                    dgvProductos.DataSource = gestor.BuscarProductos(filtro);
                 }
+
+                OcultarColumnas();
             }
             catch (Exception ex)
             {

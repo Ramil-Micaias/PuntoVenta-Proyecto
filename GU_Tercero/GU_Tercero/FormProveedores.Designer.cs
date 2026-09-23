@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             dgvProveedores = new DataGridView();
             grpDetalleProveedores = new GroupBox();
             btnEliminar = new Button();
@@ -53,7 +55,23 @@
             // 
             dgvProveedores.BackgroundColor = Color.White;
             dgvProveedores.BorderStyle = BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvProveedores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvProveedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvProveedores.DefaultCellStyle = dataGridViewCellStyle2;
             dgvProveedores.Location = new Point(16, 45);
             dgvProveedores.Name = "dgvProveedores";
             dgvProveedores.Size = new Size(768, 205);
@@ -185,7 +203,6 @@
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(170, 24);
             txtTelefono.TabIndex = 5;
-            txtTelefono.TextChanged += txtTelefono_TextChanged;
             // 
             // lblTelefono
             // 
@@ -232,18 +249,18 @@
             lblRazonSocial.ForeColor = Color.FromArgb(30, 41, 59);
             lblRazonSocial.Location = new Point(20, 33);
             lblRazonSocial.Name = "lblRazonSocial";
-            lblRazonSocial.Size = new Size(87, 17);
+            lblRazonSocial.Size = new Size(86, 17);
             lblRazonSocial.TabIndex = 0;
             lblRazonSocial.Text = "Razón Social:";
             // 
             // lblProveedoresRegistrados
             // 
             lblProveedoresRegistrados.AutoSize = true;
-            lblProveedoresRegistrados.Font = new Font("Segoe UI Bold", 14F);
+            lblProveedoresRegistrados.Font = new Font("Microsoft Sans Serif", 14F);
             lblProveedoresRegistrados.ForeColor = Color.FromArgb(15, 23, 42);
             lblProveedoresRegistrados.Location = new Point(16, 12);
             lblProveedoresRegistrados.Name = "lblProveedoresRegistrados";
-            lblProveedoresRegistrados.Size = new Size(230, 25);
+            lblProveedoresRegistrados.Size = new Size(222, 24);
             lblProveedoresRegistrados.TabIndex = 2;
             lblProveedoresRegistrados.Text = "Proveedores Registrados";
             // 
