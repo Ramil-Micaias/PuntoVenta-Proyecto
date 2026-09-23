@@ -95,6 +95,7 @@
             // 
             // panelProductos
             // 
+            panelProductos.BackColor = Color.FromArgb(241, 245, 249);
             panelProductos.Controls.Add(lblCatalogoExistencia);
             panelProductos.Controls.Add(panel1);
             panelProductos.Controls.Add(dgvProductos);
@@ -109,14 +110,17 @@
             // lblCatalogoExistencia
             // 
             lblCatalogoExistencia.AutoSize = true;
-            lblCatalogoExistencia.Location = new Point(4, 6);
+            lblCatalogoExistencia.Font = new Font("Segoe UI Bold", 14F);
+            lblCatalogoExistencia.ForeColor = Color.FromArgb(15, 23, 42);
+            lblCatalogoExistencia.Location = new Point(10, 10);
             lblCatalogoExistencia.Name = "lblCatalogoExistencia";
-            lblCatalogoExistencia.Size = new Size(126, 15);
+            lblCatalogoExistencia.Size = new Size(220, 25);
             lblCatalogoExistencia.TabIndex = 5;
-            lblCatalogoExistencia.Text = "Catologo de Existencia";
+            lblCatalogoExistencia.Text = "Catálogo de Existencias";
             // 
             // panel1
             // 
+            panel1.BackColor = Color.FromArgb(241, 245, 249);
             panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
@@ -133,9 +137,9 @@
             panel1.Controls.Add(lblPrecioVenta);
             panel1.Controls.Add(txtDescripcion);
             panel1.Controls.Add(lblDescripcion);
-            panel1.Location = new Point(5, 249);
+            panel1.Location = new Point(10, 240);
             panel1.Name = "panel1";
-            panel1.Size = new Size(776, 171);
+            panel1.Size = new Size(765, 170);
             panel1.TabIndex = 4;
             // 
             // btnVolverMenu
@@ -143,189 +147,209 @@
             btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
             btnVolverMenu.FlatAppearance.BorderSize = 0;
             btnVolverMenu.FlatStyle = FlatStyle.Flat;
-            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnVolverMenu.ForeColor = Color.White;
-            btnVolverMenu.Location = new Point(698, 86);
+            btnVolverMenu.Location = new Point(610, 115);
             btnVolverMenu.Name = "btnVolverMenu";
-            btnVolverMenu.Size = new Size(75, 23);
+            btnVolverMenu.Size = new Size(140, 30);
             btnVolverMenu.TabIndex = 11;
-            btnVolverMenu.TabStop = false;
             btnVolverMenu.Text = "Volver";
             btnVolverMenu.UseVisualStyleBackColor = false;
             btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // txtStockMinimo
             // 
-            txtStockMinimo.Location = new Point(85, 142);
+            txtStockMinimo.Font = new Font("Segoe UI", 9.5F);
+            txtStockMinimo.Location = new Point(390, 80);
             txtStockMinimo.Name = "txtStockMinimo";
-            txtStockMinimo.Size = new Size(100, 23);
+            txtStockMinimo.Size = new Size(170, 24);
             txtStockMinimo.TabIndex = 5;
             // 
             // lblStockMinimo
             // 
             lblStockMinimo.AutoSize = true;
-            lblStockMinimo.Location = new Point(1, 145);
+            lblStockMinimo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblStockMinimo.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStockMinimo.Location = new Point(295, 83);
             lblStockMinimo.Name = "lblStockMinimo";
-            lblStockMinimo.Size = new Size(81, 15);
+            lblStockMinimo.Size = new Size(92, 17);
             lblStockMinimo.TabIndex = 16;
-            lblStockMinimo.Text = "Stock Minimo";
+            lblStockMinimo.Text = "Stock Mínimo:";
             // 
             // txtNombreProducto
             // 
-            txtNombreProducto.Location = new Point(88, 34);
+            txtNombreProducto.Font = new Font("Segoe UI", 9.5F);
+            txtNombreProducto.Location = new Point(105, 45);
             txtNombreProducto.Name = "txtNombreProducto";
-            txtNombreProducto.Size = new Size(100, 23);
+            txtNombreProducto.Size = new Size(170, 24);
             txtNombreProducto.TabIndex = 0;
             // 
             // lblNombreProducto
             // 
             lblNombreProducto.AutoSize = true;
-            lblNombreProducto.Location = new Point(31, 38);
+            lblNombreProducto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblNombreProducto.ForeColor = Color.FromArgb(30, 41, 59);
+            lblNombreProducto.Location = new Point(15, 48);
             lblNombreProducto.Name = "lblNombreProducto";
-            lblNombreProducto.Size = new Size(51, 15);
+            lblNombreProducto.Size = new Size(61, 17);
             lblNombreProducto.TabIndex = 14;
-            lblNombreProducto.Text = "Nombre";
+            lblNombreProducto.Text = "Nombre:";
             // 
             // btnModificar
             // 
             btnModificar.BackColor = Color.FromArgb(37, 99, 235);
             btnModificar.FlatAppearance.BorderSize = 0;
             btnModificar.FlatStyle = FlatStyle.Flat;
-            btnModificar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnModificar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnModificar.ForeColor = Color.White;
-            btnModificar.Location = new Point(698, 30);
+            btnModificar.Location = new Point(610, 45);
             btnModificar.Name = "btnModificar";
-            btnModificar.Size = new Size(75, 23);
+            btnModificar.Size = new Size(140, 30);
             btnModificar.TabIndex = 9;
-            btnModificar.TabStop = false;
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
             // 
             // btnGuardar
             // 
-            btnGuardar.BackColor = Color.FromArgb(22, 163, 74);
+            btnGuardar.BackColor = Color.FromArgb(37, 99, 235);
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnGuardar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(698, 58);
+            btnGuardar.Location = new Point(610, 80);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(75, 23);
+            btnGuardar.Size = new Size(140, 30);
             btnGuardar.TabIndex = 10;
-            btnGuardar.TabStop = false;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
             // btnNuevo
             // 
-            btnNuevo.BackColor = Color.FromArgb(71, 85, 105);
+            btnNuevo.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatStyle = FlatStyle.Flat;
-            btnNuevo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnNuevo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnNuevo.ForeColor = Color.White;
-            btnNuevo.Location = new Point(698, 4);
+            btnNuevo.Location = new Point(610, 10);
             btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(75, 23);
+            btnNuevo.Size = new Size(140, 30);
             btnNuevo.TabIndex = 8;
-            btnNuevo.TabStop = false;
-            btnNuevo.Text = "Nuevo";
+            btnNuevo.Text = "Nuevo Producto";
             btnNuevo.UseVisualStyleBackColor = false;
             btnNuevo.Click += btnNuevo_Click;
             // 
             // lblCategorias
             // 
             lblCategorias.AutoSize = true;
-            lblCategorias.Location = new Point(19, 12);
+            lblCategorias.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblCategorias.ForeColor = Color.FromArgb(30, 41, 59);
+            lblCategorias.Location = new Point(15, 13);
             lblCategorias.Name = "lblCategorias";
-            lblCategorias.Size = new Size(63, 15);
+            lblCategorias.Size = new Size(76, 17);
             lblCategorias.TabIndex = 9;
-            lblCategorias.Text = "Categorias";
+            lblCategorias.Text = "Categorías:";
             // 
             // cmbCategoria
             // 
+            cmbCategoria.Font = new Font("Segoe UI", 9.5F);
             cmbCategoria.FormattingEnabled = true;
-            cmbCategoria.Location = new Point(88, 6);
+            cmbCategoria.Location = new Point(105, 10);
             cmbCategoria.Name = "cmbCategoria";
-            cmbCategoria.Size = new Size(179, 23);
+            cmbCategoria.Size = new Size(170, 25);
             cmbCategoria.TabIndex = 7;
             // 
             // txtStockActual
             // 
-            txtStockActual.Location = new Point(85, 115);
+            txtStockActual.Font = new Font("Segoe UI", 9.5F);
+            txtStockActual.Location = new Point(390, 45);
             txtStockActual.Name = "txtStockActual";
-            txtStockActual.Size = new Size(100, 23);
+            txtStockActual.Size = new Size(170, 24);
             txtStockActual.TabIndex = 4;
             // 
             // lblStockActual
             // 
             lblStockActual.AutoSize = true;
-            lblStockActual.Location = new Point(10, 119);
+            lblStockActual.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblStockActual.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStockActual.Location = new Point(295, 48);
             lblStockActual.Name = "lblStockActual";
-            lblStockActual.Size = new Size(73, 15);
+            lblStockActual.Size = new Size(84, 17);
             lblStockActual.TabIndex = 6;
-            lblStockActual.Text = "Stock Actual";
+            lblStockActual.Text = "Stock Actual:";
             // 
             // txtPrecioVenta
             // 
-            txtPrecioVenta.Location = new Point(85, 87);
+            txtPrecioVenta.Font = new Font("Segoe UI", 9.5F);
+            txtPrecioVenta.Location = new Point(390, 10);
             txtPrecioVenta.Name = "txtPrecioVenta";
-            txtPrecioVenta.Size = new Size(100, 23);
+            txtPrecioVenta.Size = new Size(170, 24);
             txtPrecioVenta.TabIndex = 3;
             // 
             // lblPrecioVenta
             // 
             lblPrecioVenta.AutoSize = true;
-            lblPrecioVenta.Location = new Point(11, 91);
+            lblPrecioVenta.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPrecioVenta.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPrecioVenta.Location = new Point(295, 13);
             lblPrecioVenta.Name = "lblPrecioVenta";
-            lblPrecioVenta.Size = new Size(72, 15);
+            lblPrecioVenta.Size = new Size(86, 17);
             lblPrecioVenta.TabIndex = 4;
-            lblPrecioVenta.Text = "Precio Venta";
+            lblPrecioVenta.Text = "Precio Venta:";
             // 
             // txtDescripcion
             // 
-            txtDescripcion.Location = new Point(88, 62);
+            txtDescripcion.Font = new Font("Segoe UI", 9.5F);
+            txtDescripcion.Location = new Point(105, 80);
             txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(100, 23);
+            txtDescripcion.Size = new Size(170, 24);
             txtDescripcion.TabIndex = 1;
             // 
             // lblDescripcion
             // 
             lblDescripcion.AutoSize = true;
-            lblDescripcion.Location = new Point(13, 66);
+            lblDescripcion.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblDescripcion.ForeColor = Color.FromArgb(30, 41, 59);
+            lblDescripcion.Location = new Point(15, 83);
             lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(69, 15);
+            lblDescripcion.Size = new Size(80, 17);
             lblDescripcion.TabIndex = 0;
-            lblDescripcion.Text = "Descripción";
+            lblDescripcion.Text = "Descripción:";
             // 
             // dgvProductos
             // 
+            dgvProductos.BackgroundColor = Color.White;
+            dgvProductos.BorderStyle = BorderStyle.None;
             dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProductos.Location = new Point(5, 25);
+            dgvProductos.Location = new Point(10, 40);
             dgvProductos.Name = "dgvProductos";
-            dgvProductos.Size = new Size(502, 217);
+            dgvProductos.Size = new Size(765, 190);
             dgvProductos.TabIndex = 3;
             dgvProductos.CellClick += dgvProductos_CellClick;
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(592, 6);
+            txtBuscar.Font = new Font("Segoe UI", 9.5F);
+            txtBuscar.Location = new Point(585, 10);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(186, 23);
+            txtBuscar.Size = new Size(190, 24);
             txtBuscar.TabIndex = 1;
             // 
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(544, 6);
+            lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
+            lblBuscar.Location = new Point(528, 13);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(42, 15);
+            lblBuscar.Size = new Size(51, 17);
             lblBuscar.TabIndex = 0;
-            lblBuscar.Text = "Buscar";
+            lblBuscar.Text = "Buscar:";
             // 
             // tabPage2
             // 
+            tabPage2.BackColor = Color.FromArgb(241, 245, 249);
             tabPage2.Controls.Add(grpGestionCategoria);
             tabPage2.Controls.Add(lblListadoCategoria);
             tabPage2.Controls.Add(dataGridView1);
@@ -334,8 +358,7 @@
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(793, 422);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "Categoria";
-            tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Text = "Categoría";
             // 
             // grpGestionCategoria
             // 
@@ -345,88 +368,109 @@
             grpGestionCategoria.Controls.Add(btnNuevaCategoria);
             grpGestionCategoria.Controls.Add(textBox1);
             grpGestionCategoria.Controls.Add(lblNombreCategoria);
-            grpGestionCategoria.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            grpGestionCategoria.Location = new Point(491, 62);
+            grpGestionCategoria.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            grpGestionCategoria.ForeColor = Color.FromArgb(15, 23, 42);
+            grpGestionCategoria.Location = new Point(480, 40);
             grpGestionCategoria.Name = "grpGestionCategoria";
-            grpGestionCategoria.Size = new Size(293, 352);
+            grpGestionCategoria.Size = new Size(295, 360);
             grpGestionCategoria.TabIndex = 2;
             grpGestionCategoria.TabStop = false;
             grpGestionCategoria.Text = "Gestión de Categoría";
             // 
             // btnEliminarCategoria
             // 
-            btnEliminarCategoria.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnEliminarCategoria.Location = new Point(167, 306);
+            btnEliminarCategoria.BackColor = Color.FromArgb(239, 68, 68);
+            btnEliminarCategoria.FlatAppearance.BorderSize = 0;
+            btnEliminarCategoria.FlatStyle = FlatStyle.Flat;
+            btnEliminarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnEliminarCategoria.ForeColor = Color.White;
+            btnEliminarCategoria.Location = new Point(155, 130);
             btnEliminarCategoria.Name = "btnEliminarCategoria";
-            btnEliminarCategoria.Size = new Size(120, 23);
+            btnEliminarCategoria.Size = new Size(125, 30);
             btnEliminarCategoria.TabIndex = 5;
             btnEliminarCategoria.Text = "Eliminar";
-            btnEliminarCategoria.UseVisualStyleBackColor = true;
+            btnEliminarCategoria.UseVisualStyleBackColor = false;
             // 
             // btnGuardarCategoria
             // 
-            btnGuardarCategoria.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnGuardarCategoria.Location = new Point(167, 279);
+            btnGuardarCategoria.BackColor = Color.FromArgb(37, 99, 235);
+            btnGuardarCategoria.FlatAppearance.BorderSize = 0;
+            btnGuardarCategoria.FlatStyle = FlatStyle.Flat;
+            btnGuardarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnGuardarCategoria.ForeColor = Color.White;
+            btnGuardarCategoria.Location = new Point(155, 90);
             btnGuardarCategoria.Name = "btnGuardarCategoria";
-            btnGuardarCategoria.Size = new Size(120, 23);
+            btnGuardarCategoria.Size = new Size(125, 30);
             btnGuardarCategoria.TabIndex = 4;
             btnGuardarCategoria.Text = "Guardar";
-            btnGuardarCategoria.UseVisualStyleBackColor = true;
+            btnGuardarCategoria.UseVisualStyleBackColor = false;
             // 
             // btnModificarCategoria
             // 
-            btnModificarCategoria.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnModificarCategoria.Location = new Point(15, 306);
+            btnModificarCategoria.BackColor = Color.FromArgb(37, 99, 235);
+            btnModificarCategoria.FlatAppearance.BorderSize = 0;
+            btnModificarCategoria.FlatStyle = FlatStyle.Flat;
+            btnModificarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnModificarCategoria.ForeColor = Color.White;
+            btnModificarCategoria.Location = new Point(15, 130);
             btnModificarCategoria.Name = "btnModificarCategoria";
-            btnModificarCategoria.Size = new Size(120, 23);
+            btnModificarCategoria.Size = new Size(125, 30);
             btnModificarCategoria.TabIndex = 3;
-            btnModificarCategoria.Text = "Modificar Categoria";
-            btnModificarCategoria.UseVisualStyleBackColor = true;
+            btnModificarCategoria.Text = "Modificar";
+            btnModificarCategoria.UseVisualStyleBackColor = false;
             // 
             // btnNuevaCategoria
             // 
-            btnNuevaCategoria.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnNuevaCategoria.Location = new Point(15, 279);
+            btnNuevaCategoria.BackColor = Color.FromArgb(37, 99, 235);
+            btnNuevaCategoria.FlatAppearance.BorderSize = 0;
+            btnNuevaCategoria.FlatStyle = FlatStyle.Flat;
+            btnNuevaCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnNuevaCategoria.ForeColor = Color.White;
+            btnNuevaCategoria.Location = new Point(15, 90);
             btnNuevaCategoria.Name = "btnNuevaCategoria";
-            btnNuevaCategoria.Size = new Size(120, 23);
+            btnNuevaCategoria.Size = new Size(125, 30);
             btnNuevaCategoria.TabIndex = 2;
-            btnNuevaCategoria.Text = "Nueva Categoria";
-            btnNuevaCategoria.UseVisualStyleBackColor = true;
+            btnNuevaCategoria.Text = "Nueva Categoría";
+            btnNuevaCategoria.UseVisualStyleBackColor = false;
             // 
             // textBox1
             // 
-            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(79, 40);
+            textBox1.Font = new Font("Segoe UI", 9.5F);
+            textBox1.Location = new Point(85, 40);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(196, 23);
+            textBox1.Size = new Size(195, 24);
             textBox1.TabIndex = 1;
             // 
             // lblNombreCategoria
             // 
             lblNombreCategoria.AutoSize = true;
-            lblNombreCategoria.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblNombreCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblNombreCategoria.ForeColor = Color.FromArgb(30, 41, 59);
             lblNombreCategoria.Location = new Point(15, 43);
             lblNombreCategoria.Name = "lblNombreCategoria";
-            lblNombreCategoria.Size = new Size(51, 15);
+            lblNombreCategoria.Size = new Size(61, 17);
             lblNombreCategoria.TabIndex = 0;
-            lblNombreCategoria.Text = "Nombre";
+            lblNombreCategoria.Text = "Nombre:";
             // 
             // lblListadoCategoria
             // 
             lblListadoCategoria.AutoSize = true;
-            lblListadoCategoria.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblListadoCategoria.Location = new Point(3, 26);
+            lblListadoCategoria.Font = new Font("Segoe UI Bold", 14F);
+            lblListadoCategoria.ForeColor = Color.FromArgb(15, 23, 42);
+            lblListadoCategoria.Location = new Point(10, 10);
             lblListadoCategoria.Name = "lblListadoCategoria";
-            lblListadoCategoria.Size = new Size(193, 25);
+            lblListadoCategoria.Size = new Size(207, 25);
             lblListadoCategoria.TabIndex = 1;
-            lblListadoCategoria.Text = "Listado de Categorias";
+            lblListadoCategoria.Text = "Listado de Categorías";
             // 
             // dataGridView1
             // 
+            dataGridView1.BackgroundColor = Color.White;
+            dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(8, 70);
+            dataGridView1.Location = new Point(10, 40);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(425, 344);
+            dataGridView1.Size = new Size(450, 360);
             dataGridView1.TabIndex = 0;
             // 
             // FormProductos
