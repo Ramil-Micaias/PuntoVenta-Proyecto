@@ -51,10 +51,12 @@
             // 
             // dgvProveedores
             // 
+            dgvProveedores.BackgroundColor = Color.White;
+            dgvProveedores.BorderStyle = BorderStyle.None;
             dgvProveedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProveedores.Location = new Point(12, 34);
+            dgvProveedores.Location = new Point(16, 45);
             dgvProveedores.Name = "dgvProveedores";
-            dgvProveedores.Size = new Size(776, 227);
+            dgvProveedores.Size = new Size(768, 205);
             dgvProveedores.TabIndex = 0;
             // 
             // grpDetalleProveedores
@@ -73,151 +75,175 @@
             grpDetalleProveedores.Controls.Add(lblCuit);
             grpDetalleProveedores.Controls.Add(txtRazonSocial);
             grpDetalleProveedores.Controls.Add(lblRazonSocial);
-            grpDetalleProveedores.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            grpDetalleProveedores.Location = new Point(12, 267);
+            grpDetalleProveedores.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            grpDetalleProveedores.ForeColor = Color.FromArgb(15, 23, 42);
+            grpDetalleProveedores.Location = new Point(16, 260);
             grpDetalleProveedores.Name = "grpDetalleProveedores";
-            grpDetalleProveedores.Size = new Size(776, 180);
+            grpDetalleProveedores.Size = new Size(768, 175);
             grpDetalleProveedores.TabIndex = 1;
             grpDetalleProveedores.TabStop = false;
             grpDetalleProveedores.Text = "Detalle de Proveedores";
             // 
             // btnEliminar
             // 
-            btnEliminar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnEliminar.Location = new Point(637, 118);
+            btnEliminar.BackColor = Color.FromArgb(239, 68, 68);
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(610, 130);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(123, 23);
+            btnEliminar.Size = new Size(140, 30);
             btnEliminar.TabIndex = 13;
             btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.UseVisualStyleBackColor = false;
             // 
             // btnGuardar
             // 
-            btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnGuardar.Location = new Point(637, 91);
+            btnGuardar.BackColor = Color.FromArgb(37, 99, 235);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.Location = new Point(610, 95);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(123, 23);
+            btnGuardar.Size = new Size(140, 30);
             btnGuardar.TabIndex = 12;
             btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.UseVisualStyleBackColor = false;
             // 
             // btnModificar
             // 
-            btnModificar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnModificar.Location = new Point(637, 63);
+            btnModificar.BackColor = Color.FromArgb(37, 99, 235);
+            btnModificar.FlatAppearance.BorderSize = 0;
+            btnModificar.FlatStyle = FlatStyle.Flat;
+            btnModificar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnModificar.ForeColor = Color.White;
+            btnModificar.Location = new Point(610, 60);
             btnModificar.Name = "btnModificar";
-            btnModificar.Size = new Size(123, 23);
+            btnModificar.Size = new Size(140, 30);
             btnModificar.TabIndex = 11;
-            btnModificar.Text = "Modificar Proveedor";
-            btnModificar.UseVisualStyleBackColor = true;
+            btnModificar.Text = "Modificar";
+            btnModificar.UseVisualStyleBackColor = false;
             // 
             // btnNuevo
             // 
-            btnNuevo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnNuevo.Location = new Point(637, 34);
+            btnNuevo.BackColor = Color.FromArgb(37, 99, 235);
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnNuevo.ForeColor = Color.White;
+            btnNuevo.Location = new Point(610, 25);
             btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(123, 23);
+            btnNuevo.Size = new Size(140, 30);
             btnNuevo.TabIndex = 10;
             btnNuevo.Text = "Nuevo Proveedor";
-            btnNuevo.UseVisualStyleBackColor = true;
+            btnNuevo.UseVisualStyleBackColor = false;
             // 
             // txtDireccion
             // 
-            txtDireccion.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtDireccion.Location = new Point(102, 148);
+            txtDireccion.Font = new Font("Segoe UI", 9.5F);
+            txtDireccion.Location = new Point(370, 65);
             txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(159, 23);
+            txtDireccion.Size = new Size(210, 24);
             txtDireccion.TabIndex = 9;
             // 
             // lblDireccion
             // 
             lblDireccion.AutoSize = true;
-            lblDireccion.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDireccion.Location = new Point(39, 151);
+            lblDireccion.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblDireccion.ForeColor = Color.FromArgb(30, 41, 59);
+            lblDireccion.Location = new Point(300, 68);
             lblDireccion.Name = "lblDireccion";
-            lblDireccion.Size = new Size(57, 15);
+            lblDireccion.Size = new Size(66, 17);
             lblDireccion.TabIndex = 8;
-            lblDireccion.Text = "Direccion";
+            lblDireccion.Text = "Dirección:";
             // 
             // txtEmail
             // 
-            txtEmail.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEmail.Location = new Point(102, 119);
+            txtEmail.Font = new Font("Segoe UI", 9.5F);
+            txtEmail.Location = new Point(370, 30);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(159, 23);
+            txtEmail.Size = new Size(210, 24);
             txtEmail.TabIndex = 7;
             // 
             // lblEmail
             // 
             lblEmail.AutoSize = true;
-            lblEmail.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEmail.Location = new Point(59, 124);
+            lblEmail.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblEmail.ForeColor = Color.FromArgb(30, 41, 59);
+            lblEmail.Location = new Point(300, 33);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(36, 15);
+            lblEmail.Size = new Size(43, 17);
             lblEmail.TabIndex = 6;
-            lblEmail.Text = "Email";
+            lblEmail.Text = "Email:";
             // 
             // txtTelefono
             // 
-            txtTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTelefono.Location = new Point(102, 92);
+            txtTelefono.Font = new Font("Segoe UI", 9.5F);
+            txtTelefono.Location = new Point(110, 100);
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(159, 23);
+            txtTelefono.Size = new Size(170, 24);
             txtTelefono.TabIndex = 5;
             txtTelefono.TextChanged += txtTelefono_TextChanged;
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTelefono.Location = new Point(44, 95);
+            lblTelefono.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblTelefono.ForeColor = Color.FromArgb(30, 41, 59);
+            lblTelefono.Location = new Point(20, 103);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(52, 15);
+            lblTelefono.Size = new Size(62, 17);
             lblTelefono.TabIndex = 4;
-            lblTelefono.Text = "Telefono";
+            lblTelefono.Text = "Teléfono:";
             // 
             // txtCUIT
             // 
-            txtCUIT.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtCUIT.Location = new Point(102, 63);
+            txtCUIT.Font = new Font("Segoe UI", 9.5F);
+            txtCUIT.Location = new Point(110, 65);
             txtCUIT.Name = "txtCUIT";
-            txtCUIT.Size = new Size(159, 23);
+            txtCUIT.Size = new Size(170, 24);
             txtCUIT.TabIndex = 3;
             // 
             // lblCuit
             // 
             lblCuit.AutoSize = true;
-            lblCuit.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCuit.Location = new Point(63, 66);
+            lblCuit.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblCuit.ForeColor = Color.FromArgb(30, 41, 59);
+            lblCuit.Location = new Point(20, 68);
             lblCuit.Name = "lblCuit";
-            lblCuit.Size = new Size(32, 15);
+            lblCuit.Size = new Size(39, 17);
             lblCuit.TabIndex = 2;
-            lblCuit.Text = "CUIT";
+            lblCuit.Text = "CUIT:";
             // 
             // txtRazonSocial
             // 
-            txtRazonSocial.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtRazonSocial.Location = new Point(102, 34);
+            txtRazonSocial.Font = new Font("Segoe UI", 9.5F);
+            txtRazonSocial.Location = new Point(110, 30);
             txtRazonSocial.Name = "txtRazonSocial";
-            txtRazonSocial.Size = new Size(159, 23);
+            txtRazonSocial.Size = new Size(170, 24);
             txtRazonSocial.TabIndex = 1;
             // 
             // lblRazonSocial
             // 
             lblRazonSocial.AutoSize = true;
-            lblRazonSocial.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblRazonSocial.Location = new Point(23, 37);
+            lblRazonSocial.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblRazonSocial.ForeColor = Color.FromArgb(30, 41, 59);
+            lblRazonSocial.Location = new Point(20, 33);
             lblRazonSocial.Name = "lblRazonSocial";
-            lblRazonSocial.Size = new Size(73, 15);
+            lblRazonSocial.Size = new Size(87, 17);
             lblRazonSocial.TabIndex = 0;
-            lblRazonSocial.Text = "Razon Social";
+            lblRazonSocial.Text = "Razón Social:";
             // 
             // lblProveedoresRegistrados
             // 
             lblProveedoresRegistrados.AutoSize = true;
-            lblProveedoresRegistrados.Location = new Point(10, 16);
+            lblProveedoresRegistrados.Font = new Font("Segoe UI Bold", 14F);
+            lblProveedoresRegistrados.ForeColor = Color.FromArgb(15, 23, 42);
+            lblProveedoresRegistrados.Location = new Point(16, 12);
             lblProveedoresRegistrados.Name = "lblProveedoresRegistrados";
-            lblProveedoresRegistrados.Size = new Size(136, 15);
+            lblProveedoresRegistrados.Size = new Size(230, 25);
             lblProveedoresRegistrados.TabIndex = 2;
             lblProveedoresRegistrados.Text = "Proveedores Registrados";
             // 
@@ -225,12 +251,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(800, 450);
             Controls.Add(lblProveedoresRegistrados);
             Controls.Add(grpDetalleProveedores);
             Controls.Add(dgvProveedores);
+            Font = new Font("Segoe UI", 9F);
             Name = "FormProveedores";
-            Text = "Gestión de Proveedor";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Gestión de Proveedores";
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).EndInit();
             grpDetalleProveedores.ResumeLayout(false);
             grpDetalleProveedores.PerformLayout();

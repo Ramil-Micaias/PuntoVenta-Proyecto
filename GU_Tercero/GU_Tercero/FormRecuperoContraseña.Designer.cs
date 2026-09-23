@@ -46,33 +46,42 @@ namespace GU_Tercero
             // 
             lblTitulo.Anchor = AnchorStyles.None;
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold | FontStyle.Italic);
-            lblTitulo.Location = new Point(207, 21);
+            lblTitulo.BackColor = Color.Transparent;
+            lblTitulo.Font = new Font("Segoe UI Bold", 20F);
+            lblTitulo.ForeColor = Color.FromArgb(15, 23, 42);
+            lblTitulo.Location = new Point(180, 20);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(303, 30);
+            lblTitulo.Size = new Size(365, 37);
             lblTitulo.TabIndex = 0;
+            lblTitulo.TabStop = false;
             lblTitulo.Text = "Recuperación de Contraseña";
             // 
             // lblNombreUsuario
             // 
             lblNombreUsuario.Anchor = AnchorStyles.None;
             lblNombreUsuario.AutoSize = true;
-            lblNombreUsuario.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            lblNombreUsuario.Location = new Point(314, 69);
+            lblNombreUsuario.BackColor = Color.Transparent;
+            lblNombreUsuario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblNombreUsuario.ForeColor = Color.FromArgb(30, 41, 59);
+            lblNombreUsuario.Location = new Point(220, 75);
             lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(108, 15);
-            lblNombreUsuario.TabIndex = 1;
-            lblNombreUsuario.Text = "Nombre de Usuario";
+            lblNombreUsuario.Size = new Size(132, 17);
+            lblNombreUsuario.TabIndex = 0;
+            lblNombreUsuario.TabStop = false;
+            lblNombreUsuario.Text = "Nombre de Usuario:";
             // 
             // lblPregunta1
             // 
             lblPregunta1.Anchor = AnchorStyles.None;
             lblPregunta1.AutoSize = true;
-            lblPregunta1.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            lblPregunta1.Location = new Point(279, 116);
+            lblPregunta1.BackColor = Color.Transparent;
+            lblPregunta1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPregunta1.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPregunta1.Location = new Point(220, 137);
             lblPregunta1.Name = "lblPregunta1";
-            lblPregunta1.Size = new Size(180, 15);
-            lblPregunta1.TabIndex = 2;
+            lblPregunta1.Size = new Size(211, 17);
+            lblPregunta1.TabIndex = 0;
+            lblPregunta1.TabStop = false;
             lblPregunta1.Text = "¿Nombre de tu primera mascota?";
             lblPregunta1.Click += label3_Click;
             // 
@@ -80,101 +89,103 @@ namespace GU_Tercero
             // 
             lblPregunta2.Anchor = AnchorStyles.None;
             lblPregunta2.AutoSize = true;
-            lblPregunta2.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            lblPregunta2.Location = new Point(291, 165);
+            lblPregunta2.BackColor = Color.Transparent;
+            lblPregunta2.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPregunta2.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPregunta2.Location = new Point(220, 199);
             lblPregunta2.Name = "lblPregunta2";
-            lblPregunta2.Size = new Size(132, 15);
-            lblPregunta2.TabIndex = 3;
+            lblPregunta2.Size = new Size(158, 17);
+            lblPregunta2.TabIndex = 0;
+            lblPregunta2.TabStop = false;
             lblPregunta2.Text = "¿Ciudad donde naciste?";
             // 
             // lblPregunta3
             // 
             lblPregunta3.Anchor = AnchorStyles.None;
             lblPregunta3.AutoSize = true;
-            lblPregunta3.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            lblPregunta3.Location = new Point(305, 214);
+            lblPregunta3.BackColor = Color.Transparent;
+            lblPregunta3.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPregunta3.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPregunta3.Location = new Point(220, 261);
             lblPregunta3.Name = "lblPregunta3";
-            lblPregunta3.Size = new Size(102, 15);
-            lblPregunta3.TabIndex = 4;
+            lblPregunta3.Size = new Size(125, 17);
+            lblPregunta3.TabIndex = 0;
+            lblPregunta3.TabStop = false;
             lblPregunta3.Text = "¿Comida favorita?";
             // 
             // txtNombreUsuario
             // 
             txtNombreUsuario.Anchor = AnchorStyles.None;
-            txtNombreUsuario.BorderStyle = BorderStyle.None;
-            txtNombreUsuario.Font = new Font("Segoe UI", 9F);
-            txtNombreUsuario.Location = new Point(220, 89);
-            txtNombreUsuario.Multiline = true;
+            txtNombreUsuario.Font = new Font("Segoe UI", 10F);
+            txtNombreUsuario.Location = new Point(220, 97);
             txtNombreUsuario.Name = "txtNombreUsuario";
-            txtNombreUsuario.Size = new Size(273, 23);
-            txtNombreUsuario.TabIndex = 5;
-            txtNombreUsuario.TextAlign = HorizontalAlignment.Center;
+            txtNombreUsuario.Size = new Size(280, 25);
+            txtNombreUsuario.TabIndex = 1;
             // 
             // txtRespuesta1
             // 
             txtRespuesta1.Anchor = AnchorStyles.None;
-            txtRespuesta1.BorderStyle = BorderStyle.None;
-            txtRespuesta1.Font = new Font("Segoe UI", 9F);
-            txtRespuesta1.Location = new Point(220, 135);
-            txtRespuesta1.Multiline = true;
+            txtRespuesta1.Font = new Font("Segoe UI", 10F);
+            txtRespuesta1.Location = new Point(220, 159);
             txtRespuesta1.Name = "txtRespuesta1";
-            txtRespuesta1.Size = new Size(274, 23);
-            txtRespuesta1.TabIndex = 6;
-            txtRespuesta1.TextAlign = HorizontalAlignment.Center;
+            txtRespuesta1.Size = new Size(280, 25);
+            txtRespuesta1.TabIndex = 2;
             // 
             // txtRespuesta2
             // 
             txtRespuesta2.Anchor = AnchorStyles.None;
-            txtRespuesta2.BorderStyle = BorderStyle.None;
-            txtRespuesta2.Font = new Font("Segoe UI", 9F);
-            txtRespuesta2.Location = new Point(219, 183);
-            txtRespuesta2.Multiline = true;
+            txtRespuesta2.Font = new Font("Segoe UI", 10F);
+            txtRespuesta2.Location = new Point(220, 221);
             txtRespuesta2.Name = "txtRespuesta2";
-            txtRespuesta2.Size = new Size(274, 23);
-            txtRespuesta2.TabIndex = 7;
-            txtRespuesta2.TextAlign = HorizontalAlignment.Center;
+            txtRespuesta2.Size = new Size(280, 25);
+            txtRespuesta2.TabIndex = 3;
             // 
             // txtRespuesta3
             // 
             txtRespuesta3.Anchor = AnchorStyles.None;
-            txtRespuesta3.BorderStyle = BorderStyle.None;
-            txtRespuesta3.Font = new Font("Segoe UI", 9F);
-            txtRespuesta3.Location = new Point(219, 232);
-            txtRespuesta3.Multiline = true;
+            txtRespuesta3.Font = new Font("Segoe UI", 10F);
+            txtRespuesta3.Location = new Point(220, 283);
             txtRespuesta3.Name = "txtRespuesta3";
-            txtRespuesta3.Size = new Size(274, 23);
-            txtRespuesta3.TabIndex = 8;
-            txtRespuesta3.TextAlign = HorizontalAlignment.Center;
+            txtRespuesta3.Size = new Size(280, 25);
+            txtRespuesta3.TabIndex = 4;
             // 
             // btnValidar
             // 
             btnValidar.Anchor = AnchorStyles.None;
-            btnValidar.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            btnValidar.Location = new Point(263, 266);
+            btnValidar.BackColor = Color.FromArgb(37, 99, 235);
+            btnValidar.FlatAppearance.BorderSize = 0;
+            btnValidar.FlatStyle = FlatStyle.Flat;
+            btnValidar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnValidar.ForeColor = Color.White;
+            btnValidar.Location = new Point(220, 335);
             btnValidar.Name = "btnValidar";
-            btnValidar.Size = new Size(196, 23);
-            btnValidar.TabIndex = 9;
+            btnValidar.Size = new Size(135, 36);
+            btnValidar.TabIndex = 5;
             btnValidar.Text = "Validar Respuestas";
-            btnValidar.UseVisualStyleBackColor = true;
+            btnValidar.UseVisualStyleBackColor = false;
             btnValidar.Click += btnValidar_Click;
             // 
             // btnCancelar
             // 
             btnCancelar.Anchor = AnchorStyles.None;
-            btnCancelar.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCancelar.Location = new Point(12, 372);
+            btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelar.ForeColor = Color.FromArgb(51, 65, 85);
+            btnCancelar.Location = new Point(365, 335);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
-            btnCancelar.TabIndex = 10;
+            btnCancelar.Size = new Size(135, 36);
+            btnCancelar.TabIndex = 6;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // FormRecuperoContraseña
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ButtonShadow;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(716, 426);
             Controls.Add(btnCancelar);
             Controls.Add(btnValidar);
@@ -190,7 +201,7 @@ namespace GU_Tercero
             Font = new Font("Segoe UI", 9F);
             Name = "FormRecuperoContraseña";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormRecuperoContraseña";
+            Text = "Recuperar Contraseña";
             Load += FormRecuperoContraseña_Load;
             ResumeLayout(false);
             PerformLayout();

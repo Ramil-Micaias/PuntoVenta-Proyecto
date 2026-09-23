@@ -37,62 +37,73 @@
             // btnCambiarPassword
             // 
             btnCambiarPassword.Anchor = AnchorStyles.None;
-            btnCambiarPassword.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCambiarPassword.Location = new Point(300, 142);
+            btnCambiarPassword.BackColor = Color.FromArgb(37, 99, 235);
+            btnCambiarPassword.FlatAppearance.BorderSize = 0;
+            btnCambiarPassword.FlatStyle = FlatStyle.Flat;
+            btnCambiarPassword.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnCambiarPassword.ForeColor = Color.White;
+            btnCambiarPassword.Location = new Point(280, 240);
             btnCambiarPassword.Name = "btnCambiarPassword";
-            btnCambiarPassword.Size = new Size(156, 23);
-            btnCambiarPassword.TabIndex = 0;
-            btnCambiarPassword.Text = "Guardar Contrseña";
-            btnCambiarPassword.TextAlign = ContentAlignment.TopCenter;
-            btnCambiarPassword.UseVisualStyleBackColor = true;
+            btnCambiarPassword.Size = new Size(240, 38);
+            btnCambiarPassword.TabIndex = 2;
+            btnCambiarPassword.Text = "Guardar Contraseña";
+            btnCambiarPassword.UseVisualStyleBackColor = false;
             btnCambiarPassword.Click += btnCambiarPassword_Click;
             // 
             // txtNuevaPassword
             // 
             txtNuevaPassword.Anchor = AnchorStyles.None;
-            txtNuevaPassword.BorderStyle = BorderStyle.None;
-            txtNuevaPassword.Location = new Point(275, 110);
-            txtNuevaPassword.Multiline = true;
+            txtNuevaPassword.Font = new Font("Segoe UI", 10F);
+            txtNuevaPassword.Location = new Point(280, 175);
             txtNuevaPassword.Name = "txtNuevaPassword";
-            txtNuevaPassword.Size = new Size(206, 23);
+            txtNuevaPassword.PasswordChar = '*';
+            txtNuevaPassword.Size = new Size(240, 25);
             txtNuevaPassword.TabIndex = 1;
-            txtNuevaPassword.TextAlign = HorizontalAlignment.Center;
             // 
             // lblCambioPassword
             // 
+            lblCambioPassword.Anchor = AnchorStyles.None;
             lblCambioPassword.AutoSize = true;
-            lblCambioPassword.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblCambioPassword.Location = new Point(232, 69);
+            lblCambioPassword.BackColor = Color.Transparent;
+            lblCambioPassword.Font = new Font("Segoe UI Bold", 20F);
+            lblCambioPassword.ForeColor = Color.FromArgb(15, 23, 42);
+            lblCambioPassword.Location = new Point(220, 70);
             lblCambioPassword.Name = "lblCambioPassword";
-            lblCambioPassword.Size = new Size(298, 30);
-            lblCambioPassword.TabIndex = 2;
+            lblCambioPassword.Size = new Size(360, 37);
+            lblCambioPassword.TabIndex = 0;
+            lblCambioPassword.TabStop = false;
             lblCambioPassword.Text = "Ingrese una nueva contraseña";
             // 
             // btnCancelar
             // 
             btnCancelar.Anchor = AnchorStyles.None;
-            btnCancelar.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCancelar.Location = new Point(21, 390);
+            btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelar.ForeColor = Color.FromArgb(51, 65, 85);
+            btnCancelar.Location = new Point(340, 290);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
+            btnCancelar.Size = new Size(120, 32);
             btnCancelar.TabIndex = 3;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // FormCambioPassword
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ButtonShadow;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(800, 450);
             Controls.Add(btnCancelar);
             Controls.Add(lblCambioPassword);
             Controls.Add(txtNuevaPassword);
             Controls.Add(btnCambiarPassword);
+            Font = new Font("Segoe UI", 9F);
             Name = "FormCambioPassword";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormCambioPassword";
+            Text = "Cambiar Contraseña";
             FormClosing += FormCambioPassword_FormClosing;
             Load += FormCambioPassword_Load;
             ResumeLayout(false);

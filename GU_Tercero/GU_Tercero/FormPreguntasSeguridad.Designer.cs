@@ -41,93 +41,124 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(379, 240);
+            btnGuardar.Anchor = AnchorStyles.None;
+            btnGuardar.BackColor = Color.FromArgb(37, 99, 235);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.Location = new Point(248, 335);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(75, 23);
-            btnGuardar.TabIndex = 2;
+            btnGuardar.Size = new Size(140, 36);
+            btnGuardar.TabIndex = 4;
             btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
             // txtRespuestaUno
             // 
-            txtRespuestaUno.Location = new Point(258, 110);
+            txtRespuestaUno.Anchor = AnchorStyles.None;
+            txtRespuestaUno.Font = new Font("Segoe UI", 10F);
+            txtRespuestaUno.Location = new Point(248, 135);
             txtRespuestaUno.Name = "txtRespuestaUno";
-            txtRespuestaUno.Size = new Size(302, 23);
-            txtRespuestaUno.TabIndex = 5;
+            txtRespuestaUno.Size = new Size(304, 25);
+            txtRespuestaUno.TabIndex = 1;
             // 
             // txtRespuestaDos
             // 
-            txtRespuestaDos.Location = new Point(258, 157);
+            txtRespuestaDos.Anchor = AnchorStyles.None;
+            txtRespuestaDos.Font = new Font("Segoe UI", 10F);
+            txtRespuestaDos.Location = new Point(248, 205);
             txtRespuestaDos.Name = "txtRespuestaDos";
-            txtRespuestaDos.Size = new Size(302, 23);
-            txtRespuestaDos.TabIndex = 6;
+            txtRespuestaDos.Size = new Size(304, 25);
+            txtRespuestaDos.TabIndex = 2;
             // 
             // txtRespuestaTres
             // 
-            txtRespuestaTres.Location = new Point(258, 203);
+            txtRespuestaTres.Anchor = AnchorStyles.None;
+            txtRespuestaTres.Font = new Font("Segoe UI", 10F);
+            txtRespuestaTres.Location = new Point(248, 275);
             txtRespuestaTres.Name = "txtRespuestaTres";
-            txtRespuestaTres.Size = new Size(302, 23);
-            txtRespuestaTres.TabIndex = 7;
+            txtRespuestaTres.Size = new Size(304, 25);
+            txtRespuestaTres.TabIndex = 3;
             // 
             // lblPreguntaUno
             // 
+            lblPreguntaUno.Anchor = AnchorStyles.None;
             lblPreguntaUno.AutoSize = true;
-            lblPreguntaUno.Font = new Font("Segoe UI", 9.25F, FontStyle.Italic);
-            lblPreguntaUno.Location = new Point(316, 90);
+            lblPreguntaUno.BackColor = Color.Transparent;
+            lblPreguntaUno.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPreguntaUno.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPreguntaUno.Location = new Point(248, 113);
             lblPreguntaUno.Name = "lblPreguntaUno";
-            lblPreguntaUno.Size = new Size(197, 17);
-            lblPreguntaUno.TabIndex = 9;
+            lblPreguntaUno.Size = new Size(211, 17);
+            lblPreguntaUno.TabIndex = 0;
+            lblPreguntaUno.TabStop = false;
             lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
             // 
             // lblPreguntaDos
             // 
+            lblPreguntaDos.Anchor = AnchorStyles.None;
             lblPreguntaDos.AutoSize = true;
-            lblPreguntaDos.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblPreguntaDos.Location = new Point(346, 139);
+            lblPreguntaDos.BackColor = Color.Transparent;
+            lblPreguntaDos.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPreguntaDos.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPreguntaDos.Location = new Point(248, 183);
             lblPreguntaDos.Name = "lblPreguntaDos";
-            lblPreguntaDos.Size = new Size(132, 15);
-            lblPreguntaDos.TabIndex = 10;
+            lblPreguntaDos.Size = new Size(158, 17);
+            lblPreguntaDos.TabIndex = 0;
+            lblPreguntaDos.TabStop = false;
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
             // 
             // lblPreguntaTres
             // 
+            lblPreguntaTres.Anchor = AnchorStyles.None;
             lblPreguntaTres.AutoSize = true;
-            lblPreguntaTres.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblPreguntaTres.Location = new Point(365, 184);
+            lblPreguntaTres.BackColor = Color.Transparent;
+            lblPreguntaTres.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblPreguntaTres.ForeColor = Color.FromArgb(30, 41, 59);
+            lblPreguntaTres.Location = new Point(248, 253);
             lblPreguntaTres.Name = "lblPreguntaTres";
-            lblPreguntaTres.Size = new Size(102, 15);
-            lblPreguntaTres.TabIndex = 11;
+            lblPreguntaTres.Size = new Size(125, 17);
+            lblPreguntaTres.TabIndex = 0;
+            lblPreguntaTres.TabStop = false;
             lblPreguntaTres.Text = "¿Comida favorita?";
             // 
             // btnCancelar
             // 
             btnCancelar.Anchor = AnchorStyles.None;
-            btnCancelar.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCancelar.Location = new Point(21, 391);
+            btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelar.ForeColor = Color.FromArgb(51, 65, 85);
+            btnCancelar.Location = new Point(412, 335);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
-            btnCancelar.TabIndex = 12;
+            btnCancelar.Size = new Size(140, 36);
+            btnCancelar.TabIndex = 5;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // lblTitulo
             // 
             lblTitulo.Anchor = AnchorStyles.None;
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblTitulo.Location = new Point(313, 37);
+            lblTitulo.BackColor = Color.Transparent;
+            lblTitulo.Font = new Font("Segoe UI Bold", 20F);
+            lblTitulo.ForeColor = Color.FromArgb(15, 23, 42);
+            lblTitulo.Location = new Point(248, 45);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(211, 30);
-            lblTitulo.TabIndex = 14;
-            lblTitulo.Text = "Preguntas Seguridad";
+            lblTitulo.Size = new Size(318, 37);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.TabStop = false;
+            lblTitulo.Text = "Preguntas de Seguridad";
             // 
             // FormPreguntasSeguridad
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ButtonShadow;
+            BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(800, 450);
             Controls.Add(lblTitulo);
             Controls.Add(btnCancelar);
@@ -138,9 +169,10 @@
             Controls.Add(txtRespuestaDos);
             Controls.Add(txtRespuestaUno);
             Controls.Add(btnGuardar);
+            Font = new Font("Segoe UI", 9F);
             Name = "FormPreguntasSeguridad";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormPreguntasSeguridad";
+            Text = "Preguntas de Seguridad";
             Load += FormPreguntasSeguridad_Load;
             ResumeLayout(false);
             PerformLayout();
