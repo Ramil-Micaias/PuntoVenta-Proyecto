@@ -1,14 +1,15 @@
-﻿using Datos.Entidades;
+﻿using System;
+using System.Windows.Forms;
+using Datos.Entidades;
 using Logica;
 using Logica.Seguridad;
 
 namespace GU_Tercero
 {
-    // FormPreguntasSeguridad: Implementa un mecanismo de configuración inicial de preguntas 
-    // de seguridad almacenadas de forma segura utilizando SHA256.
     public partial class FormPreguntasSeguridad : Form
     {
         private Usuario usuarioLogueado;
+        private bool preguntasGuardadas = false;
 
         public FormPreguntasSeguridad(Usuario usuario)
         {
@@ -28,6 +29,9 @@ namespace GU_Tercero
             bool requiereTresPreguntas = configuracion.Cantidad_Preguntas != 2;
             lblPreguntaTres.Visible = requiereTresPreguntas;
             txtRespuestaTres.Visible = requiereTresPreguntas;
+
+            // Deshabilitamos el botón cancelar si la configuración es obligatoria en primer ingreso
+            btnCancelar.Enabled = false;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -49,42 +53,50 @@ namespace GU_Tercero
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Guardar hashes
-            string hash1 = HashHelper.GenerarSHA256(txtRespuestaUno.Text.Trim());
+            // Normalización a minúsculas y eliminación de espacios laterales antes de aplicar Hash
+            string hash1 = HashHelper.GenerarSHA256(txtRespuestaUno.Text.Trim().ToLower());
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 1, hash1);
 
-            string hash2 = HashHelper.GenerarSHA256(txtRespuestaDos.Text.Trim());
+            string hash2 = HashHelper.GenerarSHA256(txtRespuestaDos.Text.Trim().ToLower());
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
 
             if (configuracion.Cantidad_Preguntas == 3)
             {
-                string hash3 = HashHelper.GenerarSHA256(txtRespuestaTres.Text.Trim());
+                string hash3 = HashHelper.GenerarSHA256(txtRespuestaTres.Text.Trim().ToLower());
                 negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
             }
 
-            MessageBox.Show("Preguntas guardadas correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Preguntas de seguridad configuradas correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Redirección al sistema según el rol
-            if (usuarioLogueado.Nombre_Rol == "Administrador")
-            {
-                FormMenu menu = new FormMenu(usuarioLogueado);
-                menu.FormClosed += (s, args) => Application.Exit();
-                menu.Show();
-            }
-            else
-            {
-                FormUsuario formUsuario = new FormUsuario(usuarioLogueado);
-                formUsuario.FormClosed += (s, args) => Application.Exit();
-                formUsuario.Show();
-            }
+            preguntasGuardadas = true;
 
-            // Liberamos este formulario
+            // Simplemente cerramos el formulario. El flujo retornará a FormCambioPassword o al Login limpiamente.
             this.Close();
         }
 
+        private void FormPreguntasSeguridad_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Si no guardó las preguntas y el cierre fue iniciado por el usuario (la cruz X)
+            if (!preguntasGuardadas && e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult respuesta = MessageBox.Show(
+                    "Debe configurar sus preguntas de seguridad para continuar. ¿Desea salir del sistema?",
+                    "Configuración Obligatoria",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (respuesta == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    e.Cancel = true; // Bloquea el cierre y permanece en la pantalla
+                }
+            }
+        }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Cerramos la ventana actual para regresar a la vista anterior que la invocó
             this.Close();
         }
     }
