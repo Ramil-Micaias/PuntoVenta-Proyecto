@@ -99,8 +99,6 @@
             panelProductos.Controls.Add(lblCatalogoExistencia);
             panelProductos.Controls.Add(panel1);
             panelProductos.Controls.Add(dgvProductos);
-            panelProductos.Controls.Add(txtBuscar);
-            panelProductos.Controls.Add(lblBuscar);
             panelProductos.Dock = DockStyle.Top;
             panelProductos.Location = new Point(3, 3);
             panelProductos.Name = "panelProductos";
@@ -124,7 +122,9 @@
             panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
+            panel1.Controls.Add(txtBuscar);
             panel1.Controls.Add(txtNombreProducto);
+            panel1.Controls.Add(lblBuscar);
             panel1.Controls.Add(lblNombreProducto);
             panel1.Controls.Add(btnModificar);
             panel1.Controls.Add(btnGuardar);
@@ -331,9 +331,9 @@
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
-            txtBuscar.Location = new Point(585, 10);
+            txtBuscar.Location = new Point(105, 115);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(190, 24);
+            txtBuscar.Size = new Size(170, 24);
             txtBuscar.TabIndex = 1;
             // 
             // lblBuscar
@@ -341,7 +341,7 @@
             lblBuscar.AutoSize = true;
             lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
-            lblBuscar.Location = new Point(528, 13);
+            lblBuscar.Location = new Point(15, 118);
             lblBuscar.Name = "lblBuscar";
             lblBuscar.Size = new Size(51, 17);
             lblBuscar.TabIndex = 0;
