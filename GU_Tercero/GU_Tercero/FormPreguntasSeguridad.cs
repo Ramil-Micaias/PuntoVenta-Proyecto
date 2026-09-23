@@ -70,7 +70,8 @@ namespace GU_Tercero
 
             preguntasGuardadas = true;
 
-            // Simplemente cerramos el formulario. El flujo retornará a FormCambioPassword o al Login limpiamente.
+            // Avisamos a Form1 que se completaron las preguntas con éxito
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 

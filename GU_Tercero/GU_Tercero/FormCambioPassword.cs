@@ -59,7 +59,6 @@ namespace GU_Tercero
             }
 
             ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
-
             string resultado = configuracionNegocio.ValidarPassword(txtNuevaPassword.Text.Trim(), usuarioLogueado);
 
             if (resultado != "OK")
@@ -69,27 +68,18 @@ namespace GU_Tercero
             }
 
             string nuevaPasswordHash = HashHelper.GenerarSHA256(usuarioLogueado.Nombre_Usuario + txtNuevaPassword.Text.Trim());
-
             UsuarioNegocio negocio = new UsuarioNegocio();
 
             negocio.CambiarPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
             negocio.RegistrarHistorialPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
 
-            MessageBox.Show("Contraseña cambiada correctamente. Inicie sesión con sus nuevas credenciales.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
             usuarioLogueado.Debe_Cambiar_Password = false;
+            usuarioLogueado.Es_Primer_Ingreso = false;
 
-            // Si le faltan preguntas de seguridad, las responde primero
-            if (!negocio.UsuarioTienePreguntas(usuarioLogueado.Id_Usuario))
-            {
-                using (FormPreguntasSeguridad preguntas = new FormPreguntasSeguridad(usuarioLogueado))
-                {
-                    this.Hide();
-                    preguntas.ShowDialog();
-                }
-            }
+            MessageBox.Show("Contraseña actualizada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Al cerrar este formulario, el evento FormClosed en Form1 se ejecuta y reaccede al Login original limpiando los campos.
+            // Indicamos a Form1 que este paso se completó con éxito
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 

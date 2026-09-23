@@ -15,6 +15,13 @@ namespace GU_Tercero
             // MessageBox.Show(HashHelper.GenerarSHA256("adminEsty123"));
         }
 
+        private void LimpiarCampos()
+        {
+            txtUsuario.Text = string.Empty;
+            txtPassword.Text = string.Empty;
+            txtUsuario.Focus(); // Coloca el cursor directamente en el campo usuario
+        }
+
         // Abre el menú principal según el rol del usuario.
         private void AbrirMenu(Usuario usuario)
         {
@@ -55,7 +62,6 @@ namespace GU_Tercero
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
-
             Usuario usuario = negocio.ValidarLogin(txtUsuario.Text, txtPassword.Text);
 
             if (usuario != null)
@@ -66,19 +72,38 @@ namespace GU_Tercero
                     return;
                 }
 
+                // 1. PASO OBLIGATORIO: Cambio de Contraseña
                 if (usuario.Es_Primer_Ingreso || usuario.Debe_Cambiar_Password)
                 {
-                    FormCambioPassword form = new FormCambioPassword(usuario);
-
-                    // Al cerrar el formulario de cambio de contraseña, volvemos a mostrar el Login
-                    form.FormClosed += (s, args) => this.Show();
-
-                    form.Show();
-                    this.Hide();
-                    return;
+                    using (FormCambioPassword formCambio = new FormCambioPassword(usuario))
+                    {
+                        this.Hide();
+                        // Si el usuario cancela o cierra la app desde el cambio, detiene el login
+                        if (formCambio.ShowDialog() != DialogResult.OK)
+                        {
+                            LimpiarCampos();
+                            this.Show();
+                            return;
+                        }
+                    }
                 }
 
-                // Abrir menú según corresponda (ya incluye this.Hide() dentro)
+                // 2. PASO OBLIGATORIO: Preguntas de Seguridad
+                if (!negocio.UsuarioTienePreguntas(usuario.Id_Usuario))
+                {
+                    using (FormPreguntasSeguridad formPreguntas = new FormPreguntasSeguridad(usuario))
+                    {
+                        this.Hide();
+                        if (formPreguntas.ShowDialog() != DialogResult.OK)
+                        {
+                            LimpiarCampos();
+                            this.Show();
+                            return;
+                        }
+                    }
+                }
+
+                // 3. ENTRADA AL SISTEMA: Si pasó todas las validaciones, entra al Menú
                 AbrirMenu(usuario);
             }
             else
