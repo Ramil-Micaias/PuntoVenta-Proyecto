@@ -35,21 +35,22 @@ namespace GU_Tercero
         {
             try
             {
-                string rutaLogo = System.IO.Path.Combine(Application.StartupPath, "loguito trtansparente.png");
-                if (!System.IO.File.Exists(rutaLogo))
+                string[] rutasPosibles = new string[]
                 {
-                    rutaLogo = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\loguito trtansparente.png");
-                }
+                    System.IO.Path.Combine(Application.StartupPath, "loguito trtansparente.png"),
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\loguito trtansparente.png"),
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\loguito trtansparente.png"),
+                    @"C:\Users\LanzceTest\Desktop\github isft\loguito trtansparente.png"
+                };
 
-                if (!System.IO.File.Exists(rutaLogo))
+                foreach (string ruta in rutasPosibles)
                 {
-                    rutaLogo = @"C:\Users\LanzceTest\Desktop\correciones para el martes creo q 23-09\loguito trtansparente.png";
-                }
-
-                if (System.IO.File.Exists(rutaLogo))
-                {
-                    picLogoMenu.Image = System.Drawing.Image.FromFile(rutaLogo);
-                    picLogoMenu.SizeMode = PictureBoxSizeMode.Zoom;
+                    if (System.IO.File.Exists(ruta))
+                    {
+                        picLogoMenu.Image = System.Drawing.Image.FromFile(ruta);
+                        picLogoMenu.SizeMode = PictureBoxSizeMode.Zoom;
+                        break;
+                    }
                 }
             }
             catch { }

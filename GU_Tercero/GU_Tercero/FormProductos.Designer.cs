@@ -96,6 +96,8 @@
             // panelProductos
             // 
             panelProductos.BackColor = Color.FromArgb(241, 245, 249);
+            panelProductos.Controls.Add(txtBuscar);
+            panelProductos.Controls.Add(lblBuscar);
             panelProductos.Controls.Add(lblCatalogoExistencia);
             panelProductos.Controls.Add(panel1);
             panelProductos.Controls.Add(dgvProductos);
@@ -116,15 +118,32 @@
             lblCatalogoExistencia.TabIndex = 5;
             lblCatalogoExistencia.Text = "Catálogo de Existencias";
             // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9.5F);
+            txtBuscar.Location = new Point(585, 10);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(190, 24);
+            txtBuscar.TabIndex = 1;
+            // 
+            // lblBuscar
+            // 
+            lblBuscar.AutoSize = true;
+            lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
+            lblBuscar.Location = new Point(528, 13);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(51, 17);
+            lblBuscar.TabIndex = 0;
+            lblBuscar.Text = "Buscar:";
+            // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(241, 245, 249);
             panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
-            panel1.Controls.Add(txtBuscar);
             panel1.Controls.Add(txtNombreProducto);
-            panel1.Controls.Add(lblBuscar);
             panel1.Controls.Add(lblNombreProducto);
             panel1.Controls.Add(btnModificar);
             panel1.Controls.Add(btnGuardar);
