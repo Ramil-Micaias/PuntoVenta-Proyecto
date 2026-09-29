@@ -1,5 +1,24 @@
-bin/
-obj/
+# Visual Studio / Directorios de compilación
+[Oo]bj/
+[Bb]in/
+[Ll]og/
+[Ll]ogs/
+[Ee]xe/
+[Bb]uild/
+
+# Directorios de caché y herramientas de Visual Studio
 .vs/
-*.user
 *.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Carpetas de publicación
+[Pp]ublish/
+*.[Pp]ublish.xml
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
