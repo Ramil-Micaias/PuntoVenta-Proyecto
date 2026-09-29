@@ -32,6 +32,8 @@
             tabPage1 = new TabPage();
             panelProductos = new Panel();
             lblCatalogoExistencia = new Label();
+            txtBuscar = new TextBox();
+            lblBuscar = new Label();
             panel1 = new Panel();
             btnVolverMenu = new Button();
             txtStockMinimo = new TextBox();
@@ -50,8 +52,6 @@
             txtDescripcion = new TextBox();
             lblDescripcion = new Label();
             dgvProductos = new DataGridView();
-            txtBuscar = new TextBox();
-            lblBuscar = new Label();
             tabPage2 = new TabPage();
             grpGestionCategoria = new GroupBox();
             btnEliminarCategoria = new Button();
@@ -97,10 +97,10 @@
             // 
             panelProductos.BackColor = Color.FromArgb(241, 245, 249);
             panelProductos.Controls.Add(lblCatalogoExistencia);
-            panelProductos.Controls.Add(txtBuscar);
-            panelProductos.Controls.Add(lblBuscar);
             panelProductos.Controls.Add(panel1);
             panelProductos.Controls.Add(dgvProductos);
+            panelProductos.Controls.Add(txtBuscar);
+            panelProductos.Controls.Add(lblBuscar);
             panelProductos.Dock = DockStyle.Top;
             panelProductos.Location = new Point(3, 3);
             panelProductos.Name = "panelProductos";
@@ -110,18 +110,18 @@
             // lblCatalogoExistencia
             // 
             lblCatalogoExistencia.AutoSize = true;
-            lblCatalogoExistencia.Font = new Font("Segoe UI Bold", 14F);
+            lblCatalogoExistencia.Font = new Font("Microsoft Sans Serif", 14F);
             lblCatalogoExistencia.ForeColor = Color.FromArgb(15, 23, 42);
             lblCatalogoExistencia.Location = new Point(10, 10);
             lblCatalogoExistencia.Name = "lblCatalogoExistencia";
-            lblCatalogoExistencia.Size = new Size(220, 25);
+            lblCatalogoExistencia.Size = new Size(211, 24);
             lblCatalogoExistencia.TabIndex = 5;
             lblCatalogoExistencia.Text = "Catálogo de Existencias";
             // 
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
-            txtBuscar.Location = new Point(575, 10);
+            txtBuscar.Location = new Point(560, 10);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(200, 24);
             txtBuscar.TabIndex = 1;
@@ -131,9 +131,9 @@
             lblBuscar.AutoSize = true;
             lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
-            lblBuscar.Location = new Point(518, 13);
+            lblBuscar.Location = new Point(502, 13);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(51, 17);
+            lblBuscar.Size = new Size(52, 17);
             lblBuscar.TabIndex = 0;
             lblBuscar.Text = "Buscar:";
             // 
@@ -143,9 +143,7 @@
             panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
-            panel1.Controls.Add(txtBuscar);
             panel1.Controls.Add(txtNombreProducto);
-            panel1.Controls.Add(lblBuscar);
             panel1.Controls.Add(lblNombreProducto);
             panel1.Controls.Add(btnModificar);
             panel1.Controls.Add(btnGuardar);
@@ -193,7 +191,7 @@
             lblStockMinimo.ForeColor = Color.FromArgb(30, 41, 59);
             lblStockMinimo.Location = new Point(295, 83);
             lblStockMinimo.Name = "lblStockMinimo";
-            lblStockMinimo.Size = new Size(92, 17);
+            lblStockMinimo.Size = new Size(94, 17);
             lblStockMinimo.TabIndex = 16;
             lblStockMinimo.Text = "Stock Mínimo:";
             // 
@@ -268,7 +266,7 @@
             lblCategorias.ForeColor = Color.FromArgb(30, 41, 59);
             lblCategorias.Location = new Point(15, 13);
             lblCategorias.Name = "lblCategorias";
-            lblCategorias.Size = new Size(76, 17);
+            lblCategorias.Size = new Size(75, 17);
             lblCategorias.TabIndex = 9;
             lblCategorias.Text = "Categorías:";
             // 
@@ -296,7 +294,7 @@
             lblStockActual.ForeColor = Color.FromArgb(30, 41, 59);
             lblStockActual.Location = new Point(295, 48);
             lblStockActual.Name = "lblStockActual";
-            lblStockActual.Size = new Size(84, 17);
+            lblStockActual.Size = new Size(86, 17);
             lblStockActual.TabIndex = 6;
             lblStockActual.Text = "Stock Actual:";
             // 
@@ -457,11 +455,11 @@
             // lblListadoCategoria
             // 
             lblListadoCategoria.AutoSize = true;
-            lblListadoCategoria.Font = new Font("Segoe UI Bold", 14F);
+            lblListadoCategoria.Font = new Font("Microsoft Sans Serif", 14F);
             lblListadoCategoria.ForeColor = Color.FromArgb(15, 23, 42);
             lblListadoCategoria.Location = new Point(10, 10);
             lblListadoCategoria.Name = "lblListadoCategoria";
-            lblListadoCategoria.Size = new Size(207, 25);
+            lblListadoCategoria.Size = new Size(190, 24);
             lblListadoCategoria.TabIndex = 1;
             lblListadoCategoria.Text = "Listado de Categorías";
             // 
