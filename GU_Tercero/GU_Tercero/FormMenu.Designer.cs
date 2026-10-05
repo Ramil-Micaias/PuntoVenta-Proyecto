@@ -36,6 +36,8 @@
             configuraciónDelSistemaToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             proveedoresToolStripMenuItem = new ToolStripMenuItem();
+            ventasToolStripMenuItem = new ToolStripMenuItem();
+            comprasToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -49,7 +51,7 @@
             menuStrip1.Dock = DockStyle.None;
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(515, 24);
@@ -104,6 +106,20 @@
             proveedoresToolStripMenuItem.Size = new Size(86, 20);
             proveedoresToolStripMenuItem.Text = "Proveedores";
             proveedoresToolStripMenuItem.Click += proveedoresToolStripMenuItem_Click;
+            // 
+            // ventasToolStripMenuItem
+            // 
+            ventasToolStripMenuItem.Name = "ventasToolStripMenuItem";
+            ventasToolStripMenuItem.Size = new Size(112, 20);
+            ventasToolStripMenuItem.Text = "Ventas (POS)";
+            ventasToolStripMenuItem.Click += ventasToolStripMenuItem_Click;
+            // 
+            // comprasToolStripMenuItem
+            // 
+            comprasToolStripMenuItem.Name = "comprasToolStripMenuItem";
+            comprasToolStripMenuItem.Size = new Size(78, 20);
+            comprasToolStripMenuItem.Text = "Compras";
+            comprasToolStripMenuItem.Click += comprasToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -174,5 +190,7 @@
         private ToolStripMenuItem productoYStockToolStripMenuItem;
         private PictureBox picLogoMenu;
         private ToolStripMenuItem proveedoresToolStripMenuItem;
+        private ToolStripMenuItem ventasToolStripMenuItem;
+        private ToolStripMenuItem comprasToolStripMenuItem;
     }
 }

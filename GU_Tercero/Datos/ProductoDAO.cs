@@ -60,6 +60,29 @@ namespace Datos
         }
 
 
+        public DataTable BuscarProductosPOS(string filtro, int? idCategoria)
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_BuscarProductosPOS", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Filtro", SqlDbType.NVarChar, 100)
+                    .Value = filtro ?? string.Empty;
+
+                cmd.Parameters.Add("@Id_Categoria", SqlDbType.Int)
+                    .Value = idCategoria.HasValue ? idCategoria.Value : DBNull.Value;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(tabla);
+            }
+
+            return tabla;
+        }
+
+
         public void RegistrarProducto(Producto producto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

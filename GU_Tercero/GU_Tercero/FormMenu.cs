@@ -118,5 +118,29 @@ namespace GU_Tercero
 
             this.Show(); 
         }
+
+        private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            using (FormVentas formVentas = new FormVentas(usuarioLogueado))
+            {
+                formVentas.ShowDialog();
+            }
+
+            this.Show();
+        }
+
+        private void comprasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            using (FormCompras formCompras = new FormCompras(usuarioLogueado))
+            {
+                formCompras.ShowDialog();
+            }
+
+            this.Show();
+        }
     }
 }
