@@ -38,7 +38,7 @@ namespace Logica
             if (compra == null)
                 throw new Exception("La compra no puede ser nula.");
 
-            if (compra.Detalle == null || compra.Detalle.Count == 0)
+            if (compra.Detalles == null || compra.Detalles.Count == 0)
                 throw new Exception("Debe agregar al menos un producto al detalle de la compra.");
 
             if (compra.Id_Usuario <= 0)
@@ -47,10 +47,10 @@ namespace Logica
             if (compra.Id_Proveedor <= 0)
                 throw new Exception("Debe seleccionar un proveedor.");
 
-            if (compra.Id_MetodoPago.HasValue && compra.Id_MetodoPago.Value <= 0)
+            if (compra.Id_MetodoPago <= 0)
                 throw new Exception("Debe seleccionar un método de pago.");
 
-            foreach (DetalleCompra item in compra.Detalle)
+            foreach (DetalleCompra item in compra.Detalles)
             {
                 if (item.Id_Producto <= 0)
                     throw new Exception("La compra contiene un producto inválido.");

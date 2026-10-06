@@ -38,6 +38,7 @@ namespace Vista
             ConfigurarGrid();
             CrearDetalle();
             CargarProveedores();
+            CargarMetodosPago();
             CargarProductos();
             ActualizarTotal();
             grpProveedor.Focus();
@@ -95,6 +96,25 @@ namespace Vista
             {
                 MessageBox.Show(
                     "Error al cargar proveedores: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void CargarMetodosPago()
+        {
+            try
+            {
+                cmbMetodoPago.DisplayMember = "Nombre";
+                cmbMetodoPago.ValueMember = "Id_MetodoPago";
+                cmbMetodoPago.DataSource = gestorCompras.ObtenerMetodosPago();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al cargar métodos de pago: " + ex.Message,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -238,7 +258,7 @@ namespace Vista
             }
         }
 
-        private void ActualizarTotal()
+        private decimal CalcularTotal()
         {
             decimal total = 0;
 
@@ -247,7 +267,12 @@ namespace Vista
                 total += Convert.ToDecimal(item["Subtotal"]);
             }
 
-            lblTotalValor.Text = FormatoMoneda(total);
+            return total;
+        }
+
+        private void ActualizarTotal()
+        {
+            lblTotalValor.Text = FormatoMoneda(CalcularTotal());
         }
 
         private void RegistrarCompra()
@@ -274,6 +299,17 @@ namespace Vista
                 return;
             }
 
+            if (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value)
+            {
+                MessageBox.Show(
+                    "Debe seleccionar un método de pago.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
             if (usuarioLogueado == null)
             {
                 MessageBox.Show(
@@ -290,7 +326,8 @@ namespace Vista
                 Numero_Comprobante = null,
                 Id_Proveedor = Convert.ToInt32(cmbProveedor.SelectedValue),
                 Id_Usuario = usuarioLogueado.Id_Usuario,
-                Id_MetodoPago = null,
+                Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
+                Total = CalcularTotal(),
                 Fecha_Compra = DateTime.Now
             };
 
@@ -300,7 +337,7 @@ namespace Vista
                     ? (decimal?)null
                     : Convert.ToDecimal(fila["Precio_Venta_Sugerido"]);
 
-                compra.Detalle.Add(new DetalleCompra
+                compra.Detalles.Add(new DetalleCompra
                 {
                     Id_Producto = Convert.ToInt32(fila["Id_Producto"]),
                     Codigo = Convert.ToString(fila["Codigo"]) ?? string.Empty,
@@ -348,6 +385,11 @@ namespace Vista
             if (cmbProveedor.Items.Count > 0)
             {
                 cmbProveedor.SelectedIndex = 0;
+            }
+
+            if (cmbMetodoPago.Items.Count > 0)
+            {
+                cmbMetodoPago.SelectedIndex = 0;
             }
 
             ActualizarTotal();
@@ -473,6 +515,11 @@ namespace Vista
             {
                 LimpiarCompra();
             }
+        }
+
+        private void cmbMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

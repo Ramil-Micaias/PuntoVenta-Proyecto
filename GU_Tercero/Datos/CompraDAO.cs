@@ -1,9 +1,7 @@
 using Datos.Entidades;
 using Microsoft.Data.SqlClient;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text.Json;
 
 namespace Datos
 {
@@ -13,70 +11,70 @@ namespace Datos
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                SqlCommand cmd = new SqlCommand("sp_RegistrarCompra", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add("@Numero_Comprobante", SqlDbType.NVarChar, 50)
-                    .Value = string.IsNullOrWhiteSpace(compra.Numero_Comprobante)
-                        ? DBNull.Value
-                        : compra.Numero_Comprobante.Trim();
-
-                cmd.Parameters.Add("@Id_Proveedor", SqlDbType.Int)
-                    .Value = compra.Id_Proveedor;
-
-                cmd.Parameters.Add("@Id_Usuario", SqlDbType.Int)
-                    .Value = compra.Id_Usuario;
-
-                cmd.Parameters.Add("@Id_MetodoPago", SqlDbType.Int)
-                    .Value = compra.Id_MetodoPago.HasValue
-                        ? compra.Id_MetodoPago.Value
-                        : DBNull.Value;
-
-                cmd.Parameters.Add("@Fecha", SqlDbType.DateTime)
-                    .Value = compra.Fecha_Compra;
-
-                cmd.Parameters.Add("@Detalles", SqlDbType.NVarChar, -1)
-                    .Value = SerializarDetalle(compra);
-
                 conn.Open();
+                SqlTransaction transaccion = conn.BeginTransaction();
 
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                try
                 {
-                    if (reader.Read())
+                    // 1. Ejecutar la Cabecera de Compra
+                    SqlCommand cmdCompra = new SqlCommand("sp_RegistrarCompra", conn, transaccion);
+                    cmdCompra.CommandType = CommandType.StoredProcedure;
+
+                    cmdCompra.Parameters.Add("@Numero_Comprobante", SqlDbType.VarChar, 50).Value =
+                        string.IsNullOrWhiteSpace(compra.Numero_Comprobante) ? DBNull.Value : compra.Numero_Comprobante.Trim();
+
+                    cmdCompra.Parameters.Add("@Id_Proveedor", SqlDbType.Int).Value = compra.Id_Proveedor;
+                    cmdCompra.Parameters.Add("@Id_Usuario", SqlDbType.Int).Value = compra.Id_Usuario;
+                    cmdCompra.Parameters.Add("@Id_MetodoPago", SqlDbType.Int).Value = compra.Id_MetodoPago;
+                    cmdCompra.Parameters.Add("@Total", SqlDbType.Decimal).Value = compra.Total;
+                    cmdCompra.Parameters.Add("@Fecha_Compra", SqlDbType.DateTime).Value = compra.Fecha_Compra;
+
+                    // Parámetro de salida para recuperar el ID generado
+                    SqlParameter paramIdCompra = new SqlParameter("@Id_CompraGenerado", SqlDbType.Int)
                     {
-                        return new ResultadoOperacion
-                        {
-                            Id_Operacion = Convert.ToInt32(reader["Id_Compra"]),
-                            Comprobante = reader["Numero_Comprobante"] == DBNull.Value
-                                ? null
-                                : reader["Numero_Comprobante"].ToString(),
-                            Subtotal = Convert.ToDecimal(reader["Subtotal"]),
-                            Descuento = Convert.ToDecimal(reader["Descuento"]),
-                            Total = Convert.ToDecimal(reader["Total"])
-                        };
+                        Direction = ParameterDirection.Output
+                    };
+                    cmdCompra.Parameters.Add(paramIdCompra);
+
+                    cmdCompra.ExecuteNonQuery();
+
+                    int idCompraGenerado = Convert.ToInt32(cmdCompra.Parameters["@Id_CompraGenerado"].Value);
+
+                    // 2. Iterar y registrar cada ítem del detalle
+                    foreach (DetalleCompra item in compra.Detalles)
+                    {
+                        SqlCommand cmdDetalle = new SqlCommand("sp_RegistrarDetalleCompra", conn, transaccion);
+                        cmdDetalle.CommandType = CommandType.StoredProcedure;
+
+                        cmdDetalle.Parameters.Add("@Id_Compra", SqlDbType.Int).Value = idCompraGenerado;
+                        cmdDetalle.Parameters.Add("@Id_Producto", SqlDbType.Int).Value = item.Id_Producto;
+                        cmdDetalle.Parameters.Add("@Precio_Costo_Unitario", SqlDbType.Decimal).Value = item.Precio_Costo_Unitario;
+                        cmdDetalle.Parameters.Add("@Cantidad", SqlDbType.Int).Value = item.Cantidad;
+                        cmdDetalle.Parameters.Add("@Precio_Venta_Sugerido", SqlDbType.Decimal).Value =
+                            item.Precio_Venta_Sugerido.HasValue ? item.Precio_Venta_Sugerido.Value : DBNull.Value;
+
+                        cmdDetalle.ExecuteNonQuery();
                     }
+
+                    // Confirmamos la transacción
+                    transaccion.Commit();
+
+                    return new ResultadoOperacion
+                    {
+                        Id_Operacion = idCompraGenerado,
+                        Comprobante = compra.Numero_Comprobante,
+                        Subtotal = compra.Subtotal,
+                        Descuento = 0,
+                        Total = compra.Total
+                    };
+                }
+                catch (Exception)
+                {
+                    // Cancela error
+                    transaccion.Rollback();
+                    throw;
                 }
             }
-
-            throw new Exception("La compra no pudo registrarse. Intente nuevamente.");
-        }
-
-        private static string SerializarDetalle(Compra compra)
-        {
-            List<object> items = new List<object>();
-
-            foreach (DetalleCompra item in compra.Detalle)
-            {
-                items.Add(new
-                {
-                    item.Id_Producto,
-                    item.Cantidad,
-                    Precio = item.Precio_Costo_Unitario,
-                    PrecioVenta = item.Precio_Venta_Sugerido
-                });
-            }
-
-            return JsonSerializer.Serialize(items);
         }
     }
 }

@@ -32,9 +32,9 @@
             txtBuscar = new TextBox();
             lblBuscarNombre = new Label();
             grpCarrito = new GroupBox();
-            btnQuitarSeleccionado = new Button();
-            lblResumenCarrito = new Label();
             dgvCarrito = new DataGridView();
+            lblResumenCarrito = new Label();
+            btnQuitarSeleccionado = new Button();
             panelDer = new Panel();
             grpResumen = new GroupBox();
             lblAyuda = new Label();
@@ -61,9 +61,9 @@
             grpResumen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDescuento).BeginInit();
             SuspendLayout();
-            //
+            // 
             // panelHeader
-            //
+            // 
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblCu);
             panelHeader.Controls.Add(lblTitulo);
@@ -72,32 +72,32 @@
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.White;
-            lblTitulo.Location = new Point(24, 13);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(359, 28);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "REGISTRO DE VENTAS (POS)";
-            //
+            // 
             // lblCu
-            //
+            // 
             lblCu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblCu.AutoSize = true;
             lblCu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblCu.ForeColor = Color.FromArgb(148, 163, 184);
             lblCu.Location = new Point(1017, 18);
             lblCu.Name = "lblCu";
-            lblCu.Size = new Size(41, 19);
+            lblCu.Size = new Size(44, 19);
             lblCu.TabIndex = 1;
             lblCu.Text = "CU01";
-            //
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.White;
+            lblTitulo.Location = new Point(24, 13);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(279, 28);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "REGISTRO DE VENTAS (POS)";
+            // 
             // panelIzq
-            //
+            // 
             panelIzq.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             panelIzq.Controls.Add(grpBusqueda);
             panelIzq.Controls.Add(grpCarrito);
@@ -105,9 +105,9 @@
             panelIzq.Name = "panelIzq";
             panelIzq.Size = new Size(690, 576);
             panelIzq.TabIndex = 1;
-            //
+            // 
             // grpBusqueda
-            //
+            // 
             grpBusqueda.Controls.Add(btnAgregarCarrito);
             grpBusqueda.Controls.Add(numCantidad);
             grpBusqueda.Controls.Add(lblCantidad);
@@ -125,63 +125,46 @@
             grpBusqueda.TabIndex = 0;
             grpBusqueda.TabStop = false;
             grpBusqueda.Text = "Búsqueda de Productos";
-            //
-            // lblBuscarNombre
-            //
-            lblBuscarNombre.AutoSize = true;
-            lblBuscarNombre.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblBuscarNombre.ForeColor = Color.FromArgb(30, 41, 59);
-            lblBuscarNombre.Location = new Point(16, 29);
-            lblBuscarNombre.Name = "lblBuscarNombre";
-            lblBuscarNombre.Size = new Size(158, 17);
-            lblBuscarNombre.TabIndex = 0;
-            lblBuscarNombre.Text = "Buscar por nombre o código:";
-            //
-            // txtBuscar
-            //
-            txtBuscar.Font = new Font("Segoe UI", 9.5F);
-            txtBuscar.Location = new Point(210, 25);
-            txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(190, 25);
-            txtBuscar.TabIndex = 1;
-            //
-            // lblCategoria
-            //
-            lblCategoria.AutoSize = true;
-            lblCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblCategoria.ForeColor = Color.FromArgb(30, 41, 59);
-            lblCategoria.Location = new Point(410, 29);
-            lblCategoria.Name = "lblCategoria";
-            lblCategoria.Size = new Size(62, 17);
-            lblCategoria.TabIndex = 2;
-            lblCategoria.Text = "Categoría:";
-            //
-            // cmbCategoria
-            //
-            cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategoria.Font = new Font("Segoe UI", 9.5F);
-            cmbCategoria.FormattingEnabled = true;
-            cmbCategoria.Location = new Point(482, 25);
-            cmbCategoria.Name = "cmbCategoria";
-            cmbCategoria.Size = new Size(126, 25);
-            cmbCategoria.TabIndex = 3;
-            //
-            // btnBuscar
-            //
-            btnBuscar.BackColor = Color.FromArgb(37, 99, 235);
-            btnBuscar.FlatStyle = FlatStyle.Flat;
-            btnBuscar.FlatAppearance.BorderSize = 0;
-            btnBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(612, 24);
-            btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(62, 27);
-            btnBuscar.TabIndex = 4;
-            btnBuscar.Text = "Buscar";
-            btnBuscar.UseVisualStyleBackColor = false;
-            //
+            // 
+            // btnAgregarCarrito
+            // 
+            btnAgregarCarrito.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAgregarCarrito.BackColor = Color.FromArgb(37, 99, 235);
+            btnAgregarCarrito.FlatAppearance.BorderSize = 0;
+            btnAgregarCarrito.FlatStyle = FlatStyle.Flat;
+            btnAgregarCarrito.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnAgregarCarrito.ForeColor = Color.White;
+            btnAgregarCarrito.Location = new Point(500, 142);
+            btnAgregarCarrito.Name = "btnAgregarCarrito";
+            btnAgregarCarrito.Size = new Size(174, 27);
+            btnAgregarCarrito.TabIndex = 8;
+            btnAgregarCarrito.Text = "Agregar al Carrito";
+            btnAgregarCarrito.UseVisualStyleBackColor = false;
+            // 
+            // numCantidad
+            // 
+            numCantidad.Font = new Font("Segoe UI", 9.5F);
+            numCantidad.Location = new Point(84, 143);
+            numCantidad.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
+            numCantidad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numCantidad.Name = "numCantidad";
+            numCantidad.Size = new Size(70, 24);
+            numCantidad.TabIndex = 7;
+            numCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // lblCantidad
+            // 
+            lblCantidad.AutoSize = true;
+            lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblCantidad.ForeColor = Color.FromArgb(30, 41, 59);
+            lblCantidad.Location = new Point(16, 147);
+            lblCantidad.Name = "lblCantidad";
+            lblCantidad.Size = new Size(65, 17);
+            lblCantidad.TabIndex = 6;
+            lblCantidad.Text = "Cantidad:";
+            // 
             // dgvResultados
-            //
+            // 
             dgvResultados.AllowUserToAddRows = false;
             dgvResultados.AllowUserToDeleteRows = false;
             dgvResultados.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -197,46 +180,63 @@
             dgvResultados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvResultados.Size = new Size(658, 78);
             dgvResultados.TabIndex = 5;
-            //
-            // lblCantidad
-            //
-            lblCantidad.AutoSize = true;
-            lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblCantidad.ForeColor = Color.FromArgb(30, 41, 59);
-            lblCantidad.Location = new Point(16, 147);
-            lblCantidad.Name = "lblCantidad";
-            lblCantidad.Size = new Size(62, 17);
-            lblCantidad.TabIndex = 6;
-            lblCantidad.Text = "Cantidad:";
-            //
-            // numCantidad
-            //
-            numCantidad.Font = new Font("Segoe UI", 9.5F);
-            numCantidad.Location = new Point(84, 143);
-            numCantidad.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
-            numCantidad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numCantidad.Name = "numCantidad";
-            numCantidad.Size = new Size(70, 25);
-            numCantidad.TabIndex = 7;
-            numCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            //
-            // btnAgregarCarrito
-            //
-            btnAgregarCarrito.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregarCarrito.BackColor = Color.FromArgb(37, 99, 235);
-            btnAgregarCarrito.FlatStyle = FlatStyle.Flat;
-            btnAgregarCarrito.FlatAppearance.BorderSize = 0;
-            btnAgregarCarrito.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnAgregarCarrito.ForeColor = Color.White;
-            btnAgregarCarrito.Location = new Point(500, 142);
-            btnAgregarCarrito.Name = "btnAgregarCarrito";
-            btnAgregarCarrito.Size = new Size(174, 27);
-            btnAgregarCarrito.TabIndex = 8;
-            btnAgregarCarrito.Text = "Agregar al Carrito";
-            btnAgregarCarrito.UseVisualStyleBackColor = false;
-            //
+            // 
+            // btnBuscar
+            // 
+            btnBuscar.BackColor = Color.FromArgb(37, 99, 235);
+            btnBuscar.FlatAppearance.BorderSize = 0;
+            btnBuscar.FlatStyle = FlatStyle.Flat;
+            btnBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnBuscar.ForeColor = Color.White;
+            btnBuscar.Location = new Point(612, 24);
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.Size = new Size(62, 27);
+            btnBuscar.TabIndex = 4;
+            btnBuscar.Text = "Buscar";
+            btnBuscar.UseVisualStyleBackColor = false;
+            // 
+            // cmbCategoria
+            // 
+            cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCategoria.Font = new Font("Segoe UI", 9.5F);
+            cmbCategoria.FormattingEnabled = true;
+            cmbCategoria.Location = new Point(482, 25);
+            cmbCategoria.Name = "cmbCategoria";
+            cmbCategoria.Size = new Size(126, 25);
+            cmbCategoria.TabIndex = 3;
+            // 
+            // lblCategoria
+            // 
+            lblCategoria.AutoSize = true;
+            lblCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblCategoria.ForeColor = Color.FromArgb(30, 41, 59);
+            lblCategoria.Location = new Point(410, 29);
+            lblCategoria.Name = "lblCategoria";
+            lblCategoria.Size = new Size(69, 17);
+            lblCategoria.TabIndex = 2;
+            lblCategoria.Text = "Categoría:";
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9.5F);
+            txtBuscar.Location = new Point(210, 25);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(190, 24);
+            txtBuscar.TabIndex = 1;
+            // 
+            // lblBuscarNombre
+            // 
+            lblBuscarNombre.AutoSize = true;
+            lblBuscarNombre.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblBuscarNombre.ForeColor = Color.FromArgb(30, 41, 59);
+            lblBuscarNombre.Location = new Point(16, 29);
+            lblBuscarNombre.Name = "lblBuscarNombre";
+            lblBuscarNombre.Size = new Size(185, 17);
+            lblBuscarNombre.TabIndex = 0;
+            lblBuscarNombre.Text = "Buscar por nombre o código:";
+            // 
             // grpCarrito
-            //
+            // 
             grpCarrito.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpCarrito.Controls.Add(dgvCarrito);
             grpCarrito.Controls.Add(lblResumenCarrito);
@@ -249,9 +249,9 @@
             grpCarrito.TabIndex = 1;
             grpCarrito.TabStop = false;
             grpCarrito.Text = "Detalle del Carrito";
-            //
+            // 
             // dgvCarrito
-            //
+            // 
             dgvCarrito.AllowUserToAddRows = false;
             dgvCarrito.AllowUserToDeleteRows = false;
             dgvCarrito.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -267,24 +267,24 @@
             dgvCarrito.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCarrito.Size = new Size(658, 312);
             dgvCarrito.TabIndex = 0;
-            //
+            // 
             // lblResumenCarrito
-            //
+            // 
             lblResumenCarrito.AutoSize = true;
             lblResumenCarrito.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblResumenCarrito.ForeColor = Color.FromArgb(71, 85, 105);
             lblResumenCarrito.Location = new Point(16, 353);
             lblResumenCarrito.Name = "lblResumenCarrito";
-            lblResumenCarrito.Size = new Size(120, 17);
+            lblResumenCarrito.Size = new Size(75, 17);
             lblResumenCarrito.TabIndex = 1;
             lblResumenCarrito.Text = "Artículos: 0";
-            //
+            // 
             // btnQuitarSeleccionado
-            //
+            // 
             btnQuitarSeleccionado.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuitarSeleccionado.BackColor = Color.FromArgb(239, 68, 68);
-            btnQuitarSeleccionado.FlatStyle = FlatStyle.Flat;
             btnQuitarSeleccionado.FlatAppearance.BorderSize = 0;
+            btnQuitarSeleccionado.FlatStyle = FlatStyle.Flat;
             btnQuitarSeleccionado.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnQuitarSeleccionado.ForeColor = Color.White;
             btnQuitarSeleccionado.Location = new Point(520, 348);
@@ -293,18 +293,18 @@
             btnQuitarSeleccionado.TabIndex = 2;
             btnQuitarSeleccionado.Text = "Quitar Seleccionado";
             btnQuitarSeleccionado.UseVisualStyleBackColor = false;
-            //
+            // 
             // panelDer
-            //
+            // 
             panelDer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelDer.Controls.Add(grpResumen);
             panelDer.Location = new Point(714, 68);
             panelDer.Name = "panelDer";
             panelDer.Size = new Size(350, 576);
             panelDer.TabIndex = 2;
-            //
+            // 
             // grpResumen
-            //
+            // 
             grpResumen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpResumen.Controls.Add(lblAyuda);
             grpResumen.Controls.Add(btnCancelarOperacion);
@@ -327,146 +327,9 @@
             grpResumen.TabIndex = 0;
             grpResumen.TabStop = false;
             grpResumen.Text = "Resumen de Pago";
-            //
-            // lblCliente
-            //
-            lblCliente.AutoSize = true;
-            lblCliente.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblCliente.ForeColor = Color.FromArgb(30, 41, 59);
-            lblCliente.Location = new Point(16, 28);
-            lblCliente.Name = "lblCliente";
-            lblCliente.Size = new Size(51, 17);
-            lblCliente.TabIndex = 0;
-            lblCliente.Text = "Cliente:";
-            //
-            // cmbCliente
-            //
-            cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCliente.Font = new Font("Segoe UI", 9.5F);
-            cmbCliente.FormattingEnabled = true;
-            cmbCliente.Location = new Point(16, 48);
-            cmbCliente.Name = "cmbCliente";
-            cmbCliente.Size = new Size(318, 25);
-            cmbCliente.TabIndex = 1;
-            //
-            // lblMetodoPago
-            //
-            lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
-            lblMetodoPago.Location = new Point(16, 86);
-            lblMetodoPago.Name = "lblMetodoPago";
-            lblMetodoPago.Size = new Size(109, 17);
-            lblMetodoPago.TabIndex = 2;
-            lblMetodoPago.Text = "Método de Pago:";
-            //
-            // cmbMetodoPago
-            //
-            cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
-            cmbMetodoPago.FormattingEnabled = true;
-            cmbMetodoPago.Location = new Point(16, 106);
-            cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(318, 25);
-            cmbMetodoPago.TabIndex = 3;
-            //
-            // lblSubtotalTitulo
-            //
-            lblSubtotalTitulo.AutoSize = true;
-            lblSubtotalTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblSubtotalTitulo.ForeColor = Color.FromArgb(30, 41, 59);
-            lblSubtotalTitulo.Location = new Point(16, 150);
-            lblSubtotalTitulo.Name = "lblSubtotalTitulo";
-            lblSubtotalTitulo.Size = new Size(68, 17);
-            lblSubtotalTitulo.TabIndex = 4;
-            lblSubtotalTitulo.Text = "Subtotal:";
-            //
-            // lblSubtotalValor
-            //
-            lblSubtotalValor.AutoSize = true;
-            lblSubtotalValor.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblSubtotalValor.ForeColor = Color.FromArgb(15, 23, 42);
-            lblSubtotalValor.Location = new Point(16, 171);
-            lblSubtotalValor.Name = "lblSubtotalValor";
-            lblSubtotalValor.Size = new Size(48, 20);
-            lblSubtotalValor.TabIndex = 5;
-            lblSubtotalValor.Text = "$0,00";
-            //
-            // lblDescuentoTitulo
-            //
-            lblDescuentoTitulo.AutoSize = true;
-            lblDescuentoTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblDescuentoTitulo.ForeColor = Color.FromArgb(30, 41, 59);
-            lblDescuentoTitulo.Location = new Point(16, 212);
-            lblDescuentoTitulo.Name = "lblDescuentoTitulo";
-            lblDescuentoTitulo.Size = new Size(104, 17);
-            lblDescuentoTitulo.TabIndex = 6;
-            lblDescuentoTitulo.Text = "Descuento (%):";
-            //
-            // numDescuento
-            //
-            numDescuento.DecimalPlaces = 2;
-            numDescuento.Font = new Font("Segoe UI", 9.5F);
-            numDescuento.Location = new Point(140, 208);
-            numDescuento.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numDescuento.Name = "numDescuento";
-            numDescuento.Size = new Size(90, 25);
-            numDescuento.TabIndex = 7;
-            //
-            // lblTotalTitulo
-            //
-            lblTotalTitulo.AutoSize = true;
-            lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
-            lblTotalTitulo.Location = new Point(16, 258);
-            lblTotalTitulo.Name = "lblTotalTitulo";
-            lblTotalTitulo.Size = new Size(124, 21);
-            lblTotalTitulo.TabIndex = 8;
-            lblTotalTitulo.Text = "TOTAL NETO:";
-            //
-            // lblTotalNeto
-            //
-            lblTotalNeto.AutoSize = true;
-            lblTotalNeto.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-            lblTotalNeto.ForeColor = Color.FromArgb(16, 185, 129);
-            lblTotalNeto.Location = new Point(14, 282);
-            lblTotalNeto.Name = "lblTotalNeto";
-            lblTotalNeto.Size = new Size(128, 40);
-            lblTotalNeto.TabIndex = 9;
-            lblTotalNeto.Text = "$0,00";
-            //
-            // btnConfirmarVenta
-            //
-            btnConfirmarVenta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnConfirmarVenta.BackColor = Color.FromArgb(16, 185, 129);
-            btnConfirmarVenta.FlatStyle = FlatStyle.Flat;
-            btnConfirmarVenta.FlatAppearance.BorderSize = 0;
-            btnConfirmarVenta.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            btnConfirmarVenta.ForeColor = Color.White;
-            btnConfirmarVenta.Location = new Point(16, 352);
-            btnConfirmarVenta.Name = "btnConfirmarVenta";
-            btnConfirmarVenta.Size = new Size(318, 48);
-            btnConfirmarVenta.TabIndex = 10;
-            btnConfirmarVenta.Text = "CONFIRMAR VENTA";
-            btnConfirmarVenta.UseVisualStyleBackColor = false;
-            //
-            // btnCancelarOperacion
-            //
-            btnCancelarOperacion.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnCancelarOperacion.BackColor = Color.FromArgb(239, 68, 68);
-            btnCancelarOperacion.FlatStyle = FlatStyle.Flat;
-            btnCancelarOperacion.FlatAppearance.BorderSize = 0;
-            btnCancelarOperacion.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            btnCancelarOperacion.ForeColor = Color.White;
-            btnCancelarOperacion.Location = new Point(16, 410);
-            btnCancelarOperacion.Name = "btnCancelarOperacion";
-            btnCancelarOperacion.Size = new Size(318, 44);
-            btnCancelarOperacion.TabIndex = 11;
-            btnCancelarOperacion.Text = "CANCELAR OPERACIÓN";
-            btnCancelarOperacion.UseVisualStyleBackColor = false;
-            //
+            // 
             // lblAyuda
-            //
+            // 
             lblAyuda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblAyuda.Font = new Font("Segoe UI", 8.5F);
             lblAyuda.ForeColor = Color.FromArgb(100, 116, 139);
@@ -475,9 +338,145 @@
             lblAyuda.Size = new Size(318, 40);
             lblAyuda.TabIndex = 12;
             lblAyuda.Text = "Al confirmar se descuenta el stock, se registra el ingreso en la caja y se emite el comprobante interno.";
-            //
+            // 
+            // btnCancelarOperacion
+            // 
+            btnCancelarOperacion.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnCancelarOperacion.BackColor = Color.FromArgb(239, 68, 68);
+            btnCancelarOperacion.FlatAppearance.BorderSize = 0;
+            btnCancelarOperacion.FlatStyle = FlatStyle.Flat;
+            btnCancelarOperacion.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnCancelarOperacion.ForeColor = Color.White;
+            btnCancelarOperacion.Location = new Point(16, 410);
+            btnCancelarOperacion.Name = "btnCancelarOperacion";
+            btnCancelarOperacion.Size = new Size(318, 44);
+            btnCancelarOperacion.TabIndex = 11;
+            btnCancelarOperacion.Text = "CANCELAR OPERACIÓN";
+            btnCancelarOperacion.UseVisualStyleBackColor = false;
+            // 
+            // btnConfirmarVenta
+            // 
+            btnConfirmarVenta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnConfirmarVenta.BackColor = Color.FromArgb(16, 185, 129);
+            btnConfirmarVenta.FlatAppearance.BorderSize = 0;
+            btnConfirmarVenta.FlatStyle = FlatStyle.Flat;
+            btnConfirmarVenta.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            btnConfirmarVenta.ForeColor = Color.White;
+            btnConfirmarVenta.Location = new Point(16, 352);
+            btnConfirmarVenta.Name = "btnConfirmarVenta";
+            btnConfirmarVenta.Size = new Size(318, 48);
+            btnConfirmarVenta.TabIndex = 10;
+            btnConfirmarVenta.Text = "CONFIRMAR VENTA";
+            btnConfirmarVenta.UseVisualStyleBackColor = false;
+            // 
+            // lblTotalNeto
+            // 
+            lblTotalNeto.AutoSize = true;
+            lblTotalNeto.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTotalNeto.ForeColor = Color.FromArgb(16, 185, 129);
+            lblTotalNeto.Location = new Point(14, 282);
+            lblTotalNeto.Name = "lblTotalNeto";
+            lblTotalNeto.Size = new Size(94, 41);
+            lblTotalNeto.TabIndex = 9;
+            lblTotalNeto.Text = "$0,00";
+            // 
+            // lblTotalTitulo
+            // 
+            lblTotalTitulo.AutoSize = true;
+            lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
+            lblTotalTitulo.Location = new Point(16, 258);
+            lblTotalTitulo.Name = "lblTotalTitulo";
+            lblTotalTitulo.Size = new Size(106, 21);
+            lblTotalTitulo.TabIndex = 8;
+            lblTotalTitulo.Text = "TOTAL NETO:";
+            // 
+            // numDescuento
+            // 
+            numDescuento.DecimalPlaces = 2;
+            numDescuento.Font = new Font("Segoe UI", 9.5F);
+            numDescuento.Location = new Point(140, 208);
+            numDescuento.Name = "numDescuento";
+            numDescuento.Size = new Size(90, 24);
+            numDescuento.TabIndex = 7;
+            // 
+            // lblDescuentoTitulo
+            // 
+            lblDescuentoTitulo.AutoSize = true;
+            lblDescuentoTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblDescuentoTitulo.ForeColor = Color.FromArgb(30, 41, 59);
+            lblDescuentoTitulo.Location = new Point(16, 212);
+            lblDescuentoTitulo.Name = "lblDescuentoTitulo";
+            lblDescuentoTitulo.Size = new Size(98, 17);
+            lblDescuentoTitulo.TabIndex = 6;
+            lblDescuentoTitulo.Text = "Descuento (%):";
+            // 
+            // lblSubtotalValor
+            // 
+            lblSubtotalValor.AutoSize = true;
+            lblSubtotalValor.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblSubtotalValor.ForeColor = Color.FromArgb(15, 23, 42);
+            lblSubtotalValor.Location = new Point(16, 171);
+            lblSubtotalValor.Name = "lblSubtotalValor";
+            lblSubtotalValor.Size = new Size(49, 20);
+            lblSubtotalValor.TabIndex = 5;
+            lblSubtotalValor.Text = "$0,00";
+            // 
+            // lblSubtotalTitulo
+            // 
+            lblSubtotalTitulo.AutoSize = true;
+            lblSubtotalTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblSubtotalTitulo.ForeColor = Color.FromArgb(30, 41, 59);
+            lblSubtotalTitulo.Location = new Point(16, 150);
+            lblSubtotalTitulo.Name = "lblSubtotalTitulo";
+            lblSubtotalTitulo.Size = new Size(62, 17);
+            lblSubtotalTitulo.TabIndex = 4;
+            lblSubtotalTitulo.Text = "Subtotal:";
+            // 
+            // cmbMetodoPago
+            // 
+            cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
+            cmbMetodoPago.FormattingEnabled = true;
+            cmbMetodoPago.Location = new Point(16, 106);
+            cmbMetodoPago.Name = "cmbMetodoPago";
+            cmbMetodoPago.Size = new Size(318, 25);
+            cmbMetodoPago.TabIndex = 3;
+            // 
+            // lblMetodoPago
+            // 
+            lblMetodoPago.AutoSize = true;
+            lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
+            lblMetodoPago.Location = new Point(16, 86);
+            lblMetodoPago.Name = "lblMetodoPago";
+            lblMetodoPago.Size = new Size(113, 17);
+            lblMetodoPago.TabIndex = 2;
+            lblMetodoPago.Text = "Método de Pago:";
+            // 
+            // cmbCliente
+            // 
+            cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCliente.Font = new Font("Segoe UI", 9.5F);
+            cmbCliente.FormattingEnabled = true;
+            cmbCliente.Location = new Point(16, 48);
+            cmbCliente.Name = "cmbCliente";
+            cmbCliente.Size = new Size(318, 25);
+            cmbCliente.TabIndex = 1;
+            // 
+            // lblCliente
+            // 
+            lblCliente.AutoSize = true;
+            lblCliente.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblCliente.ForeColor = Color.FromArgb(30, 41, 59);
+            lblCliente.Location = new Point(16, 28);
+            lblCliente.Name = "lblCliente";
+            lblCliente.Size = new Size(52, 17);
+            lblCliente.TabIndex = 0;
+            lblCliente.Text = "Cliente:";
+            // 
             // FormVentas
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
