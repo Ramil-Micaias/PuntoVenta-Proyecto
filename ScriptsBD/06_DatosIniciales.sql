@@ -47,6 +47,12 @@ IF NOT EXISTS (SELECT 1 FROM Rol WHERE Nombre_Rol = 'Administrador')
 IF NOT EXISTS (SELECT 1 FROM Rol WHERE Nombre_Rol = 'Usuario')
     INSERT INTO Rol (Nombre_Rol, Activo) VALUES ('Usuario', 1);
 
+IF NOT EXISTS (SELECT 1 FROM Rol WHERE Nombre_Rol = 'Vendedor')
+    INSERT INTO Rol (Nombre_Rol, Activo) VALUES ('Vendedor', 1);
+
+IF NOT EXISTS (SELECT 1 FROM Rol WHERE Nombre_Rol = 'Tecnico')
+    INSERT INTO Rol (Nombre_Rol, Activo) VALUES ('Tecnico', 1);
+
 -- Tipos de Correo
 IF NOT EXISTS (SELECT 1 FROM TipoCorreo WHERE Descripcion = 'Personal')
     INSERT INTO TipoCorreo (Descripcion, Activo) VALUES ('Personal', 1);
@@ -206,5 +212,50 @@ BEGIN
             1
         );
     END
+END;
+GO
+
+-- 4. USUARIOS INICIALES DE PRUEBA: VENDEDOR Y TECNICO
+IF NOT EXISTS (SELECT 1 FROM Usuario WHERE Nombre_Usuario = 'vendedor')
+BEGIN
+    DECLARE @IdPerVend INT, @IdUsrVend INT, @IdRolVend INT;
+    INSERT INTO Persona (Apellido, Nombre, DNI, Fecha_Alta, Fecha_Nacimiento, Activo)
+    VALUES ('Perez', 'Vendedor Juan', '11111111', GETDATE(), '1995-05-10', 1);
+    SET @IdPerVend = SCOPE_IDENTITY();
+
+    -- Password por defecto: admin123!
+    INSERT INTO Usuario (Id_Persona, Nombre_Usuario, PasswordHash, Fecha_Ultimo_Cambio, Debe_Cambiar_Password, Es_Primer_Ingreso, Fecha_Alta, Intentos_Fallidos, Bloqueado, Activo)
+    VALUES (@IdPerVend, 'vendedor', '032af98435e4af8ea959c0242b1427191d9c1aeeb485b9db7d99de8c58997e24', GETDATE(), 0, 0, GETDATE(), 0, 0, 1);
+    SET @IdUsrVend = SCOPE_IDENTITY();
+
+    SELECT @IdRolVend = Id_Rol FROM Rol WHERE Nombre_Rol = 'Vendedor';
+    IF @IdRolVend IS NOT NULL
+        INSERT INTO UsuarioRol (Id_Rol, Id_Usuario, Fecha_Asignacion) VALUES (@IdRolVend, @IdUsrVend, GETDATE());
+
+    -- Preguntas de seguridad por defecto para que pueda entrar directo
+    INSERT INTO UsuarioPreguntaSeguridad (Id_Usuario, Id_Pregunta, RespuestaHash, Activo)
+    VALUES (@IdUsrVend, 1, 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f', 1);
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Usuario WHERE Nombre_Usuario = 'tecnico')
+BEGIN
+    DECLARE @IdPerTec INT, @IdUsrTec INT, @IdRolTec INT;
+    INSERT INTO Persona (Apellido, Nombre, DNI, Fecha_Alta, Fecha_Nacimiento, Activo)
+    VALUES ('Gomez', 'Tecnico Carlos', '22222222', GETDATE(), '1992-08-20', 1);
+    SET @IdPerTec = SCOPE_IDENTITY();
+
+    -- Password por defecto: admin123!
+    INSERT INTO Usuario (Id_Persona, Nombre_Usuario, PasswordHash, Fecha_Ultimo_Cambio, Debe_Cambiar_Password, Es_Primer_Ingreso, Fecha_Alta, Intentos_Fallidos, Bloqueado, Activo)
+    VALUES (@IdPerTec, 'tecnico', '032af98435e4af8ea959c0242b1427191d9c1aeeb485b9db7d99de8c58997e24', GETDATE(), 0, 0, GETDATE(), 0, 0, 1);
+    SET @IdUsrTec = SCOPE_IDENTITY();
+
+    SELECT @IdRolTec = Id_Rol FROM Rol WHERE Nombre_Rol = 'Tecnico';
+    IF @IdRolTec IS NOT NULL
+        INSERT INTO UsuarioRol (Id_Rol, Id_Usuario, Fecha_Asignacion) VALUES (@IdRolTec, @IdUsrTec, GETDATE());
+
+    -- Preguntas de seguridad por defecto para que pueda entrar directo
+    INSERT INTO UsuarioPreguntaSeguridad (Id_Usuario, Id_Pregunta, RespuestaHash, Activo)
+    VALUES (@IdUsrTec, 1, 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f', 1);
 END;
 GO

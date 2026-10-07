@@ -1,4 +1,4 @@
-﻿namespace GU_Tercero
+namespace GU_Tercero
 {
     partial class FormMenu
     {
@@ -34,10 +34,12 @@
             productoYStockToolStripMenuItem = new ToolStripMenuItem();
             configuraciónToolStripMenuItem = new ToolStripMenuItem();
             configuraciónDelSistemaToolStripMenuItem = new ToolStripMenuItem();
+            miPerfilToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesionToolStripMenuItem = new ToolStripMenuItem();
             proveedoresToolStripMenuItem = new ToolStripMenuItem();
             ventasToolStripMenuItem = new ToolStripMenuItem();
             comprasToolStripMenuItem = new ToolStripMenuItem();
+            tallerToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -51,10 +53,10 @@
             menuStrip1.Dock = DockStyle.None;
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, tallerToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(515, 24);
+            menuStrip1.Size = new Size(580, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -81,10 +83,17 @@
             // 
             // configuraciónToolStripMenuItem
             // 
-            configuraciónToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { configuraciónDelSistemaToolStripMenuItem });
+            configuraciónToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { miPerfilToolStripMenuItem, configuraciónDelSistemaToolStripMenuItem });
             configuraciónToolStripMenuItem.Name = "configuraciónToolStripMenuItem";
             configuraciónToolStripMenuItem.Size = new Size(96, 20);
             configuraciónToolStripMenuItem.Text = "Configuración";
+            // 
+            // miPerfilToolStripMenuItem
+            // 
+            miPerfilToolStripMenuItem.Name = "miPerfilToolStripMenuItem";
+            miPerfilToolStripMenuItem.Size = new Size(215, 22);
+            miPerfilToolStripMenuItem.Text = "Mi Perfil";
+            miPerfilToolStripMenuItem.Click += miPerfilToolStripMenuItem_Click;
             // 
             // configuraciónDelSistemaToolStripMenuItem
             // 
@@ -120,6 +129,13 @@
             comprasToolStripMenuItem.Size = new Size(78, 20);
             comprasToolStripMenuItem.Text = "Compras";
             comprasToolStripMenuItem.Click += comprasToolStripMenuItem_Click;
+            // 
+            // tallerToolStripMenuItem
+            // 
+            tallerToolStripMenuItem.Name = "tallerToolStripMenuItem";
+            tallerToolStripMenuItem.Size = new Size(58, 20);
+            tallerToolStripMenuItem.Text = "Taller";
+            tallerToolStripMenuItem.Click += tallerToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -192,5 +208,7 @@
         private ToolStripMenuItem proveedoresToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;
         private ToolStripMenuItem comprasToolStripMenuItem;
+        private ToolStripMenuItem tallerToolStripMenuItem;
+        private ToolStripMenuItem miPerfilToolStripMenuItem;
     }
 }

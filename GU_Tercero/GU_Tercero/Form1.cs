@@ -1,4 +1,4 @@
-﻿using Datos.Entidades;
+using Datos.Entidades;
 using Logica;
 using Logica.Seguridad;
 using Seguridad;
@@ -33,7 +33,7 @@ namespace GU_Tercero
         // Abre el menú principal según el rol del usuario.
         private void AbrirMenu(Usuario usuario)
         {
-            if (usuario.Nombre_Rol == "Administrador")
+            if (usuario.Nombre_Rol == "Administrador" || usuario.Nombre_Rol == "Vendedor" || usuario.Nombre_Rol == "Tecnico")
             {
                 FormMenu menu = new FormMenu(usuario);
 
@@ -59,8 +59,13 @@ namespace GU_Tercero
             {
                 FormUsuario formUsuario = new FormUsuario(usuario);
 
-                // Si la vista de usuario no es el menú principal, al cerrarla también cerramos la app
-                formUsuario.FormClosed += (s, args) => this.Close();
+                // Si la vista de usuario no es el menú principal, al cerrarla volvemos al login
+                formUsuario.FormClosed += (s, args) =>
+                {
+                    txtUsuario.Clear();
+                    txtPassword.Clear();
+                    this.Show();
+                };
 
                 formUsuario.Show();
                 this.Hide();

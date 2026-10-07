@@ -39,6 +39,7 @@ namespace Vista
             CargarCategorias();
             CargarMetodosPago();
             CargarClientes();
+            BuscarProductos();
             ActualizarResumen();
             txtBuscar.Focus();
         }

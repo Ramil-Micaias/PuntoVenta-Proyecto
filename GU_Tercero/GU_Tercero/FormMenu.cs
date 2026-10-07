@@ -1,4 +1,4 @@
-﻿using Datos.Entidades;
+using Datos.Entidades;
 using Logica;
 using System;
 using System.ComponentModel;
@@ -29,6 +29,55 @@ namespace GU_Tercero
             }
             lblNombreUsuario.Visible = true;
             CargarLogo();
+            AplicarPermisosPorRol();
+        }
+
+        private void AplicarPermisosPorRol()
+        {
+            string rol = usuarioLogueado?.Nombre_Rol ?? "Administrador";
+
+            if (rol == "Vendedor")
+            {
+                // El vendedor solo puede ver Ventas (POS), Mi Perfil y Cerrar Sesión
+                gestionDeUsuariosToolStripMenuItem.Visible = false;
+                productoYStockToolStripMenuItem.Visible = false;
+                proveedoresToolStripMenuItem.Visible = false;
+                comprasToolStripMenuItem.Visible = false;
+                tallerToolStripMenuItem.Visible = false;
+                configuraciónDelSistemaToolStripMenuItem.Visible = false;
+                ventasToolStripMenuItem.Visible = true;
+                configuraciónToolStripMenuItem.Visible = true;
+                miPerfilToolStripMenuItem.Visible = true;
+                cerrarSesionToolStripMenuItem.Visible = true;
+            }
+            else if (rol == "Tecnico")
+            {
+                // El técnico solo puede ver Taller, Mi Perfil y Cerrar Sesión
+                gestionDeUsuariosToolStripMenuItem.Visible = false;
+                productoYStockToolStripMenuItem.Visible = false;
+                proveedoresToolStripMenuItem.Visible = false;
+                comprasToolStripMenuItem.Visible = false;
+                ventasToolStripMenuItem.Visible = false;
+                configuraciónDelSistemaToolStripMenuItem.Visible = false;
+                tallerToolStripMenuItem.Visible = true;
+                configuraciónToolStripMenuItem.Visible = true;
+                miPerfilToolStripMenuItem.Visible = true;
+                cerrarSesionToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                // Administrador tiene acceso completo
+                gestionDeUsuariosToolStripMenuItem.Visible = true;
+                productoYStockToolStripMenuItem.Visible = true;
+                proveedoresToolStripMenuItem.Visible = true;
+                ventasToolStripMenuItem.Visible = true;
+                comprasToolStripMenuItem.Visible = true;
+                tallerToolStripMenuItem.Visible = true;
+                configuraciónToolStripMenuItem.Visible = true;
+                configuraciónDelSistemaToolStripMenuItem.Visible = true;
+                miPerfilToolStripMenuItem.Visible = true;
+                cerrarSesionToolStripMenuItem.Visible = true;
+            }
         }
 
         private void CargarLogo()
@@ -138,6 +187,30 @@ namespace GU_Tercero
             using (FormCompras formCompras = new FormCompras(usuarioLogueado))
             {
                 formCompras.ShowDialog();
+            }
+
+            this.Show();
+        }
+
+        private void miPerfilToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            using (FormUsuario formUsuario = new FormUsuario(usuarioLogueado))
+            {
+                formUsuario.ShowDialog();
+            }
+
+            this.Show();
+        }
+
+        private void tallerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            using (FormTaller formTaller = new FormTaller())
+            {
+                formTaller.ShowDialog();
             }
 
             this.Show();

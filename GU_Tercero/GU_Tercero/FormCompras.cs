@@ -1,4 +1,4 @@
-﻿using Datos.Entidades;
+using Datos.Entidades;
 using Logica;
 using System;
 using System.Data;
@@ -145,7 +145,8 @@ namespace Vista
 
         private void AgregarAlDetalle()
         {
-            if (!(cmbProducto.SelectedItem is DataRowView fila))
+            DataRowView? fila = cmbProducto.SelectedItem as DataRowView;
+            if (fila == null || cmbProducto.SelectedIndex < 0)
             {
                 MessageBox.Show(
                     "Debe seleccionar un producto del catálogo.",
