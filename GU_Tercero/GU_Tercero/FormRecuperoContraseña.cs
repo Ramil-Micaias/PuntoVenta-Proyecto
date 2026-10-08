@@ -95,19 +95,34 @@ namespace GU_Tercero
             for (int i = 0; i < cantidad; i++)
             {
                 int idPregunta = Convert.ToInt32(preguntas.Rows[i]["Id_Pregunta"]);
-                string texto = preguntas.Rows[i]["Pregunta"].ToString() ?? string.Empty;
 
                 idsPreguntasCargadas.Add(idPregunta);
 
-                if (!texto.StartsWith("¿"))
-                {
-                    texto = "¿" + texto + "?";
-                }
-
-                AsignarPregunta(i, texto);
+                AsignarPregunta(i, PrepararTextoPregunta(preguntas.Rows[i]["Pregunta"].ToString() ?? string.Empty));
             }
 
             OcultarPreguntasNoUsadas();
+        }
+
+        // Normaliza el texto de la pregunta antes de mostrarlo.
+        // Algunas cargas de la base dejaron un caracter U+00C2 pegado antes del signo
+        // de apertura, y si no se quita se ve "Â¿" y despues se agrega un segundo "?",
+        // dejando la pregunta doble.
+        private static string PrepararTextoPregunta(string texto)
+        {
+            string limpio = texto.Replace("\u00C2", string.Empty).Trim();
+
+            if (!limpio.StartsWith("¿"))
+            {
+                limpio = "¿" + limpio;
+            }
+
+            if (!limpio.EndsWith("?"))
+            {
+                limpio = limpio + "?";
+            }
+
+            return limpio;
         }
 
         private void AsignarPregunta(int indice, string texto)
