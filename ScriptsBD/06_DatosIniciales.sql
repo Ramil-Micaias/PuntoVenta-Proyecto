@@ -204,7 +204,7 @@ BEGIN
         VALUES (
             @IdPersona,
             @IdTipoCorreoPersonal,
-            'pinieroesteban01@gmail.com',
+            'delzorro00@gmail.com',
             0,
             1
         );
@@ -234,7 +234,7 @@ BEGIN
     VALUES (
         'Vendedor',
         'Sistema',
-        '11111111',
+        '33333333',
         GETDATE(),
         '2000-01-01',
         1
@@ -302,7 +302,7 @@ BEGIN
         VALUES (
             @IdPerVend,
             @IdTipoCorreoVend,
-            'vendedor@gmail.com',
+            'delzorro00+1@gmail.com',
             0,
             1
         );
@@ -397,7 +397,7 @@ BEGIN
         VALUES (
             @IdPerTec,
             @IdTipoCorreoTec,
-            'tecnico@gmail.com',
+            'delzorro00+2@gmail.com',
             0,
             1
         );

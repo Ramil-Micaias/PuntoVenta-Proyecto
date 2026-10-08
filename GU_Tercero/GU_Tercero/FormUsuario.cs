@@ -110,18 +110,19 @@ namespace GU_Tercero
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Guarda la primera respuesta.
-            string hash1 = HashHelper.GenerarSHA256(txtRespuestaUno.Text.Trim());
+            // Se usa el helper centralizado para que el hash guardado se pueda validar
+            // después desde la pantalla de recuperación de contraseña.
+            string hash1 = HashHelper.GenerarHashRespuesta(txtRespuestaUno.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 1, hash1);
 
             // Guarda la segunda respuesta.
-            string hash2 = HashHelper.GenerarSHA256(txtRespuestaDos.Text.Trim());
+            string hash2 = HashHelper.GenerarHashRespuesta(txtRespuestaDos.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
 
             // Guarda la tercera respuesta si corresponde.
             if (configuracion.Cantidad_Preguntas == 3)
             {
-                string hash3 = HashHelper.GenerarSHA256(txtRespuestaTres.Text.Trim());
+                string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
                 negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
             }
 

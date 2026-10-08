@@ -381,24 +381,36 @@ namespace Datos
             return tabla;
         }
 
-        //Este método valida si la respuesta de seguridad ingresada coincide con la almacenada para el usuario indicado.
-        public bool ValidarPreguntaSeguridad(string nombreUsuario, int idPregunta, string respuestaHash)
+        // Obtiene el hash de la respuesta de seguridad guardada para el usuario y la pregunta indicados.
+        // Se lee el hash almacenado y la comparación se hace en la capa de negocio porque el
+        // sistema arrastra dos formatos históricos de normalización y hay que aceptar ambos.
+        public string ObtenerHashRespuesta(string nombreUsuario, int idPregunta)
         {
-            using (SqlConnection conexion = new SqlConnection (ConexionBD.cadenaConexion))
+            using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                SqlCommand cmd = new SqlCommand("sp_ValidarPreguntaSeguridad", conexion);
+                string query = @"
+                    SELECT UPS.RespuestaHash
+                    FROM UsuarioPreguntaSeguridad UPS
+                    INNER JOIN Usuario U
+                        ON UPS.Id_Usuario = U.Id_Usuario
+                    WHERE U.Nombre_Usuario = @NombreUsuario
+                      AND UPS.Id_Pregunta = @IdPregunta";
 
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand(query, conexion);
 
                 cmd.Parameters.AddWithValue("@NombreUsuario", nombreUsuario);
                 cmd.Parameters.AddWithValue("@IdPregunta", idPregunta);
-                cmd.Parameters.AddWithValue("@RespuestaHash", respuestaHash);
 
                 conexion.Open();
 
-                SqlDataReader reader = cmd.ExecuteReader();
+                object resultado = cmd.ExecuteScalar();
 
-                return reader.HasRows;
+                if (resultado == null || resultado == DBNull.Value)
+                {
+                    return string.Empty;
+                }
+
+                return resultado.ToString()!;
             }
         }
 

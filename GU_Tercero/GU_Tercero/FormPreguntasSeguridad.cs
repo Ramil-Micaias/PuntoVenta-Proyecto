@@ -53,16 +53,18 @@ namespace GU_Tercero
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Normalización a minúsculas y eliminación de espacios laterales antes de aplicar Hash
-            string hash1 = HashHelper.GenerarSHA256(txtRespuestaUno.Text.Trim().ToLower());
+            // El hash se genera siempre con el helper centralizado: acá y en la pantalla de
+            // recuperación tienen que aplicar exactamente la misma normalización, o el hash
+            // guardado nunca va a coincidir con el hash calculado al validar.
+            string hash1 = HashHelper.GenerarHashRespuesta(txtRespuestaUno.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 1, hash1);
 
-            string hash2 = HashHelper.GenerarSHA256(txtRespuestaDos.Text.Trim().ToLower());
+            string hash2 = HashHelper.GenerarHashRespuesta(txtRespuestaDos.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
 
             if (configuracion.Cantidad_Preguntas == 3)
             {
-                string hash3 = HashHelper.GenerarSHA256(txtRespuestaTres.Text.Trim().ToLower());
+                string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
                 negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
             }
 
