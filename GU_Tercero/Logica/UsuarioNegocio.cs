@@ -3,6 +3,8 @@ using Datos.Entidades;
 using Logica.Seguridad;
 using Seguridad;
 using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Logica
 {
@@ -92,25 +94,63 @@ namespace Logica
             return usuarioDAO.ObtenerRoles();
         }
 
-        //// Genera una contraseña temporal de 8 caracteres utilizando letras y números.
-        // Esta contraseña será utilizada en el primer ingreso del usuario al sistema.
-        private string GenerarPasswordTemporal()
+        //// Genera una contraseña temporal que cumple con la política de seguridad vigente.
+        // Antes generaba 8 caracteres al azar sin importar la configuración: si el sistema
+        // exigía mayúscula, número o carácter especial, la contraseña enviada podía incumplirla.
+        private string GenerarPasswordTemporal(ConfiguracionSistema configuracion)
         {
-            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string mayusculas = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            const string minusculas = "abcdefghijkmnopqrstuvwxyz";
+            const string numeros = "23456789";
+            const string especiales = "@#$%&*?";
 
-            //Crea un objeto que genera números aleatorios.
-            Random random = new Random();
+            StringBuilder pool = new StringBuilder();
+            List<char> obligatorios = new List<char>();
 
-            string password = "";
+            pool.Append(minusculas);
+            obligatorios.Add(Character(minusculas));
 
-            //Crea un ciclo que se repetirá 8 veces. Porque queremos una contraseña de 8 caracteres.
-            for (int i = 0; i < 8; i++)
+            if (configuracion.Requiere_Mayusculas)
             {
-                //elige una posición aleatoria.
-                password += caracteres[random.Next(caracteres.Length)];
+                pool.Append(mayusculas);
+                obligatorios.Add(Character(mayusculas));
             }
 
-            return password;
+            if (configuracion.Requiere_Numeros)
+            {
+                pool.Append(numeros);
+                obligatorios.Add(Character(numeros));
+            }
+
+            if (configuracion.Requiere_Especial)
+            {
+                pool.Append(especiales);
+                obligatorios.Add(Character(especiales));
+            }
+
+            int longitud = Math.Max(configuracion.Min_Caracteres, obligatorios.Count + 4);
+
+            char[] password = new char[longitud];
+
+            for (int i = 0; i < longitud; i++)
+            {
+                password[i] = Character(pool.ToString());
+            }
+
+            // Se reemplazan las primeras posiciones por los caracteres obligatorios
+            // para garantizar que la contraseña cumpla con la configuración.
+            for (int i = 0; i < obligatorios.Count; i++)
+            {
+                password[i] = obligatorios[i];
+            }
+
+            return new string(password);
+        }
+
+        // Elige un carácter al azar de forma criptográficamente segura.
+        private static char Character(string conjunto)
+        {
+            return conjunto[RandomNumberGenerator.GetInt32(conjunto.Length)];
         }
 
         public bool ExisteDni(string dni)
@@ -128,7 +168,7 @@ namespace Logica
             }
 
             // 2. Proceso normal
-            string passwordTemporal = GenerarPasswordTemporal();
+            string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
 
             string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + passwordTemporal);
 
@@ -158,34 +198,83 @@ namespace Logica
             return usuarioDAO.ObtenerPreguntasUsuario(nombreUsuario);
         }
 
-        // Este método genera el hash SHA256 de la respuesta ingresada y solicita su validación a la capa de datos.
+        // Este método valida la respuesta de seguridad ingresada contra la guardada para el usuario.
+        // Se aceptan los dos formatos de hash del sistema: el actual (normalizado a minúsculas)
+        // y el histórico de las pantallas que guardaban la respuesta sin normalizar. Sin esto,
+        // los usuarios dados de alta por el administrador nunca podían recuperar su contraseña.
         public bool ValidarPreguntaSeguridad(string nombreUsuario, int idPregunta, string respuesta)
         {
-            string respuestaHash = SeguridadHelper.GenerarSHA256(respuesta.Trim());
+            string hashGuardado = usuarioDAO.ObtenerHashRespuesta(nombreUsuario, idPregunta);
 
-            return usuarioDAO.ValidarPreguntaSeguridad(nombreUsuario, idPregunta, respuestaHash);
+            if (string.IsNullOrEmpty(hashGuardado))
+            {
+                return false;
+            }
+
+            if (HashHelper.CompararHashSeguro(hashGuardado, HashHelper.GenerarHashRespuesta(respuesta)))
+            {
+                return true;
+            }
+
+            return HashHelper.CompararHashSeguro(hashGuardado, HashHelper.GenerarHashRespuestaLegado(respuesta));
         }
 
-        // Este método genera una nueva contraseña temporal, la encripta, actualiza la base de datos y la envía
-        // al correo registrado del usuario.
-        public string RecuperarPassword(string nombreUsuario)
+        // Este método genera una nueva contraseña temporal, la encripta y la envía al correo
+        // registrado del usuario. El orden es intencional: primero se envía el correo y solo
+        // después se guarda el hash en la base. Así, si el servidor de correo falla, la cuenta
+        // conserva su contraseña anterior y el usuario no queda bloqueado sin acceso.
+        public ResultadoRecuperacionPassword RecuperarPassword(string nombreUsuario)
         {
-            //Genera una contraseña aleatoria
-            string passwordTemporal = GenerarPasswordTemporal();
+            ResultadoRecuperacionPassword resultado = new ResultadoRecuperacionPassword();
 
-            //La encripta
-            string passwordHash = SeguridadHelper.GenerarSHA256(nombreUsuario + passwordTemporal);
+            Usuario usuario = usuarioDAO.Login(nombreUsuario);
 
-            //Actualiza la base
-            usuarioDAO.ReestablecerPassword(nombreUsuario, passwordHash);
+            if (usuario == null || !usuario.Activo || usuario.Bloqueado)
+            {
+                resultado.Error = "El usuario no existe, está inactivo o se encuentra bloqueado.";
 
-            //Obtiene el correo
+                return resultado;
+            }
+
             string correo = usuarioDAO.ObtenerCorreoUsuario(nombreUsuario);
 
-            //Envía el correo
-            EmailHelper.EnviarCorreo(correo, "Recuperación de contraseña", "Su nueva contraseña temporal es: " + passwordTemporal);
+            if (string.IsNullOrWhiteSpace(correo))
+            {
+                resultado.Error = "El usuario no tiene un correo electrónico registrado y activo. "
+                    + "Debe solicitar al administrador que registre su correo para poder recuperar la contraseña.";
 
-            return passwordTemporal;
+                return resultado;
+            }
+
+            // Se genera una contraseña que cumple con la política de seguridad configurada.
+            string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
+
+            string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + passwordTemporal);
+
+            string cuerpo = "Hola " + usuario.Nombre_Usuario + "," + Environment.NewLine + Environment.NewLine
+                + "Se solicitó el restablecimiento de su contraseña." + Environment.NewLine
+                + "Su contraseña temporal es: " + passwordTemporal + Environment.NewLine + Environment.NewLine
+                + "Por seguridad, al ingresar con esta contraseña el sistema le solicitará definir una nueva.";
+
+            ResultadoEnvioEmail envio = EmailHelper.EnviarCorreo(correo, "Recuperación de contraseña - Punto Venta", cuerpo);
+
+            if (!envio.Enviado)
+            {
+                // No se toca la base: el usuario conserva su contraseña actual y el formulario
+                // le muestra la contraseña temporal por pantalla para que no quede sin acceso.
+                resultado.Error = envio.Error;
+                resultado.PasswordTemporalParaMostrar = passwordTemporal;
+
+                return resultado;
+            }
+
+            usuarioDAO.ReestablecerPassword(nombreUsuario, passwordHash);
+            usuarioDAO.RegistrarHistorialPassword(usuario.Id_Usuario, passwordHash);
+
+            resultado.Exitoso = true;
+            resultado.CorreoDestinatario = correo;
+
+            return resultado;
         }
 
         // Obtiene el correo electrónico asociado al usuario.
