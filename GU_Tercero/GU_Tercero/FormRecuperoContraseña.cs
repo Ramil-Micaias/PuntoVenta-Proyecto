@@ -14,6 +14,7 @@ namespace GU_Tercero
         private List<int> idsPreguntasCargadas = new List<int>();
         private string? avisoSinPreguntas;
         private int intentosFallidos = 0;
+        private bool operacionEnCurso = false;
         private const int MaximoIntentos = 3;
 
         public FormRecuperoContraseña()
@@ -30,6 +31,13 @@ namespace GU_Tercero
             configuracion = configuracionNegocio.ObtenerConfiguracion();
 
             OcultarPreguntas();
+
+            // Ambos botones quedan visibles desde el arranque; el de validar se
+            // deshabilita solo hasta que se carguen las preguntas del usuario.
+            btnValidar.Visible = true;
+            btnValidar.Enabled = false;
+            btnCancelar.Visible = true;
+            ReubicarControles();
 
             txtNombreUsuario.Focus();
         }
@@ -80,8 +88,6 @@ namespace GU_Tercero
                 // usuario sale del campo o presiona Enter, y el aviso se repite molesto.
                 avisoSinPreguntas = "El usuario no tiene preguntas de seguridad configuradas, por lo que no puede recuperar la contraseña. "
                     + "Debe solicitar al administrador que las configure.";
-
-                btnValidar.Enabled = false;
 
                 return;
             }
@@ -163,7 +169,11 @@ namespace GU_Tercero
             lblPregunta3.Visible = mostrarTercera;
             txtRespuesta3.Visible = mostrarTercera;
 
-            btnValidar.Visible = mostrarPrimera;
+            // Los dos botones quedan siempre visibles. Ocultar el de validar dejaba la
+            // pantalla inicial con un solo boton, y se lee como que al formulario le
+            // falta algo. Se deshabilita hasta que haya preguntas cargadas para validar.
+            btnValidar.Visible = true;
+            btnValidar.Enabled = mostrarPrimera && !operacionEnCurso;
 
             ReubicarControles();
         }
@@ -180,7 +190,9 @@ namespace GU_Tercero
             const int anchoDisponible = 660;
             const int separacion = 26;
 
-            int y = 152;
+            // Cuando no hay preguntas para mostrar los botones igual tienen que estar
+            // visibles, asi que se los ubica debajo del campo de usuario.
+            int y = etiquetas[0].Visible ? 152 : 158;
 
             for (int i = 0; i < etiquetas.Length; i++)
             {
@@ -200,11 +212,8 @@ namespace GU_Tercero
                 y += campos[i].Height + separacion;
             }
 
-            if (btnValidar.Visible)
-            {
-                btnValidar.Location = new Point(margenIzquierdo, y);
-                btnCancelar.Location = new Point(margenIzquierdo + 215, y);
-            }
+            btnValidar.Location = new Point(margenIzquierdo, y);
+            btnCancelar.Location = new Point(margenIzquierdo + 215, y);
         }
 
         private void btnValidar_Click(object sender, EventArgs e)
@@ -229,6 +238,14 @@ namespace GU_Tercero
                 {
                     MessageBox.Show(avisoSinPreguntas, "Recuperación no disponible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+                else
+                {
+                    MessageBox.Show(
+                        "Complete el nombre de usuario y presione Tab o Enter para cargar sus preguntas de seguridad.",
+                        "Recuperación de contraseña",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
 
                 return;
             }
@@ -245,6 +262,7 @@ namespace GU_Tercero
                 }
             }
 
+            operacionEnCurso = true;
             btnValidar.Enabled = false;
             Cursor = Cursors.WaitCursor;
 
@@ -306,6 +324,8 @@ namespace GU_Tercero
             {
                 // El formulario se cierra solo cuando la recuperación termina bien, así que
                 // se chequea que siga vivo antes de volver a tocar los controles.
+                operacionEnCurso = false;
+
                 if (!IsDisposed)
                 {
                     Cursor = Cursors.Default;
