@@ -22,7 +22,43 @@ namespace GU_Tercero
             InitializeComponent();
 
             txtNombreUsuario.Leave += txtNombreUsuario_Leave;
-            txtNombreUsuario.KeyDown += txtNombreUsuario_KeyDown;
+
+            // El Enter se atiende a nivel del formulario con ProcessDialogKey y no con el
+            // evento KeyDown del TextBox. Con AcceptButton configurado, Windows se come la
+            // tecla Enter cuando el boton esta deshabilitado y el KeyDown nunca se dispara,
+            // por lo que escribir el usuario y apretar Enter no cargaba las preguntas.
+            // En cambio Tab si dispara el Leave y por eso funcionaba solo de esa forma.
+        }
+
+        // Intercepta Enter antes que Windows. En el campo de usuario carga las preguntas
+        // y en los campos de respuesta valida, que es lo que se espera al apretar Enter.
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                if (txtNombreUsuario.Focused)
+                {
+                    CargarPreguntasDelUsuario();
+
+                    if (idsPreguntasCargadas.Count > 0)
+                    {
+                        txtRespuesta1.Focus();
+                    }
+
+                    return true;
+                }
+
+                if (txtRespuesta1.Focused || txtRespuesta2.Focused || txtRespuesta3.Focused)
+                {
+                    if (btnValidar.Enabled)
+                    {
+                        btnValidar.PerformClick();
+                        return true;
+                    }
+                }
+            }
+
+            return base.ProcessDialogKey(keyData);
         }
 
         private void FormRecuperoContraseña_Load(object sender, EventArgs e)
@@ -48,21 +84,6 @@ namespace GU_Tercero
         private void txtNombreUsuario_Leave(object? sender, EventArgs e)
         {
             CargarPreguntasDelUsuario();
-        }
-
-        private void txtNombreUsuario_KeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-
-                CargarPreguntasDelUsuario();
-
-                if (idsPreguntasCargadas.Count > 0)
-                {
-                    txtRespuesta1.Focus();
-                }
-            }
         }
 
         private void CargarPreguntasDelUsuario()

@@ -171,7 +171,9 @@ namespace GU_Tercero
             // 
             // FormRecuperoContraseña
             // 
-            AcceptButton = btnValidar;
+            // No se define AcceptButton: mientras el boton de validar este deshabilitado,
+            // Windows intercepta la tecla Enter y nunca llega al formulario. El Enter se
+            // resuelve en ProcessDialogKey, en FormRecuperoContraseña.cs.
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
