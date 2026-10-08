@@ -36,6 +36,7 @@
             btnGuardar = new Button();
             btnModificar = new Button();
             btnNuevo = new Button();
+            btnVolverMenu = new Button();
             txtDireccion = new TextBox();
             lblDireccion = new Label();
             txtEmail = new TextBox();
@@ -79,6 +80,7 @@
             // 
             // grpDetalleProveedores
             // 
+            grpDetalleProveedores.Controls.Add(btnVolverMenu);
             grpDetalleProveedores.Controls.Add(btnEliminar);
             grpDetalleProveedores.Controls.Add(btnGuardar);
             grpDetalleProveedores.Controls.Add(btnModificar);
@@ -97,10 +99,25 @@
             grpDetalleProveedores.ForeColor = Color.FromArgb(15, 23, 42);
             grpDetalleProveedores.Location = new Point(16, 260);
             grpDetalleProveedores.Name = "grpDetalleProveedores";
-            grpDetalleProveedores.Size = new Size(768, 175);
+            grpDetalleProveedores.Size = new Size(768, 210);
             grpDetalleProveedores.TabIndex = 1;
             grpDetalleProveedores.TabStop = false;
             grpDetalleProveedores.Text = "Detalle de Proveedores";
+            // 
+            // btnVolverMenu
+            // 
+            btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
+            btnVolverMenu.FlatAppearance.BorderSize = 0;
+            btnVolverMenu.FlatStyle = FlatStyle.Flat;
+            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnVolverMenu.ForeColor = Color.White;
+            btnVolverMenu.Location = new Point(610, 165);
+            btnVolverMenu.Name = "btnVolverMenu";
+            btnVolverMenu.Size = new Size(140, 30);
+            btnVolverMenu.TabIndex = 14;
+            btnVolverMenu.Text = "Volver";
+            btnVolverMenu.UseVisualStyleBackColor = false;
+            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // btnEliminar
             // 
@@ -269,7 +286,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 490);
             Controls.Add(lblProveedoresRegistrados);
             Controls.Add(grpDetalleProveedores);
             Controls.Add(dgvProveedores);
@@ -303,5 +320,6 @@
         private Button btnEliminar;
         private Button btnGuardar;
         private Label lblProveedoresRegistrados;
+        private Button btnVolverMenu;
     }
 }

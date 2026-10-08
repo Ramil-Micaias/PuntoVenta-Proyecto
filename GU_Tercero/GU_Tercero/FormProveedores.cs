@@ -241,5 +241,12 @@ namespace Vista
         {
             LimpiarControles();
         }
+
+        // Cierra el formulario y devuelve el control al menú principal, que reaparece
+        // solo porque FormMenu abre este form con ShowDialog. Igual que en Productos.
+        private void btnVolverMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
