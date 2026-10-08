@@ -234,7 +234,7 @@ BEGIN
     VALUES (
         'Vendedor',
         'Sistema',
-        '11111111',
+        '33333333',
         GETDATE(),
         '2000-01-01',
         1
