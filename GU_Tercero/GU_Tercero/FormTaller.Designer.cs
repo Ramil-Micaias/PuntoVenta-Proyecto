@@ -86,7 +86,7 @@
             grpRecepciónCliente.Controls.Add(lblCliente);
             grpRecepciónCliente.Location = new Point(2, 2);
             grpRecepciónCliente.Name = "grpRecepciónCliente";
-            grpRecepciónCliente.Size = new Size(797, 112);
+            grpRecepciónCliente.Size = new Size(797, 110);
             grpRecepciónCliente.TabIndex = 0;
             grpRecepciónCliente.TabStop = false;
             grpRecepciónCliente.Text = "Recepción y Cliente";
@@ -201,9 +201,9 @@
             groupBox1.Controls.Add(lblDiagnosticoTecnico);
             groupBox1.Controls.Add(lblPatronClave);
             groupBox1.Controls.Add(lblFallaDeclarada);
-            groupBox1.Location = new Point(2, 112);
+            groupBox1.Location = new Point(2, 114);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(797, 79);
+            groupBox1.Size = new Size(797, 73);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Diagnóstico y Falla";
@@ -274,9 +274,9 @@
             grpPresupuestoRepuestos.Controls.Add(lblCantidad);
             grpPresupuestoRepuestos.Controls.Add(lblPrecio);
             grpPresupuestoRepuestos.Controls.Add(lblRepuesto);
-            grpPresupuestoRepuestos.Location = new Point(2, 185);
+            grpPresupuestoRepuestos.Location = new Point(2, 189);
             grpPresupuestoRepuestos.Name = "grpPresupuestoRepuestos";
-            grpPresupuestoRepuestos.Size = new Size(797, 265);
+            grpPresupuestoRepuestos.Size = new Size(797, 261);
             grpPresupuestoRepuestos.TabIndex = 2;
             grpPresupuestoRepuestos.TabStop = false;
             grpPresupuestoRepuestos.Text = "Presupuesto y Repuestos";
@@ -314,6 +314,7 @@
             btnCancelar.TabIndex = 10;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // txtToalPresupuesto
             // 
