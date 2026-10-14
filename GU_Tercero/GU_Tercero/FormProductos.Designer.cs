@@ -35,7 +35,7 @@
             txtBuscar = new TextBox();
             lblBuscar = new Label();
             panel1 = new Panel();
-            btnVolverMenu = new Button();
+
             txtStockMinimo = new TextBox();
             lblStockMinimo = new Label();
             txtNombreProducto = new TextBox();
@@ -140,7 +140,6 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(241, 245, 249);
-            panel1.Controls.Add(btnVolverMenu);
             panel1.Controls.Add(txtStockMinimo);
             panel1.Controls.Add(lblStockMinimo);
             panel1.Controls.Add(txtNombreProducto);
@@ -160,21 +159,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(765, 170);
             panel1.TabIndex = 4;
-            // 
-            // btnVolverMenu
-            // 
-            btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
-            btnVolverMenu.FlatAppearance.BorderSize = 0;
-            btnVolverMenu.FlatStyle = FlatStyle.Flat;
-            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnVolverMenu.ForeColor = Color.White;
-            btnVolverMenu.Location = new Point(610, 115);
-            btnVolverMenu.Name = "btnVolverMenu";
-            btnVolverMenu.Size = new Size(140, 30);
-            btnVolverMenu.TabIndex = 11;
-            btnVolverMenu.Text = "Volver";
-            btnVolverMenu.UseVisualStyleBackColor = false;
-            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // txtStockMinimo
             // 
@@ -532,6 +516,5 @@
         private TextBox txtStockMinimo;
         private Label lblStockMinimo;
         private Label lblCatalogoExistencia;
-        private Button btnVolverMenu;
     }
 }

@@ -132,10 +132,5 @@ namespace GU_Tercero
             txtRespuestaDos.Clear();
             txtRespuestaTres.Clear();
         }
-
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
     }
 }

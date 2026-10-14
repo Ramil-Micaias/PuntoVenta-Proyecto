@@ -179,10 +179,6 @@ namespace GU_Tercero
             }
         }
 
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
         private void cmbRol_SelectedIndexChanged(object sender, EventArgs e)
         {
 
