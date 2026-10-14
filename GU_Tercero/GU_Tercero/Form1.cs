@@ -33,43 +33,27 @@ namespace GU_Tercero
         // Abre el menú principal según el rol del usuario.
         private void AbrirMenu(Usuario usuario)
         {
-            if (usuario.Nombre_Rol == "Administrador" || usuario.Nombre_Rol == "Vendedor" || usuario.Nombre_Rol == "Tecnico")
+            // Todas las pantallas quedan dentro del menú general, que muestra la cabecera y la
+            // barra de secciones siempre arriba. El rol decide qué secciones se pueden abrir.
+            FormMenu menu = new FormMenu(usuario);
+
+            // Al cerrar el menú, volvemos a mostrar la pantalla de Login limpia (o la cerramos si fue por X)
+            menu.FormClosed += (s, args) =>
             {
-                FormMenu menu = new FormMenu(usuario);
-
-                // Al cerrar el menú, volvemos a mostrar la pantalla de Login limpia (o la cerramos si fue por X)
-                menu.FormClosed += (s, args) =>
-                {
-                    if (menu.EsCierreSesion)
-                    {
-                        txtUsuario.Clear();
-                        txtPassword.Clear();
-                        this.Show();
-                    }
-                    else
-                    {
-                        this.Close();
-                    }
-                };
-
-                menu.Show();
-                this.Hide();
-            }
-            else
-            {
-                FormUsuario formUsuario = new FormUsuario(usuario);
-
-                // Si la vista de usuario no es el menú principal, al cerrarla volvemos al login
-                formUsuario.FormClosed += (s, args) =>
+                if (menu.EsCierreSesion)
                 {
                     txtUsuario.Clear();
                     txtPassword.Clear();
                     this.Show();
-                };
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
 
-                formUsuario.Show();
-                this.Hide();
-            }
+            menu.Show();
+            this.Hide();
         }
 
         private void btnIngresar_Click_1(object sender, EventArgs e)
@@ -132,27 +116,7 @@ namespace GU_Tercero
 
         private void CargarLogo()
         {
-            try
-            {
-                string[] rutasPosibles = new string[]
-                {
-                    System.IO.Path.Combine(Application.StartupPath, "loguito trtansparente.png"),
-                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\loguito trtansparente.png"),
-                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\loguito trtansparente.png"),
-                    @"C:\Users\LanzceTest\Desktop\github isft\loguito trtansparente.png"
-                };
-
-                foreach (string ruta in rutasPosibles)
-                {
-                    if (System.IO.File.Exists(ruta))
-                    {
-                        picLogo.Image = System.Drawing.Image.FromFile(ruta);
-                        picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-                        break;
-                    }
-                }
-            }
-            catch { }
+            Recursos.CargarLogo(picLogo, PictureBoxSizeMode.Zoom);
         }
 
         private void llb_OlvidoContraseña_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
