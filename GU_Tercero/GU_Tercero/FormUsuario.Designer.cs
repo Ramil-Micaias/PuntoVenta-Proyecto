@@ -53,7 +53,6 @@ namespace GU_Tercero
             lblPreguntaDos = new Label();
             txtRespuestaUno = new TextBox();
             lblPreguntaUno = new Label();
-            btnCerrarSesion = new Button();
             lblMensaje = new Label();
             label1 = new Label();
             grpInformacionUsuario.SuspendLayout();
@@ -262,18 +261,6 @@ namespace GU_Tercero
             lblPreguntaUno.TabIndex = 0;
             lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
             // 
-            // btnCerrarSesion
-            // 
-            btnCerrarSesion.Anchor = AnchorStyles.None;
-            btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCerrarSesion.Location = new Point(572, 471);
-            btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new Size(90, 23);
-            btnCerrarSesion.TabIndex = 6;
-            btnCerrarSesion.Text = "Cerrar Sesion";
-            btnCerrarSesion.UseVisualStyleBackColor = true;
-            btnCerrarSesion.Click += btnCerrarSesion_Click;
-            // 
             // lblMensaje
             // 
             lblMensaje.Anchor = AnchorStyles.None;
@@ -304,7 +291,6 @@ namespace GU_Tercero
             ClientSize = new Size(708, 500);
             Controls.Add(label1);
             Controls.Add(lblMensaje);
-            Controls.Add(btnCerrarSesion);
             Controls.Add(grpPreguntasSeguridad);
             Controls.Add(grpCambiarContraseña);
             Controls.Add(grpInformacionUsuario);
@@ -346,7 +332,6 @@ namespace GU_Tercero
         private Label lblPreguntaDos;
         private TextBox txtRespuestaUno;
         private Label lblPreguntaUno;
-        private Button btnCerrarSesion;
         private Label lblMensaje;
         private Label label1;
     }

@@ -36,7 +36,6 @@
             btnGuardar = new Button();
             btnModificar = new Button();
             btnNuevo = new Button();
-            btnVolverMenu = new Button();
             txtDireccion = new TextBox();
             lblDireccion = new Label();
             txtEmail = new TextBox();
@@ -80,7 +79,6 @@
             // 
             // grpDetalleProveedores
             // 
-            grpDetalleProveedores.Controls.Add(btnVolverMenu);
             grpDetalleProveedores.Controls.Add(btnEliminar);
             grpDetalleProveedores.Controls.Add(btnGuardar);
             grpDetalleProveedores.Controls.Add(btnModificar);
@@ -103,21 +101,6 @@
             grpDetalleProveedores.TabIndex = 1;
             grpDetalleProveedores.TabStop = false;
             grpDetalleProveedores.Text = "Detalle de Proveedores";
-            // 
-            // btnVolverMenu
-            // 
-            btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
-            btnVolverMenu.FlatAppearance.BorderSize = 0;
-            btnVolverMenu.FlatStyle = FlatStyle.Flat;
-            btnVolverMenu.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnVolverMenu.ForeColor = Color.White;
-            btnVolverMenu.Location = new Point(610, 165);
-            btnVolverMenu.Name = "btnVolverMenu";
-            btnVolverMenu.Size = new Size(140, 30);
-            btnVolverMenu.TabIndex = 14;
-            btnVolverMenu.Text = "Volver";
-            btnVolverMenu.UseVisualStyleBackColor = false;
-            btnVolverMenu.Click += btnVolverMenu_Click;
             // 
             // btnEliminar
             // 
@@ -320,6 +303,5 @@
         private Button btnEliminar;
         private Button btnGuardar;
         private Label lblProveedoresRegistrados;
-        private Button btnVolverMenu;
     }
 }

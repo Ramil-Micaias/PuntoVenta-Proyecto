@@ -52,7 +52,6 @@
             lblCorreo = new Label();
             btnGuardar = new Button();
             lblTitulo = new Label();
-            btnCerrarSesion = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             SuspendLayout();
             // 
@@ -315,24 +314,12 @@
             lblTitulo.TabIndex = 23;
             lblTitulo.Text = "Gestión Administrador";
             // 
-            // btnCerrarSesion
-            // 
-            btnCerrarSesion.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCerrarSesion.Location = new Point(12, 415);
-            btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new Size(87, 23);
-            btnCerrarSesion.TabIndex = 24;
-            btnCerrarSesion.Text = "Cerrar Sesion";
-            btnCerrarSesion.UseVisualStyleBackColor = true;
-            btnCerrarSesion.Click += btnCerrarSesion_Click;
-            // 
             // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(800, 450);
-            Controls.Add(btnCerrarSesion);
             Controls.Add(lblTitulo);
             Controls.Add(btnGuardar);
             Controls.Add(lblCorreo);
@@ -392,6 +379,5 @@
         private Label lblCorreo;
         private Button btnGuardar;
         private Label lblTitulo;
-        private Button btnCerrarSesion;
     }
 }
