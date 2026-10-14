@@ -44,7 +44,7 @@ namespace GU_Tercero
             this.pnlMarca = new Panel();
             this.pnlMarcaTexto = new Panel();
             this.lblSubtitulo = new Label();
-            this.lblMarca = new Label();
+            this.picLogo = new PictureBox();
             this.pnlContenido.SuspendLayout();
             this.pnlBarraSecciones.SuspendLayout();
             this.pnlCabecera.SuspendLayout();
@@ -53,6 +53,7 @@ namespace GU_Tercero
             this.pnlSistema.SuspendLayout();
             this.pnlMarca.SuspendLayout();
             this.pnlMarcaTexto.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)this.picLogo).BeginInit();
             this.SuspendLayout();
             //
             // pnlContenido
@@ -221,21 +222,22 @@ namespace GU_Tercero
             //
             this.pnlMarca.BackColor = Tema.CabeceraFondo;
             this.pnlMarca.Controls.Add(this.pnlMarcaTexto);
+            this.pnlMarca.Controls.Add(this.picLogo);
             this.pnlMarca.Dock = DockStyle.Left;
             this.pnlMarca.Location = new Point(0, 0);
             this.pnlMarca.Name = "pnlMarca";
             this.pnlMarca.Padding = new Padding(24, 0, 0, 0);
-            this.pnlMarca.Size = new Size(300, 74);
+            this.pnlMarca.Size = new Size(340, 74);
             this.pnlMarca.TabIndex = 0;
             //
             // pnlMarcaTexto
             //
             this.pnlMarcaTexto.Controls.Add(this.lblSubtitulo);
-            this.pnlMarcaTexto.Controls.Add(this.lblMarca);
             this.pnlMarcaTexto.Dock = DockStyle.Fill;
-            this.pnlMarcaTexto.Location = new Point(24, 0);
+            this.pnlMarcaTexto.Location = new Point(174, 0);
             this.pnlMarcaTexto.Name = "pnlMarcaTexto";
-            this.pnlMarcaTexto.Size = new Size(276, 74);
+            this.pnlMarcaTexto.Padding = new Padding(14, 0, 0, 0);
+            this.pnlMarcaTexto.Size = new Size(166, 74);
             this.pnlMarcaTexto.TabIndex = 1;
             //
             // lblSubtitulo
@@ -243,24 +245,24 @@ namespace GU_Tercero
             this.lblSubtitulo.Dock = DockStyle.Fill;
             this.lblSubtitulo.Font = Tema.FuenteSubtitulo;
             this.lblSubtitulo.ForeColor = Tema.CabeceraSubtitulo;
-            this.lblSubtitulo.Location = new Point(0, 32);
+            this.lblSubtitulo.Location = new Point(14, 0);
             this.lblSubtitulo.Name = "lblSubtitulo";
-            this.lblSubtitulo.Size = new Size(276, 42);
-            this.lblSubtitulo.TabIndex = 1;
+            this.lblSubtitulo.Size = new Size(152, 74);
+            this.lblSubtitulo.TabIndex = 0;
             this.lblSubtitulo.Text = "Gestión de ventas, stock y taller";
             this.lblSubtitulo.TextAlign = ContentAlignment.MiddleLeft;
             //
-            // lblMarca
+            // picLogo
             //
-            this.lblMarca.Dock = DockStyle.Top;
-            this.lblMarca.Font = Tema.FuenteMarca;
-            this.lblMarca.ForeColor = Tema.CabeceraTitulo;
-            this.lblMarca.Location = new Point(0, 0);
-            this.lblMarca.Name = "lblMarca";
-            this.lblMarca.Size = new Size(276, 32);
-            this.lblMarca.TabIndex = 0;
-            this.lblMarca.Text = "AplBigstore";
-            this.lblMarca.TextAlign = ContentAlignment.MiddleLeft;
+            // El logo ya trae el nombre adentro, así que no se repite el texto al lado.
+            this.picLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picLogo.Dock = DockStyle.Left;
+            this.picLogo.Location = new Point(24, 0);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new Size(150, 74);
+            this.picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
             //
             // FormMenu
             //
@@ -285,6 +287,7 @@ namespace GU_Tercero
             this.pnlSistema.ResumeLayout(false);
             this.pnlMarca.ResumeLayout(false);
             this.pnlMarcaTexto.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)this.picLogo).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -306,6 +309,6 @@ namespace GU_Tercero
         private Panel pnlMarca;
         private Panel pnlMarcaTexto;
         private Label lblSubtitulo;
-        private Label lblMarca;
+        private PictureBox picLogo;
     }
 }

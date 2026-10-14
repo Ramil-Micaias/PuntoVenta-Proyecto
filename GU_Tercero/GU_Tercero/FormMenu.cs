@@ -52,6 +52,9 @@ namespace GU_Tercero
 
         private void FormMenu_Load(object? sender, EventArgs e)
         {
+            // El archivo del logo viene en negro: sobre la cabecera azul se ve en blanco.
+            Recursos.CargarLogoBlanco(picLogo, PictureBoxSizeMode.Zoom);
+
             CargarDatosCabecera();
 
             AplicarPermisosPorRol();
