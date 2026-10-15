@@ -60,9 +60,6 @@ namespace Logica
 
                 if (item.Precio_Costo_Unitario <= 0)
                     throw new Exception("El costo unitario de " + item.Producto + " debe ser mayor a cero.");
-
-                if (item.Precio_Venta_Sugerido.HasValue && item.Precio_Venta_Sugerido.Value <= 0)
-                    throw new Exception("El precio de venta sugerido de " + item.Producto + " debe ser mayor a cero.");
             }
 
             if (compra.Subtotal <= 0)
