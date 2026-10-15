@@ -36,6 +36,7 @@
             lblPassword = new Label();
             lblTitulo = new Label();
             picLogo = new PictureBox();
+            chkMostrarPassword = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
@@ -85,7 +86,7 @@
             llb_OlvidoContraseña.DisabledLinkColor = Color.Silver;
             llb_OlvidoContraseña.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
             llb_OlvidoContraseña.LinkColor = Color.FromArgb(37, 99, 235);
-            llb_OlvidoContraseña.Location = new Point(275, 195);
+            llb_OlvidoContraseña.Location = new Point(275, 214);
             llb_OlvidoContraseña.Name = "llb_OlvidoContraseña";
             llb_OlvidoContraseña.Size = new Size(130, 15);
             llb_OlvidoContraseña.TabIndex = 3;
@@ -145,6 +146,21 @@
             picLogo.TabIndex = 9;
             picLogo.TabStop = false;
             // 
+            // chkMostrarPassword
+            // 
+            chkMostrarPassword.Anchor = AnchorStyles.None;
+            chkMostrarPassword.AutoSize = true;
+            chkMostrarPassword.BackColor = Color.Transparent;
+            chkMostrarPassword.Font = new Font("Segoe UI", 9F);
+            chkMostrarPassword.ForeColor = Color.FromArgb(30, 41, 59);
+            chkMostrarPassword.Location = new Point(255, 189);
+            chkMostrarPassword.Name = "chkMostrarPassword";
+            chkMostrarPassword.Size = new Size(129, 19);
+            chkMostrarPassword.TabIndex = 4;
+            chkMostrarPassword.Text = "Mostrar contraseña";
+            chkMostrarPassword.UseVisualStyleBackColor = false;
+            chkMostrarPassword.CheckedChanged += chkMostrarPassword_CheckedChanged;
+            // 
             // Form1
             // 
             AcceptButton = btnIngresar;
@@ -152,6 +168,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(680, 388);
+            Controls.Add(chkMostrarPassword);
             Controls.Add(picLogo);
             Controls.Add(lblTitulo);
             Controls.Add(lblPassword);
@@ -182,5 +199,6 @@
         private Label lblPassword;
         private Label lblTitulo;
         private PictureBox picLogo;
+        private CheckBox chkMostrarPassword;
     }
 }

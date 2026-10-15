@@ -23,6 +23,11 @@ namespace GU_Tercero
             }
         }
 
+        private void chkMostrarPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.PasswordChar = chkMostrarPassword.Checked ? '\0' : '*';
+        }
+
         private void LimpiarCampos()
         {
             txtUsuario.Text = string.Empty;
