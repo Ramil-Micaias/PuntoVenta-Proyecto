@@ -150,7 +150,7 @@ namespace GU_Tercero
             btnValidar.Name = "btnValidar";
             btnValidar.Size = new Size(200, 38);
             btnValidar.TabIndex = 5;
-            btnValidar.Text = "Validar Respuestas";
+            btnValidar.Text = "Confirmar";
             btnValidar.UseVisualStyleBackColor = false;
             btnValidar.Click += btnValidar_Click;
             // 
