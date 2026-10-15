@@ -117,10 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Para cambiar su contraseña, ingrese la nueva contraseña, 
-confírmela y haga clic en "Cambiar contraseña". 
-La nueva contraseña deberá cumplir con las 
-políticas de seguridad configuradas por el administrador.</value>
-  </data>
 </root>
