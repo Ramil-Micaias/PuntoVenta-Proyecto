@@ -356,7 +356,8 @@ namespace Vista
         {
             try
             {
-                new GestorProducto().RegistrarCategoria(txtNombreCategoria.Text);
+                GestorProducto gestor = new GestorProducto();
+                gestor.RegistrarCategoria(txtNombreCategoria.Text);
 
                 MessageBox.Show(
                     "Categoría registrada con éxito.",
@@ -382,7 +383,8 @@ namespace Vista
         {
             try
             {
-                new GestorProducto().ModificarCategoria(idCategoriaSeleccionada, txtNombreCategoria.Text);
+                GestorProducto gestor = new GestorProducto();
+                gestor.ModificarCategoria(idCategoriaSeleccionada, txtNombreCategoria.Text);
 
                 MessageBox.Show(
                     "Categoría modificada correctamente.",
@@ -420,7 +422,8 @@ namespace Vista
 
             try
             {
-                new GestorProducto().InactivarCategoria(idCategoriaSeleccionada);
+                GestorProducto gestor = new GestorProducto();
+                gestor.InactivarCategoria(idCategoriaSeleccionada);
 
                 MessageBox.Show(
                     "Categoría eliminada correctamente.",

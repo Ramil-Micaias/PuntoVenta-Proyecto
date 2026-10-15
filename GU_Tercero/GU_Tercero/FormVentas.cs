@@ -62,7 +62,7 @@ namespace Vista
                 grid.DefaultCellStyle.BackColor = Color.White;
                 grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
                 grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-                grid.RowTemplate.Height = 26;
+                grid.RowTemplate.Height = Grillas.AltoFila(grid);
             }
         }
 

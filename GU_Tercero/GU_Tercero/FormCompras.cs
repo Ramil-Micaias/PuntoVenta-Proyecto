@@ -60,7 +60,7 @@ namespace Vista
             dgvDetalle.DefaultCellStyle.BackColor = Color.White;
             dgvDetalle.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
             dgvDetalle.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            dgvDetalle.RowTemplate.Height = 26;
+            dgvDetalle.RowTemplate.Height = Grillas.AltoFila(dgvDetalle);
         }
 
         private void CrearDetalle()

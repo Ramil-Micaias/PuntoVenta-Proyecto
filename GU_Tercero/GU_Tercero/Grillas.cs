@@ -21,14 +21,29 @@ namespace Vista
             grid.GridColor = Color.FromArgb(203, 213, 225);
             grid.EnableHeadersVisualStyles = false;
             grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(15, 23, 42);
             grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             grid.DefaultCellStyle.BackColor = Color.White;
             grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
             grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            grid.RowTemplate.Height = 26;
+            grid.RowTemplate.Height = AltoFila(grid);
 
-            grid.DataBindingComplete += (s, e) => OcultarIds(grid);
+            grid.DataBindingComplete += Grilla_DataBindingComplete;
+        }
+
+        // Alto de fila según la fuente, para que el texto no se corte con escalado de pantalla alto.
+        public static int AltoFila(DataGridView grid)
+        {
+            return grid.DefaultCellStyle.Font.Height + 12;
+        }
+
+        private static void Grilla_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridView grid = (DataGridView)sender;
+
+            OcultarIds(grid);
+            TitulosLegibles(grid);
         }
 
         // Oculta todas las columnas de identificadores internos (Id_...).
@@ -36,9 +51,31 @@ namespace Vista
         {
             foreach (DataGridViewColumn columna in grid.Columns)
             {
-                if (columna.Name.StartsWith("Id_") || columna.Name == "Id")
+                if (columna.Name.StartsWith("Id_"))
                 {
                     columna.Visible = false;
+                }
+            }
+        }
+
+        // Cambia los nombres de columna de la base por títulos legibles.
+        // Ejemplo: "Razon_Social" pasa a "Razon Social".
+        private static void TitulosLegibles(DataGridView grid)
+        {
+            foreach (DataGridViewColumn columna in grid.Columns)
+            {
+                if (columna.HeaderText != columna.Name)
+                {
+                    continue;
+                }
+
+                if (columna.Name == "NombreCategoria")
+                {
+                    columna.HeaderText = "Categoría";
+                }
+                else
+                {
+                    columna.HeaderText = columna.Name.Replace("_", " ");
                 }
             }
         }
