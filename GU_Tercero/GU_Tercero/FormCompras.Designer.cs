@@ -352,7 +352,7 @@ namespace Vista
             MinimumSize = new Size(1000, 620);
             Name = "FormCompras";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CU04: Registro de Compras - Ingreso de Mercadería";
+            Text = "ApIBigStore - Registro de Compras";
             Load += FormCompras_Load;
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();

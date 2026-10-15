@@ -184,7 +184,7 @@ namespace GU_Tercero
             MainMenuStrip = menuStrip1;
             Name = "FormMenu";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormMenu";
+            Text = "ApIBigStore - Sistema de Gestión Integrado";
             Load += FormMenu_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

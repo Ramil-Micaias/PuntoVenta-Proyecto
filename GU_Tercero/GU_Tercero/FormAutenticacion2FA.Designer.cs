@@ -105,7 +105,7 @@
             Controls.Add(lblMensaje);
             Name = "FormAutenticacion2FA";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormAutenticacion2FA";
+            Text = "ApIBigStore - Verificación en Dos Pasos";
             Load += FormAutenticacion2FA_Load;
             ResumeLayout(false);
             PerformLayout();

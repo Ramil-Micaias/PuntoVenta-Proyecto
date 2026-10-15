@@ -172,7 +172,7 @@
             Font = new Font("Segoe UI", 9F);
             Name = "FormPreguntasSeguridad";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Preguntas de Seguridad";
+            Text = "ApIBigStore - Preguntas de Seguridad";
             Load += FormPreguntasSeguridad_Load;
             ResumeLayout(false);
             PerformLayout();

@@ -103,7 +103,7 @@
             Font = new Font("Segoe UI", 9F);
             Name = "FormCambioPassword";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Cambiar Contraseña";
+            Text = "ApIBigStore - Cambiar Contraseña";
             FormClosing += FormCambioPassword_FormClosing;
             Load += FormCambioPassword_Load;
             ResumeLayout(false);

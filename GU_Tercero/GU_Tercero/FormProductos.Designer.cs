@@ -480,7 +480,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tabProductoCategoria);
             Name = "FormProductos";
-            Text = "Gestión de Producto";
+            Text = "ApIBigStore - Producto y Stock";
             Load += FormProductos_Load;
             tabProductoCategoria.ResumeLayout(false);
             tabPage1.ResumeLayout(false);

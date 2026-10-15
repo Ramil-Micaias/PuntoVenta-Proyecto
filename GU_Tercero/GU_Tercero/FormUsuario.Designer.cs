@@ -312,7 +312,7 @@ namespace GU_Tercero
             Margin = new Padding(2, 1, 2, 1);
             Name = "FormUsuario";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormUsuario";
+            Text = "ApIBigStore - Mi Perfil";
             Load += FormUsuario_Load;
             grpInformacionUsuario.ResumeLayout(false);
             grpInformacionUsuario.PerformLayout();

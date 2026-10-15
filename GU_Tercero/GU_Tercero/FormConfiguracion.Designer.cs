@@ -258,7 +258,7 @@
             Controls.Add(lblTitulo);
             Name = "FormConfiguracion";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormConfiguracion";
+            Text = "ApIBigStore - Configuración del Sistema";
             Load += FormConfiguracion_Load;
             grpPolitasSeguridad.ResumeLayout(false);
             grpPolitasSeguridad.PerformLayout();

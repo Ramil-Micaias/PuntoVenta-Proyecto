@@ -407,7 +407,7 @@
             Controls.Add(groupBox1);
             Controls.Add(grpRecepciónCliente);
             Name = "FormTaller";
-            Text = "Taller";
+            Text = "ApIBigStore - Taller";
             Load += FormTaller_Load;
             grpRecepciónCliente.ResumeLayout(false);
             grpRecepciónCliente.PerformLayout();

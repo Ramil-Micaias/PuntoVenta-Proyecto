@@ -359,7 +359,7 @@
             Controls.Add(dgvUsuarios);
             Name = "FormAdmin";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormAdmin";
+            Text = "ApIBigStore - Gestión de Usuarios";
             Load += FormAdmin_Load;
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
             ResumeLayout(false);

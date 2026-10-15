@@ -488,7 +488,7 @@
             MinimumSize = new Size(1000, 620);
             Name = "FormVentas";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CU01: Registro de Ventas - Punto de Venta (POS)";
+            Text = "ApIBigStore - Ventas (POS)";
             Load += FormVentas_Load;
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();

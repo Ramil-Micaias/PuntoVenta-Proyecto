@@ -195,7 +195,7 @@ namespace GU_Tercero
             MaximizeBox = false;
             Name = "FormRecuperoContraseña";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Recuperar Contraseña";
+            Text = "ApIBigStore - Recuperar Contraseña";
             Load += FormRecuperoContraseña_Load;
             ResumeLayout(false);
             PerformLayout();

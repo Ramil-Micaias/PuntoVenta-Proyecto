@@ -293,7 +293,7 @@
             Font = new Font("Segoe UI", 9F);
             Name = "FormProveedores";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestión de Proveedores";
+            Text = "ApIBigStore - Gestión de Proveedores";
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).EndInit();
             grpDetalleProveedores.ResumeLayout(false);
             grpDetalleProveedores.PerformLayout();
