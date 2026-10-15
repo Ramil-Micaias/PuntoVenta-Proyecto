@@ -224,6 +224,7 @@
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
             txtBuscar.Location = new Point(210, 25);
             txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Nombre o código del producto";
             txtBuscar.Size = new Size(190, 24);
             txtBuscar.TabIndex = 1;
             // 

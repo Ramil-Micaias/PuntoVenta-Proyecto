@@ -64,6 +64,7 @@
             txtPassword.Location = new Point(255, 160);
             txtPassword.Margin = new Padding(2, 1, 2, 1);
             txtPassword.Name = "txtPassword";
+            txtPassword.PlaceholderText = "Ingrese su contraseña";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(170, 25);
             txtPassword.TabIndex = 1;
@@ -75,6 +76,7 @@
             txtUsuario.Location = new Point(255, 105);
             txtUsuario.Margin = new Padding(2, 1, 2, 1);
             txtUsuario.Name = "txtUsuario";
+            txtUsuario.PlaceholderText = "Ingrese su usuario";
             txtUsuario.Size = new Size(170, 25);
             txtUsuario.TabIndex = 0;
             // 

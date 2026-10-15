@@ -190,6 +190,7 @@ namespace Vista
             txtCantidad.Font = new Font("Segoe UI", 9.5F);
             txtCantidad.Location = new Point(16, 174);
             txtCantidad.Name = "txtCantidad";
+            txtCantidad.PlaceholderText = "Unidades recibidas. Ej: 10";
             txtCantidad.Size = new Size(398, 24);
             txtCantidad.TabIndex = 5;
             // 
@@ -210,6 +211,7 @@ namespace Vista
             txtCosto.Font = new Font("Segoe UI", 9.5F);
             txtCosto.Location = new Point(16, 112);
             txtCosto.Name = "txtCosto";
+            txtCosto.PlaceholderText = "Costo por unidad. Ej: 12500";
             txtCosto.Size = new Size(398, 24);
             txtCosto.TabIndex = 3;
             // 

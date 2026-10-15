@@ -53,6 +53,7 @@
             txtCodigo.Location = new Point(219, 102);
             txtCodigo.MaxLength = 6;
             txtCodigo.Name = "txtCodigo";
+            txtCodigo.PlaceholderText = "Código recibido por correo";
             txtCodigo.Size = new Size(180, 24);
             txtCodigo.TabIndex = 1;
             txtCodigo.TextAlign = HorizontalAlignment.Center;
