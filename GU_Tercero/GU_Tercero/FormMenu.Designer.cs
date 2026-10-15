@@ -221,10 +221,12 @@ namespace GU_Tercero
             flpAccesos.Controls.Add(btnAccesoTaller);
             flpAccesos.Controls.Add(btnAccesoStock);
             flpAccesos.Controls.Add(btnAccesoCompra);
-            flpAccesos.Dock = DockStyle.Fill;
+            flpAccesos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flpAccesos.Location = new Point(6, 28);
+            flpAccesos.Size = new Size(316, 226);
             flpAccesos.FlowDirection = FlowDirection.TopDown;
             flpAccesos.Name = "flpAccesos";
-            flpAccesos.Padding = new Padding(12, 8, 12, 8);
+            flpAccesos.Padding = new Padding(8);
             flpAccesos.TabIndex = 0;
             flpAccesos.WrapContents = false;
             // 
