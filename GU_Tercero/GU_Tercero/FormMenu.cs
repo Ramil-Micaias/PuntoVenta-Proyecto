@@ -11,10 +11,107 @@ namespace GU_Tercero
         private Usuario usuarioLogueado;
         public bool EsCierreSesion { get; private set; } = false;
 
+        // Valores que muestran los paneles del resumen diario.
+        private Label lblValorVentas = null!;
+        private Label lblDetalleVentas = null!;
+        private Label lblValorTaller = null!;
+        private Label lblValorStock = null!;
+        private Label lblValorCompras = null!;
+        private Label lblDetalleCompras = null!;
+
         public FormMenu(Usuario usuario)
         {
             InitializeComponent();
             usuarioLogueado = usuario;
+            CrearPaneles();
+
+            // Cada vez que se vuelve al menú desde otro formulario se actualizan los totales.
+            this.VisibleChanged += (s, e) =>
+            {
+                if (this.Visible)
+                {
+                    CargarResumen();
+                }
+            };
+        }
+
+        private void CrearPaneles()
+        {
+            lblValorVentas = CrearPanel("VENTAS DEL DÍA", Color.FromArgb(59, 130, 246), 0, 0, out lblDetalleVentas);
+            lblValorTaller = CrearPanel("ÓRDENES DE TALLER", Color.FromArgb(16, 185, 129), 1, 0, out _);
+            lblValorStock = CrearPanel("ALERTAS DE STOCK", Color.FromArgb(239, 68, 68), 0, 1, out _);
+            lblValorCompras = CrearPanel("COMPRAS DEL DÍA", Color.FromArgb(79, 70, 229), 1, 1, out lblDetalleCompras);
+        }
+
+        // Arma un panel de color con título, valor principal y una línea de detalle.
+        private Label CrearPanel(string titulo, Color color, int columna, int fila, out Label detalle)
+        {
+            Panel panel = new Panel
+            {
+                BackColor = color,
+                Dock = DockStyle.Fill,
+                Margin = new Padding(8),
+                Padding = new Padding(20, 18, 20, 18)
+            };
+
+            Label lblTitulo = new Label
+            {
+                Text = titulo,
+                Dock = DockStyle.Top,
+                Height = 28,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold)
+            };
+
+            Label lblValor = new Label
+            {
+                Text = "-",
+                Dock = DockStyle.Top,
+                Height = 50,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 20F, FontStyle.Bold)
+            };
+
+            detalle = new Label
+            {
+                Text = string.Empty,
+                Dock = DockStyle.Top,
+                Height = 24,
+                ForeColor = Color.FromArgb(241, 245, 249),
+                Font = new Font("Segoe UI", 9.5F)
+            };
+
+            // Se agregan al revés porque Dock = Top apila el último arriba.
+            panel.Controls.Add(detalle);
+            panel.Controls.Add(lblValor);
+            panel.Controls.Add(lblTitulo);
+
+            tlpPaneles.Controls.Add(panel, columna, fila);
+            return lblValor;
+        }
+
+        private void CargarResumen()
+        {
+            try
+            {
+                ResumenDiario resumen = new GestorResumen().ObtenerResumenDiario();
+
+                lblValorVentas.Text = "$" + resumen.Total_Ventas_Dia.ToString("N2");
+                lblDetalleVentas.Text = resumen.Cantidad_Ventas_Dia + (resumen.Cantidad_Ventas_Dia == 1 ? " venta registrada" : " ventas registradas");
+                lblValorTaller.Text = resumen.Ordenes_Taller_Activas + (resumen.Ordenes_Taller_Activas == 1 ? " Activa" : " Activas");
+                lblValorStock.Text = resumen.Productos_Stock_Bajo + (resumen.Productos_Stock_Bajo == 1 ? " Producto Bajo" : " Productos Bajos");
+                lblValorCompras.Text = "$" + resumen.Total_Compras_Dia.ToString("N2");
+                lblDetalleCompras.Text = resumen.Cantidad_Compras_Dia + (resumen.Cantidad_Compras_Dia == 1 ? " compra registrada" : " compras registradas");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No se pudo cargar el resumen diario: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void FormMenu_Load(object sender, EventArgs e)
@@ -78,6 +175,12 @@ namespace GU_Tercero
                 miPerfilToolStripMenuItem.Visible = true;
                 cerrarSesionToolStripMenuItem.Visible = true;
             }
+
+            // Los accesos rápidos siguen los mismos permisos que el menú.
+            btnAccesoVenta.Visible = ventasToolStripMenuItem.Available;
+            btnAccesoTaller.Visible = tallerToolStripMenuItem.Available;
+            btnAccesoStock.Visible = productoYStockToolStripMenuItem.Available;
+            btnAccesoCompra.Visible = comprasToolStripMenuItem.Available;
         }
 
         private void CargarLogo()
