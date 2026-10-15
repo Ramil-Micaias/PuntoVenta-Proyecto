@@ -259,7 +259,6 @@ namespace Vista
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             CargarProveedores();
-            LimpiarControles();
         }
 
         // Cierra el formulario y devuelve el control al menú principal, que reaparece

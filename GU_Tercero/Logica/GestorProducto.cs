@@ -47,6 +47,40 @@ namespace Logica
             return productoDAO.BuscarProductos(filtro);
         }
 
+        public void RegistrarCategoria(string nombreCategoria)
+        {
+            productoDAO.RegistrarCategoria(ValidarNombreCategoria(nombreCategoria));
+        }
+
+        public void ModificarCategoria(int idCategoria, string nombreCategoria)
+        {
+            if (idCategoria <= 0)
+                throw new Exception("Debe seleccionar una categoría válida para modificar.");
+
+            productoDAO.ModificarCategoria(idCategoria, ValidarNombreCategoria(nombreCategoria));
+        }
+
+        public void InactivarCategoria(int idCategoria)
+        {
+            if (idCategoria <= 0)
+                throw new Exception("Debe seleccionar una categoría válida.");
+
+            productoDAO.InactivarCategoria(idCategoria);
+        }
+
+        private static string ValidarNombreCategoria(string nombreCategoria)
+        {
+            if (string.IsNullOrWhiteSpace(nombreCategoria))
+                throw new Exception("El nombre de la categoría es obligatorio.");
+
+            nombreCategoria = nombreCategoria.Trim();
+
+            if (nombreCategoria.Length > 50)
+                throw new Exception("El nombre de la categoría no puede superar los 50 caracteres.");
+
+            return nombreCategoria;
+        }
+
         private void ValidarProducto(Producto producto)
         {
             if (producto == null)

@@ -49,7 +49,7 @@ GO
 
 -- =============================================
 -- 3. SP: Buscar Productos
---    Busca solamente por nombre
+--    Busca por nombre del producto o por nombre de su categoría
 -- =============================================
 CREATE OR ALTER PROCEDURE sp_BuscarProductos
     @Filtro NVARCHAR(100)
@@ -72,7 +72,10 @@ BEGIN
     INNER JOIN CategoriaProducto c 
         ON p.Id_Categoria = c.Id_Categoria
     WHERE p.Activo = 1
-      AND p.Nombre_Producto LIKE '%' + @Filtro + '%'
+      AND (
+          p.Nombre_Producto LIKE '%' + @Filtro + '%'
+          OR c.Nombre_Categoria LIKE '%' + @Filtro + '%'
+      )
     ORDER BY p.Nombre_Producto ASC;
 END;
 GO
@@ -318,5 +321,98 @@ BEGIN
     SET Activo = 0
     WHERE Id_Producto = @Id_Producto
       AND Id_Proveedor = @Id_Proveedor;
+END;
+GO
+
+
+-- =============================================
+-- 11. SP: Insertar Categoría
+--     Si existe una categoría inactiva con el mismo nombre, se reactiva.
+-- =============================================
+CREATE OR ALTER PROCEDURE sp_InsertarCategoria
+    @Nombre_Categoria NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM CategoriaProducto
+        WHERE Nombre_Categoria = @Nombre_Categoria
+          AND Activo = 1
+    )
+    BEGIN
+        THROW 50000, 'Ya existe una categoría con ese nombre.', 1;
+    END;
+
+    IF EXISTS (
+        SELECT 1
+        FROM CategoriaProducto
+        WHERE Nombre_Categoria = @Nombre_Categoria
+    )
+    BEGIN
+        UPDATE CategoriaProducto
+        SET Activo = 1
+        WHERE Nombre_Categoria = @Nombre_Categoria;
+
+        RETURN;
+    END;
+
+    INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
+    VALUES (@Nombre_Categoria, 1);
+END;
+GO
+
+
+-- =============================================
+-- 12. SP: Modificar Categoría
+-- =============================================
+CREATE OR ALTER PROCEDURE sp_ModificarCategoria
+    @Id_Categoria INT,
+    @Nombre_Categoria NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM CategoriaProducto
+        WHERE Nombre_Categoria = @Nombre_Categoria
+          AND Id_Categoria <> @Id_Categoria
+    )
+    BEGIN
+        THROW 50000, 'Ya existe otra categoría con ese nombre.', 1;
+    END;
+
+    UPDATE CategoriaProducto
+    SET Nombre_Categoria = @Nombre_Categoria
+    WHERE Id_Categoria = @Id_Categoria;
+END;
+GO
+
+
+-- =============================================
+-- 13. SP: Inactivar Categoría
+--     Baja lógica. No se permite si tiene productos activos.
+-- =============================================
+CREATE OR ALTER PROCEDURE sp_InactivarCategoria
+    @Id_Categoria INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Producto
+        WHERE Id_Categoria = @Id_Categoria
+          AND Activo = 1
+    )
+    BEGIN
+        THROW 50000, 'No se puede eliminar la categoría porque tiene productos activos.', 1;
+    END;
+
+    UPDATE CategoriaProducto
+    SET Activo = 0
+    WHERE Id_Categoria = @Id_Categoria;
 END;
 GO
