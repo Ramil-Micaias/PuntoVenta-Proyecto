@@ -226,10 +226,15 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
+    SELECT 
         Id_Proveedor,
         Razon_Social,
-        CUIT
+        CUIT,
+        Telefono,
+        Email,
+        Direccion,
+        Fecha_Alta,
+        Activo
     FROM Proveedor
     WHERE Activo = 1
     ORDER BY Razon_Social ASC;

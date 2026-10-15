@@ -400,6 +400,20 @@ DECLARE @IdProductoBateria INT =
     WHERE Nombre_Producto = 'Batería Samsung A54'
 );
 
+DECLARE @IdProvMobile INT =
+(
+    SELECT Id_Proveedor
+    FROM Proveedor
+    WHERE CUIT = '30-71234567-8'
+);
+
+DECLARE @IdProvTech INT =
+(
+    SELECT Id_Proveedor
+    FROM Proveedor
+    WHERE CUIT = '30-88765432-1'
+);
+
 
 IF @IdProductoFunda IS NOT NULL
 AND @IdProvMobile IS NOT NULL
@@ -636,6 +650,7 @@ BEGIN
         Id_MetodoPago,
         Id_Orden_Reparacion,
         Total,
+        Descuento,
         Anulada
     )
     VALUES (
@@ -645,6 +660,7 @@ BEGIN
         @IdMetodoPagoEfectivo,
         NULL,
         16400.00,
+        0,
         0
     );
 
