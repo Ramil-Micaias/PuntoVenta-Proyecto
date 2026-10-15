@@ -192,56 +192,24 @@ namespace GU_Tercero
 
         private void AplicarPermisosPorRol()
         {
-            string rol = usuarioLogueado?.Nombre_Rol ?? "Administrador";
+            // Los permisos de cada rol están en Navegacion, así el menú principal
+            // y el menú de cada pantalla muestran lo mismo.
+            string rol = ObtenerRol();
 
-            if (rol == "Vendedor")
-            {
-                // El vendedor solo puede ver Ventas (POS), Mi Perfil y Cerrar Sesión
-                gestionDeUsuariosToolStripMenuItem.Visible = false;
-                productoYStockToolStripMenuItem.Visible = false;
-                proveedoresToolStripMenuItem.Visible = false;
-                comprasToolStripMenuItem.Visible = false;
-                tallerToolStripMenuItem.Visible = false;
-                configuraciónDelSistemaToolStripMenuItem.Visible = false;
-                ventasToolStripMenuItem.Visible = true;
-                configuraciónToolStripMenuItem.Visible = true;
-                miPerfilToolStripMenuItem.Visible = true;
-                cerrarSesionToolStripMenuItem.Visible = true;
-            }
-            else if (rol == "Tecnico")
-            {
-                // El técnico solo puede ver Taller, Mi Perfil y Cerrar Sesión
-                gestionDeUsuariosToolStripMenuItem.Visible = false;
-                productoYStockToolStripMenuItem.Visible = false;
-                proveedoresToolStripMenuItem.Visible = false;
-                comprasToolStripMenuItem.Visible = false;
-                ventasToolStripMenuItem.Visible = false;
-                configuraciónDelSistemaToolStripMenuItem.Visible = false;
-                tallerToolStripMenuItem.Visible = true;
-                configuraciónToolStripMenuItem.Visible = true;
-                miPerfilToolStripMenuItem.Visible = true;
-                cerrarSesionToolStripMenuItem.Visible = true;
-            }
-            else
-            {
-                // Administrador tiene acceso completo
-                gestionDeUsuariosToolStripMenuItem.Visible = true;
-                productoYStockToolStripMenuItem.Visible = true;
-                proveedoresToolStripMenuItem.Visible = true;
-                ventasToolStripMenuItem.Visible = true;
-                comprasToolStripMenuItem.Visible = true;
-                tallerToolStripMenuItem.Visible = true;
-                configuraciónToolStripMenuItem.Visible = true;
-                configuraciónDelSistemaToolStripMenuItem.Visible = true;
-                miPerfilToolStripMenuItem.Visible = true;
-                cerrarSesionToolStripMenuItem.Visible = true;
-            }
+            gestionDeUsuariosToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.USUARIOS);
+            productoYStockToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PRODUCTOS);
+            proveedoresToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PROVEEDORES);
+            ventasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
+            comprasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
+            tallerToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
+            miPerfilToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.MI_PERFIL);
+            configuraciónDelSistemaToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CONFIGURACION);
 
             // Los accesos rápidos siguen los mismos permisos que el menú.
-            btnAccesoVenta.Visible = ventasToolStripMenuItem.Available;
-            btnAccesoTaller.Visible = tallerToolStripMenuItem.Available;
-            btnAccesoStock.Visible = productoYStockToolStripMenuItem.Available;
-            btnAccesoCompra.Visible = comprasToolStripMenuItem.Available;
+            btnAccesoVenta.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
+            btnAccesoTaller.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
+            btnAccesoStock.Visible = Navegacion.PuedeVer(rol, Navegacion.PRODUCTOS);
+            btnAccesoCompra.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
         }
 
         private void CargarLogo()
@@ -269,40 +237,61 @@ namespace GU_Tercero
             catch { }
         }
 
-        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        // Abre la pantalla elegida. Si desde su menú el usuario elige otra pantalla,
+        // se cierra la actual y se abre la nueva sin pasar por el menú principal.
+        private void AbrirPantalla(string pantalla)
         {
             this.Hide();
+            string rol = ObtenerRol();
 
-            using (FormAdmin formAdmin = new FormAdmin())
+            while (pantalla != Navegacion.MENU_PRINCIPAL)
             {
-                formAdmin.ShowDialog();
+                if (pantalla == Navegacion.CERRAR_SESION)
+                {
+                    EsCierreSesion = true;
+                    this.Close();
+                    return;
+                }
+
+                Navegacion.Destino = Navegacion.MENU_PRINCIPAL;
+
+                using (Form form = CrearPantalla(pantalla))
+                {
+                    Navegacion.AgregarMenu(form, rol, pantalla);
+                    form.ShowDialog();
+                }
+
+                pantalla = Navegacion.Destino;
             }
 
             this.Show();
+        }
+
+        private Form CrearPantalla(string pantalla)
+        {
+            if (pantalla == Navegacion.USUARIOS) return new FormAdmin();
+            if (pantalla == Navegacion.PRODUCTOS) return new FormProductos();
+            if (pantalla == Navegacion.PROVEEDORES) return new FormProveedores();
+            if (pantalla == Navegacion.VENTAS) return new FormVentas(usuarioLogueado);
+            if (pantalla == Navegacion.COMPRAS) return new FormCompras(usuarioLogueado);
+            if (pantalla == Navegacion.TALLER) return new FormTaller();
+            if (pantalla == Navegacion.MI_PERFIL) return new FormUsuario(usuarioLogueado);
+            return new FormConfiguracion();
+        }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirPantalla(Navegacion.USUARIOS);
         }
 
         private void configuraciónDelSistemaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            using (FormConfiguracion configuracion = new FormConfiguracion())
-            {
-                configuracion.ShowDialog();
-            }
-
-            this.Show();
+            AbrirPantalla(Navegacion.CONFIGURACION);
         }
 
         private void productoYStockToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Oculta el Menú Principal
-
-            using (FormProductos formProducto = new FormProductos())
-            {
-                formProducto.ShowDialog();
-            }
-
-            this.Show(); // Reaparece el Menú al cerrar Productos
+            AbrirPantalla(Navegacion.PRODUCTOS);
         }
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -322,62 +311,27 @@ namespace GU_Tercero
 
         private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide(); 
-
-            using (FormProveedores formProveedores = new FormProveedores())
-            {
-                formProveedores.ShowDialog();
-            }
-
-            this.Show(); 
+            AbrirPantalla(Navegacion.PROVEEDORES);
         }
 
         private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            using (FormVentas formVentas = new FormVentas(usuarioLogueado))
-            {
-                formVentas.ShowDialog();
-            }
-
-            this.Show();
+            AbrirPantalla(Navegacion.VENTAS);
         }
 
         private void comprasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            using (FormCompras formCompras = new FormCompras(usuarioLogueado))
-            {
-                formCompras.ShowDialog();
-            }
-
-            this.Show();
+            AbrirPantalla(Navegacion.COMPRAS);
         }
 
         private void miPerfilToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            using (FormUsuario formUsuario = new FormUsuario(usuarioLogueado))
-            {
-                formUsuario.ShowDialog();
-            }
-
-            this.Show();
+            AbrirPantalla(Navegacion.MI_PERFIL);
         }
 
         private void tallerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
-            using (FormTaller formTaller = new FormTaller())
-            {
-                formTaller.ShowDialog();
-            }
-
-            this.Show();
+            AbrirPantalla(Navegacion.TALLER);
         }
     }
 }
