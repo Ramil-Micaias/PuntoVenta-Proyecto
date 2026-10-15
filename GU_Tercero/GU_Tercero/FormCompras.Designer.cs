@@ -27,6 +27,7 @@ namespace Vista
             lblProveedor = new Label();
             grpAgregar = new GroupBox();
             btnAgregarDetalle = new Button();
+            lblMensaje = new Label();
             txtCantidad = new TextBox();
             lblCantidad = new Label();
             txtCosto = new TextBox();
@@ -126,7 +127,6 @@ namespace Vista
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(300, 25);
             cmbMetodoPago.TabIndex = 3;
-            cmbMetodoPago.SelectedIndexChanged += cmbMetodoPago_SelectedIndexChanged;
             // 
             // lblMetodoPago
             // 
@@ -143,6 +143,7 @@ namespace Vista
             // 
             grpAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpAgregar.Controls.Add(btnAgregarDetalle);
+            grpAgregar.Controls.Add(lblMensaje);
             grpAgregar.Controls.Add(txtCantidad);
             grpAgregar.Controls.Add(lblCantidad);
             grpAgregar.Controls.Add(txtCosto);
@@ -172,6 +173,16 @@ namespace Vista
             btnAgregarDetalle.TabIndex = 6;
             btnAgregarDetalle.Text = "Agregar al Detalle";
             btnAgregarDetalle.UseVisualStyleBackColor = false;
+            // 
+            // lblMensaje
+            // 
+            lblMensaje.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblMensaje.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblMensaje.ForeColor = Color.FromArgb(16, 185, 129);
+            lblMensaje.Location = new Point(16, 280);
+            lblMensaje.Name = "lblMensaje";
+            lblMensaje.Size = new Size(398, 70);
+            lblMensaje.TabIndex = 7;
             // 
             // txtCantidad
             // 
@@ -273,6 +284,7 @@ namespace Vista
             // 
             // lblTotalTitulo
             // 
+            lblTotalTitulo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
@@ -284,6 +296,7 @@ namespace Vista
             // 
             // lblTotalValor
             // 
+            lblTotalValor.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalValor.AutoSize = true;
             lblTotalValor.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTotalValor.ForeColor = Color.FromArgb(16, 185, 129);
@@ -382,6 +395,7 @@ namespace Vista
         private Label lblCantidad;
         private TextBox txtCantidad;
         private Button btnAgregarDetalle;
+        private Label lblMensaje;
         private GroupBox grpDetalle;
         private DataGridView dgvDetalle;
         private Label lblTotalTitulo;

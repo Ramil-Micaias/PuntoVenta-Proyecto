@@ -211,6 +211,7 @@ namespace Vista
             }
 
             txtCantidad.Clear();
+            lblMensaje.Text = string.Empty;
             ActualizarTotal();
             txtCantidad.Focus();
         }
@@ -250,7 +251,7 @@ namespace Vista
         private void ActualizarTotal()
         {
             lblTotalValor.Text = FormatoMoneda(CalcularTotal());
-            btnRegistrar.Enabled = detalle.Rows.Count > 0;
+            btnRegistrar.Visible = detalle.Rows.Count > 0;
         }
 
         private void RegistrarCompra()
@@ -325,17 +326,13 @@ namespace Vista
             {
                 ResultadoOperacion resultado = gestorCompras.RegistrarCompra(compra);
 
-                MessageBox.Show(
-                    "Compra registrada con éxito.\n" +
-                    "Comprobante: " + (resultado.Comprobante ?? string.Empty) + "\n" +
-                    "Total: " + FormatoMoneda(resultado.Total),
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
                 LimpiarCompra();
                 CargarProductos();
+
+                lblMensaje.Text =
+                    "Compra registrada con éxito.\n" +
+                    "Comprobante: " + (resultado.Comprobante ?? string.Empty) + "\n" +
+                    "Total: " + FormatoMoneda(resultado.Total);
             }
             catch (Exception ex)
             {
@@ -353,6 +350,7 @@ namespace Vista
             detalle.Rows.Clear();
             txtCosto.Clear();
             txtCantidad.Clear();
+            lblMensaje.Text = string.Empty;
 
             if (cmbProveedor.Items.Count > 0)
             {
@@ -488,11 +486,6 @@ namespace Vista
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void cmbMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
