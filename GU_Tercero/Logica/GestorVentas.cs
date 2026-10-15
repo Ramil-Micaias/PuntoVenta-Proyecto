@@ -9,7 +9,6 @@ namespace Logica
     {
         private readonly VentaDAO ventaDAO = new VentaDAO();
         private readonly MetodoPagoDAO metodoPagoDAO = new MetodoPagoDAO();
-        private readonly ClienteDAO clienteDAO = new ClienteDAO();
         private readonly ProductoDAO productoDAO = new ProductoDAO();
 
         public ResultadoOperacion RegistrarVenta(Venta venta)
@@ -31,11 +30,6 @@ namespace Logica
         public DataTable BuscarProductos(string filtro, int? idCategoria)
         {
             return productoDAO.BuscarProductosPOS(filtro, idCategoria);
-        }
-
-        public DataTable BuscarClientes(string filtro)
-        {
-            return clienteDAO.BuscarClientes(filtro);
         }
 
         private void ValidarVenta(Venta venta)

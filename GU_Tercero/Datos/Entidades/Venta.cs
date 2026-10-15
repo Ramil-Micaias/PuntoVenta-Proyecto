@@ -7,7 +7,6 @@ namespace Datos.Entidades
     {
         public int Id_Venta { get; set; }
         public string? Numero_Factura { get; set; }
-        public int? Id_Cliente { get; set; }
         public int Id_Usuario_Vendedor { get; set; }
         public int Id_MetodoPago { get; set; }
         public decimal DescuentoPorcentaje { get; set; }

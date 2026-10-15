@@ -4,7 +4,7 @@ GO
 -- ============================================================
 -- MODULO: VENTAS (CU01)
 -- Migraciones de esquema necesarias + Stored Procedures requeridos
--- por FormVentas, ClienteDAO, MetodoPagoDAO y ProductoDAO (POS)
+-- por FormVentas, MetodoPagoDAO y ProductoDAO (POS)
 -- ============================================================
 
 -- ------------------------------------------------------------
@@ -105,7 +105,7 @@ GO
 
 
 -- ------------------------------------------------------------
--- 4. SP: Buscar clientes (para el campo Cliente del POS)
+-- 4. SP: Buscar clientes (el POS ya no pide cliente; se conserva para el módulo de Taller)
 -- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_BuscarClientes
     @Filtro NVARCHAR(100) = ''

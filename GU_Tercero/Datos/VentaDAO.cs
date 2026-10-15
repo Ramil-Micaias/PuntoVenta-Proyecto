@@ -21,9 +21,6 @@ namespace Datos
                         ? DBNull.Value
                         : venta.Numero_Factura.Trim();
 
-                cmd.Parameters.Add("@Id_Cliente", SqlDbType.Int)
-                    .Value = venta.Id_Cliente.HasValue ? venta.Id_Cliente.Value : DBNull.Value;
-
                 cmd.Parameters.Add("@Id_Usuario", SqlDbType.Int)
                     .Value = venta.Id_Usuario_Vendedor;
 
