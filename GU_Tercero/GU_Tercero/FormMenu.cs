@@ -20,6 +20,12 @@ namespace GU_Tercero
         private Label lblDetalleStock = new Label();
         private Label lblValorCompras = new Label();
         private Label lblDetalleCompras = new Label();
+        private Label lblValorProgreso = new Label();
+        private Label lblDetalleProgreso = new Label();
+        private Label lblValorReparaciones = new Label();
+        private Label lblDetalleReparaciones = new Label();
+        private Label lblValorComision = new Label();
+        private Label lblDetalleComision = new Label();
 
         public FormMenu(Usuario usuario)
         {
@@ -27,6 +33,11 @@ namespace GU_Tercero
             usuarioLogueado = usuario;
             CrearPaneles();
             this.VisibleChanged += FormMenu_VisibleChanged;
+        }
+
+        private string ObtenerRol()
+        {
+            return usuarioLogueado?.Nombre_Rol ?? "Administrador";
         }
 
         // Cada vez que se vuelve al menú desde otro formulario se actualizan los totales.
@@ -38,12 +49,33 @@ namespace GU_Tercero
             }
         }
 
+        // Cada rol ve solo los paneles que tienen que ver con su trabajo.
         private void CrearPaneles()
         {
-            CrearPanel("VENTAS DEL DÍA", Color.FromArgb(59, 130, 246), 0, 0, lblValorVentas, lblDetalleVentas);
-            CrearPanel("ÓRDENES DE TALLER", Color.FromArgb(16, 185, 129), 1, 0, lblValorTaller, lblDetalleTaller);
-            CrearPanel("ALERTAS DE STOCK", Color.FromArgb(239, 68, 68), 0, 1, lblValorStock, lblDetalleStock);
-            CrearPanel("COMPRAS DEL DÍA", Color.FromArgb(79, 70, 229), 1, 1, lblValorCompras, lblDetalleCompras);
+            string rol = ObtenerRol();
+
+            if (rol == "Tecnico")
+            {
+                CrearPanel("ÓRDENES DE TALLER", Color.FromArgb(16, 185, 129), 0, 0, lblValorTaller, lblDetalleTaller);
+                CrearPanel("PROGRESO DE TRABAJO", Color.FromArgb(59, 130, 246), 1, 0, lblValorProgreso, lblDetalleProgreso);
+                CrearPanel("TOTAL DE REPARACIONES", Color.FromArgb(79, 70, 229), 0, 1, lblValorReparaciones, lblDetalleReparaciones);
+                CrearPanel("MI COMISIÓN (10%)", Color.FromArgb(217, 119, 6), 1, 1, lblValorComision, lblDetalleComision);
+            }
+            else if (rol == "Vendedor")
+            {
+                CrearPanel("VENTAS DEL DÍA", Color.FromArgb(59, 130, 246), 0, 0, lblValorVentas, lblDetalleVentas);
+                CrearPanel("ALERTAS DE STOCK", Color.FromArgb(239, 68, 68), 1, 0, lblValorStock, lblDetalleStock);
+
+                // Con dos paneles alcanza una sola fila.
+                tlpPaneles.RowStyles[1].Height = 0;
+            }
+            else
+            {
+                CrearPanel("VENTAS DEL DÍA", Color.FromArgb(59, 130, 246), 0, 0, lblValorVentas, lblDetalleVentas);
+                CrearPanel("ÓRDENES DE TALLER", Color.FromArgb(16, 185, 129), 1, 0, lblValorTaller, lblDetalleTaller);
+                CrearPanel("ALERTAS DE STOCK", Color.FromArgb(239, 68, 68), 0, 1, lblValorStock, lblDetalleStock);
+                CrearPanel("COMPRAS DEL DÍA", Color.FromArgb(79, 70, 229), 1, 1, lblValorCompras, lblDetalleCompras);
+            }
         }
 
         // Arma un panel de color con un título, el valor principal y una línea de detalle.
@@ -100,6 +132,11 @@ namespace GU_Tercero
 
                 lblValorCompras.Text = "$" + resumen.Total_Compras_Dia.ToString("N2");
                 lblDetalleCompras.Text = "Compras registradas: " + resumen.Cantidad_Compras_Dia;
+
+                if (ObtenerRol() == "Tecnico")
+                {
+                    CargarResumenTecnico(gestorResumen);
+                }
             }
             catch (Exception ex)
             {
@@ -110,6 +147,27 @@ namespace GU_Tercero
                     MessageBoxIcon.Error
                 );
             }
+        }
+
+        private void CargarResumenTecnico(GestorResumen gestorResumen)
+        {
+            ResumenTecnico resumen = gestorResumen.ObtenerResumenTecnico(usuarioLogueado.Id_Usuario);
+
+            int porcentaje = 0;
+            if (resumen.Ordenes_Asignadas > 0)
+            {
+                porcentaje = resumen.Ordenes_Terminadas * 100 / resumen.Ordenes_Asignadas;
+            }
+
+            lblValorProgreso.Text = porcentaje + "% Terminado";
+            lblDetalleProgreso.Text = resumen.Ordenes_Terminadas + " de " + resumen.Ordenes_Asignadas + " órdenes asignadas";
+
+            lblValorReparaciones.Text = "$" + resumen.Total_Reparaciones.ToString("N2");
+            lblDetalleReparaciones.Text = "Reparaciones terminadas: " + resumen.Ordenes_Terminadas;
+
+            decimal comision = gestorResumen.CalcularComisionTecnico(resumen.Total_Reparaciones);
+            lblValorComision.Text = "$" + comision.ToString("N2");
+            lblDetalleComision.Text = "10% del total de tus reparaciones";
         }
 
         private void FormMenu_Load(object sender, EventArgs e)
@@ -124,6 +182,10 @@ namespace GU_Tercero
             }
             lblNombreUsuario.Visible = true;
             lblNombreUsuario.Left = lblBienvenido.Right;
+            if (ObtenerRol() == "Tecnico")
+            {
+                lblResumen.Text = "Resumen de Mi Trabajo en el Taller";
+            }
             CargarLogo();
             AplicarPermisosPorRol();
         }
