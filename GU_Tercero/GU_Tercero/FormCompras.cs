@@ -75,7 +75,7 @@ namespace Vista
             dgvDetalle.DataSource = detalle;
 
             OcultarColumna(dgvDetalle, "Id_Producto");
-            EncabezadoColumna(dgvDetalle, "Codigo", "Código", 0);
+            OcultarColumna(dgvDetalle, "Codigo");
             EncabezadoColumna(dgvDetalle, "Producto", "Producto", 1);
             EncabezadoColumna(dgvDetalle, "Precio_Costo_Unitario", "Costo Unit.", 2, "0.##");
             EncabezadoColumna(dgvDetalle, "Cantidad", "Cant.", 3);

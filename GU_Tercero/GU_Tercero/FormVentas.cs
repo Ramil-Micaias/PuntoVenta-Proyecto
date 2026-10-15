@@ -78,7 +78,7 @@ namespace Vista
             dgvCarrito.DataSource = carrito;
 
             OcultarColumna(dgvCarrito, "Id_Producto");
-            EncabezadoColumna(dgvCarrito, "Codigo", "Código", 0);
+            OcultarColumna(dgvCarrito, "Codigo");
             EncabezadoColumna(dgvCarrito, "Producto", "Producto", 1);
             EncabezadoColumna(dgvCarrito, "Cantidad", "Cantidad", 2);
             EncabezadoColumna(dgvCarrito, "Precio_Unitario", "Precio Unit.", 3, "0.##");
@@ -177,7 +177,7 @@ namespace Vista
             OcultarColumna(dgvResultados, "Stock_Minimo");
             OcultarColumna(dgvResultados, "Id_Categoria");
 
-            EncabezadoColumna(dgvResultados, "Codigo", "Código", 0);
+            OcultarColumna(dgvResultados, "Codigo");
             EncabezadoColumna(dgvResultados, "Producto", "Producto", 1);
             EncabezadoColumna(dgvResultados, "Precio_Venta", "Precio", 2, "0.##");
             EncabezadoColumna(dgvResultados, "Stock_Actual", "Stock", 3);
