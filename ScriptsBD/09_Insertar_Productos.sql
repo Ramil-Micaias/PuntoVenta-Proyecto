@@ -29,7 +29,7 @@ FROM
     VALUES
     (
         'Cargador Rápido USB-C 20W',
-        'Fuente de carga rápida compatible con iPhone y Android',
+        'Fuente de carga rápida compatible con iPhone y iPad',
         'Cargadores y Cables',
         8500.00,
         15,
@@ -37,7 +37,7 @@ FROM
         0
     ),
     (
-        'Módulo Display Samsung A12',
+        'Módulo Display iPhone 11',
         'Pantalla completa con marco y táctil',
         'Módulos y Pantallas',
         32000.00,
