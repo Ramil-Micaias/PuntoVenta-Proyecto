@@ -60,7 +60,8 @@ namespace Datos
                     return new ResultadoOperacion
                     {
                         Id_Operacion = idCompraGenerado,
-                        Comprobante = compra.Numero_Comprobante,
+                        // Mismo formato que arma sp_RegistrarCompra cuando no se envía comprobante (COM-00000001)
+                        Comprobante = "COM-" + idCompraGenerado.ToString("00000000"),
                         Subtotal = compra.Subtotal,
                         Descuento = 0,
                         Total = compra.Total
