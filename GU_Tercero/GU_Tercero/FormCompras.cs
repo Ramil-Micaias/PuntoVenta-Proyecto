@@ -21,10 +21,10 @@ namespace Vista
             this.btnAgregarDetalle.Click += btnAgregarDetalle_Click;
             this.btnRegistrar.Click += btnRegistrar_Click;
             this.btnCancelar.Click += btnCancelar_Click;
+            this.btnVolver.Click += btnVolver_Click;
             this.cmbProducto.SelectedIndexChanged += cmbProducto_SelectedIndexChanged;
             this.txtCosto.KeyDown += txtImporte_KeyDown;
             this.txtCantidad.KeyDown += txtImporte_KeyDown;
-            this.txtPrecioVenta.KeyDown += txtImporte_KeyDown;
             this.dgvDetalle.CellDoubleClick += dgvDetalle_CellDoubleClick;
         }
 
@@ -60,7 +60,7 @@ namespace Vista
             dgvDetalle.DefaultCellStyle.BackColor = Color.White;
             dgvDetalle.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
             dgvDetalle.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            dgvDetalle.RowTemplate.Height = 26;
+            dgvDetalle.RowTemplate.Height = Grillas.AltoFila(dgvDetalle);
         }
 
         private void CrearDetalle()
@@ -70,18 +70,16 @@ namespace Vista
             detalle.Columns.Add("Producto", typeof(string));
             detalle.Columns.Add("Cantidad", typeof(int));
             detalle.Columns.Add("Precio_Costo_Unitario", typeof(decimal));
-            detalle.Columns.Add("Precio_Venta_Sugerido", typeof(decimal));
             detalle.Columns.Add("Subtotal", typeof(decimal));
 
             dgvDetalle.DataSource = detalle;
 
             OcultarColumna(dgvDetalle, "Id_Producto");
-            EncabezadoColumna(dgvDetalle, "Codigo", "Código", 0);
+            OcultarColumna(dgvDetalle, "Codigo");
             EncabezadoColumna(dgvDetalle, "Producto", "Producto", 1);
             EncabezadoColumna(dgvDetalle, "Precio_Costo_Unitario", "Costo Unit.", 2, "0.##");
             EncabezadoColumna(dgvDetalle, "Cantidad", "Cant.", 3);
-            EncabezadoColumna(dgvDetalle, "Precio_Venta_Sugerido", "P. Venta Sug.", 4, "0.##");
-            EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 5, "0.##");
+            EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 4, "0.##");
         }
 
         private void CargarProveedores()
@@ -181,25 +179,6 @@ namespace Vista
                 return;
             }
 
-            decimal? precioVenta = null;
-
-            if (!string.IsNullOrWhiteSpace(txtPrecioVenta.Text))
-            {
-                if (!IntentarParsearDecimal(txtPrecioVenta.Text, out decimal precio) || precio <= 0)
-                {
-                    MessageBox.Show(
-                        "El precio de venta sugerido debe ser un importe mayor a cero.",
-                        "Atención",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-                    txtPrecioVenta.Focus();
-                    return;
-                }
-
-                precioVenta = precio;
-            }
-
             int idProducto = Convert.ToInt32(fila["Id_Producto"]);
             DataRow? existente = null;
 
@@ -220,7 +199,6 @@ namespace Vista
                 nuevo["Producto"] = Convert.ToString(fila["Producto"]) ?? string.Empty;
                 nuevo["Cantidad"] = cantidad;
                 nuevo["Precio_Costo_Unitario"] = costo;
-                nuevo["Precio_Venta_Sugerido"] = precioVenta.HasValue ? precioVenta.Value : DBNull.Value;
                 nuevo["Subtotal"] = cantidad * costo;
                 detalle.Rows.Add(nuevo);
             }
@@ -229,12 +207,11 @@ namespace Vista
                 int cantidadTotal = Convert.ToInt32(existente["Cantidad"]) + cantidad;
                 existente["Cantidad"] = cantidadTotal;
                 existente["Precio_Costo_Unitario"] = costo;
-                existente["Precio_Venta_Sugerido"] = precioVenta.HasValue ? precioVenta.Value : DBNull.Value;
                 existente["Subtotal"] = cantidadTotal * costo;
             }
 
             txtCantidad.Clear();
-            txtPrecioVenta.Clear();
+            lblMensaje.Text = string.Empty;
             ActualizarTotal();
             txtCantidad.Focus();
         }
@@ -274,6 +251,7 @@ namespace Vista
         private void ActualizarTotal()
         {
             lblTotalValor.Text = FormatoMoneda(CalcularTotal());
+            btnRegistrar.Visible = detalle.Rows.Count > 0;
         }
 
         private void RegistrarCompra()
@@ -334,18 +312,13 @@ namespace Vista
 
             foreach (DataRow fila in detalle.Rows)
             {
-                decimal? precioVenta = fila["Precio_Venta_Sugerido"] == DBNull.Value
-                    ? (decimal?)null
-                    : Convert.ToDecimal(fila["Precio_Venta_Sugerido"]);
-
                 compra.Detalles.Add(new DetalleCompra
                 {
                     Id_Producto = Convert.ToInt32(fila["Id_Producto"]),
                     Codigo = Convert.ToString(fila["Codigo"]) ?? string.Empty,
                     Producto = Convert.ToString(fila["Producto"]) ?? string.Empty,
                     Cantidad = Convert.ToInt32(fila["Cantidad"]),
-                    Precio_Costo_Unitario = Convert.ToDecimal(fila["Precio_Costo_Unitario"]),
-                    Precio_Venta_Sugerido = precioVenta
+                    Precio_Costo_Unitario = Convert.ToDecimal(fila["Precio_Costo_Unitario"])
                 });
             }
 
@@ -353,17 +326,13 @@ namespace Vista
             {
                 ResultadoOperacion resultado = gestorCompras.RegistrarCompra(compra);
 
-                MessageBox.Show(
-                    "Compra registrada con éxito.\n" +
-                    "Comprobante: " + (resultado.Comprobante ?? string.Empty) + "\n" +
-                    "Total: " + FormatoMoneda(resultado.Total),
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
                 LimpiarCompra();
                 CargarProductos();
+
+                lblMensaje.Text =
+                    "Compra registrada con éxito.\n" +
+                    "Comprobante: " + (resultado.Comprobante ?? string.Empty) + "\n" +
+                    "Total: " + FormatoMoneda(resultado.Total);
             }
             catch (Exception ex)
             {
@@ -381,7 +350,7 @@ namespace Vista
             detalle.Rows.Clear();
             txtCosto.Clear();
             txtCantidad.Clear();
-            txtPrecioVenta.Clear();
+            lblMensaje.Text = string.Empty;
 
             if (cmbProveedor.Items.Count > 0)
             {
@@ -469,10 +438,6 @@ namespace Vista
                 txtCosto.Text = fila["Precio_Costo"] == DBNull.Value
                     ? string.Empty
                     : Convert.ToDecimal(fila["Precio_Costo"]).ToString("0.##", CultureInfo.CurrentCulture);
-
-                txtPrecioVenta.Text = fila["Precio_Venta"] == DBNull.Value
-                    ? string.Empty
-                    : Convert.ToDecimal(fila["Precio_Venta"]).ToString("0.##", CultureInfo.CurrentCulture);
             }
         }
 
@@ -518,9 +483,9 @@ namespace Vista
             }
         }
 
-        private void cmbMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnVolver_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }

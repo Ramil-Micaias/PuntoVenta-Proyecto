@@ -171,5 +171,56 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+
+
+        public void RegistrarCategoria(string nombreCategoria)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_InsertarCategoria", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Nombre_Categoria", SqlDbType.NVarChar, 50)
+                    .Value = nombreCategoria;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+        public void ModificarCategoria(int idCategoria, string nombreCategoria)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ModificarCategoria", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Id_Categoria", SqlDbType.Int)
+                    .Value = idCategoria;
+
+                cmd.Parameters.Add("@Nombre_Categoria", SqlDbType.NVarChar, 50)
+                    .Value = nombreCategoria;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+        public void InactivarCategoria(int idCategoria)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_InactivarCategoria", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Id_Categoria", SqlDbType.Int)
+                    .Value = idCategoria;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

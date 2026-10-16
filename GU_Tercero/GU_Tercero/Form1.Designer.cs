@@ -36,6 +36,7 @@
             lblPassword = new Label();
             lblTitulo = new Label();
             picLogo = new PictureBox();
+            chkMostrarPassword = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
@@ -63,6 +64,7 @@
             txtPassword.Location = new Point(255, 160);
             txtPassword.Margin = new Padding(2, 1, 2, 1);
             txtPassword.Name = "txtPassword";
+            txtPassword.PlaceholderText = "Ingrese su contraseña";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(170, 25);
             txtPassword.TabIndex = 1;
@@ -74,6 +76,7 @@
             txtUsuario.Location = new Point(255, 105);
             txtUsuario.Margin = new Padding(2, 1, 2, 1);
             txtUsuario.Name = "txtUsuario";
+            txtUsuario.PlaceholderText = "Ingrese su usuario";
             txtUsuario.Size = new Size(170, 25);
             txtUsuario.TabIndex = 0;
             // 
@@ -85,7 +88,7 @@
             llb_OlvidoContraseña.DisabledLinkColor = Color.Silver;
             llb_OlvidoContraseña.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
             llb_OlvidoContraseña.LinkColor = Color.FromArgb(37, 99, 235);
-            llb_OlvidoContraseña.Location = new Point(275, 195);
+            llb_OlvidoContraseña.Location = new Point(275, 214);
             llb_OlvidoContraseña.Name = "llb_OlvidoContraseña";
             llb_OlvidoContraseña.Size = new Size(130, 15);
             llb_OlvidoContraseña.TabIndex = 3;
@@ -145,6 +148,21 @@
             picLogo.TabIndex = 9;
             picLogo.TabStop = false;
             // 
+            // chkMostrarPassword
+            // 
+            chkMostrarPassword.Anchor = AnchorStyles.None;
+            chkMostrarPassword.AutoSize = true;
+            chkMostrarPassword.BackColor = Color.Transparent;
+            chkMostrarPassword.Font = new Font("Segoe UI", 9F);
+            chkMostrarPassword.ForeColor = Color.FromArgb(30, 41, 59);
+            chkMostrarPassword.Location = new Point(255, 189);
+            chkMostrarPassword.Name = "chkMostrarPassword";
+            chkMostrarPassword.Size = new Size(129, 19);
+            chkMostrarPassword.TabIndex = 4;
+            chkMostrarPassword.Text = "Mostrar contraseña";
+            chkMostrarPassword.UseVisualStyleBackColor = false;
+            chkMostrarPassword.CheckedChanged += chkMostrarPassword_CheckedChanged;
+            // 
             // Form1
             // 
             AcceptButton = btnIngresar;
@@ -152,6 +170,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(680, 388);
+            Controls.Add(chkMostrarPassword);
             Controls.Add(picLogo);
             Controls.Add(lblTitulo);
             Controls.Add(lblPassword);
@@ -165,7 +184,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "ApIBigStore - Iniciar Sesión";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
@@ -182,5 +201,6 @@
         private Label lblPassword;
         private Label lblTitulo;
         private PictureBox picLogo;
+        private CheckBox chkMostrarPassword;
     }
 }

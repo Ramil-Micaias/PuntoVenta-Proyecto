@@ -112,6 +112,7 @@ namespace GU_Tercero
             txtNombreUsuario.Font = new Font("Segoe UI", 10F);
             txtNombreUsuario.Location = new Point(30, 102);
             txtNombreUsuario.Name = "txtNombreUsuario";
+            txtNombreUsuario.PlaceholderText = "Ingrese su nombre de usuario";
             txtNombreUsuario.Size = new Size(330, 27);
             txtNombreUsuario.TabIndex = 1;
             // 
@@ -120,6 +121,7 @@ namespace GU_Tercero
             txtRespuesta1.Font = new Font("Segoe UI", 10F);
             txtRespuesta1.Location = new Point(30, 176);
             txtRespuesta1.Name = "txtRespuesta1";
+            txtRespuesta1.PlaceholderText = "Escriba su respuesta";
             txtRespuesta1.Size = new Size(330, 27);
             txtRespuesta1.TabIndex = 2;
             // 
@@ -128,6 +130,7 @@ namespace GU_Tercero
             txtRespuesta2.Font = new Font("Segoe UI", 10F);
             txtRespuesta2.Location = new Point(30, 248);
             txtRespuesta2.Name = "txtRespuesta2";
+            txtRespuesta2.PlaceholderText = "Escriba su respuesta";
             txtRespuesta2.Size = new Size(330, 27);
             txtRespuesta2.TabIndex = 3;
             // 
@@ -136,6 +139,7 @@ namespace GU_Tercero
             txtRespuesta3.Font = new Font("Segoe UI", 10F);
             txtRespuesta3.Location = new Point(30, 320);
             txtRespuesta3.Name = "txtRespuesta3";
+            txtRespuesta3.PlaceholderText = "Escriba su respuesta";
             txtRespuesta3.Size = new Size(330, 27);
             txtRespuesta3.TabIndex = 4;
             // 
@@ -150,7 +154,7 @@ namespace GU_Tercero
             btnValidar.Name = "btnValidar";
             btnValidar.Size = new Size(200, 38);
             btnValidar.TabIndex = 5;
-            btnValidar.Text = "Validar Respuestas";
+            btnValidar.Text = "Confirmar";
             btnValidar.UseVisualStyleBackColor = false;
             btnValidar.Click += btnValidar_Click;
             // 
@@ -195,7 +199,7 @@ namespace GU_Tercero
             MaximizeBox = false;
             Name = "FormRecuperoContraseña";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Recuperar Contraseña";
+            Text = "ApIBigStore - Recuperar Contraseña";
             Load += FormRecuperoContraseña_Load;
             ResumeLayout(false);
             PerformLayout();

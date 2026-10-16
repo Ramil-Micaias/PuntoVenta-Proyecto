@@ -1,14 +1,19 @@
-﻿using Logica;
+using Logica;
 using Datos.Entidades;
+using Vista;
 
 namespace GU_Tercero
 {
     //FormAdmin: Funciona como panel central de administración del sistema, permitiendo gestionar usuarios, roles y estados mediante una interfaz gráfica.
     public partial class FormAdmin : Form
     {
+        // Usuario elegido en la grilla (0 = ninguno). El ID ya no se muestra en pantalla.
+        private int idUsuarioSeleccionado = 0;
+
         public FormAdmin()
         {
             InitializeComponent();
+            Grillas.Configurar(dgvUsuarios);
         }
         //Este metodo obtiene los roles desde SQL SERVER, luego muestra en el ComboBox.
         private void CargarRoles()
@@ -25,13 +30,12 @@ namespace GU_Tercero
         //Este metodo Restablece los CONTROLES.
         private void LimpiarControles()
         {
-            txtIdUsuario.Clear();
+            idUsuarioSeleccionado = 0;
             txtApellido.Clear();
             txtNombre.Clear();
             txtDni.Clear();
             txtCorreo.Clear();
             txtNombreUsuario.Clear();
-            txtPasswordTemporal.Clear();
 
             cmbRol.SelectedIndex = -1;
 
@@ -50,16 +54,7 @@ namespace GU_Tercero
         {
             CargarRoles();
             CargarUsuarios();
-        }
-
-        private void lblRol_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
+            LimpiarControles();
         }
 
         //Cuando el administrador hace clic sobre un usuario:se cargan automáticamente los datos en pantalla.
@@ -68,7 +63,7 @@ namespace GU_Tercero
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow fila = dgvUsuarios.Rows[e.RowIndex];
-                txtIdUsuario.Text = fila.Cells["Id_Usuario"].Value?.ToString() ?? "";
+                idUsuarioSeleccionado = Convert.ToInt32(fila.Cells["Id_Usuario"].Value);
                 txtApellido.Text = fila.Cells["Apellido"].Value?.ToString() ?? "";
                 txtNombre.Text = fila.Cells["Nombre"].Value?.ToString() ?? "";
                 txtDni.Text = fila.Cells["DNI"].Value?.ToString() ?? "";
@@ -126,7 +121,7 @@ namespace GU_Tercero
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtIdUsuario.Text))
+            if (idUsuarioSeleccionado == 0)
             {
                 MessageBox.Show("Debe seleccionar un usuario.");
                 return;
@@ -135,7 +130,7 @@ namespace GU_Tercero
             {
                 UsuarioNegocio negocio = new UsuarioNegocio();
 
-                negocio.ModificarUsuario(Convert.ToInt32(txtIdUsuario.Text), txtApellido.Text.Trim(), txtNombre.Text.Trim(), txtDni.Text.Trim(), txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(), Convert.ToInt32(cmbRol.SelectedValue), chkActivo.Checked, chkBloqueado.Checked);
+                negocio.ModificarUsuario(idUsuarioSeleccionado, txtApellido.Text.Trim(), txtNombre.Text.Trim(), txtDni.Text.Trim(), txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(), Convert.ToInt32(cmbRol.SelectedValue), chkActivo.Checked, chkBloqueado.Checked);
                 MessageBox.Show("Usuario modificado correctamente.");
 
                 CargarUsuarios();
@@ -149,7 +144,7 @@ namespace GU_Tercero
 
         private void btnEliminar_Click_1(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtIdUsuario.Text))
+            if (idUsuarioSeleccionado == 0)
             {
                 MessageBox.Show("Debe seleccionar un usuario.");
                 return;
@@ -164,7 +159,7 @@ namespace GU_Tercero
                 {
                     UsuarioNegocio negocio = new UsuarioNegocio();
 
-                    negocio.DesactivarUsuario(Convert.ToInt32(txtIdUsuario.Text));
+                    negocio.DesactivarUsuario(idUsuarioSeleccionado);
 
                     MessageBox.Show("Usuario dado de baja correctamente.");
 
@@ -179,13 +174,9 @@ namespace GU_Tercero
             }
         }
 
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-        private void cmbRol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

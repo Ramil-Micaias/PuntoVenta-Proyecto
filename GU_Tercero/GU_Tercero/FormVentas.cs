@@ -22,6 +22,7 @@ namespace Vista
             this.btnQuitarSeleccionado.Click += btnQuitarSeleccionado_Click;
             this.btnConfirmarVenta.Click += btnConfirmarVenta_Click;
             this.btnCancelarOperacion.Click += btnCancelarOperacion_Click;
+            this.btnVolver.Click += btnVolver_Click;
             this.numDescuento.ValueChanged += numDescuento_ValueChanged;
             this.txtBuscar.KeyDown += txtBuscar_KeyDown;
             this.dgvResultados.CellDoubleClick += dgvResultados_CellDoubleClick;
@@ -38,7 +39,6 @@ namespace Vista
             CrearCarrito();
             CargarCategorias();
             CargarMetodosPago();
-            CargarClientes();
             BuscarProductos();
             ActualizarResumen();
             txtBuscar.Focus();
@@ -62,7 +62,7 @@ namespace Vista
                 grid.DefaultCellStyle.BackColor = Color.White;
                 grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
                 grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-                grid.RowTemplate.Height = 26;
+                grid.RowTemplate.Height = Grillas.AltoFila(grid);
             }
         }
 
@@ -78,7 +78,7 @@ namespace Vista
             dgvCarrito.DataSource = carrito;
 
             OcultarColumna(dgvCarrito, "Id_Producto");
-            EncabezadoColumna(dgvCarrito, "Codigo", "Código", 0);
+            OcultarColumna(dgvCarrito, "Codigo");
             EncabezadoColumna(dgvCarrito, "Producto", "Producto", 1);
             EncabezadoColumna(dgvCarrito, "Cantidad", "Cantidad", 2);
             EncabezadoColumna(dgvCarrito, "Precio_Unitario", "Precio Unit.", 3, "0.##");
@@ -123,32 +123,6 @@ namespace Vista
             {
                 MessageBox.Show(
                     "Error al cargar métodos de pago: " + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
-        }
-
-        private void CargarClientes()
-        {
-            try
-            {
-                DataTable clientes = gestorVentas.BuscarClientes(string.Empty);
-
-                DataRow consumidor = clientes.NewRow();
-                consumidor["Id_Cliente"] = DBNull.Value;
-                consumidor["NombreCompleto"] = "Consumidor Final";
-                clientes.Rows.InsertAt(consumidor, 0);
-
-                cmbCliente.DisplayMember = "NombreCompleto";
-                cmbCliente.ValueMember = "Id_Cliente";
-                cmbCliente.DataSource = clientes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error al cargar clientes: " + ex.Message,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -203,7 +177,7 @@ namespace Vista
             OcultarColumna(dgvResultados, "Stock_Minimo");
             OcultarColumna(dgvResultados, "Id_Categoria");
 
-            EncabezadoColumna(dgvResultados, "Codigo", "Código", 0);
+            OcultarColumna(dgvResultados, "Codigo");
             EncabezadoColumna(dgvResultados, "Producto", "Producto", 1);
             EncabezadoColumna(dgvResultados, "Precio_Venta", "Precio", 2, "0.##");
             EncabezadoColumna(dgvResultados, "Stock_Actual", "Stock", 3);
@@ -341,18 +315,6 @@ namespace Vista
             lblResumenCarrito.Text = "Artículos: " + unidades + "   Subtotal: " + FormatoMoneda(subtotal);
         }
 
-        private int? ObtenerIdCliente()
-        {
-            object? valor = cmbCliente.SelectedValue;
-
-            if (valor == null || valor == DBNull.Value)
-            {
-                return null;
-            }
-
-            return Convert.ToInt32(valor);
-        }
-
         private void ConfirmarVenta()
         {
             if (carrito.Rows.Count == 0)
@@ -391,7 +353,6 @@ namespace Vista
             Venta venta = new Venta
             {
                 Numero_Factura = null,
-                Id_Cliente = ObtenerIdCliente(),
                 Id_Usuario_Vendedor = usuarioLogueado.Id_Usuario,
                 Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
                 DescuentoPorcentaje = numDescuento.Value,
@@ -445,11 +406,6 @@ namespace Vista
             numCantidad.Value = 1;
             numDescuento.Value = 0;
             txtBuscar.Clear();
-
-            if (cmbCliente.Items.Count > 0)
-            {
-                cmbCliente.SelectedIndex = 0;
-            }
 
             if (cmbCategoria.Items.Count > 0)
             {
@@ -525,6 +481,11 @@ namespace Vista
             {
                 LimpiarVenta();
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

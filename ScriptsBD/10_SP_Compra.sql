@@ -67,8 +67,7 @@ CREATE OR ALTER PROCEDURE sp_RegistrarDetalleCompra
     @Id_Compra INT,
     @Id_Producto INT,
     @Precio_Costo_Unitario DECIMAL(12,2),
-    @Cantidad INT,
-    @Precio_Venta_Sugerido DECIMAL(12,2) = NULL
+    @Cantidad INT
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -77,11 +76,10 @@ BEGIN
     INSERT INTO DetalleCompra (Id_Compra, Id_Producto, Cantidad, Precio_Costo_Unitario)
     VALUES (@Id_Compra, @Id_Producto, @Cantidad, @Precio_Costo_Unitario);
 
-    -- 2. Incrementar el stock del producto y actualizar su precio de costo (y venta si se indicó)
+    -- 2. Incrementar el stock del producto y actualizar su precio de costo
     UPDATE Producto 
     SET Stock_Actual = Stock_Actual + @Cantidad,
-        Precio_Costo = @Precio_Costo_Unitario,
-        Precio_Venta = ISNULL(@Precio_Venta_Sugerido, Precio_Venta)
+        Precio_Costo = @Precio_Costo_Unitario
     WHERE Id_Producto = @Id_Producto;
 END
 GO

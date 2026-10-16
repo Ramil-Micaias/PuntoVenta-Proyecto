@@ -133,7 +133,7 @@ namespace GU_Tercero
             txtRespuestaTres.Clear();
         }
 
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
         }

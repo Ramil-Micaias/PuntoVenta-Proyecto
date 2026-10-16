@@ -1,4 +1,4 @@
-﻿namespace Vista
+namespace Vista
 {
     partial class FormCompras
     {
@@ -21,16 +21,13 @@
             lblCu = new Label();
             lblTitulo = new Label();
             grpProveedor = new GroupBox();
-            textBox1 = new TextBox();
-            label1 = new Label();
             cmbMetodoPago = new ComboBox();
             lblMetodoPago = new Label();
             cmbProveedor = new ComboBox();
             lblProveedor = new Label();
             grpAgregar = new GroupBox();
             btnAgregarDetalle = new Button();
-            txtPrecioVenta = new TextBox();
-            lblPrecioVenta = new Label();
+            lblMensaje = new Label();
             txtCantidad = new TextBox();
             lblCantidad = new Label();
             txtCosto = new TextBox();
@@ -41,6 +38,7 @@
             dgvDetalle = new DataGridView();
             lblTotalTitulo = new Label();
             lblTotalValor = new Label();
+            btnVolver = new Button();
             btnCancelar = new Button();
             btnRegistrar = new Button();
             panelHeader.SuspendLayout();
@@ -87,8 +85,6 @@
             // grpProveedor
             // 
             grpProveedor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpProveedor.Controls.Add(textBox1);
-            grpProveedor.Controls.Add(label1);
             grpProveedor.Controls.Add(cmbMetodoPago);
             grpProveedor.Controls.Add(lblMetodoPago);
             grpProveedor.Controls.Add(cmbProveedor);
@@ -101,56 +97,14 @@
             grpProveedor.TabIndex = 0;
             grpProveedor.TabStop = false;
             // 
-            // textBox1
-            // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.Font = new Font("Segoe UI", 9.5F);
-            textBox1.Location = new Point(164, 23);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(169, 24);
-            textBox1.TabIndex = 9;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(30, 41, 59);
-            label1.Location = new Point(8, 26);
-            label1.Name = "label1";
-            label1.Size = new Size(150, 17);
-            label1.TabIndex = 9;
-            label1.Text = "N° de Factura / Remito:";
-            // 
-            // cmbMetodoPago
-            // 
-            cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
-            cmbMetodoPago.FormattingEnabled = true;
-            cmbMetodoPago.Location = new Point(795, 26);
-            cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(247, 25);
-            cmbMetodoPago.TabIndex = 3;
-            cmbMetodoPago.SelectedIndexChanged += cmbMetodoPago_SelectedIndexChanged;
-            // 
-            // lblMetodoPago
-            // 
-            lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
-            lblMetodoPago.Location = new Point(676, 29);
-            lblMetodoPago.Name = "lblMetodoPago";
-            lblMetodoPago.Size = new Size(113, 17);
-            lblMetodoPago.TabIndex = 2;
-            lblMetodoPago.Text = "Método de Pago:";
-            // 
             // cmbProveedor
             // 
             cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProveedor.Font = new Font("Segoe UI", 9.5F);
             cmbProveedor.FormattingEnabled = true;
-            cmbProveedor.Location = new Point(420, 26);
+            cmbProveedor.Location = new Point(95, 26);
             cmbProveedor.Name = "cmbProveedor";
-            cmbProveedor.Size = new Size(247, 25);
+            cmbProveedor.Size = new Size(300, 25);
             cmbProveedor.TabIndex = 1;
             // 
             // lblProveedor
@@ -158,18 +112,38 @@
             lblProveedor.AutoSize = true;
             lblProveedor.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblProveedor.ForeColor = Color.FromArgb(30, 41, 59);
-            lblProveedor.Location = new Point(339, 26);
+            lblProveedor.Location = new Point(16, 29);
             lblProveedor.Name = "lblProveedor";
             lblProveedor.Size = new Size(75, 17);
             lblProveedor.TabIndex = 0;
             lblProveedor.Text = "Proveedor:";
             // 
+            // cmbMetodoPago
+            // 
+            cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
+            cmbMetodoPago.FormattingEnabled = true;
+            cmbMetodoPago.Location = new Point(570, 26);
+            cmbMetodoPago.Name = "cmbMetodoPago";
+            cmbMetodoPago.Size = new Size(300, 25);
+            cmbMetodoPago.TabIndex = 3;
+            // 
+            // lblMetodoPago
+            // 
+            lblMetodoPago.AutoSize = true;
+            lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
+            lblMetodoPago.Location = new Point(445, 29);
+            lblMetodoPago.Name = "lblMetodoPago";
+            lblMetodoPago.Size = new Size(113, 17);
+            lblMetodoPago.TabIndex = 2;
+            lblMetodoPago.Text = "Método de Pago:";
+            // 
             // grpAgregar
             // 
             grpAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpAgregar.Controls.Add(btnAgregarDetalle);
-            grpAgregar.Controls.Add(txtPrecioVenta);
-            grpAgregar.Controls.Add(lblPrecioVenta);
+            grpAgregar.Controls.Add(lblMensaje);
             grpAgregar.Controls.Add(txtCantidad);
             grpAgregar.Controls.Add(lblCantidad);
             grpAgregar.Controls.Add(txtCosto);
@@ -193,32 +167,22 @@
             btnAgregarDetalle.FlatStyle = FlatStyle.Flat;
             btnAgregarDetalle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnAgregarDetalle.ForeColor = Color.White;
-            btnAgregarDetalle.Location = new Point(16, 290);
+            btnAgregarDetalle.Location = new Point(16, 225);
             btnAgregarDetalle.Name = "btnAgregarDetalle";
             btnAgregarDetalle.Size = new Size(398, 40);
-            btnAgregarDetalle.TabIndex = 8;
+            btnAgregarDetalle.TabIndex = 6;
             btnAgregarDetalle.Text = "Agregar al Detalle";
             btnAgregarDetalle.UseVisualStyleBackColor = false;
             // 
-            // txtPrecioVenta
+            // lblMensaje
             // 
-            txtPrecioVenta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtPrecioVenta.Font = new Font("Segoe UI", 9.5F);
-            txtPrecioVenta.Location = new Point(16, 236);
-            txtPrecioVenta.Name = "txtPrecioVenta";
-            txtPrecioVenta.Size = new Size(398, 24);
-            txtPrecioVenta.TabIndex = 7;
-            // 
-            // lblPrecioVenta
-            // 
-            lblPrecioVenta.AutoSize = true;
-            lblPrecioVenta.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblPrecioVenta.ForeColor = Color.FromArgb(30, 41, 59);
-            lblPrecioVenta.Location = new Point(16, 216);
-            lblPrecioVenta.Name = "lblPrecioVenta";
-            lblPrecioVenta.Size = new Size(144, 17);
-            lblPrecioVenta.TabIndex = 6;
-            lblPrecioVenta.Text = "Precio Venta Sugerido:";
+            lblMensaje.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblMensaje.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblMensaje.ForeColor = Color.FromArgb(16, 185, 129);
+            lblMensaje.Location = new Point(16, 280);
+            lblMensaje.Name = "lblMensaje";
+            lblMensaje.Size = new Size(398, 70);
+            lblMensaje.TabIndex = 7;
             // 
             // txtCantidad
             // 
@@ -226,6 +190,7 @@
             txtCantidad.Font = new Font("Segoe UI", 9.5F);
             txtCantidad.Location = new Point(16, 174);
             txtCantidad.Name = "txtCantidad";
+            txtCantidad.PlaceholderText = "Unidades recibidas. Ej: 10";
             txtCantidad.Size = new Size(398, 24);
             txtCantidad.TabIndex = 5;
             // 
@@ -246,6 +211,7 @@
             txtCosto.Font = new Font("Segoe UI", 9.5F);
             txtCosto.Location = new Point(16, 112);
             txtCosto.Name = "txtCosto";
+            txtCosto.PlaceholderText = "Costo por unidad. Ej: 12500";
             txtCosto.Size = new Size(398, 24);
             txtCosto.TabIndex = 3;
             // 
@@ -288,6 +254,7 @@
             grpDetalle.Controls.Add(dgvDetalle);
             grpDetalle.Controls.Add(lblTotalTitulo);
             grpDetalle.Controls.Add(lblTotalValor);
+            grpDetalle.Controls.Add(btnVolver);
             grpDetalle.Controls.Add(btnCancelar);
             grpDetalle.Controls.Add(btnRegistrar);
             grpDetalle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
@@ -319,6 +286,7 @@
             // 
             // lblTotalTitulo
             // 
+            lblTotalTitulo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
@@ -330,6 +298,7 @@
             // 
             // lblTotalValor
             // 
+            lblTotalValor.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalValor.AutoSize = true;
             lblTotalValor.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTotalValor.ForeColor = Color.FromArgb(16, 185, 129);
@@ -339,33 +308,48 @@
             lblTotalValor.TabIndex = 2;
             lblTotalValor.Text = "$0,00";
             // 
+            // btnVolver
+            // 
+            btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVolver.BackColor = Color.FromArgb(100, 116, 139);
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnVolver.ForeColor = Color.White;
+            btnVolver.Location = new Point(116, 442);
+            btnVolver.Name = "btnVolver";
+            btnVolver.Size = new Size(130, 40);
+            btnVolver.TabIndex = 3;
+            btnVolver.Text = "Volver";
+            btnVolver.UseVisualStyleBackColor = false;
+            // 
             // btnCancelar
             // 
-            btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancelar.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnCancelar.ForeColor = Color.White;
-            btnCancelar.Location = new Point(250, 442);
+            btnCancelar.Location = new Point(256, 442);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(140, 40);
-            btnCancelar.TabIndex = 3;
+            btnCancelar.Size = new Size(135, 40);
+            btnCancelar.TabIndex = 4;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             // 
             // btnRegistrar
             // 
-            btnRegistrar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnRegistrar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRegistrar.BackColor = Color.FromArgb(16, 185, 129);
             btnRegistrar.FlatAppearance.BorderSize = 0;
             btnRegistrar.FlatStyle = FlatStyle.Flat;
             btnRegistrar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnRegistrar.ForeColor = Color.White;
-            btnRegistrar.Location = new Point(404, 442);
+            btnRegistrar.Location = new Point(401, 442);
             btnRegistrar.Name = "btnRegistrar";
-            btnRegistrar.Size = new Size(190, 40);
-            btnRegistrar.TabIndex = 4;
+            btnRegistrar.Size = new Size(193, 40);
+            btnRegistrar.TabIndex = 5;
             btnRegistrar.Text = "Registrar Compra";
             btnRegistrar.UseVisualStyleBackColor = false;
             // 
@@ -383,7 +367,7 @@
             MinimumSize = new Size(1000, 620);
             Name = "FormCompras";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CU04: Registro de Compras - Ingreso de Mercadería";
+            Text = "ApIBigStore - Registro de Compras";
             Load += FormCompras_Load;
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();
@@ -412,18 +396,16 @@
         private TextBox txtCosto;
         private Label lblCantidad;
         private TextBox txtCantidad;
-        private Label lblPrecioVenta;
-        private TextBox txtPrecioVenta;
         private Button btnAgregarDetalle;
+        private Label lblMensaje;
         private GroupBox grpDetalle;
         private DataGridView dgvDetalle;
         private Label lblTotalTitulo;
         private Label lblTotalValor;
+        private Button btnVolver;
         private Button btnCancelar;
         private Button btnRegistrar;
         private ComboBox cmbMetodoPago;
         private Label lblMetodoPago;
-        private TextBox textBox1;
-        private Label label1;
     }
 }

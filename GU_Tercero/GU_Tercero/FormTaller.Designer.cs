@@ -135,6 +135,7 @@
             // 
             txtRecepcion.Location = new Point(401, 22);
             txtRecepcion.Name = "txtRecepcion";
+            txtRecepcion.PlaceholderText = "Usuario que recibe el equipo";
             txtRecepcion.ReadOnly = true;
             txtRecepcion.Size = new Size(201, 23);
             txtRecepcion.TabIndex = 6;
@@ -213,6 +214,7 @@
             txtDiagnosticoTecnico.Location = new Point(579, 44);
             txtDiagnosticoTecnico.Multiline = true;
             txtDiagnosticoTecnico.Name = "txtDiagnosticoTecnico";
+            txtDiagnosticoTecnico.PlaceholderText = "Diagnóstico del técnico";
             txtDiagnosticoTecnico.Size = new Size(190, 23);
             txtDiagnosticoTecnico.TabIndex = 5;
             // 
@@ -220,6 +222,7 @@
             // 
             txtPatronClave.Location = new Point(295, 44);
             txtPatronClave.Name = "txtPatronClave";
+            txtPatronClave.PlaceholderText = "Patrón o clave de desbloqueo";
             txtPatronClave.Size = new Size(190, 23);
             txtPatronClave.TabIndex = 4;
             // 
@@ -228,6 +231,7 @@
             txtFallaDeclarada.Location = new Point(10, 44);
             txtFallaDeclarada.Multiline = true;
             txtFallaDeclarada.Name = "txtFallaDeclarada";
+            txtFallaDeclarada.PlaceholderText = "Qué problema informa el cliente";
             txtFallaDeclarada.Size = new Size(190, 23);
             txtFallaDeclarada.TabIndex = 3;
             // 
@@ -285,6 +289,7 @@
             // 
             txtManoObra.Location = new Point(686, 74);
             txtManoObra.Name = "txtManoObra";
+            txtManoObra.PlaceholderText = "Ej: 15000";
             txtManoObra.Size = new Size(100, 23);
             txtManoObra.TabIndex = 13;
             // 
@@ -319,6 +324,7 @@
             // 
             txtToalPresupuesto.Location = new Point(686, 104);
             txtToalPresupuesto.Name = "txtToalPresupuesto";
+            txtToalPresupuesto.PlaceholderText = "Se calcula automáticamente";
             txtToalPresupuesto.ReadOnly = true;
             txtToalPresupuesto.Size = new Size(100, 23);
             txtToalPresupuesto.TabIndex = 9;
@@ -360,6 +366,7 @@
             // 
             txtPrecio.Location = new Point(336, 24);
             txtPrecio.Name = "txtPrecio";
+            txtPrecio.PlaceholderText = "Precio del repuesto";
             txtPrecio.Size = new Size(132, 23);
             txtPrecio.TabIndex = 4;
             // 
@@ -407,7 +414,7 @@
             Controls.Add(groupBox1);
             Controls.Add(grpRecepciónCliente);
             Name = "FormTaller";
-            Text = "Taller";
+            Text = "ApIBigStore - Taller";
             Load += FormTaller_Load;
             grpRecepciónCliente.ResumeLayout(false);
             grpRecepciónCliente.PerformLayout();

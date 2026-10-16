@@ -2,6 +2,30 @@ USE GU_Tercero;
 GO
 
 ------------------------------------------
+-- 0. MIGRACION: el negocio trabaja solo con productos Apple
+-- Renombra los datos de prueba de Samsung que ya existan en la base.
+------------------------------------------
+UPDATE Producto
+SET Nombre_Producto = 'Batería iPhone 12',
+    Descripcion = 'Batería Homologada iPhone 12'
+WHERE Nombre_Producto = 'Batería Samsung A54'
+  AND NOT EXISTS (SELECT 1 FROM Producto WHERE Nombre_Producto = 'Batería iPhone 12');
+
+UPDATE Producto
+SET Nombre_Producto = 'Módulo Display iPhone 11'
+WHERE Nombre_Producto = 'Módulo Display Samsung A12'
+  AND NOT EXISTS (SELECT 1 FROM Producto WHERE Nombre_Producto = 'Módulo Display iPhone 11');
+
+UPDATE Producto
+SET Descripcion = 'Fuente de carga rápida compatible con iPhone y iPad'
+WHERE Nombre_Producto = 'Cargador Rápido USB-C 20W';
+
+UPDATE Equipo
+SET Marca = 'Apple', Modelo = 'iPhone 12'
+WHERE IMEI = '864209087654321' AND Marca = 'Samsung';
+GO
+
+------------------------------------------
 -- 1. TABLAS MAESTRAS SIN DEPENDENCIAS
 ------------------------------------------
 
@@ -187,8 +211,8 @@ BEGIN
         VALUES (
             @IdCliente,
             'Celular',
-            'Samsung',
-            'Galaxy A54',
+            'Apple',
+            'iPhone 12',
             'R58M901234X',
             '864209087654321',
             'Azul',
@@ -341,7 +365,7 @@ END;
 IF NOT EXISTS (
     SELECT 1
     FROM Producto
-    WHERE Nombre_Producto = 'Batería Samsung A54'
+    WHERE Nombre_Producto = 'Batería iPhone 12'
 )
 BEGIN
     INSERT INTO Producto (
@@ -356,8 +380,8 @@ BEGIN
     )
     VALUES (
         @IdCatBaterias,
-        'Batería Samsung A54',
-        'Batería Homologada Samsung A54',
+        'Batería iPhone 12',
+        'Batería Homologada iPhone 12',
         24000.00,
         6,
         2,
@@ -397,7 +421,21 @@ DECLARE @IdProductoBateria INT =
 (
     SELECT Id_Producto
     FROM Producto
-    WHERE Nombre_Producto = 'Batería Samsung A54'
+    WHERE Nombre_Producto = 'Batería iPhone 12'
+);
+
+DECLARE @IdProvMobile INT =
+(
+    SELECT Id_Proveedor
+    FROM Proveedor
+    WHERE CUIT = '30-71234567-8'
+);
+
+DECLARE @IdProvTech INT =
+(
+    SELECT Id_Proveedor
+    FROM Proveedor
+    WHERE CUIT = '30-88765432-1'
 );
 
 
@@ -636,6 +674,7 @@ BEGIN
         Id_MetodoPago,
         Id_Orden_Reparacion,
         Total,
+        Descuento,
         Anulada
     )
     VALUES (
@@ -645,6 +684,7 @@ BEGIN
         @IdMetodoPagoEfectivo,
         NULL,
         16400.00,
+        0,
         0
     );
 

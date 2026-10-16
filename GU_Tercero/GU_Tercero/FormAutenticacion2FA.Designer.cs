@@ -53,6 +53,7 @@
             txtCodigo.Location = new Point(219, 102);
             txtCodigo.MaxLength = 6;
             txtCodigo.Name = "txtCodigo";
+            txtCodigo.PlaceholderText = "Código recibido por correo";
             txtCodigo.Size = new Size(180, 24);
             txtCodigo.TabIndex = 1;
             txtCodigo.TextAlign = HorizontalAlignment.Center;
@@ -105,7 +106,7 @@
             Controls.Add(lblMensaje);
             Name = "FormAutenticacion2FA";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormAutenticacion2FA";
+            Text = "ApIBigStore - Verificación en Dos Pasos";
             Load += FormAutenticacion2FA_Load;
             ResumeLayout(false);
             PerformLayout();

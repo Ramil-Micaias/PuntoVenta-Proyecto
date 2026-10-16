@@ -61,6 +61,7 @@
             txtRespuestaUno.Font = new Font("Segoe UI", 10F);
             txtRespuestaUno.Location = new Point(248, 135);
             txtRespuestaUno.Name = "txtRespuestaUno";
+            txtRespuestaUno.PlaceholderText = "Escriba su respuesta";
             txtRespuestaUno.Size = new Size(304, 25);
             txtRespuestaUno.TabIndex = 1;
             // 
@@ -70,6 +71,7 @@
             txtRespuestaDos.Font = new Font("Segoe UI", 10F);
             txtRespuestaDos.Location = new Point(248, 205);
             txtRespuestaDos.Name = "txtRespuestaDos";
+            txtRespuestaDos.PlaceholderText = "Escriba su respuesta";
             txtRespuestaDos.Size = new Size(304, 25);
             txtRespuestaDos.TabIndex = 2;
             // 
@@ -79,6 +81,7 @@
             txtRespuestaTres.Font = new Font("Segoe UI", 10F);
             txtRespuestaTres.Location = new Point(248, 275);
             txtRespuestaTres.Name = "txtRespuestaTres";
+            txtRespuestaTres.PlaceholderText = "Escriba su respuesta";
             txtRespuestaTres.Size = new Size(304, 25);
             txtRespuestaTres.TabIndex = 3;
             // 
@@ -172,7 +175,7 @@
             Font = new Font("Segoe UI", 9F);
             Name = "FormPreguntasSeguridad";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Preguntas de Seguridad";
+            Text = "ApIBigStore - Preguntas de Seguridad";
             Load += FormPreguntasSeguridad_Load;
             ResumeLayout(false);
             PerformLayout();

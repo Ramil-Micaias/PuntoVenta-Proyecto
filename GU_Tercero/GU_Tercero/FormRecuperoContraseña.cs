@@ -207,13 +207,16 @@ namespace GU_Tercero
             Label[] etiquetas = { lblPregunta1, lblPregunta2, lblPregunta3 };
             TextBox[] campos = { txtRespuesta1, txtRespuesta2, txtRespuesta3 };
 
-            const int margenIzquierdo = 30;
-            const int anchoDisponible = 660;
-            const int separacion = 26;
+            // Las medidas se toman del campo de usuario y se convierten con LogicalToDeviceUnits
+            // para que respeten el zoom de la pantalla (125%, 150%, 200%...). Con números fijos
+            // en píxeles, en pantallas con zoom los botones quedaban encima del campo de usuario.
+            int margenIzquierdo = txtNombreUsuario.Left;
+            int anchoDisponible = ClientSize.Width - (margenIzquierdo * 2);
+            int separacion = LogicalToDeviceUnits(26);
 
             // Cuando no hay preguntas para mostrar los botones igual tienen que estar
             // visibles, asi que se los ubica debajo del campo de usuario.
-            int y = etiquetas[0].Visible ? 152 : 158;
+            int y = txtNombreUsuario.Bottom + LogicalToDeviceUnits(24);
 
             for (int i = 0; i < etiquetas.Length; i++)
             {
@@ -226,7 +229,7 @@ namespace GU_Tercero
 
                 etiquetas[i].Location = new Point(margenIzquierdo, y);
 
-                y += altoEtiqueta + 6;
+                y += altoEtiqueta + LogicalToDeviceUnits(6);
 
                 campos[i].Location = new Point(margenIzquierdo, y);
 
@@ -234,7 +237,7 @@ namespace GU_Tercero
             }
 
             btnValidar.Location = new Point(margenIzquierdo, y);
-            btnCancelar.Location = new Point(margenIzquierdo + 215, y);
+            btnCancelar.Location = new Point(btnValidar.Right + LogicalToDeviceUnits(15), y);
         }
 
         private void btnValidar_Click(object sender, EventArgs e)

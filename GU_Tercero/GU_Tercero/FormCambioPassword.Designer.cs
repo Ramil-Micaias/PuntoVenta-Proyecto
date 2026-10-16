@@ -56,6 +56,7 @@
             txtNuevaPassword.Font = new Font("Segoe UI", 10F);
             txtNuevaPassword.Location = new Point(280, 175);
             txtNuevaPassword.Name = "txtNuevaPassword";
+            txtNuevaPassword.PlaceholderText = "Ingrese la nueva contraseña";
             txtNuevaPassword.PasswordChar = '*';
             txtNuevaPassword.Size = new Size(240, 25);
             txtNuevaPassword.TabIndex = 1;
@@ -103,7 +104,7 @@
             Font = new Font("Segoe UI", 9F);
             Name = "FormCambioPassword";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Cambiar Contraseña";
+            Text = "ApIBigStore - Cambiar Contraseña";
             FormClosing += FormCambioPassword_FormClosing;
             Load += FormCambioPassword_Load;
             ResumeLayout(false);

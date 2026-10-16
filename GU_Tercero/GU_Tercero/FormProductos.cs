@@ -1,7 +1,5 @@
-﻿using System;
-using System.Data;
-
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Datos.Entidades;
 using Logica;
@@ -11,6 +9,7 @@ namespace Vista
     public partial class FormProductos : Form
     {
         private int idProductoSeleccionado = 0;
+        private int idCategoriaSeleccionada = 0;
 
         public FormProductos()
         {
@@ -21,18 +20,12 @@ namespace Vista
 
         private void FormProductos_Load(object sender, EventArgs e)
         {
-            ConfigurarGrid();
+            Grillas.Configurar(dgvProductos);
+            Grillas.Configurar(dgvCategorias);
             CargarCategorias();
             CargarProductos();
-        }
-
-        private void ConfigurarGrid()
-        {
-            dgvProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProductos.MultiSelect = false;
-            dgvProductos.ReadOnly = true;
-            dgvProductos.AllowUserToAddRows = false;
-            dgvProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            LimpiarControles();
+            LimpiarCategoria();
         }
 
         private void CargarCategorias()
@@ -40,11 +33,17 @@ namespace Vista
             try
             {
                 GestorProducto gestor = new GestorProducto();
+                DataTable categorias = gestor.ObtenerCategorias();
 
                 cmbCategoria.DisplayMember = "Nombre_Categoria";
                 cmbCategoria.ValueMember = "Id_Categoria";
-                cmbCategoria.DataSource = gestor.ObtenerCategorias();
+                cmbCategoria.DataSource = categorias;
                 cmbCategoria.SelectedIndex = -1;
+
+                dgvCategorias.DataSource = categorias.Copy();
+
+                if (dgvCategorias.Columns.Contains("Nombre_Categoria"))
+                    dgvCategorias.Columns["Nombre_Categoria"].HeaderText = "Categoría";
             }
             catch (Exception ex)
             {
@@ -57,23 +56,16 @@ namespace Vista
             }
         }
 
-        private void OcultarColumnas()
-        {
-            if (dgvProductos.Columns.Contains("Id_Producto"))
-                dgvProductos.Columns["Id_Producto"].Visible = false;
-
-            if (dgvProductos.Columns.Contains("Id_Categoria"))
-                dgvProductos.Columns["Id_Categoria"].Visible = false;
-        }
-
         private void CargarProductos()
         {
             try
             {
+                string filtro = txtBuscar.Text.Trim();
                 GestorProducto gestor = new GestorProducto();
-                dgvProductos.DataSource = gestor.ObtenerProductos();
 
-                OcultarColumnas();
+                dgvProductos.DataSource = string.IsNullOrEmpty(filtro)
+                    ? gestor.ObtenerProductos()
+                    : gestor.BuscarProductos(filtro);
             }
             catch (Exception ex)
             {
@@ -84,6 +76,14 @@ namespace Vista
                     MessageBoxIcon.Error
                 );
             }
+        }
+
+        // agregando -> solo Guardar; con un producto elegido -> Modificar (y Agregar para empezar otro).
+        private void MostrarBotones(bool agregando)
+        {
+            btnNuevo.Visible = !agregando;
+            btnGuardar.Visible = agregando;
+            btnModificar.Visible = !agregando && idProductoSeleccionado != 0;
         }
 
         private void LimpiarControles()
@@ -98,10 +98,8 @@ namespace Vista
 
             cmbCategoria.SelectedIndex = -1;
 
-            if (txtBuscar != null)
-            {
-                txtBuscar.Clear();
-            }
+            dgvProductos.ClearSelection();
+            MostrarBotones(false);
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -280,11 +278,15 @@ namespace Vista
             {
                 cmbCategoria.SelectedIndex = -1;
             }
+
+            MostrarBotones(false);
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarControles();
+            MostrarBotones(true);
+            cmbCategoria.Focus();
         }
 
         private void btnVolverMenu_Click(object sender, EventArgs e)
@@ -292,40 +294,155 @@ namespace Vista
             this.Close();
         }
 
-        private void EjecutarBusqueda()
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            CargarProductos();
+        }
+
+        // ---------------------------------------------
+        // Categorías
+        // ---------------------------------------------
+
+        // agregando -> solo Guardar; con una categoría elegida -> Modificar / Eliminar (y Agregar).
+        private void MostrarBotonesCategoria(bool agregando)
+        {
+            bool haySeleccion = idCategoriaSeleccionada != 0;
+
+            btnNuevaCategoria.Visible = !agregando;
+            btnGuardarCategoria.Visible = agregando;
+            btnModificarCategoria.Visible = !agregando && haySeleccion;
+            btnEliminarCategoria.Visible = !agregando && haySeleccion;
+        }
+
+        private void LimpiarCategoria()
+        {
+            idCategoriaSeleccionada = 0;
+            txtNombreCategoria.Clear();
+            dgvCategorias.ClearSelection();
+            MostrarBotonesCategoria(false);
+        }
+
+        // Recarga las categorías en la grilla y en el combo de productos.
+        private void RefrescarCategorias()
+        {
+            CargarCategorias();
+            CargarProductos();
+            LimpiarCategoria();
+        }
+
+        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            DataGridViewRow fila = dgvCategorias.Rows[e.RowIndex];
+
+            idCategoriaSeleccionada = Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
+            txtNombreCategoria.Text = fila.Cells["Nombre_Categoria"].Value?.ToString() ?? "";
+
+            MostrarBotonesCategoria(false);
+        }
+
+        private void btnNuevaCategoria_Click(object sender, EventArgs e)
+        {
+            LimpiarCategoria();
+            MostrarBotonesCategoria(true);
+            txtNombreCategoria.Focus();
+        }
+
+        private void btnGuardarCategoria_Click(object sender, EventArgs e)
         {
             try
             {
-                string filtro = txtBuscar.Text.Trim();
                 GestorProducto gestor = new GestorProducto();
+                gestor.RegistrarCategoria(txtNombreCategoria.Text);
 
-                dgvProductos.DataSource = null;
+                MessageBox.Show(
+                    "Categoría registrada con éxito.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
-                if (string.IsNullOrEmpty(filtro))
-                {
-                    dgvProductos.DataSource = gestor.ObtenerProductos();
-                }
-                else
-                {
-                    dgvProductos.DataSource = gestor.BuscarProductos(filtro);
-                }
-
-                OcultarColumnas();
+                RefrescarCategorias();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error al buscar productos: " + ex.Message,
-                    "Error",
+                    ex.Message,
+                    "Atención",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
+                    MessageBoxIcon.Warning
                 );
             }
         }
 
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        private void btnModificarCategoria_Click(object sender, EventArgs e)
         {
-            EjecutarBusqueda();
+            try
+            {
+                GestorProducto gestor = new GestorProducto();
+                gestor.ModificarCategoria(idCategoriaSeleccionada, txtNombreCategoria.Text);
+
+                MessageBox.Show(
+                    "Categoría modificada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                RefrescarCategorias();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+        }
+
+        private void btnEliminarCategoria_Click(object sender, EventArgs e)
+        {
+            DialogResult respuesta = MessageBox.Show(
+                "¿Está seguro de que desea eliminar la categoría \"" + txtNombreCategoria.Text.Trim() + "\"?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (respuesta != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                GestorProducto gestor = new GestorProducto();
+                gestor.InactivarCategoria(idCategoriaSeleccionada);
+
+                MessageBox.Show(
+                    "Categoría eliminada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                RefrescarCategorias();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
         }
     }
 }

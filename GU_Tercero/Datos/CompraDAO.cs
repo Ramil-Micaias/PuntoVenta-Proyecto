@@ -50,8 +50,6 @@ namespace Datos
                         cmdDetalle.Parameters.Add("@Id_Producto", SqlDbType.Int).Value = item.Id_Producto;
                         cmdDetalle.Parameters.Add("@Precio_Costo_Unitario", SqlDbType.Decimal).Value = item.Precio_Costo_Unitario;
                         cmdDetalle.Parameters.Add("@Cantidad", SqlDbType.Int).Value = item.Cantidad;
-                        cmdDetalle.Parameters.Add("@Precio_Venta_Sugerido", SqlDbType.Decimal).Value =
-                            item.Precio_Venta_Sugerido.HasValue ? item.Precio_Venta_Sugerido.Value : DBNull.Value;
 
                         cmdDetalle.ExecuteNonQuery();
                     }
@@ -62,7 +60,8 @@ namespace Datos
                     return new ResultadoOperacion
                     {
                         Id_Operacion = idCompraGenerado,
-                        Comprobante = compra.Numero_Comprobante,
+                        // Mismo formato que arma sp_RegistrarCompra cuando no se envía comprobante (COM-00000001)
+                        Comprobante = "COM-" + idCompraGenerado.ToString("00000000"),
                         Subtotal = compra.Subtotal,
                         Descuento = 0,
                         Total = compra.Total

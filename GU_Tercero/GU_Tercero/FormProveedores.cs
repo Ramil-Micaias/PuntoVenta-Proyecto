@@ -21,28 +21,37 @@ namespace Vista
             this.btnModificar.Click += btnModificar_Click;
             this.btnEliminar.Click += btnEliminar_Click;
             this.btnNuevo.Click += btnNuevo_Click;
+            this.txtBuscar.TextChanged += txtBuscar_TextChanged;
         }
 
         private void FormProveedores_Load(object sender, EventArgs e)
         {
-            ConfigurarGrid();
+            Grillas.Configurar(dgvProveedores);
             CargarProveedores();
+            LimpiarControles();
         }
 
-        private void ConfigurarGrid()
+        // Muestra solo los botones que tienen sentido en cada momento:
+        // agregando -> solo Guardar; con un proveedor elegido -> Modificar / Eliminar (y Agregar para empezar otro).
+        private void MostrarBotones(bool agregando)
         {
-            dgvProveedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProveedores.MultiSelect = false;
-            dgvProveedores.ReadOnly = true;
-            dgvProveedores.AllowUserToAddRows = false;
-            dgvProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            bool haySeleccion = idProveedorSeleccionado != 0;
+
+            btnNuevo.Visible = !agregando;
+            btnGuardar.Visible = agregando;
+            btnModificar.Visible = haySeleccion;
+            btnEliminar.Visible = haySeleccion;
         }
 
         private void CargarProveedores()
         {
             try
             {
-                dgvProveedores.DataSource = gestorProveedores.ObtenerProveedores();
+                string filtro = txtBuscar.Text.Trim();
+
+                dgvProveedores.DataSource = string.IsNullOrEmpty(filtro)
+                    ? gestorProveedores.ObtenerProveedores()
+                    : gestorProveedores.BuscarProveedores(filtro);
             }
             catch (Exception ex)
             {
@@ -65,7 +74,8 @@ namespace Vista
             txtEmail.Clear();
             txtDireccion.Clear();
 
-            txtRazonSocial.Focus();
+            dgvProveedores.ClearSelection();
+            MostrarBotones(false);
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -235,11 +245,20 @@ namespace Vista
             txtDireccion.Text = fila.Cells["Direccion"].Value != DBNull.Value
                 ? fila.Cells["Direccion"].Value?.ToString() ?? ""
                 : "";
+
+            MostrarBotones(false);
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarControles();
+            MostrarBotones(true);
+            txtRazonSocial.Focus();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            CargarProveedores();
         }
 
         // Cierra el formulario y devuelve el control al menú principal, que reaparece
