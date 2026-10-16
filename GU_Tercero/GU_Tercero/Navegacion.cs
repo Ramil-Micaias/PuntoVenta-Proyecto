@@ -11,7 +11,8 @@ namespace Vista
         // Pantallas del sistema (también son los textos que muestra el menú).
         public const string MENU_PRINCIPAL = "Inicio";
         public const string USUARIOS = "Usuarios";
-        public const string PRODUCTOS = "Producto y Stock";
+        public const string PRODUCTOS = "Productos y Categorías";
+        public const string CONSULTA_STOCK = "Consulta de Stock";
         public const string PROVEEDORES = "Proveedores";
         public const string VENTAS = "Ventas (POS)";
         public const string COMPRAS = "Compras";
@@ -27,7 +28,8 @@ namespace Vista
         // Qué pantallas puede usar cada rol.
         public static bool PuedeVer(string rol, string pantalla)
         {
-            if (pantalla == MENU_PRINCIPAL || pantalla == MI_PERFIL || pantalla == CERRAR_SESION)
+            // La consulta de stock la usan todos los roles (CU07).
+            if (pantalla == MENU_PRINCIPAL || pantalla == MI_PERFIL || pantalla == CERRAR_SESION || pantalla == CONSULTA_STOCK)
             {
                 return true;
             }
@@ -57,7 +59,12 @@ namespace Vista
 
             // Textos cortos para que todo entre también en las pantallas angostas.
             menu.Items.Add(CrearOpcion(USUARIOS, rol, pantallaActual));
-            menu.Items.Add(CrearOpcion(PRODUCTOS, rol, pantallaActual));
+
+            ToolStripMenuItem productoYStock = new ToolStripMenuItem("Producto y Stock");
+            productoYStock.DropDownItems.Add(CrearOpcion(PRODUCTOS, rol, pantallaActual));
+            productoYStock.DropDownItems.Add(CrearOpcion(CONSULTA_STOCK, rol, pantallaActual));
+            menu.Items.Add(productoYStock);
+
             menu.Items.Add(CrearOpcion(PROVEEDORES, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(VENTAS, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(COMPRAS, rol, pantallaActual));
