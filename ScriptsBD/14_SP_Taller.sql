@@ -502,12 +502,15 @@ BEGIN
         o.Total_Presupuesto,
         o.Fecha_Ingreso,
         o.Fecha_Prometida,
-        pr.Apellido + ', ' + pr.Nombre AS Recepcion
+        pr.Apellido + ', ' + pr.Nombre AS Recepcion,
+        pt.Apellido + ', ' + pt.Nombre AS Tecnico
     FROM OrdenReparacion o
     INNER JOIN Equipo eq ON eq.Id_Equipo = o.Id_Equipo
     INNER JOIN EstadoOrden e ON e.Id_Estado = o.Id_Estado
     INNER JOIN Usuario ur ON ur.Id_Usuario = o.Id_Usuario_Recepcion
     INNER JOIN Persona pr ON pr.Id_Persona = ur.Id_Persona
+    LEFT JOIN Usuario ut ON ut.Id_Usuario = o.Id_Tecnico
+    LEFT JOIN Persona pt ON pt.Id_Persona = ut.Id_Persona
     WHERE o.Id_Orden = @Id_Orden;
 END
 GO
@@ -540,7 +543,7 @@ BEGIN
         h.Fecha,
         e.Nombre_Estado AS Estado,
         p.Apellido + ', ' + p.Nombre AS Usuario,
-        ISNULL(h.Observacion, '') AS Observacion
+        ISNULL(h.Observacion, '') AS [Observación]
     FROM HistorialEstadoOrden h
     INNER JOIN EstadoOrden e ON e.Id_Estado = h.Id_Estado
     INNER JOIN Usuario u ON u.Id_Usuario = h.Id_Usuario

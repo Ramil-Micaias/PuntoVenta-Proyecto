@@ -229,7 +229,20 @@ namespace Vista
 
             if (orden["Id_Tecnico"] != DBNull.Value)
             {
-                cmbTecnico.SelectedValue = Convert.ToInt32(orden["Id_Tecnico"]);
+                int idTecnico = Convert.ToInt32(orden["Id_Tecnico"]);
+                cmbTecnico.SelectedValue = idTecnico;
+
+                // La orden puede estar asignada a alguien que hoy no tiene el rol Técnico:
+                // se lo agrega a la lista para no perder la asignación al guardar.
+                if (cmbTecnico.SelectedIndex < 0)
+                {
+                    DataTable tecnicos = (DataTable)cmbTecnico.DataSource;
+                    DataRow asignado = tecnicos.NewRow();
+                    asignado["Id_Usuario"] = idTecnico;
+                    asignado["Tecnico"] = Convert.ToString(orden["Tecnico"]);
+                    tecnicos.Rows.Add(asignado);
+                    cmbTecnico.SelectedValue = idTecnico;
+                }
             }
             else
             {

@@ -268,7 +268,7 @@ namespace Vista
             lblPrometida.Name = "lblPrometida";
             lblPrometida.Size = new Size(108, 17);
             lblPrometida.TabIndex = 0;
-            lblPrometida.Text = "Fecha prometida:";
+            lblPrometida.Text = "Prometida:";
             //
             // dtpPrometida
             //
