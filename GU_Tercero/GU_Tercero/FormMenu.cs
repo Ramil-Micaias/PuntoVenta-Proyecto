@@ -285,7 +285,7 @@ namespace GU_Tercero
             if (pantalla == Navegacion.PROVEEDORES) return new FormProveedores();
             if (pantalla == Navegacion.VENTAS) return new FormVentas(usuarioLogueado);
             if (pantalla == Navegacion.COMPRAS) return new FormCompras(usuarioLogueado);
-            if (pantalla == Navegacion.TALLER) return new FormTaller();
+            if (pantalla == Navegacion.TALLER) return new FormTaller(usuarioLogueado);
             if (pantalla == Navegacion.MI_PERFIL) return new FormUsuario(usuarioLogueado);
             return new FormConfiguracion();
         }
