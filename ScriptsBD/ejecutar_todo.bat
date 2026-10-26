@@ -18,6 +18,8 @@ sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp009_Insertar_Productos.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp010_SP_Compra.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp011_SP_Venta.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp012_SP_Dashboard.sql"
+sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp013_SP_Stock.sql"
+sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp014_SP_Taller.sql"
 
 echo.
 echo ¡Proceso terminado con exito!

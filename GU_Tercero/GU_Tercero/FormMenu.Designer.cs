@@ -32,6 +32,8 @@ namespace GU_Tercero
             gestionDeUsuariosToolStripMenuItem = new ToolStripMenuItem();
             usuariosToolStripMenuItem = new ToolStripMenuItem();
             productoYStockToolStripMenuItem = new ToolStripMenuItem();
+            productosToolStripMenuItem = new ToolStripMenuItem();
+            consultaStockToolStripMenuItem = new ToolStripMenuItem();
             configuraciónToolStripMenuItem = new ToolStripMenuItem();
             configuraciónDelSistemaToolStripMenuItem = new ToolStripMenuItem();
             miPerfilToolStripMenuItem = new ToolStripMenuItem();
@@ -84,10 +86,24 @@ namespace GU_Tercero
             // 
             // productoYStockToolStripMenuItem
             // 
+            productoYStockToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { productosToolStripMenuItem, consultaStockToolStripMenuItem });
             productoYStockToolStripMenuItem.Name = "productoYStockToolStripMenuItem";
             productoYStockToolStripMenuItem.Size = new Size(108, 20);
             productoYStockToolStripMenuItem.Text = "Producto y Stock";
-            productoYStockToolStripMenuItem.Click += productoYStockToolStripMenuItem_Click;
+            // 
+            // productosToolStripMenuItem
+            // 
+            productosToolStripMenuItem.Name = "productosToolStripMenuItem";
+            productosToolStripMenuItem.Size = new Size(200, 22);
+            productosToolStripMenuItem.Text = "Productos y Categorías";
+            productosToolStripMenuItem.Click += productoYStockToolStripMenuItem_Click;
+            // 
+            // consultaStockToolStripMenuItem
+            // 
+            consultaStockToolStripMenuItem.Name = "consultaStockToolStripMenuItem";
+            consultaStockToolStripMenuItem.Size = new Size(200, 22);
+            consultaStockToolStripMenuItem.Text = "Consulta de Stock";
+            consultaStockToolStripMenuItem.Click += consultaStockToolStripMenuItem_Click;
             // 
             // configuraciónToolStripMenuItem
             // 
@@ -273,7 +289,7 @@ namespace GU_Tercero
             btnAccesoStock.TabIndex = 2;
             btnAccesoStock.Text = "Verificar Alertas de Stock";
             btnAccesoStock.UseVisualStyleBackColor = false;
-            btnAccesoStock.Click += productoYStockToolStripMenuItem_Click;
+            btnAccesoStock.Click += btnAccesoStock_Click;
             // 
             // btnAccesoCompra
             // 
@@ -330,6 +346,8 @@ namespace GU_Tercero
         private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem configuraciónDelSistemaToolStripMenuItem;
         private ToolStripMenuItem productoYStockToolStripMenuItem;
+        private ToolStripMenuItem productosToolStripMenuItem;
+        private ToolStripMenuItem consultaStockToolStripMenuItem;
         private PictureBox picLogoMenu;
         private ToolStripMenuItem proveedoresToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;

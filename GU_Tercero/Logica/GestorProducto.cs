@@ -47,6 +47,11 @@ namespace Logica
             return productoDAO.BuscarProductos(filtro);
         }
 
+        public DataTable ConsultarStock(string filtro, int? idCategoria, bool soloBajoMinimo)
+        {
+            return productoDAO.ConsultarStock(filtro, idCategoria, soloBajoMinimo);
+        }
+
         public void RegistrarCategoria(string nombreCategoria)
         {
             productoDAO.RegistrarCategoria(ValidarNombreCategoria(nombreCategoria));
