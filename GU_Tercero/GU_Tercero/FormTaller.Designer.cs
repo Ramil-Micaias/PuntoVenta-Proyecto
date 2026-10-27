@@ -28,441 +28,331 @@
         /// </summary>
         private void InitializeComponent()
         {
-            grpRecepciónCliente = new GroupBox();
-            cmbEstado = new ComboBox();
-            dtpFecha = new DateTimePicker();
-            cmbTecnico = new ComboBox();
-            cmbEquipo = new ComboBox();
-            cmbCliente = new ComboBox();
-            txtRecepcion = new TextBox();
+            panelHeader = new Panel();
+            lblCu = new Label();
+            lblTitulo = new Label();
+            grpFiltros = new GroupBox();
+            lblBuscar = new Label();
+            txtBuscar = new TextBox();
             lblEstado = new Label();
-            lblFecha = new Label();
-            lblRecepcion = new Label();
+            cmbEstado = new ComboBox();
             lblTecnico = new Label();
-            lblEquipo = new Label();
-            lblCliente = new Label();
-            groupBox1 = new GroupBox();
-            txtDiagnosticoTecnico = new TextBox();
-            txtPatronClave = new TextBox();
-            txtFallaDeclarada = new TextBox();
-            lblDiagnosticoTecnico = new Label();
-            lblPatronClave = new Label();
-            lblFallaDeclarada = new Label();
-            grpPresupuestoRepuestos = new GroupBox();
-            txtManoObra = new TextBox();
-            lblManoObra = new Label();
-            btnGuardarOrden = new Button();
-            btnCancelar = new Button();
-            txtToalPresupuesto = new TextBox();
-            lblTotalPresupuesto = new Label();
-            dgvRepuestos = new DataGridView();
-            btnAgregarRepuesto = new Button();
-            numCantidadRepuesto = new NumericUpDown();
-            txtPrecio = new TextBox();
-            cmbRepuesto = new ComboBox();
-            lblCantidad = new Label();
-            lblPrecio = new Label();
-            lblRepuesto = new Label();
-            grpRecepciónCliente.SuspendLayout();
-            groupBox1.SuspendLayout();
-            grpPresupuestoRepuestos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvRepuestos).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numCantidadRepuesto).BeginInit();
+            cmbTecnico = new ComboBox();
+            btnBuscar = new Button();
+            chkSoloPendientes = new CheckBox();
+            chkMisOrdenes = new CheckBox();
+            lblLeyenda = new Label();
+            grpOrdenes = new GroupBox();
+            dgvOrdenes = new DataGridView();
+            lblResumen = new Label();
+            btnNuevaOrden = new Button();
+            btnVerOrden = new Button();
+            btnVolver = new Button();
+            panelHeader.SuspendLayout();
+            grpFiltros.SuspendLayout();
+            grpOrdenes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvOrdenes).BeginInit();
             SuspendLayout();
-            // 
-            // grpRecepciónCliente
-            // 
-            grpRecepciónCliente.Controls.Add(cmbEstado);
-            grpRecepciónCliente.Controls.Add(dtpFecha);
-            grpRecepciónCliente.Controls.Add(cmbTecnico);
-            grpRecepciónCliente.Controls.Add(cmbEquipo);
-            grpRecepciónCliente.Controls.Add(cmbCliente);
-            grpRecepciónCliente.Controls.Add(txtRecepcion);
-            grpRecepciónCliente.Controls.Add(lblEstado);
-            grpRecepciónCliente.Controls.Add(lblFecha);
-            grpRecepciónCliente.Controls.Add(lblRecepcion);
-            grpRecepciónCliente.Controls.Add(lblTecnico);
-            grpRecepciónCliente.Controls.Add(lblEquipo);
-            grpRecepciónCliente.Controls.Add(lblCliente);
-            grpRecepciónCliente.Location = new Point(2, 2);
-            grpRecepciónCliente.Name = "grpRecepciónCliente";
-            grpRecepciónCliente.Size = new Size(797, 112);
-            grpRecepciónCliente.TabIndex = 0;
-            grpRecepciónCliente.TabStop = false;
-            grpRecepciónCliente.Text = "Recepción y Cliente";
-            // 
-            // cmbEstado
-            // 
-            cmbEstado.FormattingEnabled = true;
-            cmbEstado.Location = new Point(401, 81);
-            cmbEstado.Name = "cmbEstado";
-            cmbEstado.Size = new Size(201, 23);
-            cmbEstado.TabIndex = 11;
-            // 
-            // dtpFecha
-            // 
-            dtpFecha.CustomFormat = "dd/mm/yyyy";
-            dtpFecha.Location = new Point(401, 51);
-            dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(200, 23);
-            dtpFecha.TabIndex = 10;
-            // 
-            // cmbTecnico
-            // 
-            cmbTecnico.FormattingEnabled = true;
-            cmbTecnico.Location = new Point(65, 81);
-            cmbTecnico.Name = "cmbTecnico";
-            cmbTecnico.Size = new Size(194, 23);
-            cmbTecnico.TabIndex = 9;
-            // 
-            // cmbEquipo
-            // 
-            cmbEquipo.FormattingEnabled = true;
-            cmbEquipo.Location = new Point(65, 52);
-            cmbEquipo.Name = "cmbEquipo";
-            cmbEquipo.Size = new Size(194, 23);
-            cmbEquipo.TabIndex = 8;
-            // 
-            // cmbCliente
-            // 
-            cmbCliente.FormattingEnabled = true;
-            cmbCliente.Location = new Point(65, 22);
-            cmbCliente.Name = "cmbCliente";
-            cmbCliente.Size = new Size(194, 23);
-            cmbCliente.TabIndex = 7;
-            // 
-            // txtRecepcion
-            // 
-            txtRecepcion.Location = new Point(401, 22);
-            txtRecepcion.Name = "txtRecepcion";
-            txtRecepcion.PlaceholderText = "Usuario que recibe el equipo";
-            txtRecepcion.ReadOnly = true;
-            txtRecepcion.Size = new Size(201, 23);
-            txtRecepcion.TabIndex = 6;
-            // 
+            //
+            // panelHeader
+            //
+            panelHeader.BackColor = Color.FromArgb(15, 23, 42);
+            panelHeader.Controls.Add(lblCu);
+            panelHeader.Controls.Add(lblTitulo);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Location = new Point(0, 0);
+            panelHeader.Name = "panelHeader";
+            panelHeader.Size = new Size(1080, 56);
+            panelHeader.TabIndex = 0;
+            //
+            // lblCu
+            //
+            lblCu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblCu.AutoSize = true;
+            lblCu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblCu.ForeColor = Color.FromArgb(148, 163, 184);
+            lblCu.Location = new Point(1017, 18);
+            lblCu.Name = "lblCu";
+            lblCu.Size = new Size(44, 19);
+            lblCu.TabIndex = 1;
+            lblCu.Text = "CU08";
+            //
+            // lblTitulo
+            //
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.White;
+            lblTitulo.Location = new Point(24, 13);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(350, 28);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "TALLER - ÓRDENES DE REPARACIÓN";
+            //
+            // grpFiltros
+            //
+            grpFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpFiltros.Controls.Add(lblLeyenda);
+            grpFiltros.Controls.Add(chkMisOrdenes);
+            grpFiltros.Controls.Add(chkSoloPendientes);
+            grpFiltros.Controls.Add(btnBuscar);
+            grpFiltros.Controls.Add(cmbTecnico);
+            grpFiltros.Controls.Add(lblTecnico);
+            grpFiltros.Controls.Add(cmbEstado);
+            grpFiltros.Controls.Add(lblEstado);
+            grpFiltros.Controls.Add(txtBuscar);
+            grpFiltros.Controls.Add(lblBuscar);
+            grpFiltros.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpFiltros.ForeColor = Color.FromArgb(15, 23, 42);
+            grpFiltros.Location = new Point(16, 66);
+            grpFiltros.Name = "grpFiltros";
+            grpFiltros.Size = new Size(1048, 100);
+            grpFiltros.TabIndex = 1;
+            grpFiltros.TabStop = false;
+            grpFiltros.Text = "Búsqueda de Órdenes";
+            //
+            // lblBuscar
+            //
+            lblBuscar.AutoSize = true;
+            lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
+            lblBuscar.Location = new Point(16, 33);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(50, 17);
+            lblBuscar.TabIndex = 0;
+            lblBuscar.Text = "Buscar:";
+            //
+            // txtBuscar
+            //
+            txtBuscar.Font = new Font("Segoe UI", 9.5F);
+            txtBuscar.Location = new Point(80, 30);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Cliente, DNI, equipo, IMEI o N° de orden";
+            txtBuscar.Size = new Size(330, 24);
+            txtBuscar.TabIndex = 1;
+            //
             // lblEstado
-            // 
+            //
             lblEstado.AutoSize = true;
-            lblEstado.Location = new Point(350, 85);
+            lblEstado.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblEstado.ForeColor = Color.FromArgb(30, 41, 59);
+            lblEstado.Location = new Point(426, 33);
             lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(45, 15);
-            lblEstado.TabIndex = 5;
+            lblEstado.Size = new Size(51, 17);
+            lblEstado.TabIndex = 0;
             lblEstado.Text = "Estado:";
-            // 
-            // lblFecha
-            // 
-            lblFecha.AutoSize = true;
-            lblFecha.Location = new Point(354, 54);
-            lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(41, 15);
-            lblFecha.TabIndex = 4;
-            lblFecha.Text = "Fecha:";
-            // 
-            // lblRecepcion
-            // 
-            lblRecepcion.AutoSize = true;
-            lblRecepcion.Location = new Point(330, 24);
-            lblRecepcion.Name = "lblRecepcion";
-            lblRecepcion.Size = new Size(65, 15);
-            lblRecepcion.TabIndex = 3;
-            lblRecepcion.Text = "Recepción:";
-            // 
+            //
+            // cmbEstado
+            //
+            cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbEstado.Font = new Font("Segoe UI", 9.5F);
+            cmbEstado.FormattingEnabled = true;
+            cmbEstado.Location = new Point(486, 30);
+            cmbEstado.Name = "cmbEstado";
+            cmbEstado.Size = new Size(170, 25);
+            cmbEstado.TabIndex = 2;
+            //
             // lblTecnico
-            // 
+            //
             lblTecnico.AutoSize = true;
-            lblTecnico.Location = new Point(14, 84);
+            lblTecnico.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblTecnico.ForeColor = Color.FromArgb(30, 41, 59);
+            lblTecnico.Location = new Point(670, 33);
             lblTecnico.Name = "lblTecnico";
-            lblTecnico.Size = new Size(50, 15);
-            lblTecnico.TabIndex = 2;
-            lblTecnico.Text = "Tecnico:";
-            // 
-            // lblEquipo
-            // 
-            lblEquipo.AutoSize = true;
-            lblEquipo.Location = new Point(14, 55);
-            lblEquipo.Name = "lblEquipo";
-            lblEquipo.Size = new Size(47, 15);
-            lblEquipo.TabIndex = 1;
-            lblEquipo.Text = "Equipo:";
-            // 
-            // lblCliente
-            // 
-            lblCliente.AutoSize = true;
-            lblCliente.Location = new Point(14, 25);
-            lblCliente.Name = "lblCliente";
-            lblCliente.Size = new Size(47, 15);
-            lblCliente.TabIndex = 0;
-            lblCliente.Text = "Cliente:";
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(txtDiagnosticoTecnico);
-            groupBox1.Controls.Add(txtPatronClave);
-            groupBox1.Controls.Add(txtFallaDeclarada);
-            groupBox1.Controls.Add(lblDiagnosticoTecnico);
-            groupBox1.Controls.Add(lblPatronClave);
-            groupBox1.Controls.Add(lblFallaDeclarada);
-            groupBox1.Location = new Point(2, 112);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(797, 79);
-            groupBox1.TabIndex = 1;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Diagnóstico y Falla";
-            // 
-            // txtDiagnosticoTecnico
-            // 
-            txtDiagnosticoTecnico.Location = new Point(579, 44);
-            txtDiagnosticoTecnico.Multiline = true;
-            txtDiagnosticoTecnico.Name = "txtDiagnosticoTecnico";
-            txtDiagnosticoTecnico.PlaceholderText = "Diagnóstico del técnico";
-            txtDiagnosticoTecnico.Size = new Size(190, 23);
-            txtDiagnosticoTecnico.TabIndex = 5;
-            // 
-            // txtPatronClave
-            // 
-            txtPatronClave.Location = new Point(295, 44);
-            txtPatronClave.Name = "txtPatronClave";
-            txtPatronClave.PlaceholderText = "Patrón o clave de desbloqueo";
-            txtPatronClave.Size = new Size(190, 23);
-            txtPatronClave.TabIndex = 4;
-            // 
-            // txtFallaDeclarada
-            // 
-            txtFallaDeclarada.Location = new Point(10, 44);
-            txtFallaDeclarada.Multiline = true;
-            txtFallaDeclarada.Name = "txtFallaDeclarada";
-            txtFallaDeclarada.PlaceholderText = "Qué problema informa el cliente";
-            txtFallaDeclarada.Size = new Size(190, 23);
-            txtFallaDeclarada.TabIndex = 3;
-            // 
-            // lblDiagnosticoTecnico
-            // 
-            lblDiagnosticoTecnico.AutoSize = true;
-            lblDiagnosticoTecnico.Location = new Point(624, 26);
-            lblDiagnosticoTecnico.Name = "lblDiagnosticoTecnico";
-            lblDiagnosticoTecnico.Size = new Size(113, 15);
-            lblDiagnosticoTecnico.TabIndex = 2;
-            lblDiagnosticoTecnico.Text = "Diagnostico Tecnico";
-            // 
-            // lblPatronClave
-            // 
-            lblPatronClave.AutoSize = true;
-            lblPatronClave.Location = new Point(350, 26);
-            lblPatronClave.Name = "lblPatronClave";
-            lblPatronClave.Size = new Size(85, 15);
-            lblPatronClave.TabIndex = 1;
-            lblPatronClave.Text = "Patrón / Clave:";
-            // 
-            // lblFallaDeclarada
-            // 
-            lblFallaDeclarada.AutoSize = true;
-            lblFallaDeclarada.Location = new Point(58, 26);
-            lblFallaDeclarada.Name = "lblFallaDeclarada";
-            lblFallaDeclarada.Size = new Size(89, 15);
-            lblFallaDeclarada.TabIndex = 0;
-            lblFallaDeclarada.Text = "Falla Declarada:";
-            // 
-            // grpPresupuestoRepuestos
-            // 
-            grpPresupuestoRepuestos.Controls.Add(txtManoObra);
-            grpPresupuestoRepuestos.Controls.Add(lblManoObra);
-            grpPresupuestoRepuestos.Controls.Add(btnGuardarOrden);
-            grpPresupuestoRepuestos.Controls.Add(btnCancelar);
-            grpPresupuestoRepuestos.Controls.Add(txtToalPresupuesto);
-            grpPresupuestoRepuestos.Controls.Add(lblTotalPresupuesto);
-            grpPresupuestoRepuestos.Controls.Add(dgvRepuestos);
-            grpPresupuestoRepuestos.Controls.Add(btnAgregarRepuesto);
-            grpPresupuestoRepuestos.Controls.Add(numCantidadRepuesto);
-            grpPresupuestoRepuestos.Controls.Add(txtPrecio);
-            grpPresupuestoRepuestos.Controls.Add(cmbRepuesto);
-            grpPresupuestoRepuestos.Controls.Add(lblCantidad);
-            grpPresupuestoRepuestos.Controls.Add(lblPrecio);
-            grpPresupuestoRepuestos.Controls.Add(lblRepuesto);
-            grpPresupuestoRepuestos.Location = new Point(2, 185);
-            grpPresupuestoRepuestos.Name = "grpPresupuestoRepuestos";
-            grpPresupuestoRepuestos.Size = new Size(797, 265);
-            grpPresupuestoRepuestos.TabIndex = 2;
-            grpPresupuestoRepuestos.TabStop = false;
-            grpPresupuestoRepuestos.Text = "Presupuesto y Repuestos";
-            // 
-            // txtManoObra
-            // 
-            txtManoObra.Location = new Point(686, 74);
-            txtManoObra.Name = "txtManoObra";
-            txtManoObra.PlaceholderText = "Ej: 15000";
-            txtManoObra.Size = new Size(100, 23);
-            txtManoObra.TabIndex = 13;
-            // 
-            // lblManoObra
-            // 
-            lblManoObra.AutoSize = true;
-            lblManoObra.Location = new Point(586, 78);
-            lblManoObra.Name = "lblManoObra";
-            lblManoObra.Size = new Size(98, 15);
-            lblManoObra.TabIndex = 12;
-            lblManoObra.Text = "MANO DE OBRA:";
-            // 
-            // btnGuardarOrden
-            // 
-            btnGuardarOrden.Location = new Point(678, 230);
-            btnGuardarOrden.Name = "btnGuardarOrden";
-            btnGuardarOrden.Size = new Size(108, 23);
-            btnGuardarOrden.TabIndex = 11;
-            btnGuardarOrden.Text = "Guardar Orden";
-            btnGuardarOrden.UseVisualStyleBackColor = true;
-            // 
-            // btnCancelar
-            // 
-            btnCancelar.Location = new Point(579, 230);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
-            btnCancelar.TabIndex = 10;
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
-            // 
-            // txtToalPresupuesto
-            // 
-            txtToalPresupuesto.Location = new Point(686, 104);
-            txtToalPresupuesto.Name = "txtToalPresupuesto";
-            txtToalPresupuesto.PlaceholderText = "Se calcula automáticamente";
-            txtToalPresupuesto.ReadOnly = true;
-            txtToalPresupuesto.Size = new Size(100, 23);
-            txtToalPresupuesto.TabIndex = 9;
-            // 
-            // lblTotalPresupuesto
-            // 
-            lblTotalPresupuesto.AutoSize = true;
-            lblTotalPresupuesto.Location = new Point(564, 108);
-            lblTotalPresupuesto.Name = "lblTotalPresupuesto";
-            lblTotalPresupuesto.Size = new Size(120, 15);
-            lblTotalPresupuesto.TabIndex = 8;
-            lblTotalPresupuesto.Text = "TOTAL PRESUPUESTO:";
-            // 
-            // dgvRepuestos
-            // 
-            dgvRepuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRepuestos.Location = new Point(10, 67);
-            dgvRepuestos.Name = "dgvRepuestos";
-            dgvRepuestos.Size = new Size(528, 186);
-            dgvRepuestos.TabIndex = 7;
-            // 
-            // btnAgregarRepuesto
-            // 
-            btnAgregarRepuesto.Location = new Point(686, 14);
-            btnAgregarRepuesto.Name = "btnAgregarRepuesto";
-            btnAgregarRepuesto.Size = new Size(105, 45);
-            btnAgregarRepuesto.TabIndex = 6;
-            btnAgregarRepuesto.Text = "+ Agregar Repuesto";
-            btnAgregarRepuesto.UseVisualStyleBackColor = true;
-            // 
-            // numCantidadRepuesto
-            // 
-            numCantidadRepuesto.Location = new Point(540, 23);
-            numCantidadRepuesto.Name = "numCantidadRepuesto";
-            numCantidadRepuesto.Size = new Size(120, 23);
-            numCantidadRepuesto.TabIndex = 5;
-            // 
-            // txtPrecio
-            // 
-            txtPrecio.Location = new Point(336, 24);
-            txtPrecio.Name = "txtPrecio";
-            txtPrecio.PlaceholderText = "Precio del repuesto";
-            txtPrecio.Size = new Size(132, 23);
-            txtPrecio.TabIndex = 4;
-            // 
-            // cmbRepuesto
-            // 
-            cmbRepuesto.FormattingEnabled = true;
-            cmbRepuesto.Location = new Point(70, 25);
-            cmbRepuesto.Name = "cmbRepuesto";
-            cmbRepuesto.Size = new Size(206, 23);
-            cmbRepuesto.TabIndex = 3;
-            // 
-            // lblCantidad
-            // 
-            lblCantidad.AutoSize = true;
-            lblCantidad.Location = new Point(480, 27);
-            lblCantidad.Name = "lblCantidad";
-            lblCantidad.Size = new Size(58, 15);
-            lblCantidad.TabIndex = 2;
-            lblCantidad.Text = "Cantidad:";
-            // 
-            // lblPrecio
-            // 
-            lblPrecio.AutoSize = true;
-            lblPrecio.Location = new Point(291, 28);
-            lblPrecio.Name = "lblPrecio";
-            lblPrecio.Size = new Size(43, 15);
-            lblPrecio.TabIndex = 1;
-            lblPrecio.Text = "Precio:";
-            // 
-            // lblRepuesto
-            // 
-            lblRepuesto.AutoSize = true;
-            lblRepuesto.Location = new Point(9, 28);
-            lblRepuesto.Name = "lblRepuesto";
-            lblRepuesto.Size = new Size(59, 15);
-            lblRepuesto.TabIndex = 0;
-            lblRepuesto.Text = "Repuesto:";
-            // 
+            lblTecnico.Size = new Size(58, 17);
+            lblTecnico.TabIndex = 0;
+            lblTecnico.Text = "Técnico:";
+            //
+            // cmbTecnico
+            //
+            cmbTecnico.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTecnico.Font = new Font("Segoe UI", 9.5F);
+            cmbTecnico.FormattingEnabled = true;
+            cmbTecnico.Location = new Point(735, 30);
+            cmbTecnico.Name = "cmbTecnico";
+            cmbTecnico.Size = new Size(200, 25);
+            cmbTecnico.TabIndex = 3;
+            //
+            // btnBuscar
+            //
+            btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBuscar.BackColor = Color.FromArgb(37, 99, 235);
+            btnBuscar.FlatAppearance.BorderSize = 0;
+            btnBuscar.FlatStyle = FlatStyle.Flat;
+            btnBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnBuscar.ForeColor = Color.White;
+            btnBuscar.Location = new Point(948, 28);
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.Size = new Size(84, 28);
+            btnBuscar.TabIndex = 4;
+            btnBuscar.Text = "Buscar";
+            btnBuscar.UseVisualStyleBackColor = false;
+            //
+            // chkSoloPendientes
+            //
+            chkSoloPendientes.AutoSize = true;
+            chkSoloPendientes.Checked = true;
+            chkSoloPendientes.CheckState = CheckState.Checked;
+            chkSoloPendientes.Font = new Font("Segoe UI", 9.5F);
+            chkSoloPendientes.ForeColor = Color.FromArgb(30, 41, 59);
+            chkSoloPendientes.Location = new Point(80, 66);
+            chkSoloPendientes.Name = "chkSoloPendientes";
+            chkSoloPendientes.Size = new Size(279, 21);
+            chkSoloPendientes.TabIndex = 5;
+            chkSoloPendientes.Text = "Solo pendientes (sin entregar ni cancelar)";
+            chkSoloPendientes.UseVisualStyleBackColor = true;
+            //
+            // chkMisOrdenes
+            //
+            chkMisOrdenes.AutoSize = true;
+            chkMisOrdenes.Font = new Font("Segoe UI", 9.5F);
+            chkMisOrdenes.ForeColor = Color.FromArgb(30, 41, 59);
+            chkMisOrdenes.Location = new Point(400, 66);
+            chkMisOrdenes.Name = "chkMisOrdenes";
+            chkMisOrdenes.Size = new Size(128, 21);
+            chkMisOrdenes.TabIndex = 6;
+            chkMisOrdenes.Text = "Solo mis órdenes";
+            chkMisOrdenes.UseVisualStyleBackColor = true;
+            chkMisOrdenes.Visible = false;
+            //
+            // lblLeyenda
+            //
+            lblLeyenda.AutoSize = true;
+            lblLeyenda.Font = new Font("Segoe UI", 9F);
+            lblLeyenda.ForeColor = Color.FromArgb(185, 28, 28);
+            lblLeyenda.Location = new Point(620, 68);
+            lblLeyenda.Name = "lblLeyenda";
+            lblLeyenda.Size = new Size(286, 15);
+            lblLeyenda.TabIndex = 0;
+            lblLeyenda.Text = "Las filas en rojo tienen la fecha prometida vencida.";
+            //
+            // grpOrdenes
+            //
+            grpOrdenes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpOrdenes.Controls.Add(btnVolver);
+            grpOrdenes.Controls.Add(btnVerOrden);
+            grpOrdenes.Controls.Add(btnNuevaOrden);
+            grpOrdenes.Controls.Add(lblResumen);
+            grpOrdenes.Controls.Add(dgvOrdenes);
+            grpOrdenes.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpOrdenes.ForeColor = Color.FromArgb(15, 23, 42);
+            grpOrdenes.Location = new Point(16, 174);
+            grpOrdenes.Name = "grpOrdenes";
+            grpOrdenes.Size = new Size(1048, 470);
+            grpOrdenes.TabIndex = 2;
+            grpOrdenes.TabStop = false;
+            grpOrdenes.Text = "Órdenes de Reparación";
+            //
+            // dgvOrdenes
+            //
+            dgvOrdenes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvOrdenes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvOrdenes.Location = new Point(16, 28);
+            dgvOrdenes.Name = "dgvOrdenes";
+            dgvOrdenes.Size = new Size(1016, 376);
+            dgvOrdenes.TabIndex = 0;
+            //
+            // lblResumen
+            //
+            lblResumen.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblResumen.AutoSize = true;
+            lblResumen.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblResumen.ForeColor = Color.FromArgb(71, 85, 105);
+            lblResumen.Location = new Point(16, 428);
+            lblResumen.Name = "lblResumen";
+            lblResumen.Size = new Size(64, 17);
+            lblResumen.TabIndex = 1;
+            lblResumen.Text = "Órdenes: 0";
+            //
+            // btnNuevaOrden
+            //
+            btnNuevaOrden.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnNuevaOrden.BackColor = Color.FromArgb(37, 99, 235);
+            btnNuevaOrden.FlatAppearance.BorderSize = 0;
+            btnNuevaOrden.FlatStyle = FlatStyle.Flat;
+            btnNuevaOrden.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnNuevaOrden.ForeColor = Color.White;
+            btnNuevaOrden.Location = new Point(600, 418);
+            btnNuevaOrden.Name = "btnNuevaOrden";
+            btnNuevaOrden.Size = new Size(150, 38);
+            btnNuevaOrden.TabIndex = 2;
+            btnNuevaOrden.Text = "+ Nueva Orden";
+            btnNuevaOrden.UseVisualStyleBackColor = false;
+            //
+            // btnVerOrden
+            //
+            btnVerOrden.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVerOrden.BackColor = Color.FromArgb(16, 185, 129);
+            btnVerOrden.FlatAppearance.BorderSize = 0;
+            btnVerOrden.FlatStyle = FlatStyle.Flat;
+            btnVerOrden.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnVerOrden.ForeColor = Color.White;
+            btnVerOrden.Location = new Point(760, 418);
+            btnVerOrden.Name = "btnVerOrden";
+            btnVerOrden.Size = new Size(150, 38);
+            btnVerOrden.TabIndex = 3;
+            btnVerOrden.Text = "Ver / Actualizar";
+            btnVerOrden.UseVisualStyleBackColor = false;
+            //
+            // btnVolver
+            //
+            btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVolver.BackColor = Color.FromArgb(100, 116, 139);
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnVolver.ForeColor = Color.White;
+            btnVolver.Location = new Point(920, 418);
+            btnVolver.Name = "btnVolver";
+            btnVolver.Size = new Size(112, 38);
+            btnVolver.TabIndex = 4;
+            btnVolver.Text = "Volver";
+            btnVolver.UseVisualStyleBackColor = false;
+            //
             // FormTaller
-            // 
+            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(grpPresupuestoRepuestos);
-            Controls.Add(groupBox1);
-            Controls.Add(grpRecepciónCliente);
+            BackColor = Color.FromArgb(241, 245, 249);
+            ClientSize = new Size(1080, 660);
+            Controls.Add(grpOrdenes);
+            Controls.Add(grpFiltros);
+            Controls.Add(panelHeader);
+            Font = new Font("Segoe UI", 9F);
+            MinimumSize = new Size(1000, 620);
             Name = "FormTaller";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ApIBigStore - Taller";
-            Load += FormTaller_Load;
-            grpRecepciónCliente.ResumeLayout(false);
-            grpRecepciónCliente.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            grpPresupuestoRepuestos.ResumeLayout(false);
-            grpPresupuestoRepuestos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvRepuestos).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numCantidadRepuesto).EndInit();
+            panelHeader.ResumeLayout(false);
+            panelHeader.PerformLayout();
+            grpFiltros.ResumeLayout(false);
+            grpFiltros.PerformLayout();
+            grpOrdenes.ResumeLayout(false);
+            grpOrdenes.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvOrdenes).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private GroupBox grpRecepciónCliente;
-        private Label lblEquipo;
-        private Label lblCliente;
-        private Label lblTecnico;
+        private Panel panelHeader;
+        private Label lblCu;
+        private Label lblTitulo;
+        private GroupBox grpFiltros;
+        private Label lblBuscar;
+        private TextBox txtBuscar;
         private Label lblEstado;
-        private Label lblFecha;
-        private Label lblRecepcion;
-        private TextBox txtRecepcion;
-        private ComboBox cmbTecnico;
-        private ComboBox cmbEquipo;
-        private ComboBox cmbCliente;
-        private DateTimePicker dtpFecha;
         private ComboBox cmbEstado;
-        private GroupBox groupBox1;
-        private Label lblPatronClave;
-        private Label lblFallaDeclarada;
-        private TextBox txtDiagnosticoTecnico;
-        private TextBox txtPatronClave;
-        private TextBox txtFallaDeclarada;
-        private Label lblDiagnosticoTecnico;
-        private GroupBox grpPresupuestoRepuestos;
-        private Label lblRepuesto;
-        private Label lblCantidad;
-        private Label lblPrecio;
-        private NumericUpDown numCantidadRepuesto;
-        private TextBox txtPrecio;
-        private ComboBox cmbRepuesto;
-        private DataGridView dgvRepuestos;
-        private Button btnAgregarRepuesto;
-        private TextBox txtToalPresupuesto;
-        private Label lblTotalPresupuesto;
-        private Button btnCancelar;
-        private Button btnGuardarOrden;
-        private TextBox txtManoObra;
-        private Label lblManoObra;
+        private Label lblTecnico;
+        private ComboBox cmbTecnico;
+        private Button btnBuscar;
+        private CheckBox chkSoloPendientes;
+        private CheckBox chkMisOrdenes;
+        private Label lblLeyenda;
+        private GroupBox grpOrdenes;
+        private DataGridView dgvOrdenes;
+        private Label lblResumen;
+        private Button btnNuevaOrden;
+        private Button btnVerOrden;
+        private Button btnVolver;
     }
 }

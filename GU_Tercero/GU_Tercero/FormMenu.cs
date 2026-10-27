@@ -11,6 +11,9 @@ namespace GU_Tercero
         private Usuario usuarioLogueado;
         public bool EsCierreSesion { get; private set; } = false;
 
+        // Lo marca el acceso rápido "Verificar Alertas de Stock".
+        private bool abrirAlertasStock = false;
+
         // Textos que muestran los paneles del resumen diario.
         private Label lblValorVentas = new Label();
         private Label lblDetalleVentas = new Label();
@@ -197,7 +200,8 @@ namespace GU_Tercero
             string rol = ObtenerRol();
 
             gestionDeUsuariosToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.USUARIOS);
-            productoYStockToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PRODUCTOS);
+            productosToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PRODUCTOS);
+            consultaStockToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CONSULTA_STOCK);
             proveedoresToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PROVEEDORES);
             ventasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
             comprasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
@@ -209,7 +213,7 @@ namespace GU_Tercero
             // Los accesos rápidos siguen los mismos permisos que el menú.
             btnAccesoVenta.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
             btnAccesoTaller.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
-            btnAccesoStock.Visible = Navegacion.PuedeVer(rol, Navegacion.PRODUCTOS);
+            btnAccesoStock.Visible = Navegacion.PuedeVer(rol, Navegacion.CONSULTA_STOCK);
             btnAccesoCompra.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
         }
 
@@ -272,11 +276,18 @@ namespace GU_Tercero
         {
             if (pantalla == Navegacion.USUARIOS) return new FormAdmin();
             if (pantalla == Navegacion.PRODUCTOS) return new FormProductos();
+            if (pantalla == Navegacion.CONSULTA_STOCK)
+            {
+                // El acceso rápido de alertas abre la consulta mostrando solo el stock bajo.
+                bool soloBajoMinimo = abrirAlertasStock;
+                abrirAlertasStock = false;
+                return new FormConsultaStock(usuarioLogueado, soloBajoMinimo);
+            }
             if (pantalla == Navegacion.PROVEEDORES) return new FormProveedores();
             if (pantalla == Navegacion.VENTAS) return new FormVentas(usuarioLogueado);
             if (pantalla == Navegacion.COMPRAS) return new FormCompras(usuarioLogueado);
             if (pantalla == Navegacion.CAJA) return new FormCaja(usuarioLogueado);
-            if (pantalla == Navegacion.TALLER) return new FormTaller();
+            if (pantalla == Navegacion.TALLER) return new FormTaller(usuarioLogueado);
             if (pantalla == Navegacion.MI_PERFIL) return new FormUsuario(usuarioLogueado);
             return new FormConfiguracion();
         }
@@ -294,6 +305,17 @@ namespace GU_Tercero
         private void productoYStockToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.PRODUCTOS);
+        }
+
+        private void consultaStockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirPantalla(Navegacion.CONSULTA_STOCK);
+        }
+
+        private void btnAccesoStock_Click(object sender, EventArgs e)
+        {
+            abrirAlertasStock = true;
+            AbrirPantalla(Navegacion.CONSULTA_STOCK);
         }
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
