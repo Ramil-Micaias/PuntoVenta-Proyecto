@@ -42,10 +42,34 @@ namespace Logica
 
             usuario = usuarioDAO.Login(nombreUsuario);
 
-            if (usuario.Intentos_Fallidos >= 3)
+            if (usuario.Intentos_Fallidos >= INTENTOS_MAXIMOS_LOGIN)
                 usuarioDAO.BloquearUsuario(usuario.Id_Usuario);
 
             return null;
+        }
+
+        public const int INTENTOS_MAXIMOS_LOGIN = 3;
+
+        // Mensaje para mostrar cuando el inicio de sesión falla: avisa cuántos intentos
+        // quedan antes del bloqueo, o si el usuario ya está bloqueado o inactivo.
+        public string MensajeLoginFallido(string nombreUsuario)
+        {
+            Usuario usuario = usuarioDAO.Login(nombreUsuario);
+
+            if (usuario == null)
+                return "Usuario o contraseña incorrectos.";
+
+            if (usuario.Bloqueado)
+                return "El usuario está bloqueado por superar los " + INTENTOS_MAXIMOS_LOGIN + " intentos fallidos.\n"
+                    + "Solicite al administrador que lo desbloquee o recupere su contraseña.";
+
+            if (!usuario.Activo)
+                return "El usuario está inactivo. Comuníquese con el administrador.";
+
+            int restantes = INTENTOS_MAXIMOS_LOGIN - usuario.Intentos_Fallidos;
+
+            return "Usuario o contraseña incorrectos.\n"
+                + "Intentos restantes: " + restantes + ". Si se agotan, el usuario se bloquea.";
         }
 
         //método Actualiza la contraseña del usuario y registra el cambio en el historial.
@@ -77,9 +101,15 @@ namespace Logica
         }
 
         //metodo UsuarioTienePreguntas: Determina si el usuario ya configuró preguntas de seguridad.
+        // Cada usuario registra siempre las 3 preguntas de seguridad. La configuración
+        // (2 o 3) solo define cuántas se piden al recuperar la contraseña; así, si el
+        // administrador cambia la configuración, ningún usuario queda con preguntas de menos.
+        public const int TOTAL_PREGUNTAS = 3;
+
+        // true si el usuario ya tiene cargadas las 3 preguntas; si no, al iniciar sesión se le piden.
         public bool UsuarioTienePreguntas(int idUsuario)
         {
-            return usuarioDAO.UsuarioTienePreguntas(idUsuario);
+            return usuarioDAO.CantidadPreguntasUsuario(idUsuario) >= TOTAL_PREGUNTAS;
         }
 
         //método ObtenerUsuarios: Le pide al DAO los usuarios y devuelve el DataTable a la Vista.
@@ -164,7 +194,7 @@ namespace Logica
         {
             if (usuarioDAO.ExisteDni(dni))
             {
-                throw new Exception("El DNI ingresado ya se encuentra registrado en el sistema.");
+                throw new Exception("Ya existe un usuario con el DNI ingresado.");
             }
 
             // 2. Proceso normal

@@ -122,7 +122,7 @@ namespace GU_Tercero
             lblCantidadPreguntas.Name = "lblCantidadPreguntas";
             lblCantidadPreguntas.Size = new Size(154, 17);
             lblCantidadPreguntas.TabIndex = 2;
-            lblCantidadPreguntas.Text = "Cantidad de preguntas:";
+            lblCantidadPreguntas.Text = "Preguntas al recuperar:";
             //
             // nudCantidadPreguntas
             //

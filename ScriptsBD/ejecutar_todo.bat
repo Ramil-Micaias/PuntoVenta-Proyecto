@@ -22,6 +22,7 @@ sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp013_SP_Stock.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp014_SP_Taller.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp015_SP_Caja.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp016_SP_2FA.sql"
+sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp017_SP_Clientes.sql"
 
 echo.
 echo ¡Proceso terminado con exito!

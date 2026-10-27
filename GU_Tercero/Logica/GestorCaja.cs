@@ -41,6 +41,14 @@ namespace Logica
             return cajaDAO.CerrarCaja(idCaja, idUsuario);
         }
 
+        public void ReabrirCaja(int idCaja, int idUsuario)
+        {
+            if (idUsuario <= 0)
+                throw new Exception("Debe iniciar sesión para reabrir la caja.");
+
+            cajaDAO.ReabrirCaja(idCaja, idUsuario);
+        }
+
         // El saldo disponible es el que muestra la pantalla; el SP lo vuelve a verificar al guardar.
         public decimal RegistrarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)
         {

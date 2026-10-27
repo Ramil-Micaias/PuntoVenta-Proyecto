@@ -43,6 +43,7 @@ namespace GU_Tercero
             comprasToolStripMenuItem = new ToolStripMenuItem();
             cajaToolStripMenuItem = new ToolStripMenuItem();
             tallerToolStripMenuItem = new ToolStripMenuItem();
+            clientesToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -64,7 +65,7 @@ namespace GU_Tercero
             // 
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1000, 24);
@@ -168,6 +169,13 @@ namespace GU_Tercero
             tallerToolStripMenuItem.Size = new Size(58, 20);
             tallerToolStripMenuItem.Text = "Taller";
             tallerToolStripMenuItem.Click += tallerToolStripMenuItem_Click;
+            //
+            // clientesToolStripMenuItem
+            //
+            clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
+            clientesToolStripMenuItem.Size = new Size(70, 20);
+            clientesToolStripMenuItem.Text = "Clientes";
+            clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -362,6 +370,7 @@ namespace GU_Tercero
         private ToolStripMenuItem comprasToolStripMenuItem;
         private ToolStripMenuItem cajaToolStripMenuItem;
         private ToolStripMenuItem tallerToolStripMenuItem;
+        private ToolStripMenuItem clientesToolStripMenuItem;
         private ToolStripMenuItem miPerfilToolStripMenuItem;
         private Label lblResumen;
         private TableLayoutPanel tlpPaneles;

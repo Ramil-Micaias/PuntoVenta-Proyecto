@@ -73,11 +73,29 @@ BEGIN
 END
 GO
 
+-- Inicio del período: la primera caja del día empieza a las 00:00 (así cuenta
+-- las ventas y compras en efectivo hechas antes de abrirla); si en el día hubo
+-- otra caja antes, empieza a la hora en que se abrió.
+CREATE OR ALTER FUNCTION dbo.fn_InicioPeriodoCaja(@Id_Caja INT)
+RETURNS DATETIME
+AS
+BEGIN
+    DECLARE @Apertura DATETIME = (SELECT Fecha_Apertura FROM Caja WHERE Id_Caja = @Id_Caja);
+
+    IF EXISTS (SELECT 1 FROM Caja
+               WHERE Id_Caja < @Id_Caja
+                 AND CAST(Fecha_Apertura AS DATE) = CAST(@Apertura AS DATE))
+        RETURN @Apertura;
+
+    RETURN CAST(CAST(@Apertura AS DATE) AS DATETIME);
+END
+GO
+
 CREATE OR ALTER FUNCTION dbo.fn_IngresosCaja(@Id_Caja INT)
 RETURNS DECIMAL(12,2)
 AS
 BEGIN
-    DECLARE @Desde DATETIME = (SELECT Fecha_Apertura FROM Caja WHERE Id_Caja = @Id_Caja);
+    DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
@@ -97,7 +115,7 @@ CREATE OR ALTER FUNCTION dbo.fn_EgresosCaja(@Id_Caja INT)
 RETURNS DECIMAL(12,2)
 AS
 BEGIN
-    DECLARE @Desde DATETIME = (SELECT Fecha_Apertura FROM Caja WHERE Id_Caja = @Id_Caja);
+    DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
@@ -164,16 +182,19 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @Desde DATETIME = (SELECT Fecha_Apertura FROM Caja WHERE Id_Caja = @Id_Caja);
+    DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
-    SELECT Fecha, Tipo, Origen, Motivo, Importe, Usuario
+    -- Se listan todas las ventas y compras del período con su medio de pago.
+    -- Solo las de "Efectivo" (y los movimientos manuales) suman o restan al saldo de la caja.
+    SELECT Fecha, Tipo, Origen, Medio, Motivo, Importe, Usuario
     FROM (
         SELECT
             m.Fecha,
             m.Tipo,
             'Manual' AS Origen,
+            'Efectivo' AS Medio,
             m.Motivo,
             m.Importe,
             u.Nombre_Usuario AS Usuario
@@ -187,15 +208,16 @@ BEGIN
             v.Fecha_Venta,
             'Ingreso',
             'Venta',
+            mp.Nombre,
             'Venta ' + ISNULL(v.Numero_Factura, '') +
-                CASE WHEN pv.Importe < v.Total THEN ' (parte en efectivo)' ELSE '' END,
+                CASE WHEN pv.Id_MetodoPago = @IdEfectivo THEN '' ELSE ' (no suma al efectivo)' END,
             pv.Importe,
             u.Nombre_Usuario
         FROM PagoVenta pv
         INNER JOIN Venta v ON v.Id_Venta = pv.Id_Venta
+        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = pv.Id_MetodoPago
         INNER JOIN Usuario u ON u.Id_Usuario = v.Id_Usuario_Vendedor
         WHERE v.Anulada = 0
-          AND pv.Id_MetodoPago = @IdEfectivo
           AND v.Fecha_Venta >= @Desde AND v.Fecha_Venta < @Hasta
 
         UNION ALL
@@ -204,13 +226,15 @@ BEGIN
             c.Fecha_Compra,
             'Egreso',
             'Compra',
-            'Compra ' + ISNULL(c.Numero_Comprobante, ''),
+            mp.Nombre,
+            'Compra ' + ISNULL(c.Numero_Comprobante, '') +
+                CASE WHEN c.Id_MetodoPago = @IdEfectivo THEN '' ELSE ' (no resta al efectivo)' END,
             c.Total,
             u.Nombre_Usuario
         FROM Compra c
+        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = c.Id_MetodoPago
         INNER JOIN Usuario u ON u.Id_Usuario = c.Id_Usuario
         WHERE c.Estado = 1
-          AND c.Id_MetodoPago = @IdEfectivo
           AND c.Fecha_Compra >= @Desde AND c.Fecha_Compra < @Hasta
     ) movimientos
     ORDER BY Fecha DESC;
@@ -307,6 +331,64 @@ BEGIN
         COMMIT TRANSACTION;
 
         SELECT @SaldoCierre AS Saldo_Cierre;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
+
+-- ------------------------------------------------------------
+-- 6b. SP: Reabrir caja
+--    Si la caja de hoy se cerró por error se vuelve a abrir la misma,
+--    con su saldo inicial y sus movimientos. Solo la última caja de hoy
+--    y solo si no hay otra abierta.
+-- ------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_ReabrirCaja
+    @Id_Caja INT,
+    @Id_Usuario INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        DECLARE @Hoy DATE = CAST(GETDATE() AS DATE);
+
+        IF NOT EXISTS (SELECT 1 FROM Usuario WHERE Id_Usuario = @Id_Usuario AND Activo = 1)
+        BEGIN
+            RAISERROR('El usuario no es válido. Inicie sesión nuevamente.', 16, 1);
+        END
+
+        IF NOT EXISTS (SELECT 1 FROM Caja WITH (UPDLOCK, HOLDLOCK)
+                       WHERE Id_Caja = @Id_Caja AND Abierta = 0
+                         AND CAST(Fecha_Apertura AS DATE) = @Hoy)
+        BEGIN
+            RAISERROR('Solo se puede reabrir una caja cerrada de la jornada de hoy.', 16, 1);
+        END
+
+        IF EXISTS (SELECT 1 FROM Caja WHERE Abierta = 1)
+        BEGIN
+            RAISERROR('Ya hay una caja abierta.', 16, 1);
+        END
+
+        IF EXISTS (SELECT 1 FROM Caja WHERE Id_Caja > @Id_Caja AND CAST(Fecha_Apertura AS DATE) = @Hoy)
+        BEGIN
+            RAISERROR('Solo se puede reabrir la última caja de hoy.', 16, 1);
+        END
+
+        UPDATE Caja
+        SET Abierta = 1,
+            Fecha_Cierre = NULL,
+            Id_Usuario_Cierre = NULL,
+            Saldo_Cierre = NULL
+        WHERE Id_Caja = @Id_Caja;
+
+        COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0

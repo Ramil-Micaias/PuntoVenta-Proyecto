@@ -216,7 +216,8 @@ namespace Datos
         }
 
         // Verifica si el usuario ya posee preguntas de seguridad configuradas.
-        public bool UsuarioTienePreguntas(int idUsuario)
+        // Cantidad de preguntas de seguridad que tiene cargadas el usuario.
+        public int CantidadPreguntasUsuario(int idUsuario)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
             {
@@ -228,9 +229,7 @@ namespace Datos
 
                 conexion.Open();
 
-                int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
-
-                return cantidad > 0;
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
 
@@ -278,7 +277,9 @@ namespace Datos
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Persona WHERE DNI = @DNI";
+                // Solo cuenta si esa persona ya es usuario: un cliente del taller con el mismo DNI
+                // puede convertirse en usuario (se reutiliza su registro de Persona).
+                string query = "SELECT COUNT(1) FROM Usuario U INNER JOIN Persona P ON P.Id_Persona = U.Id_Persona WHERE P.DNI = @DNI";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@DNI", dni);
 

@@ -23,12 +23,9 @@ namespace GU_Tercero
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
             lblPreguntaTres.Text = "¿Comida favorita?";
 
-            ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
-            ConfiguracionSistema configuracion = configuracionNegocio.ObtenerConfiguracion();
-
-            bool requiereTresPreguntas = configuracion.Cantidad_Preguntas != 2;
-            lblPreguntaTres.Visible = requiereTresPreguntas;
-            txtRespuestaTres.Visible = requiereTresPreguntas;
+            // Siempre se registran las 3 preguntas (la configuración solo define cuántas se piden al recuperar).
+            lblPreguntaTres.Visible = true;
+            txtRespuestaTres.Visible = true;
 
             // Deshabilitamos el botón cancelar si la configuración es obligatoria en primer ingreso
             btnCancelar.Enabled = false;
@@ -36,18 +33,10 @@ namespace GU_Tercero
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtRespuestaUno.Text) || string.IsNullOrWhiteSpace(txtRespuestaDos.Text))
+            if (string.IsNullOrWhiteSpace(txtRespuestaUno.Text) || string.IsNullOrWhiteSpace(txtRespuestaDos.Text)
+                || string.IsNullOrWhiteSpace(txtRespuestaTres.Text))
             {
-                MessageBox.Show("Complete todas las respuestas obligatorias.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
-            ConfiguracionSistema configuracion = configuracionNegocio.ObtenerConfiguracion();
-
-            if (configuracion.Cantidad_Preguntas == 3 && string.IsNullOrWhiteSpace(txtRespuestaTres.Text))
-            {
-                MessageBox.Show("Complete la tercera respuesta.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Complete las 3 respuestas.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -62,11 +51,8 @@ namespace GU_Tercero
             string hash2 = HashHelper.GenerarHashRespuesta(txtRespuestaDos.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
 
-            if (configuracion.Cantidad_Preguntas == 3)
-            {
-                string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
-                negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
-            }
+            string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
+            negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
 
             MessageBox.Show("Preguntas de seguridad configuradas correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

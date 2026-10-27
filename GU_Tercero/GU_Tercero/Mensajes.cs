@@ -17,9 +17,11 @@ namespace Vista
             destino.Visible = true;
         }
 
+        // Se oculta además de vaciarse: un Label vacío igual tapa lo que tenga debajo.
         public static void Limpiar(Control destino)
         {
             destino.Text = string.Empty;
+            destino.Visible = false;
         }
     }
 }

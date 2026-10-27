@@ -60,18 +60,27 @@ namespace Vista
             bool abierta = hayCaja && cajaActual!.Abierta;
 
             // 2.1: sin caja abierta no se pueden registrar movimientos.
-            btnRegistrarMovimiento.Enabled = abierta;
-            btnCerrarCaja.Enabled = abierta;
+            // Se ocultan (deshabilitados parecían activos por el estilo plano).
+            btnRegistrarMovimiento.Visible = abierta;
+            btnCerrarCaja.Visible = abierta;
 
             if (!abierta)
             {
                 Mensajes.Limpiar(lblResultado);
             }
 
-            // La apertura se ofrece si no hay caja de hoy o si la última ya se cerró.
-            lblApertura.Visible = !abierta;
-            txtSaldoInicial.Visible = !abierta;
+            // Sin caja de hoy: se abre con saldo inicial.
+            // Caja de hoy cerrada: se ofrece reabrir la misma (por si se cerró por error).
+            bool cerradaHoy = hayCaja && !abierta;
+
+            lblApertura.Visible = !hayCaja;
+            txtSaldoInicial.Visible = !hayCaja;
             btnAbrirCaja.Visible = !abierta;
+            btnAbrirCaja.Text = cerradaHoy ? "Reabrir Caja" : "Abrir Caja";
+
+            // Sin el campo de saldo inicial, Reabrir queda a la izquierda.
+            btnAbrirCaja.Left = cerradaHoy ? lblApertura.Left : txtSaldoInicial.Right + 10;
+            AcomodarBotones(abierta);
 
             if (!hayCaja)
             {
@@ -92,12 +101,30 @@ namespace Vista
             {
                 lblEstado.Text = "La caja se cerró" +
                     (cajaActual!.Fecha_Cierre.HasValue ? " a las " + cajaActual.Fecha_Cierre.Value.ToString("HH:mm") : string.Empty) +
-                    ". Para registrar movimientos ingrese el saldo inicial y presione \"Abrir Caja\".";
+                    ". Si se cerró por error, presione \"Reabrir Caja\" para seguir registrando movimientos.";
                 lblEstado.ForeColor = Color.FromArgb(239, 68, 68);
             }
 
             MostrarTotales(cajaActual.Saldo_Inicial, cajaActual.Ingresos, cajaActual.Egresos, cajaActual.Saldo_Disponible);
             CargarMovimientos();
+        }
+
+        // Pone los botones visibles de la derecha uno al lado del otro contra el borde, sin huecos.
+        // (Se usa el estado de la caja y no boton.Visible, que es false mientras la pantalla todavía no se mostró.)
+        private void AcomodarBotones(bool abierta)
+        {
+            int x = dgvMovimientos.Right;
+
+            Button[] botones = abierta
+                ? new Button[] { btnRegistrarMovimiento, btnCerrarCaja, btnVolver }
+                : new Button[] { btnVolver };
+
+            foreach (Button boton in botones)
+            {
+                x -= boton.Width;
+                boton.Left = x;
+                x -= 10;
+            }
         }
 
         private void MostrarTotales(decimal saldoInicial, decimal ingresos, decimal egresos, decimal saldo)
@@ -148,6 +175,13 @@ namespace Vista
                 return;
             }
 
+            // Si la caja de hoy está cerrada, el botón la reabre.
+            if (cajaActual != null && !cajaActual.Abierta)
+            {
+                ReabrirCaja();
+                return;
+            }
+
             if (!IntentarParsearDecimal(txtSaldoInicial.Text, out decimal saldoInicial) || saldoInicial < 0)
             {
                 MessageBox.Show(
@@ -165,6 +199,34 @@ namespace Vista
                 gestorCaja.AbrirCaja(usuarioLogueado.Id_Usuario, saldoInicial);
                 txtSaldoInicial.Clear();
                 CargarCaja();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                CargarCaja();
+            }
+        }
+
+        // Vuelve a abrir la caja de hoy (misma caja, mismo saldo inicial y movimientos).
+        private void ReabrirCaja()
+        {
+            DialogResult respuesta = MessageBox.Show(
+                "¿Desea reabrir la caja de hoy? Se vuelve a abrir la misma caja, con su saldo inicial y sus movimientos.",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (respuesta != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                gestorCaja.ReabrirCaja(cajaActual!.Id_Caja, usuarioLogueado!.Id_Usuario);
+                CargarCaja();
+                Mensajes.Exito(lblResultado, "Caja reabierta correctamente. Ya puede registrar movimientos.");
             }
             catch (Exception ex)
             {
@@ -200,7 +262,7 @@ namespace Vista
 
                 // Con la caja cerrada se muestra arriba, en el estado de la caja.
                 Mensajes.Exito(lblEstado, "Caja cerrada correctamente. Saldo de cierre: " + FormatoMoneda(saldoCierre) +
-                    ". Para seguir, ingrese el saldo inicial y presione \"Abrir Caja\".");
+                    ". Si se cerró por error, presione \"Reabrir Caja\".");
             }
             catch (Exception ex)
             {
@@ -253,6 +315,14 @@ namespace Vista
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Tipo") || !dgvMovimientos.Columns.Contains("Importe"))
             {
+                return;
+            }
+
+            // Ventas y compras con tarjeta, transferencia, etc.: se muestran en gris porque no mueven el efectivo.
+            if (dgvMovimientos.Columns.Contains("Medio")
+                && (Convert.ToString(dgvMovimientos.Rows[e.RowIndex].Cells["Medio"].Value) ?? "Efectivo") != "Efectivo")
+            {
+                e.CellStyle!.ForeColor = Color.FromArgb(148, 163, 184);
                 return;
             }
 

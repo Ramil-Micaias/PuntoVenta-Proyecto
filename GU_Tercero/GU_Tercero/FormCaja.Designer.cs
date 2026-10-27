@@ -326,6 +326,7 @@ namespace Vista
             lblResultado.Location = new Point(16, 396);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(520, 36);
+            lblResultado.Visible = false;
             //
             // FormCaja
             //

@@ -135,7 +135,7 @@ namespace GU_Tercero
             }
             else
             {
-                MessageBox.Show("Usuario o contraseña incorrectos", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(negocio.MensajeLoginFallido(txtUsuario.Text), "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

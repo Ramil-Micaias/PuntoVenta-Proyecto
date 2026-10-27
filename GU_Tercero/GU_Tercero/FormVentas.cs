@@ -11,6 +11,7 @@ namespace Vista
     public partial class FormVentas : Form
     {
         private readonly GestorVentas gestorVentas = new GestorVentas();
+        private readonly GestorCaja gestorCaja = new GestorCaja();
         private readonly DataTable carrito = new DataTable();
         private readonly DataTable pagos = new DataTable();
         private Usuario? usuarioLogueado;
@@ -47,7 +48,35 @@ namespace Vista
             CargarMetodosPago();
             BuscarProductos();
             ActualizarResumen();
+            AvisarSiNoHayCaja();
             txtBuscar.Focus();
+        }
+
+        // Sin la caja del día abierta no se puede vender (las ventas se registran en la caja).
+        private bool HayCajaAbierta()
+        {
+            try
+            {
+                Caja? caja = gestorCaja.ObtenerCajaActual();
+                return caja != null && caja.Abierta;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void AvisarSiNoHayCaja()
+        {
+            if (HayCajaAbierta())
+            {
+                return;
+            }
+
+            lblResultado.Visible = false;
+            lblAyuda.Visible = true;
+            lblAyuda.ForeColor = Color.FromArgb(239, 68, 68);
+            lblAyuda.Text = "No hay una caja abierta. Abra la caja del día en \"Caja Diaria\" para poder vender.";
         }
 
         private void ConfigurarGrids()
@@ -519,6 +548,17 @@ namespace Vista
             {
                 MessageBox.Show(
                     "Debe seleccionar un método de pago.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (!HayCajaAbierta())
+            {
+                MessageBox.Show(
+                    "No hay una caja abierta. Abra la caja del día en \"Caja Diaria\" antes de vender.",
                     "Atención",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning

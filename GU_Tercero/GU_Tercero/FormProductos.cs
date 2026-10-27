@@ -137,6 +137,7 @@ namespace Vista
         {
             destino.ForeColor = NARANJA;
             destino.Text = texto;
+            destino.Visible = true;
         }
 
         private void LimpiarControles()

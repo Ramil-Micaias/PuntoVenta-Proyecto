@@ -18,6 +18,7 @@ namespace Vista
         public const string COMPRAS = "Compras";
         public const string CAJA = "Caja Diaria";
         public const string TALLER = "Taller";
+        public const string CLIENTES = "Clientes";
         public const string MI_PERFIL = "Mi Perfil";
         public const string CONFIGURACION = "Configuración del Sistema";
         public const string CERRAR_SESION = "Cerrar Sesion";
@@ -71,6 +72,7 @@ namespace Vista
             menu.Items.Add(CrearOpcion(COMPRAS, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(CAJA, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(TALLER, rol, pantallaActual));
+            menu.Items.Add(CrearOpcion(CLIENTES, rol, pantallaActual));
 
             ToolStripMenuItem configuracion = new ToolStripMenuItem("Configuración");
             configuracion.DropDownItems.Add(CrearOpcion(MI_PERFIL, rol, pantallaActual));

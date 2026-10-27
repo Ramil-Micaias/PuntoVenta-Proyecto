@@ -92,6 +92,22 @@ namespace Datos
             }
         }
 
+        // Vuelve a abrir la caja de hoy que se cerró por error.
+        public void ReabrirCaja(int idCaja, int idUsuario)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ReabrirCaja", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Id_Caja", SqlDbType.Int).Value = idCaja;
+                cmd.Parameters.Add("@Id_Usuario", SqlDbType.Int).Value = idUsuario;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         // Registra el movimiento y devuelve el saldo actualizado de la caja.
         public decimal RegistrarMovimiento(MovimientoCaja movimiento)
         {

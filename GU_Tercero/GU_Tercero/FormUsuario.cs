@@ -9,6 +9,12 @@ namespace GU_Tercero
     public partial class FormUsuario : Form
     {
         private Usuario usuarioLogueado;
+
+        // La contraseña y las preguntas quedan bloqueadas hasta que el usuario
+        // responda sus preguntas de seguridad (FormVerificarIdentidad).
+        private bool passwordHabilitada = false;
+        private bool preguntasHabilitadas = false;
+
         public FormUsuario(Usuario usuario)
         {
             InitializeComponent();
@@ -26,26 +32,59 @@ namespace GU_Tercero
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
             lblPreguntaTres.Text = "¿Comida favorita?";
 
-            // Obtiene la configuración del sistema.
-            ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
-            ConfiguracionSistema configuracion = configuracionNegocio.ObtenerConfiguracion();
+            // Siempre se registran las 3 preguntas (la configuración solo define cuántas se piden al recuperar).
+            lblPreguntaTres.Visible = true;
+            txtRespuestaTres.Visible = true;
 
-            // Muestra u oculta la tercera pregunta según la configuración.
-            if (configuracion.Cantidad_Preguntas == 2)
+            HabilitarPassword(false);
+            HabilitarPreguntas(false);
+        }
+
+        // Pide las 3 preguntas de seguridad. Devuelve true si el usuario las respondió bien.
+        private bool VerificarIdentidad()
+        {
+            using (FormVerificarIdentidad verificacion = new FormVerificarIdentidad(usuarioLogueado))
             {
-                lblPreguntaTres.Visible = false;
-                txtRespuestaTres.Visible = false;
+                return verificacion.ShowDialog(this) == DialogResult.OK;
             }
-            else
-            {
-                lblPreguntaTres.Visible = true;
-                txtRespuestaTres.Visible = true;
-            }
+        }
+
+        private void HabilitarPassword(bool habilitar)
+        {
+            passwordHabilitada = habilitar;
+            txtNuevaPassword.Enabled = habilitar;
+            txtConfirmarPassword.Enabled = habilitar;
+            txtNuevaPassword.Clear();
+            txtConfirmarPassword.Clear();
+            btnCambiarPassword.Text = habilitar ? "Guardar contraseña" : "Cambiar contraseña";
+        }
+
+        private void HabilitarPreguntas(bool habilitar)
+        {
+            preguntasHabilitadas = habilitar;
+            txtRespuestaUno.Enabled = habilitar;
+            txtRespuestaDos.Enabled = habilitar;
+            txtRespuestaTres.Enabled = habilitar;
+            txtRespuestaUno.Clear();
+            txtRespuestaDos.Clear();
+            txtRespuestaTres.Clear();
+            btnGuardarPreguntas.Text = habilitar ? "Guardar preguntas" : "Cambiar preguntas";
         }
 
         private void btnCambiarPassword_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
+
+            // Primer clic: verificar identidad y habilitar los campos.
+            if (!passwordHabilitada)
+            {
+                if (VerificarIdentidad())
+                {
+                    HabilitarPassword(true);
+                    txtNuevaPassword.Focus();
+                }
+                return;
+            }
 
             // Valida que la nueva contraseña haya sido ingresada.
             if (txtNuevaPassword.Text.Trim() == "")
@@ -89,28 +128,29 @@ namespace GU_Tercero
 
             Mensajes.Exito(lblResultado, "La contraseña fue modificada correctamente.");
 
-            // Limpia los campos.
-            txtNuevaPassword.Clear();
-            txtConfirmarPassword.Clear();
+            // Vuelve a bloquear los campos (limpia lo escrito).
+            HabilitarPassword(false);
         }
 
         private void btnGuardarPreguntas_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
 
-            ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
-            ConfiguracionSistema configuracion = configuracionNegocio.ObtenerConfiguracion();
-
-            // Verifica que las respuestas obligatorias hayan sido ingresadas.
-            if (txtRespuestaUno.Text.Trim() == "" || txtRespuestaDos.Text.Trim() == "")
+            // Primer clic: verificar con las preguntas actuales y habilitar los campos.
+            if (!preguntasHabilitadas)
             {
-                MessageBox.Show("Complete todas las respuestas.");
+                if (VerificarIdentidad())
+                {
+                    HabilitarPreguntas(true);
+                    txtRespuestaUno.Focus();
+                }
                 return;
             }
 
-            if (configuracion.Cantidad_Preguntas == 3 && txtRespuestaTres.Text.Trim() == "")
+            // Verifica que las 3 respuestas hayan sido ingresadas.
+            if (txtRespuestaUno.Text.Trim() == "" || txtRespuestaDos.Text.Trim() == "" || txtRespuestaTres.Text.Trim() == "")
             {
-                MessageBox.Show("Complete todas las respuestas.");
+                MessageBox.Show("Complete las 3 respuestas.");
                 return;
             }
 
@@ -125,18 +165,13 @@ namespace GU_Tercero
             string hash2 = HashHelper.GenerarHashRespuesta(txtRespuestaDos.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
 
-            // Guarda la tercera respuesta si corresponde.
-            if (configuracion.Cantidad_Preguntas == 3)
-            {
-                string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
-                negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
-            }
+            // Guarda la tercera respuesta.
+            string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
+            negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
 
             Mensajes.Exito(lblResultado, "Las preguntas de seguridad fueron actualizadas correctamente.");
 
-            txtRespuestaUno.Clear();
-            txtRespuestaDos.Clear();
-            txtRespuestaTres.Clear();
+            HabilitarPreguntas(false);
         }
 
         private void btnVolver_Click(object sender, EventArgs e)

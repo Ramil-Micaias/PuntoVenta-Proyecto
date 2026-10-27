@@ -265,6 +265,14 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
+        -- No se puede vender sin la caja del día abierta (CU06)
+        IF NOT EXISTS (SELECT 1 FROM Caja
+                       WHERE Abierta = 1
+                         AND CAST(Fecha_Apertura AS DATE) = CAST(ISNULL(@Fecha, GETDATE()) AS DATE))
+        BEGIN
+            RAISERROR('No hay una caja abierta. Abra la caja del día en "Caja Diaria" antes de vender.', 16, 1);
+        END
+
         -- Valida método de pago
         IF NOT EXISTS (SELECT 1 FROM MetodoPago WHERE Id_MetodoPago = @Id_MetodoPago)
         BEGIN

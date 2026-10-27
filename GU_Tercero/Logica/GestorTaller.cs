@@ -15,6 +15,11 @@ namespace Logica
             return tallerDAO.ObtenerClientes();
         }
 
+        public DataTable ListarClientes(string filtro)
+        {
+            return tallerDAO.ListarClientes(filtro);
+        }
+
         public int RegistrarCliente(string apellido, string nombre, string dni, string telefono)
         {
             apellido = (apellido ?? string.Empty).Trim();
