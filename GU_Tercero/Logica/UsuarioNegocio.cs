@@ -277,6 +277,19 @@ namespace Logica
             return resultado;
         }
 
+        // Envía al correo del usuario nuevo su contraseña inicial (temporal).
+        // Al ingresar por primera vez el sistema le pide que la cambie.
+        public ResultadoEnvioEmail EnviarPasswordInicial(string correo, string nombreUsuario, string passwordTemporal)
+        {
+            string cuerpo = "Hola " + nombreUsuario + "," + Environment.NewLine + Environment.NewLine
+                + "Se creó su usuario para ingresar al sistema." + Environment.NewLine
+                + "Usuario: " + nombreUsuario + Environment.NewLine
+                + "Contraseña temporal: " + passwordTemporal + Environment.NewLine + Environment.NewLine
+                + "Al ingresar por primera vez el sistema le solicitará definir una nueva contraseña.";
+
+            return EmailHelper.EnviarCorreo(correo, "Alta de usuario - Punto Venta", cuerpo);
+        }
+
         // Obtiene el correo electrónico asociado al usuario.
         public string ObtenerCorreoUsuario(string nombreUsuario)
         {

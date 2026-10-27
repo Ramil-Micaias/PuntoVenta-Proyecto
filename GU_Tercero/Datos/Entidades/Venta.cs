@@ -17,6 +17,9 @@ namespace Datos.Entidades
 
         public List<DetalleVenta> Detalle { get; set; } = new List<DetalleVenta>();
 
+        // Pagos de la venta. Si se paga con un solo método hay un único pago por el total.
+        public List<PagoVenta> Pagos { get; set; } = new List<PagoVenta>();
+
         public decimal Subtotal
         {
             get
@@ -36,9 +39,30 @@ namespace Datos.Entidades
         {
             get
             {
-                decimal montoDescuento = Math.Round(Subtotal * DescuentoPorcentaje / 100, 2);
-                return Subtotal - montoDescuento;
+                return Subtotal - CalcularDescuento(Subtotal, DescuentoPorcentaje);
             }
+        }
+
+        public decimal TotalPagos
+        {
+            get
+            {
+                decimal total = 0;
+
+                foreach (PagoVenta pago in Pagos)
+                {
+                    total += pago.Importe;
+                }
+
+                return total;
+            }
+        }
+
+        // Redondea igual que SQL Server (ROUND): el ,5 va hacia arriba.
+        // Así el total que ve la pantalla es el mismo que calcula sp_RegistrarVenta.
+        public static decimal CalcularDescuento(decimal subtotal, decimal porcentaje)
+        {
+            return Math.Round(subtotal * porcentaje / 100, 2, MidpointRounding.AwayFromZero);
         }
     }
 }

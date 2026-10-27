@@ -1,3 +1,4 @@
+using Seguridad;
 using Logica;
 using Datos.Entidades;
 using Vista;
@@ -82,6 +83,8 @@ namespace GU_Tercero
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(txtResultado);
+
             try
             {
                 if (string.IsNullOrWhiteSpace(txtApellido.Text) ||
@@ -107,7 +110,26 @@ namespace GU_Tercero
                     Convert.ToInt32(cmbRol.SelectedValue)
                 );
 
-                MessageBox.Show("Usuario creado correctamente.\n\nContraseña temporal: " + passwordTemporal, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // La contraseña temporal se envía al correo del usuario nuevo.
+                // Solo si el correo no sale se muestra en pantalla, para que no quede sin acceso.
+                Cursor = Cursors.WaitCursor;
+                ResultadoEnvioEmail envio = negocio.EnviarPasswordInicial(txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(), passwordTemporal);
+                Cursor = Cursors.Default;
+
+                if (envio.Enviado)
+                {
+                    Mensajes.Exito(txtResultado, "Usuario creado correctamente. Se envió la contraseña temporal a " + txtCorreo.Text.Trim() + ".");
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "El usuario se creó, pero no se pudo enviar el correo con la contraseña temporal.\n" + envio.Error,
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    Mensajes.Exito(txtResultado, "Usuario creado. Contraseña temporal (no se pudo enviar por correo): " + passwordTemporal);
+                }
 
                 CargarUsuarios();
                 LimpiarControles();
@@ -121,6 +143,8 @@ namespace GU_Tercero
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(txtResultado);
+
             if (idUsuarioSeleccionado == 0)
             {
                 MessageBox.Show("Debe seleccionar un usuario.");
@@ -131,7 +155,7 @@ namespace GU_Tercero
                 UsuarioNegocio negocio = new UsuarioNegocio();
 
                 negocio.ModificarUsuario(idUsuarioSeleccionado, txtApellido.Text.Trim(), txtNombre.Text.Trim(), txtDni.Text.Trim(), txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(), Convert.ToInt32(cmbRol.SelectedValue), chkActivo.Checked, chkBloqueado.Checked);
-                MessageBox.Show("Usuario modificado correctamente.");
+                Mensajes.Exito(txtResultado, "Usuario modificado correctamente.");
 
                 CargarUsuarios();
                 LimpiarControles();
@@ -144,6 +168,8 @@ namespace GU_Tercero
 
         private void btnEliminar_Click_1(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(txtResultado);
+
             if (idUsuarioSeleccionado == 0)
             {
                 MessageBox.Show("Debe seleccionar un usuario.");
@@ -161,7 +187,7 @@ namespace GU_Tercero
 
                     negocio.DesactivarUsuario(idUsuarioSeleccionado);
 
-                    MessageBox.Show("Usuario dado de baja correctamente.");
+                    Mensajes.Exito(txtResultado, "Usuario dado de baja correctamente.");
 
                     CargarUsuarios();
 

@@ -90,6 +90,15 @@ namespace GU_Tercero
                     return;
                 }
 
+                // VERIFICACIÓN EN DOS PASOS: si está habilitada en la configuración,
+                // se envía un código al correo y hay que ingresarlo para continuar.
+                if (!VerificarDosPasos(usuario))
+                {
+                    LimpiarCampos();
+                    this.Show();
+                    return;
+                }
+
                 // 1. PASO OBLIGATORIO: Cambio de Contraseña
                 if (usuario.Es_Primer_Ingreso || usuario.Debe_Cambiar_Password)
                 {
@@ -127,6 +136,50 @@ namespace GU_Tercero
             else
             {
                 MessageBox.Show("Usuario o contraseña incorrectos", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Devuelve true si la verificación en dos pasos está deshabilitada o si el usuario ingresó bien el código.
+        private bool VerificarDosPasos(Usuario usuario)
+        {
+            Autenticacion2FANegocio negocio2FA = new Autenticacion2FANegocio();
+            ResultadoEnvioEmail envio;
+
+            try
+            {
+                if (!negocio2FA.EstaHabilitada())
+                {
+                    return true;
+                }
+
+                Cursor = Cursors.WaitCursor;
+                envio = negocio2FA.EnviarCodigo(usuario);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo iniciar la verificación en dos pasos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+
+            if (!envio.Enviado)
+            {
+                MessageBox.Show(
+                    "No se pudo enviar el código de verificación. " + envio.Error,
+                    "Verificación en Dos Pasos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return false;
+            }
+
+            using (FormAutenticacion2FA form2FA = new FormAutenticacion2FA(usuario))
+            {
+                this.Hide();
+                return form2FA.ShowDialog() == DialogResult.OK;
             }
         }
 

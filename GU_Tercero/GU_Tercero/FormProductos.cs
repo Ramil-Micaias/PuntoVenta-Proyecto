@@ -11,17 +11,33 @@ namespace Vista
         private int idProductoSeleccionado = 0;
         private int idCategoriaSeleccionada = 0;
 
+        // Estado de la edición: al elegir un registro los datos quedan bloqueados;
+        // se habilitan con Agregar o con Modificar y se cierran con Guardar/Confirmar o Cancelar.
+        private enum Modo { Consulta, Agregando, Modificando }
+
+        private Modo modoProducto = Modo.Consulta;
+        private Modo modoCategoria = Modo.Consulta;
+
+        private static readonly System.Drawing.Color NARANJA = System.Drawing.Color.FromArgb(217, 119, 6);
+
         public FormProductos()
         {
             InitializeComponent();
 
             txtBuscar.TextChanged += txtBuscar_TextChanged;
+            cmbIdioma.SelectionChangeCommitted += cmbIdioma_SelectionChangeCommitted;
         }
 
         private void FormProductos_Load(object sender, EventArgs e)
         {
             Grillas.Configurar(dgvProductos);
             Grillas.Configurar(dgvCategorias);
+
+            // Cada vez que se recargan las grillas se traducen los títulos de las columnas.
+            dgvProductos.DataBindingComplete += Grilla_DataBindingComplete;
+            dgvCategorias.DataBindingComplete += Grilla_DataBindingComplete;
+
+            CargarComboLenguajes();
             CargarCategorias();
             CargarProductos();
             LimpiarControles();
@@ -41,15 +57,13 @@ namespace Vista
                 cmbCategoria.SelectedIndex = -1;
 
                 dgvCategorias.DataSource = categorias.Copy();
-
-                if (dgvCategorias.Columns.Contains("Nombre_Categoria"))
-                    dgvCategorias.Columns["Nombre_Categoria"].HeaderText = "Categoría";
+                Idioma.TraducirColumnas(dgvCategorias);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error al cargar las categorías: " + ex.Message,
-                    "Error",
+                    Idioma.Texto("Msg_ErrorCategorias", "Error al cargar las categorías: ") + ex.Message,
+                    Idioma.Texto("Titulo_Error", "Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -70,20 +84,59 @@ namespace Vista
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error al cargar productos: " + ex.Message,
-                    "Error",
+                    Idioma.Texto("Msg_ErrorProductos", "Error al cargar productos: ") + ex.Message,
+                    Idioma.Texto("Titulo_Error", "Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
             }
         }
 
-        // agregando -> solo Guardar; con un producto elegido -> Modificar (y Agregar para empezar otro).
-        private void MostrarBotones(bool agregando)
+        // Consulta: datos bloqueados, Agregar y (con un producto elegido) Modificar.
+        // Agregando: Guardar y Cancelar. Modificando: Confirmar y Cancelar.
+        private void AplicarModoProducto(Modo modo)
         {
-            btnNuevo.Visible = !agregando;
-            btnGuardar.Visible = agregando;
-            btnModificar.Visible = !agregando && idProductoSeleccionado != 0;
+            modoProducto = modo;
+            bool editando = modo != Modo.Consulta;
+
+            txtNombreProducto.ReadOnly = !editando;
+            txtDescripcion.ReadOnly = !editando;
+            txtPrecioVenta.ReadOnly = !editando;
+            txtStockActual.ReadOnly = !editando;
+            txtStockMinimo.ReadOnly = !editando;
+            cmbCategoria.Enabled = editando;
+
+            // Mientras se edita no se puede elegir otro producto.
+            dgvProductos.Enabled = !editando;
+            txtBuscar.Enabled = !editando;
+
+            btnNuevo.Visible = modo == Modo.Consulta;
+            btnModificar.Visible = modo == Modo.Consulta && idProductoSeleccionado != 0;
+            btnGuardar.Visible = modo == Modo.Agregando;
+            btnConfirmar.Visible = modo == Modo.Modificando;
+            btnCancelarEdicion.Visible = editando;
+
+            if (modo == Modo.Agregando)
+            {
+                grpDetalleProducto.Text = Idioma.Texto("Grp_NuevoProducto", "Nuevo Producto");
+                AvisoEdicion(lblResultadoProducto, Idioma.Texto("Msg_ModoNuevo", "Complete los datos y presione Guardar, o Cancelar para descartar."));
+            }
+            else if (modo == Modo.Modificando)
+            {
+                grpDetalleProducto.Text = Idioma.Texto("Grp_ModificandoProducto", "Modificando Producto");
+                AvisoEdicion(lblResultadoProducto, Idioma.Texto("Msg_ModoModificar", "Modifique los datos y presione Confirmar para guardar, o Cancelar para descartar."));
+            }
+            else
+            {
+                grpDetalleProducto.Text = Idioma.Texto("grpDetalleProducto", "Detalle del Producto");
+            }
+        }
+
+        // Aviso en naranja mientras se está editando.
+        private static void AvisoEdicion(Label destino, string texto)
+        {
+            destino.ForeColor = NARANJA;
+            destino.Text = texto;
         }
 
         private void LimpiarControles()
@@ -99,11 +152,13 @@ namespace Vista
             cmbCategoria.SelectedIndex = -1;
 
             dgvProductos.ClearSelection();
-            MostrarBotones(false);
+            AplicarModoProducto(Modo.Consulta);
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoProducto);
+
             try
             {
                 decimal.TryParse(
@@ -141,12 +196,7 @@ namespace Vista
 
                 gestor.RegistrarProducto(prod);
 
-                MessageBox.Show(
-                    "Producto registrado con éxito.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultadoProducto, Idioma.Texto("Msg_ProductoRegistrado", "Producto registrado con éxito."));
 
                 CargarProductos();
                 LimpiarControles();
@@ -155,7 +205,7 @@ namespace Vista
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Atención",
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
@@ -164,11 +214,32 @@ namespace Vista
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoProducto);
+
             if (idProductoSeleccionado == 0)
             {
                 MessageBox.Show(
-                    "Debe seleccionar un producto de la lista para modificar.",
-                    "Atención",
+                    Idioma.Texto("Msg_SeleccioneProducto", "Debe seleccionar un producto de la lista para modificar."),
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
+            AplicarModoProducto(Modo.Modificando);
+            txtNombreProducto.Focus();
+        }
+
+        // Guarda los cambios del producto que se está modificando.
+        private void btnConfirmar_Click(object sender, EventArgs e)
+        {
+            if (idProductoSeleccionado == 0)
+            {
+                MessageBox.Show(
+                    Idioma.Texto("Msg_SeleccioneProducto", "Debe seleccionar un producto de la lista para modificar."),
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
@@ -214,12 +285,7 @@ namespace Vista
 
                 gestor.ModificarProducto(prod);
 
-                MessageBox.Show(
-                    "Producto modificado correctamente.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultadoProducto, Idioma.Texto("Msg_ProductoModificado", "Producto modificado correctamente."));
 
                 CargarProductos();
                 LimpiarControles();
@@ -228,7 +294,7 @@ namespace Vista
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Atención",
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
@@ -243,8 +309,13 @@ namespace Vista
                 return;
             }
 
-            DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
+            Mensajes.Limpiar(lblResultadoProducto);
+            MostrarProducto(dgvProductos.Rows[e.RowIndex]);
+        }
 
+        // Carga en los campos (bloqueados) los datos del producto elegido.
+        private void MostrarProducto(DataGridViewRow fila)
+        {
             if (fila.Cells["Id_Producto"].Value != null && fila.Cells["Id_Producto"].Value != DBNull.Value)
             {
                 idProductoSeleccionado = Convert.ToInt32(fila.Cells["Id_Producto"].Value);
@@ -279,14 +350,36 @@ namespace Vista
                 cmbCategoria.SelectedIndex = -1;
             }
 
-            MostrarBotones(false);
+            AplicarModoProducto(Modo.Consulta);
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoProducto);
             LimpiarControles();
-            MostrarBotones(true);
+            AplicarModoProducto(Modo.Agregando);
             cmbCategoria.Focus();
+        }
+
+        // Descarta lo que se estaba cargando o modificando y vuelve a bloquear los datos.
+        private void btnCancelarEdicion_Click(object sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultadoProducto);
+
+            if (modoProducto == Modo.Modificando)
+            {
+                foreach (DataGridViewRow fila in dgvProductos.Rows)
+                {
+                    if (Convert.ToInt32(fila.Cells["Id_Producto"].Value) == idProductoSeleccionado)
+                    {
+                        MostrarProducto(fila);
+                        fila.Selected = true;
+                        return;
+                    }
+                }
+            }
+
+            LimpiarControles();
         }
 
         private void btnVolverMenu_Click(object sender, EventArgs e)
@@ -300,18 +393,71 @@ namespace Vista
         }
 
         // ---------------------------------------------
+        // Idioma (CU18)
+        // ---------------------------------------------
+
+        // El formulario siempre abre en Español; el combo permite pasarlo a Inglés.
+        private void CargarComboLenguajes()
+        {
+            Idioma.Actual = Idioma.ESPANOL;
+
+            cmbIdioma.DataSource = Idioma.ObtenerIdiomas();
+            cmbIdioma.DisplayMember = "Nombre";
+            cmbIdioma.ValueMember = "InfoCultura";
+            cmbIdioma.SelectedValue = Idioma.Actual;
+
+            Idioma.CargarIdioma(this.Controls, this);
+        }
+
+        private void cmbIdioma_SelectionChangeCommitted(object? sender, EventArgs e)
+        {
+            Idioma.Actual = cmbIdioma.SelectedValue?.ToString() ?? Idioma.ESPANOL;
+            Idioma.CargarIdioma(this.Controls, this);
+            AplicarModoProducto(modoProducto);
+            AplicarModoCategoria(modoCategoria);
+        }
+
+        private void Grilla_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            Idioma.TraducirColumnas((DataGridView)sender!);
+        }
+
+        // ---------------------------------------------
         // Categorías
         // ---------------------------------------------
 
-        // agregando -> solo Guardar; con una categoría elegida -> Modificar / Eliminar (y Agregar).
-        private void MostrarBotonesCategoria(bool agregando)
+        // Igual que en productos: el nombre queda bloqueado hasta Agregar o Modificar.
+        // Eliminar (rojo, aparte) solo aparece con una categoría elegida y sin editar.
+        private void AplicarModoCategoria(Modo modo)
         {
+            modoCategoria = modo;
+            bool editando = modo != Modo.Consulta;
             bool haySeleccion = idCategoriaSeleccionada != 0;
 
-            btnNuevaCategoria.Visible = !agregando;
-            btnGuardarCategoria.Visible = agregando;
-            btnModificarCategoria.Visible = !agregando && haySeleccion;
-            btnEliminarCategoria.Visible = !agregando && haySeleccion;
+            txtNombreCategoria.ReadOnly = !editando;
+            dgvCategorias.Enabled = !editando;
+
+            btnNuevaCategoria.Visible = modo == Modo.Consulta;
+            btnModificarCategoria.Visible = modo == Modo.Consulta && haySeleccion;
+            btnEliminarCategoria.Visible = modo == Modo.Consulta && haySeleccion;
+            btnGuardarCategoria.Visible = modo == Modo.Agregando;
+            btnConfirmarCategoria.Visible = modo == Modo.Modificando;
+            btnCancelarCategoria.Visible = editando;
+
+            if (modo == Modo.Agregando)
+            {
+                grpGestionCategoria.Text = Idioma.Texto("Grp_NuevaCategoria", "Nueva Categoría");
+                AvisoEdicion(lblResultadoCategoria, Idioma.Texto("Msg_ModoNuevo", "Complete los datos y presione Guardar, o Cancelar para descartar."));
+            }
+            else if (modo == Modo.Modificando)
+            {
+                grpGestionCategoria.Text = Idioma.Texto("Grp_ModificandoCategoria", "Modificando Categoría");
+                AvisoEdicion(lblResultadoCategoria, Idioma.Texto("Msg_ModoModificar", "Modifique los datos y presione Confirmar para guardar, o Cancelar para descartar."));
+            }
+            else
+            {
+                grpGestionCategoria.Text = Idioma.Texto("grpGestionCategoria", "Gestión de Categoría");
+            }
         }
 
         private void LimpiarCategoria()
@@ -319,7 +465,7 @@ namespace Vista
             idCategoriaSeleccionada = 0;
             txtNombreCategoria.Clear();
             dgvCategorias.ClearSelection();
-            MostrarBotonesCategoria(false);
+            AplicarModoCategoria(Modo.Consulta);
         }
 
         // Recarga las categorías en la grilla y en el combo de productos.
@@ -342,29 +488,28 @@ namespace Vista
             idCategoriaSeleccionada = Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
             txtNombreCategoria.Text = fila.Cells["Nombre_Categoria"].Value?.ToString() ?? "";
 
-            MostrarBotonesCategoria(false);
+            Mensajes.Limpiar(lblResultadoCategoria);
+            AplicarModoCategoria(Modo.Consulta);
         }
 
         private void btnNuevaCategoria_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoCategoria);
             LimpiarCategoria();
-            MostrarBotonesCategoria(true);
+            AplicarModoCategoria(Modo.Agregando);
             txtNombreCategoria.Focus();
         }
 
         private void btnGuardarCategoria_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoCategoria);
+
             try
             {
                 GestorProducto gestor = new GestorProducto();
                 gestor.RegistrarCategoria(txtNombreCategoria.Text);
 
-                MessageBox.Show(
-                    "Categoría registrada con éxito.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultadoCategoria, Idioma.Texto("Msg_CategoriaRegistrada", "Categoría registrada con éxito."));
 
                 RefrescarCategorias();
             }
@@ -372,7 +517,7 @@ namespace Vista
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Atención",
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
@@ -381,17 +526,22 @@ namespace Vista
 
         private void btnModificarCategoria_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoCategoria);
+            AplicarModoCategoria(Modo.Modificando);
+            txtNombreCategoria.Focus();
+        }
+
+        // Guarda el nuevo nombre de la categoría que se está modificando.
+        private void btnConfirmarCategoria_Click(object sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultadoCategoria);
+
             try
             {
                 GestorProducto gestor = new GestorProducto();
                 gestor.ModificarCategoria(idCategoriaSeleccionada, txtNombreCategoria.Text);
 
-                MessageBox.Show(
-                    "Categoría modificada correctamente.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultadoCategoria, Idioma.Texto("Msg_CategoriaModificada", "Categoría modificada correctamente."));
 
                 RefrescarCategorias();
             }
@@ -399,18 +549,41 @@ namespace Vista
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Atención",
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
             }
         }
 
+        // Descarta los cambios y vuelve a mostrar la categoría como estaba.
+        private void btnCancelarCategoria_Click(object sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultadoCategoria);
+
+            if (modoCategoria == Modo.Modificando)
+            {
+                foreach (DataGridViewRow fila in dgvCategorias.Rows)
+                {
+                    if (Convert.ToInt32(fila.Cells["Id_Categoria"].Value) == idCategoriaSeleccionada)
+                    {
+                        txtNombreCategoria.Text = fila.Cells["Nombre_Categoria"].Value?.ToString() ?? "";
+                        AplicarModoCategoria(Modo.Consulta);
+                        return;
+                    }
+                }
+            }
+
+            LimpiarCategoria();
+        }
+
         private void btnEliminarCategoria_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultadoCategoria);
+
             DialogResult respuesta = MessageBox.Show(
-                "¿Está seguro de que desea eliminar la categoría \"" + txtNombreCategoria.Text.Trim() + "\"?",
-                "Confirmar",
+                string.Format(Idioma.Texto("Msg_ConfirmarEliminarCategoria", "¿Desea dar de baja la categoría \"{0}\"? Queda guardada pero ya no se ofrece al cargar productos."), txtNombreCategoria.Text.Trim()),
+                Idioma.Texto("Titulo_Confirmar", "Confirmar"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
@@ -425,12 +598,7 @@ namespace Vista
                 GestorProducto gestor = new GestorProducto();
                 gestor.InactivarCategoria(idCategoriaSeleccionada);
 
-                MessageBox.Show(
-                    "Categoría eliminada correctamente.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultadoCategoria, Idioma.Texto("Msg_CategoriaEliminada", "Categoría dada de baja correctamente."));
 
                 RefrescarCategorias();
             }
@@ -438,7 +606,7 @@ namespace Vista
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Atención",
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );

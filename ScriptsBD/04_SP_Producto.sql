@@ -408,7 +408,7 @@ BEGIN
           AND Activo = 1
     )
     BEGIN
-        THROW 50000, 'No se puede eliminar la categoría porque tiene productos activos.', 1;
+        THROW 50000, 'No se puede dar de baja la categoría porque tiene productos activos.', 1;
     END;
 
     UPDATE CategoriaProducto

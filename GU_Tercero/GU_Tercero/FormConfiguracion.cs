@@ -1,6 +1,8 @@
 ﻿using Datos.Entidades;
 using Logica;
 
+using Vista;
+
 namespace GU_Tercero
 {
     public partial class FormConfiguracion : Form
@@ -64,7 +66,7 @@ namespace GU_Tercero
 
                 negocio.GuardarConfiguracion(configuracion);
 
-                MessageBox.Show("La configuración fue guardada correctamente.", "Configuración", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Mensajes.Exito(lblResultado, "La configuración fue guardada correctamente.");
             }
             catch (Exception ex)
             {

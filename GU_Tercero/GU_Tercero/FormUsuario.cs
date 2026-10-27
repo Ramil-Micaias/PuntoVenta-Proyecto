@@ -2,6 +2,8 @@
 using Logica;
 using Logica.Seguridad;
 
+using Vista;
+
 namespace GU_Tercero
 {
     public partial class FormUsuario : Form
@@ -43,6 +45,8 @@ namespace GU_Tercero
 
         private void btnCambiarPassword_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             // Valida que la nueva contraseña haya sido ingresada.
             if (txtNuevaPassword.Text.Trim() == "")
             {
@@ -83,7 +87,7 @@ namespace GU_Tercero
             // Actualiza la contraseña del usuario.
             negocio.CambiarPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
 
-            MessageBox.Show("La contraseña fue modificada correctamente.");
+            Mensajes.Exito(lblResultado, "La contraseña fue modificada correctamente.");
 
             // Limpia los campos.
             txtNuevaPassword.Clear();
@@ -92,6 +96,8 @@ namespace GU_Tercero
 
         private void btnGuardarPreguntas_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
             ConfiguracionSistema configuracion = configuracionNegocio.ObtenerConfiguracion();
 
@@ -126,7 +132,7 @@ namespace GU_Tercero
                 negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
             }
 
-            MessageBox.Show("Las preguntas de seguridad fueron actualizadas correctamente.");
+            Mensajes.Exito(lblResultado, "Las preguntas de seguridad fueron actualizadas correctamente.");
 
             txtRespuestaUno.Clear();
             txtRespuestaDos.Clear();

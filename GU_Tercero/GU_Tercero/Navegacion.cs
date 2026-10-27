@@ -15,6 +15,7 @@ namespace Vista
         public const string PROVEEDORES = "Proveedores";
         public const string VENTAS = "Ventas (POS)";
         public const string COMPRAS = "Compras";
+        public const string CAJA = "Caja Diaria";
         public const string TALLER = "Taller";
         public const string MI_PERFIL = "Mi Perfil";
         public const string CONFIGURACION = "Configuración del Sistema";
@@ -34,7 +35,7 @@ namespace Vista
 
             if (rol == "Vendedor")
             {
-                return pantalla == VENTAS;
+                return pantalla == VENTAS || pantalla == CAJA;
             }
 
             if (rol == "Tecnico")
@@ -61,6 +62,7 @@ namespace Vista
             menu.Items.Add(CrearOpcion(PROVEEDORES, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(VENTAS, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(COMPRAS, rol, pantallaActual));
+            menu.Items.Add(CrearOpcion(CAJA, rol, pantallaActual));
             menu.Items.Add(CrearOpcion(TALLER, rol, pantallaActual));
 
             ToolStripMenuItem configuracion = new ToolStripMenuItem("Configuración");

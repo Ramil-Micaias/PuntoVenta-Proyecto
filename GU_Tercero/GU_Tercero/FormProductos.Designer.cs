@@ -28,6 +28,9 @@ namespace Vista
         /// </summary>
         private void InitializeComponent()
         {
+            panelIdioma = new Panel();
+            lblIdioma = new Label();
+            cmbIdioma = new ComboBox();
             tabProductoCategoria = new TabControl();
             tabPage1 = new TabPage();
             lblCatalogoExistencia = new Label();
@@ -39,8 +42,11 @@ namespace Vista
             btnNuevo = new Button();
             btnGuardar = new Button();
             btnModificar = new Button();
+            btnConfirmar = new Button();
+            btnCancelarEdicion = new Button();
             btnVolverMenu = new Button();
             lblCategorias = new Label();
+            lblResultadoProducto = new Label();
             cmbCategoria = new ComboBox();
             lblNombreProducto = new Label();
             txtNombreProducto = new TextBox();
@@ -54,6 +60,7 @@ namespace Vista
             txtStockMinimo = new TextBox();
             tabPage2 = new TabPage();
             lblListadoCategoria = new Label();
+            lblResultadoCategoria = new Label();
             dgvCategorias = new DataGridView();
             grpGestionCategoria = new GroupBox();
             lblNombreCategoria = new Label();
@@ -62,8 +69,11 @@ namespace Vista
             btnNuevaCategoria = new Button();
             btnGuardarCategoria = new Button();
             btnModificarCategoria = new Button();
+            btnConfirmarCategoria = new Button();
+            btnCancelarCategoria = new Button();
             btnEliminarCategoria = new Button();
             btnVolverCategoria = new Button();
+            panelIdioma.SuspendLayout();
             tabProductoCategoria.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProductos).BeginInit();
@@ -74,6 +84,40 @@ namespace Vista
             grpGestionCategoria.SuspendLayout();
             flpAccionesCategoria.SuspendLayout();
             SuspendLayout();
+            //
+            // panelIdioma
+            //
+            panelIdioma.BackColor = Color.FromArgb(241, 245, 249);
+            panelIdioma.Controls.Add(lblIdioma);
+            panelIdioma.Controls.Add(cmbIdioma);
+            panelIdioma.Dock = DockStyle.Top;
+            panelIdioma.Location = new Point(0, 0);
+            panelIdioma.Name = "panelIdioma";
+            panelIdioma.Size = new Size(900, 36);
+            panelIdioma.TabIndex = 1;
+            //
+            // lblIdioma
+            //
+            lblIdioma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblIdioma.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblIdioma.ForeColor = Color.FromArgb(30, 41, 59);
+            lblIdioma.Location = new Point(618, 6);
+            lblIdioma.Name = "lblIdioma";
+            lblIdioma.Size = new Size(124, 25);
+            lblIdioma.TabIndex = 0;
+            lblIdioma.Text = "Idioma:";
+            lblIdioma.TextAlign = ContentAlignment.MiddleRight;
+            //
+            // cmbIdioma
+            //
+            cmbIdioma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            cmbIdioma.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbIdioma.Font = new Font("Segoe UI", 9.5F);
+            cmbIdioma.FormattingEnabled = true;
+            cmbIdioma.Location = new Point(748, 6);
+            cmbIdioma.Name = "cmbIdioma";
+            cmbIdioma.Size = new Size(140, 25);
+            cmbIdioma.TabIndex = 1;
             //
             // tabProductoCategoria
             //
@@ -147,6 +191,7 @@ namespace Vista
             // grpDetalleProducto
             //
             grpDetalleProducto.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpDetalleProducto.Controls.Add(lblResultadoProducto);
             grpDetalleProducto.Controls.Add(flpAcciones);
             grpDetalleProducto.Controls.Add(btnVolverMenu);
             grpDetalleProducto.Controls.Add(txtStockMinimo);
@@ -176,6 +221,8 @@ namespace Vista
             flpAcciones.Controls.Add(btnNuevo);
             flpAcciones.Controls.Add(btnGuardar);
             flpAcciones.Controls.Add(btnModificar);
+            flpAcciones.Controls.Add(btnConfirmar);
+            flpAcciones.Controls.Add(btnCancelarEdicion);
             flpAcciones.FlowDirection = FlowDirection.TopDown;
             flpAcciones.Location = new Point(706, 22);
             flpAcciones.Name = "flpAcciones";
@@ -227,6 +274,36 @@ namespace Vista
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
+            //
+            // btnConfirmar
+            //
+            btnConfirmar.BackColor = Color.FromArgb(16, 185, 129);
+            btnConfirmar.FlatAppearance.BorderSize = 0;
+            btnConfirmar.FlatStyle = FlatStyle.Flat;
+            btnConfirmar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnConfirmar.ForeColor = Color.White;
+            btnConfirmar.Margin = new Padding(0, 0, 0, 6);
+            btnConfirmar.Name = "btnConfirmar";
+            btnConfirmar.Size = new Size(146, 32);
+            btnConfirmar.TabIndex = 3;
+            btnConfirmar.Text = "Confirmar";
+            btnConfirmar.UseVisualStyleBackColor = false;
+            btnConfirmar.Click += btnConfirmar_Click;
+            //
+            // btnCancelarEdicion
+            //
+            btnCancelarEdicion.BackColor = Color.FromArgb(239, 68, 68);
+            btnCancelarEdicion.FlatAppearance.BorderSize = 0;
+            btnCancelarEdicion.FlatStyle = FlatStyle.Flat;
+            btnCancelarEdicion.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelarEdicion.ForeColor = Color.White;
+            btnCancelarEdicion.Margin = new Padding(0, 0, 0, 6);
+            btnCancelarEdicion.Name = "btnCancelarEdicion";
+            btnCancelarEdicion.Size = new Size(146, 32);
+            btnCancelarEdicion.TabIndex = 4;
+            btnCancelarEdicion.Text = "Cancelar";
+            btnCancelarEdicion.UseVisualStyleBackColor = false;
+            btnCancelarEdicion.Click += btnCancelarEdicion_Click;
             //
             // btnVolverMenu
             //
@@ -368,6 +445,7 @@ namespace Vista
             // tabPage2
             //
             tabPage2.BackColor = Color.FromArgb(241, 245, 249);
+            tabPage2.Controls.Add(lblResultadoCategoria);
             tabPage2.Controls.Add(grpGestionCategoria);
             tabPage2.Controls.Add(dgvCategorias);
             tabPage2.Controls.Add(lblListadoCategoria);
@@ -403,6 +481,7 @@ namespace Vista
             //
             grpGestionCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             grpGestionCategoria.Controls.Add(btnVolverCategoria);
+            grpGestionCategoria.Controls.Add(btnEliminarCategoria);
             grpGestionCategoria.Controls.Add(flpAccionesCategoria);
             grpGestionCategoria.Controls.Add(txtNombreCategoria);
             grpGestionCategoria.Controls.Add(lblNombreCategoria);
@@ -440,10 +519,11 @@ namespace Vista
             flpAccionesCategoria.Controls.Add(btnNuevaCategoria);
             flpAccionesCategoria.Controls.Add(btnGuardarCategoria);
             flpAccionesCategoria.Controls.Add(btnModificarCategoria);
-            flpAccionesCategoria.Controls.Add(btnEliminarCategoria);
+            flpAccionesCategoria.Controls.Add(btnConfirmarCategoria);
+            flpAccionesCategoria.Controls.Add(btnCancelarCategoria);
             flpAccionesCategoria.Location = new Point(16, 92);
             flpAccionesCategoria.Name = "flpAccionesCategoria";
-            flpAccionesCategoria.Size = new Size(300, 80);
+            flpAccionesCategoria.Size = new Size(308, 42);
             flpAccionesCategoria.TabIndex = 2;
             //
             // btnNuevaCategoria
@@ -498,13 +578,43 @@ namespace Vista
             btnEliminarCategoria.FlatStyle = FlatStyle.Flat;
             btnEliminarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnEliminarCategoria.ForeColor = Color.White;
-            btnEliminarCategoria.Margin = new Padding(0, 0, 8, 8);
+            btnEliminarCategoria.Location = new Point(16, 150);
             btnEliminarCategoria.Name = "btnEliminarCategoria";
-            btnEliminarCategoria.Size = new Size(144, 32);
+            btnEliminarCategoria.Size = new Size(296, 32);
             btnEliminarCategoria.TabIndex = 3;
-            btnEliminarCategoria.Text = "Eliminar";
+            btnEliminarCategoria.Text = "Dar de baja";
             btnEliminarCategoria.UseVisualStyleBackColor = false;
             btnEliminarCategoria.Click += btnEliminarCategoria_Click;
+            //
+            // btnConfirmarCategoria
+            //
+            btnConfirmarCategoria.BackColor = Color.FromArgb(16, 185, 129);
+            btnConfirmarCategoria.FlatAppearance.BorderSize = 0;
+            btnConfirmarCategoria.FlatStyle = FlatStyle.Flat;
+            btnConfirmarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnConfirmarCategoria.ForeColor = Color.White;
+            btnConfirmarCategoria.Margin = new Padding(0, 0, 8, 8);
+            btnConfirmarCategoria.Name = "btnConfirmarCategoria";
+            btnConfirmarCategoria.Size = new Size(144, 32);
+            btnConfirmarCategoria.TabIndex = 4;
+            btnConfirmarCategoria.Text = "Confirmar";
+            btnConfirmarCategoria.UseVisualStyleBackColor = false;
+            btnConfirmarCategoria.Click += btnConfirmarCategoria_Click;
+            //
+            // btnCancelarCategoria
+            //
+            btnCancelarCategoria.BackColor = Color.FromArgb(239, 68, 68);
+            btnCancelarCategoria.FlatAppearance.BorderSize = 0;
+            btnCancelarCategoria.FlatStyle = FlatStyle.Flat;
+            btnCancelarCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelarCategoria.ForeColor = Color.White;
+            btnCancelarCategoria.Margin = new Padding(0, 0, 8, 8);
+            btnCancelarCategoria.Name = "btnCancelarCategoria";
+            btnCancelarCategoria.Size = new Size(144, 32);
+            btnCancelarCategoria.TabIndex = 5;
+            btnCancelarCategoria.Text = "Cancelar";
+            btnCancelarCategoria.UseVisualStyleBackColor = false;
+            btnCancelarCategoria.Click += btnCancelarCategoria_Click;
             //
             // btnVolverCategoria
             //
@@ -521,19 +631,39 @@ namespace Vista
             btnVolverCategoria.UseVisualStyleBackColor = false;
             btnVolverCategoria.Click += btnVolverMenu_Click;
             //
+            // lblResultadoProducto
+            //
+            lblResultadoProducto.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultadoProducto.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultadoProducto.Location = new Point(20, 146);
+            lblResultadoProducto.Name = "lblResultadoProducto";
+            lblResultadoProducto.Size = new Size(670, 44);
+            //
+            // lblResultadoCategoria
+            //
+            lblResultadoCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblResultadoCategoria.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultadoCategoria.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultadoCategoria.Location = new Point(552, 310);
+            lblResultadoCategoria.Name = "lblResultadoCategoria";
+            lblResultadoCategoria.Size = new Size(328, 60);
+            //
             // FormProductos
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
-            ClientSize = new Size(900, 590);
+            ClientSize = new Size(900, 626);
             Controls.Add(tabProductoCategoria);
+            Controls.Add(panelIdioma);
             Font = new Font("Segoe UI", 9F);
-            MinimumSize = new Size(916, 629);
+            MinimumSize = new Size(916, 665);
             Name = "FormProductos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ApIBigStore - Producto y Stock";
             Load += FormProductos_Load;
+            panelIdioma.ResumeLayout(false);
+            panelIdioma.PerformLayout();
             tabProductoCategoria.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
@@ -552,6 +682,13 @@ namespace Vista
 
         #endregion
 
+        private Label lblResultadoCategoria;
+
+        private Label lblResultadoProducto;
+
+        private Panel panelIdioma;
+        private Label lblIdioma;
+        private ComboBox cmbIdioma;
         private TabControl tabProductoCategoria;
         private TabPage tabPage1;
         private TabPage tabPage2;
@@ -564,6 +701,8 @@ namespace Vista
         private Button btnNuevo;
         private Button btnGuardar;
         private Button btnModificar;
+        private Button btnConfirmar;
+        private Button btnCancelarEdicion;
         private Button btnVolverMenu;
         private Label lblCategorias;
         private ComboBox cmbCategoria;
@@ -586,6 +725,8 @@ namespace Vista
         private Button btnNuevaCategoria;
         private Button btnGuardarCategoria;
         private Button btnModificarCategoria;
+        private Button btnConfirmarCategoria;
+        private Button btnCancelarCategoria;
         private Button btnEliminarCategoria;
         private Button btnVolverCategoria;
     }

@@ -52,6 +52,7 @@ namespace GU_Tercero
             lblMensaje = new Label();
             btnGuardarPreguntas = new Button();
             btnVolver = new Button();
+            lblResultado = new Label();
             panelHeader.SuspendLayout();
             grpInformacionUsuario.SuspendLayout();
             grpCambiarContraseña.SuspendLayout();
@@ -343,12 +344,22 @@ namespace GU_Tercero
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += btnVolver_Click;
             //
+            // lblResultado
+            //
+            lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(16, 546);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(560, 34);
+            //
             // FormUsuario
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(760, 596);
+            Controls.Add(lblResultado);
             Controls.Add(btnVolver);
             Controls.Add(grpPreguntasSeguridad);
             Controls.Add(grpCambiarContraseña);
@@ -372,6 +383,8 @@ namespace GU_Tercero
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblMiCuenta;

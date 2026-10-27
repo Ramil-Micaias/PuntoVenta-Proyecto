@@ -94,12 +94,7 @@ namespace Vista
 
                 gestorProveedores.RegistrarProveedor(prov);
 
-                MessageBox.Show(
-                    "Proveedor registrado con éxito.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultado, "Proveedor registrado con éxito.");
 
                 CargarProveedores();
                 LimpiarControles();
@@ -117,6 +112,8 @@ namespace Vista
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             if (idProveedorSeleccionado == 0)
             {
                 MessageBox.Show(
@@ -143,12 +140,7 @@ namespace Vista
 
                 gestorProveedores.ModificarProveedor(prov);
 
-                MessageBox.Show(
-                    "Proveedor modificado correctamente.",
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                Mensajes.Exito(lblResultado, "Proveedor modificado correctamente.");
 
                 CargarProveedores();
                 LimpiarControles();
@@ -166,6 +158,8 @@ namespace Vista
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             if (idProveedorSeleccionado == 0)
             {
                 MessageBox.Show(
@@ -190,12 +184,7 @@ namespace Vista
                 {
                     gestorProveedores.InactivarProveedor(idProveedorSeleccionado);
 
-                    MessageBox.Show(
-                        "Proveedor inactivado con éxito.",
-                        "Éxito",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    Mensajes.Exito(lblResultado, "Proveedor inactivado con éxito.");
 
                     CargarProveedores();
                     LimpiarControles();
@@ -251,6 +240,8 @@ namespace Vista
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             LimpiarControles();
             MostrarBotones(true);
             txtRazonSocial.Focus();

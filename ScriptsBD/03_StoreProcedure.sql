@@ -36,8 +36,9 @@ GO
 CREATE OR ALTER PROCEDURE sp_GuardarConfiguracion
 (
     @Id_Configuracion INT,
-    @Nombre_Empresa NVARCHAR(100),
-    @Email_Emisor NVARCHAR(150),
+    -- Opcionales: la pantalla de Configuración no los edita; si no vienen se conserva el valor guardado.
+    @Nombre_Empresa NVARCHAR(100) = NULL,
+    @Email_Emisor NVARCHAR(150) = NULL,
     @Min_Caracteres INT,
     @Requiere_Mayusculas BIT,
     @Requiere_Numeros BIT,
@@ -57,8 +58,8 @@ BEGIN
 
         UPDATE ConfiguracionSistema
         SET
-            Nombre_Empresa = @Nombre_Empresa,
-            Email_Emisor = @Email_Emisor,
+            Nombre_Empresa = ISNULL(@Nombre_Empresa, Nombre_Empresa),
+            Email_Emisor = ISNULL(@Email_Emisor, Email_Emisor),
             Min_Caracteres = @Min_Caracteres,
             Requiere_Mayusculas = @Requiere_Mayusculas,
             Requiere_Numeros = @Requiere_Numeros,

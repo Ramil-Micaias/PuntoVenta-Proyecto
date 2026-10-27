@@ -50,6 +50,11 @@
             lblMetodoPago = new Label();
             btnVolver = new Button();
             lblDescuentoAyuda = new Label();
+            lblResultado = new Label();
+            txtImportePago = new TextBox();
+            btnAgregarPago = new Button();
+            dgvPagos = new DataGridView();
+            lblFaltaPagar = new Label();
             panelHeader.SuspendLayout();
             panelIzq.SuspendLayout();
             grpBusqueda.SuspendLayout();
@@ -60,6 +65,7 @@
             panelDer.SuspendLayout();
             grpResumen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDescuento).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPagos).BeginInit();
             SuspendLayout();
             // 
             // panelHeader
@@ -311,6 +317,7 @@
             // grpResumen
             // 
             grpResumen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpResumen.Controls.Add(lblResultado);
             grpResumen.Controls.Add(lblAyuda);
             grpResumen.Controls.Add(btnVolver);
             grpResumen.Controls.Add(lblDescuentoAyuda);
@@ -324,6 +331,10 @@
             grpResumen.Controls.Add(lblSubtotalTitulo);
             grpResumen.Controls.Add(cmbMetodoPago);
             grpResumen.Controls.Add(lblMetodoPago);
+            grpResumen.Controls.Add(txtImportePago);
+            grpResumen.Controls.Add(btnAgregarPago);
+            grpResumen.Controls.Add(dgvPagos);
+            grpResumen.Controls.Add(lblFaltaPagar);
             grpResumen.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpResumen.ForeColor = Color.FromArgb(15, 23, 42);
             grpResumen.Location = new Point(0, 0);
@@ -338,11 +349,11 @@
             lblAyuda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblAyuda.Font = new Font("Segoe UI", 8.5F);
             lblAyuda.ForeColor = Color.FromArgb(100, 116, 139);
-            lblAyuda.Location = new Point(16, 466);
+            lblAyuda.Location = new Point(16, 506);
             lblAyuda.Name = "lblAyuda";
             lblAyuda.Size = new Size(318, 40);
             lblAyuda.TabIndex = 13;
-            lblAyuda.Text = "Al confirmar se descuenta el stock, se registra el ingreso en la caja y se emite el comprobante interno.";
+            lblAyuda.Text = "Sin pagos agregados se cobra todo con el método elegido. Doble clic en un pago para quitarlo.";
             // 
             // btnVolver
             // 
@@ -352,9 +363,9 @@
             btnVolver.FlatStyle = FlatStyle.Flat;
             btnVolver.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnVolver.ForeColor = Color.White;
-            btnVolver.Location = new Point(16, 412);
+            btnVolver.Location = new Point(16, 464);
             btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(318, 40);
+            btnVolver.Size = new Size(318, 34);
             btnVolver.TabIndex = 12;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
@@ -365,11 +376,11 @@
             btnCancelarOperacion.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelarOperacion.FlatAppearance.BorderSize = 0;
             btnCancelarOperacion.FlatStyle = FlatStyle.Flat;
-            btnCancelarOperacion.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnCancelarOperacion.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
             btnCancelarOperacion.ForeColor = Color.White;
-            btnCancelarOperacion.Location = new Point(16, 358);
+            btnCancelarOperacion.Location = new Point(16, 420);
             btnCancelarOperacion.Name = "btnCancelarOperacion";
-            btnCancelarOperacion.Size = new Size(318, 44);
+            btnCancelarOperacion.Size = new Size(318, 38);
             btnCancelarOperacion.TabIndex = 11;
             btnCancelarOperacion.Text = "CANCELAR OPERACIÓN";
             btnCancelarOperacion.UseVisualStyleBackColor = false;
@@ -382,9 +393,9 @@
             btnConfirmarVenta.FlatStyle = FlatStyle.Flat;
             btnConfirmarVenta.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             btnConfirmarVenta.ForeColor = Color.White;
-            btnConfirmarVenta.Location = new Point(16, 300);
+            btnConfirmarVenta.Location = new Point(16, 370);
             btnConfirmarVenta.Name = "btnConfirmarVenta";
-            btnConfirmarVenta.Size = new Size(318, 48);
+            btnConfirmarVenta.Size = new Size(318, 44);
             btnConfirmarVenta.TabIndex = 10;
             btnConfirmarVenta.Text = "CONFIRMAR VENTA";
             btnConfirmarVenta.UseVisualStyleBackColor = false;
@@ -394,7 +405,7 @@
             lblTotalNeto.AutoSize = true;
             lblTotalNeto.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblTotalNeto.ForeColor = Color.FromArgb(16, 185, 129);
-            lblTotalNeto.Location = new Point(14, 244);
+            lblTotalNeto.Location = new Point(14, 162);
             lblTotalNeto.Name = "lblTotalNeto";
             lblTotalNeto.Size = new Size(94, 41);
             lblTotalNeto.TabIndex = 9;
@@ -405,7 +416,7 @@
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
-            lblTotalTitulo.Location = new Point(16, 220);
+            lblTotalTitulo.Location = new Point(16, 142);
             lblTotalTitulo.Name = "lblTotalTitulo";
             lblTotalTitulo.Size = new Size(106, 21);
             lblTotalTitulo.TabIndex = 8;
@@ -415,7 +426,7 @@
             // 
             numDescuento.DecimalPlaces = 2;
             numDescuento.Font = new Font("Segoe UI", 9.5F);
-            numDescuento.Location = new Point(140, 150);
+            numDescuento.Location = new Point(140, 80);
             numDescuento.Name = "numDescuento";
             numDescuento.Size = new Size(90, 24);
             numDescuento.TabIndex = 7;
@@ -425,7 +436,7 @@
             lblDescuentoTitulo.AutoSize = true;
             lblDescuentoTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDescuentoTitulo.ForeColor = Color.FromArgb(30, 41, 59);
-            lblDescuentoTitulo.Location = new Point(16, 154);
+            lblDescuentoTitulo.Location = new Point(16, 84);
             lblDescuentoTitulo.Name = "lblDescuentoTitulo";
             lblDescuentoTitulo.Size = new Size(98, 17);
             lblDescuentoTitulo.TabIndex = 6;
@@ -435,9 +446,9 @@
             // 
             lblDescuentoAyuda.Font = new Font("Segoe UI", 8.5F);
             lblDescuentoAyuda.ForeColor = Color.FromArgb(100, 116, 139);
-            lblDescuentoAyuda.Location = new Point(16, 180);
+            lblDescuentoAyuda.Location = new Point(16, 108);
             lblDescuentoAyuda.Name = "lblDescuentoAyuda";
-            lblDescuentoAyuda.Size = new Size(318, 32);
+            lblDescuentoAyuda.Size = new Size(318, 30);
             lblDescuentoAyuda.TabIndex = 14;
             lblDescuentoAyuda.Text = "Porcentaje que se resta del subtotal. Ej: 10 = 10% menos. Con 0 no se aplica descuento.";
             // 
@@ -446,7 +457,7 @@
             lblSubtotalValor.AutoSize = true;
             lblSubtotalValor.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblSubtotalValor.ForeColor = Color.FromArgb(15, 23, 42);
-            lblSubtotalValor.Location = new Point(16, 113);
+            lblSubtotalValor.Location = new Point(16, 48);
             lblSubtotalValor.Name = "lblSubtotalValor";
             lblSubtotalValor.Size = new Size(49, 20);
             lblSubtotalValor.TabIndex = 5;
@@ -457,7 +468,7 @@
             lblSubtotalTitulo.AutoSize = true;
             lblSubtotalTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblSubtotalTitulo.ForeColor = Color.FromArgb(30, 41, 59);
-            lblSubtotalTitulo.Location = new Point(16, 92);
+            lblSubtotalTitulo.Location = new Point(16, 28);
             lblSubtotalTitulo.Name = "lblSubtotalTitulo";
             lblSubtotalTitulo.Size = new Size(62, 17);
             lblSubtotalTitulo.TabIndex = 4;
@@ -468,9 +479,9 @@
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
             cmbMetodoPago.FormattingEnabled = true;
-            cmbMetodoPago.Location = new Point(16, 48);
+            cmbMetodoPago.Location = new Point(16, 232);
             cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(318, 25);
+            cmbMetodoPago.Size = new Size(150, 25);
             cmbMetodoPago.TabIndex = 3;
             // 
             // lblMetodoPago
@@ -478,11 +489,62 @@
             lblMetodoPago.AutoSize = true;
             lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
-            lblMetodoPago.Location = new Point(16, 28);
+            lblMetodoPago.Location = new Point(16, 212);
             lblMetodoPago.Name = "lblMetodoPago";
             lblMetodoPago.Size = new Size(113, 17);
             lblMetodoPago.TabIndex = 2;
-            lblMetodoPago.Text = "Método de Pago:";
+            lblMetodoPago.Text = "Pagos (método e importe):";
+            // 
+            // txtImportePago
+            // 
+            txtImportePago.Font = new Font("Segoe UI", 9.5F);
+            txtImportePago.Location = new Point(172, 232);
+            txtImportePago.Name = "txtImportePago";
+            txtImportePago.PlaceholderText = "Importe";
+            txtImportePago.Size = new Size(90, 24);
+            txtImportePago.TabIndex = 15;
+            // 
+            // btnAgregarPago
+            // 
+            btnAgregarPago.BackColor = Color.FromArgb(37, 99, 235);
+            btnAgregarPago.FlatAppearance.BorderSize = 0;
+            btnAgregarPago.FlatStyle = FlatStyle.Flat;
+            btnAgregarPago.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnAgregarPago.ForeColor = Color.White;
+            btnAgregarPago.Location = new Point(268, 231);
+            btnAgregarPago.Name = "btnAgregarPago";
+            btnAgregarPago.Size = new Size(66, 27);
+            btnAgregarPago.TabIndex = 16;
+            btnAgregarPago.Text = "Agregar";
+            btnAgregarPago.UseVisualStyleBackColor = false;
+            // 
+            // dgvPagos
+            // 
+            dgvPagos.BackgroundColor = Color.FromArgb(226, 232, 240);
+            dgvPagos.BorderStyle = BorderStyle.None;
+            dgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPagos.Location = new Point(16, 264);
+            dgvPagos.Name = "dgvPagos";
+            dgvPagos.Size = new Size(318, 72);
+            dgvPagos.TabIndex = 17;
+            // 
+            // lblFaltaPagar
+            // 
+            lblFaltaPagar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblFaltaPagar.ForeColor = Color.FromArgb(100, 116, 139);
+            lblFaltaPagar.Location = new Point(16, 342);
+            lblFaltaPagar.Name = "lblFaltaPagar";
+            lblFaltaPagar.Size = new Size(318, 22);
+            lblFaltaPagar.TabIndex = 18;
+            //
+            // lblResultado
+            //
+            lblResultado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(16, 504);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(318, 66);
+            lblResultado.Visible = false;
             // 
             // FormVentas
             // 
@@ -513,10 +575,13 @@
             grpResumen.ResumeLayout(false);
             grpResumen.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numDescuento).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPagos).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblTitulo;
@@ -551,5 +616,9 @@
         private Label lblAyuda;
         private Button btnVolver;
         private Label lblDescuentoAyuda;
+        private TextBox txtImportePago;
+        private Button btnAgregarPago;
+        private DataGridView dgvPagos;
+        private Label lblFaltaPagar;
     }
 }
