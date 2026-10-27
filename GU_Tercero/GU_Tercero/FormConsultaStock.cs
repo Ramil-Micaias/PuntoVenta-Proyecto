@@ -3,8 +3,6 @@ using Logica;
 using System;
 using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Vista
@@ -25,7 +23,6 @@ namespace Vista
 
             this.Load += FormConsultaStock_Load;
             this.btnAplicarFiltros.Click += btnAplicarFiltros_Click;
-            this.btnExportar.Click += btnExportar_Click;
             this.btnVolver.Click += btnVolver_Click;
             this.txtBuscar.KeyDown += txtBuscar_KeyDown;
             this.chkSoloBajoMinimo.CheckedChanged += chkSoloBajoMinimo_CheckedChanged;
@@ -172,73 +169,6 @@ namespace Vista
             }
         }
 
-        // Exporta lo que se ve en la grilla a un archivo .csv que se abre con Excel.
-        private void ExportarExcel()
-        {
-            if (dgvStock.Rows.Count == 0)
-            {
-                MessageBox.Show(
-                    "No hay productos para exportar.",
-                    "Atención",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            using (SaveFileDialog dialogo = new SaveFileDialog())
-            {
-                dialogo.Filter = "Archivo para Excel (*.csv)|*.csv";
-                dialogo.FileName = "Stock_" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
-
-                if (dialogo.ShowDialog() != DialogResult.OK)
-                    return;
-
-                try
-                {
-                    StringBuilder texto = new StringBuilder();
-
-                    // Encabezados (solo columnas visibles). Excel en español separa con ";".
-                    string linea = "";
-                    foreach (DataGridViewColumn columna in dgvStock.Columns)
-                    {
-                        if (columna.Visible)
-                            linea += columna.HeaderText + ";";
-                    }
-                    texto.AppendLine(linea.TrimEnd(';'));
-
-                    foreach (DataGridViewRow fila in dgvStock.Rows)
-                    {
-                        linea = "";
-                        foreach (DataGridViewColumn columna in dgvStock.Columns)
-                        {
-                            if (columna.Visible)
-                                linea += Convert.ToString(fila.Cells[columna.Index].FormattedValue) + ";";
-                        }
-                        texto.AppendLine(linea.TrimEnd(';'));
-                    }
-
-                    File.WriteAllText(dialogo.FileName, texto.ToString(), new UTF8Encoding(true));
-
-                    MessageBox.Show(
-                        "Reporte exportado correctamente.",
-                        "Éxito",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        "No se pudo exportar el reporte: " + ex.Message,
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-        }
-
         private void btnAplicarFiltros_Click(object sender, EventArgs e)
         {
             CargarStock();
@@ -258,11 +188,6 @@ namespace Vista
             // Mientras la pantalla se está abriendo todavía no hay que consultar.
             if (this.Visible)
                 CargarStock();
-        }
-
-        private void btnExportar_Click(object sender, EventArgs e)
-        {
-            ExportarExcel();
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
