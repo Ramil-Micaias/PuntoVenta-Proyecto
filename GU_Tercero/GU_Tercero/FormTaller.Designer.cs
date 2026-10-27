@@ -45,6 +45,7 @@
             grpOrdenes = new GroupBox();
             dgvOrdenes = new DataGridView();
             lblResumen = new Label();
+            lblResultado = new Label();
             btnNuevaOrden = new Button();
             btnVerOrden = new Button();
             btnVolver = new Button();
@@ -232,6 +233,7 @@
             grpOrdenes.Controls.Add(btnVerOrden);
             grpOrdenes.Controls.Add(btnNuevaOrden);
             grpOrdenes.Controls.Add(lblResumen);
+            grpOrdenes.Controls.Add(lblResultado);
             grpOrdenes.Controls.Add(dgvOrdenes);
             grpOrdenes.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpOrdenes.ForeColor = Color.FromArgb(15, 23, 42);
@@ -262,6 +264,15 @@
             lblResumen.Size = new Size(64, 17);
             lblResumen.TabIndex = 1;
             lblResumen.Text = "Órdenes: 0";
+            //
+            // lblResultado
+            //
+            lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(130, 416);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(460, 42);
             //
             // btnNuevaOrden
             //
@@ -333,6 +344,8 @@
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblCu;

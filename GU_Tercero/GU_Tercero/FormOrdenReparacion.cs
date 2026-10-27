@@ -11,6 +11,9 @@ namespace Vista
     // CU09: abrir una orden existente para actualizar su estado, diagnóstico y repuestos.
     public partial class FormOrdenReparacion : Form
     {
+        // Texto del resultado al guardar; lo muestra en verde la pantalla del Taller.
+        public string MensajeResultado { get; private set; } = string.Empty;
+
         private readonly GestorTaller gestorTaller = new GestorTaller();
         private readonly DataTable repuestos = new DataTable();
         private Usuario usuarioLogueado;
@@ -546,13 +549,9 @@ namespace Vista
             {
                 ResultadoOperacion resultado = gestorTaller.GuardarOrden(orden);
 
-                MessageBox.Show(
+                MensajeResultado =
                     "Orden " + resultado.Comprobante + " guardada correctamente.\n" +
-                    "Total del presupuesto: " + FormatoMoneda(resultado.Total),
-                    "Éxito",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                    "Total del presupuesto: " + FormatoMoneda(resultado.Total);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

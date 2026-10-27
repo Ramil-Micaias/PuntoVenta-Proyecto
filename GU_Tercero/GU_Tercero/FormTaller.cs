@@ -207,11 +207,16 @@ namespace GU_Tercero
                 return;
             }
 
+            Mensajes.Limpiar(lblResultado);
+
             using (FormOrdenReparacion formOrden = new FormOrdenReparacion(usuarioLogueado, idOrden))
             {
                 if (formOrden.ShowDialog() == DialogResult.OK)
                 {
                     CargarOrdenes();
+
+                    // El resultado de la orden queda escrito en esta pantalla.
+                    Mensajes.Exito(lblResultado, formOrden.MensajeResultado);
                 }
             }
         }
