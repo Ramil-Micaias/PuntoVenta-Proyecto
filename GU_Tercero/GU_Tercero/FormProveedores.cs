@@ -92,9 +92,11 @@ namespace Vista
                     Activo = true
                 };
 
-                gestorProveedores.RegistrarProveedor(prov);
+                bool reactivado = gestorProveedores.RegistrarProveedor(prov);
 
-                Mensajes.Exito(lblResultado, "Proveedor registrado con éxito.");
+                Mensajes.Exito(lblResultado, reactivado
+                    ? "El proveedor estaba dado de baja: se reactivó con los datos ingresados (conserva su historial)."
+                    : "Proveedor registrado con éxito.");
 
                 CargarProveedores();
                 LimpiarControles();

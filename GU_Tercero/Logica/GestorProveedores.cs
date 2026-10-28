@@ -9,10 +9,11 @@ namespace Logica
     {
         private readonly ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
 
-        public void RegistrarProveedor(Proveedor proveedor)
+        // Devuelve true si el proveedor ya existía dado de baja y se reactivó.
+        public bool RegistrarProveedor(Proveedor proveedor)
         {
             ValidarProveedor(proveedor);
-            proveedoresDAO.RegistrarProveedor(proveedor);
+            return proveedoresDAO.RegistrarProveedor(proveedor);
         }
 
         public void ModificarProveedor(Proveedor proveedor)
@@ -62,9 +63,10 @@ namespace Logica
 
             if (!string.IsNullOrWhiteSpace(proveedor.CUIT))
             {
-                proveedor.CUIT = proveedor.CUIT.Trim();
-                if (proveedor.CUIT.Length > 20)
-                    throw new Exception("El CUIT no puede exceder los 20 caracteres.");
+                if (!Validaciones.EsCuitValido(proveedor.CUIT, out string cuitNormalizado))
+                    throw new Exception("El CUIT no es válido. Debe tener 11 números (por ejemplo 30-12345678-9) y el dígito verificador correcto.");
+
+                proveedor.CUIT = cuitNormalizado;
             }
             else
             {
@@ -76,6 +78,9 @@ namespace Logica
                 proveedor.Telefono = proveedor.Telefono.Trim();
                 if (proveedor.Telefono.Length > 30)
                     throw new Exception("El teléfono no puede exceder los 30 caracteres.");
+
+                if (!Validaciones.EsTelefonoValido(proveedor.Telefono))
+                    throw new Exception("El teléfono no es válido. Use solo números (puede llevar espacios, guiones, + o paréntesis) y entre 8 y 15 dígitos.");
             }
             else
             {
@@ -87,6 +92,9 @@ namespace Logica
                 proveedor.Email = proveedor.Email.Trim();
                 if (proveedor.Email.Length > 100)
                     throw new Exception("El email no puede exceder los 100 caracteres.");
+
+                if (!Validaciones.EsEmailValido(proveedor.Email))
+                    throw new Exception("El email no es válido. Debe tener el formato nombre@dominio.com.");
             }
             else
             {

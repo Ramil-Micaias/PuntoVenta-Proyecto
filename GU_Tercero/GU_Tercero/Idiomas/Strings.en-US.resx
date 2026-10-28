@@ -233,4 +233,7 @@
   <data name="Msg_ModoModificar" xml:space="preserve">
     <value>Edit the data and press Confirm to save, or Cancel to discard.</value>
   </data>
+  <data name="Columna_Proveedor" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
 </root>

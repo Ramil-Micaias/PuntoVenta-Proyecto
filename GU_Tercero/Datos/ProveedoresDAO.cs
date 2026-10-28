@@ -60,7 +60,8 @@ namespace Datos
         }
 
 
-        public void RegistrarProveedor(Proveedor proveedor)
+        // Devuelve true si el proveedor ya existía dado de baja y se reactivó.
+        public bool RegistrarProveedor(Proveedor proveedor)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
@@ -83,7 +84,7 @@ namespace Datos
                     .Value = string.IsNullOrWhiteSpace(proveedor.Direccion) ? DBNull.Value : proveedor.Direccion;
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                return Convert.ToString(cmd.ExecuteScalar()) == "REACTIVADO";
             }
         }
 

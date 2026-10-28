@@ -233,4 +233,7 @@
   <data name="Msg_ModoModificar" xml:space="preserve">
     <value>Modifique los datos y presione Confirmar para guardar, o Cancelar para descartar.</value>
   </data>
+  <data name="Columna_Proveedor" xml:space="preserve">
+    <value>Proveedor</value>
+  </data>
 </root>
