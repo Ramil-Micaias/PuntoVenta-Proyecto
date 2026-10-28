@@ -73,10 +73,15 @@ GO
 
 
 -- Proveedores
+-- Los CUIT de prueba anteriores no tenían un dígito verificador válido: se corrigen.
+UPDATE Proveedor SET CUIT = '30-71234567-1' WHERE CUIT = '30-71234567-8';
+UPDATE Proveedor SET CUIT = '30-88765432-4' WHERE CUIT = '30-88765432-1';
+
 IF NOT EXISTS (
     SELECT 1 
     FROM Proveedor 
-    WHERE CUIT = '30-71234567-8'
+    WHERE CUIT = '30-71234567-1'
+       OR Razon_Social = 'Distribuidora Mobile S.A.'
 )
     INSERT INTO Proveedor (
         Razon_Social,
@@ -88,7 +93,7 @@ IF NOT EXISTS (
     )
     VALUES (
         'Distribuidora Mobile S.A.',
-        '30-71234567-8',
+        '30-71234567-1',
         '011-4321-8765',
         'ventas@distrimobile.com',
         'Av. Corrientes 1234, CABA',
@@ -98,7 +103,8 @@ IF NOT EXISTS (
 IF NOT EXISTS (
     SELECT 1 
     FROM Proveedor 
-    WHERE CUIT = '30-88765432-1'
+    WHERE CUIT = '30-88765432-4'
+       OR Razon_Social = 'Importadora Repuestos Tech'
 )
     INSERT INTO Proveedor (
         Razon_Social,
@@ -110,7 +116,7 @@ IF NOT EXISTS (
     )
     VALUES (
         'Importadora Repuestos Tech',
-        '30-88765432-1',
+        '30-88765432-4',
         '011-5555-0199',
         'contacto@repuestostech.com.ar',
         'Calle 14 Nro 850, La Plata',
@@ -260,14 +266,14 @@ DECLARE @IdProvMobile INT =
 (
     SELECT Id_Proveedor
     FROM Proveedor
-    WHERE CUIT = '30-71234567-8'
+    WHERE CUIT = '30-71234567-1'
 );
 
 DECLARE @IdProvTech INT =
 (
     SELECT Id_Proveedor
     FROM Proveedor
-    WHERE CUIT = '30-88765432-1'
+    WHERE CUIT = '30-88765432-4'
 );
 
 
@@ -428,14 +434,14 @@ DECLARE @IdProvMobile INT =
 (
     SELECT Id_Proveedor
     FROM Proveedor
-    WHERE CUIT = '30-71234567-8'
+    WHERE CUIT = '30-71234567-1'
 );
 
 DECLARE @IdProvTech INT =
 (
     SELECT Id_Proveedor
     FROM Proveedor
-    WHERE CUIT = '30-88765432-1'
+    WHERE CUIT = '30-88765432-4'
 );
 
 

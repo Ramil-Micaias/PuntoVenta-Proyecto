@@ -52,6 +52,7 @@ namespace GU_Tercero
             lblMensaje = new Label();
             btnGuardarPreguntas = new Button();
             btnVolver = new Button();
+            lblResultado = new Label();
             panelHeader.SuspendLayout();
             grpInformacionUsuario.SuspendLayout();
             grpCambiarContraseña.SuspendLayout();
@@ -205,7 +206,7 @@ namespace GU_Tercero
             lblAyudaPassword.Name = "lblAyudaPassword";
             lblAyudaPassword.Size = new Size(360, 64);
             lblAyudaPassword.TabIndex = 4;
-            lblAyudaPassword.Text = "Para cambiar su contraseña, ingrese la nueva contraseña, confírmela y haga clic en \"Cambiar contraseña\". Deberá cumplir con las políticas de seguridad configuradas por el administrador.";
+            lblAyudaPassword.Text = "Presione \"Cambiar contraseña\" y responda sus 3 preguntas de seguridad. Si son correctas se habilitan los campos para ingresar la nueva contraseña.";
             //
             // btnCambiarPassword
             //
@@ -310,7 +311,7 @@ namespace GU_Tercero
             lblMensaje.Name = "lblMensaje";
             lblMensaje.Size = new Size(360, 48);
             lblMensaje.TabIndex = 6;
-            lblMensaje.Text = "Para modificar sus preguntas de seguridad, complete nuevamente todas las respuestas y haga clic en \"Guardar preguntas\".";
+            lblMensaje.Text = "Presione \"Cambiar preguntas\" y responda las actuales. Si son correctas se habilitan los campos para cargar las nuevas respuestas.";
             //
             // btnGuardarPreguntas
             //
@@ -323,7 +324,7 @@ namespace GU_Tercero
             btnGuardarPreguntas.Name = "btnGuardarPreguntas";
             btnGuardarPreguntas.Size = new Size(200, 32);
             btnGuardarPreguntas.TabIndex = 7;
-            btnGuardarPreguntas.Text = "Guardar preguntas";
+            btnGuardarPreguntas.Text = "Cambiar preguntas";
             btnGuardarPreguntas.UseVisualStyleBackColor = false;
             btnGuardarPreguntas.Click += btnGuardarPreguntas_Click;
             //
@@ -343,12 +344,22 @@ namespace GU_Tercero
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += btnVolver_Click;
             //
+            // lblResultado
+            //
+            lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(16, 546);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(560, 34);
+            //
             // FormUsuario
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(760, 596);
+            Controls.Add(lblResultado);
             Controls.Add(btnVolver);
             Controls.Add(grpPreguntasSeguridad);
             Controls.Add(grpCambiarContraseña);
@@ -372,6 +383,8 @@ namespace GU_Tercero
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblMiCuenta;

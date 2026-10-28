@@ -26,6 +26,31 @@ IF COL_LENGTH('Venta', 'Descuento') IS NULL
     ALTER TABLE Venta ADD Descuento DECIMAL(12,2) NOT NULL DEFAULT 0;
 GO
 
+-- Pagos de cada venta: una venta se puede pagar con varios métodos
+-- (por ejemplo una parte en efectivo y el resto con tarjeta).
+-- Venta.Id_MetodoPago queda con el método del pago más grande.
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PagoVenta')
+BEGIN
+    CREATE TABLE PagoVenta (
+        Id_PagoVenta INT IDENTITY(1,1) PRIMARY KEY,
+        Id_Venta INT NOT NULL,
+        Id_MetodoPago INT NOT NULL,
+        Importe DECIMAL(12,2) NOT NULL,
+        FOREIGN KEY (Id_Venta) REFERENCES Venta(Id_Venta),
+        FOREIGN KEY (Id_MetodoPago) REFERENCES MetodoPago(Id_MetodoPago),
+        CHECK (Importe > 0)
+    );
+END
+GO
+
+-- Las ventas anteriores se pagaron con un solo método: se registra ese pago.
+INSERT INTO PagoVenta (Id_Venta, Id_MetodoPago, Importe)
+SELECT v.Id_Venta, v.Id_MetodoPago, v.Total
+FROM Venta v
+WHERE v.Total > 0
+  AND NOT EXISTS (SELECT 1 FROM PagoVenta pv WHERE pv.Id_Venta = v.Id_Venta);
+GO
+
 
 -- ------------------------------------------------------------
 -- 2. REPARACIÓN DE ACENTOS (Idempotente)
@@ -220,7 +245,9 @@ GO
 
 -- ------------------------------------------------------------
 -- 6. SP: Registrar venta
---    Utilizado por VentaDAO (ejecuta con JSON en @Detalles)
+--    Utilizado por VentaDAO (ejecuta con JSON en @Detalles y en @Pagos)
+--    @Pagos: lista de pagos [{Id_MetodoPago, Importe}]. Si no viene,
+--    se toma un solo pago con @Id_MetodoPago por el total.
 -- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_RegistrarVenta
     @Numero_Factura NVARCHAR(20) = NULL,
@@ -229,13 +256,22 @@ CREATE OR ALTER PROCEDURE sp_RegistrarVenta
     @Id_MetodoPago INT,
     @DescuentoPorcentaje DECIMAL(5,2) = 0,
     @Fecha DATETIME = NULL,
-    @Detalles NVARCHAR(MAX)
+    @Detalles NVARCHAR(MAX),
+    @Pagos NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
         BEGIN TRANSACTION;
+
+        -- No se puede vender sin la caja del día abierta (CU06)
+        IF NOT EXISTS (SELECT 1 FROM Caja
+                       WHERE Abierta = 1
+                         AND CAST(Fecha_Apertura AS DATE) = CAST(ISNULL(@Fecha, GETDATE()) AS DATE))
+        BEGIN
+            RAISERROR('No hay una caja abierta. Abra la caja del día en "Caja Diaria" antes de vender.', 16, 1);
+        END
 
         -- Valida método de pago
         IF NOT EXISTS (SELECT 1 FROM MetodoPago WHERE Id_MetodoPago = @Id_MetodoPago)
@@ -352,6 +388,63 @@ BEGIN
             RAISERROR('El descuento aplicado deja el total de la venta en cero.', 16, 1);
         END
 
+        -- Pagos de la venta (uno o varios métodos)
+        DECLARE @PagosVenta TABLE (
+            Id_MetodoPago INT,
+            Importe DECIMAL(12,2)
+        );
+
+        IF @Pagos IS NULL OR LTRIM(RTRIM(@Pagos)) = ''
+        BEGIN
+            INSERT INTO @PagosVenta (Id_MetodoPago, Importe)
+            VALUES (@Id_MetodoPago, @TotalNeto);
+        END
+        ELSE
+        BEGIN
+            INSERT INTO @PagosVenta (Id_MetodoPago, Importe)
+            SELECT Id_MetodoPago, Importe
+            FROM OPENJSON(@Pagos)
+            WITH (
+                Id_MetodoPago INT '$.Id_MetodoPago',
+                Importe DECIMAL(12,2) '$.Importe'
+            );
+        END
+
+        IF NOT EXISTS (SELECT 1 FROM @PagosVenta)
+        BEGIN
+            RAISERROR('Debe indicar al menos un pago.', 16, 1);
+        END
+
+        IF EXISTS (SELECT 1 FROM @PagosVenta WHERE Importe IS NULL OR Importe <= 0)
+        BEGIN
+            RAISERROR('Cada pago debe tener un importe mayor a cero.', 16, 1);
+        END
+
+        IF EXISTS (
+            SELECT 1
+            FROM @PagosVenta pv
+            LEFT JOIN MetodoPago mp ON mp.Id_MetodoPago = pv.Id_MetodoPago
+            WHERE mp.Id_MetodoPago IS NULL
+        )
+        BEGIN
+            RAISERROR('Uno de los métodos de pago no es válido.', 16, 1);
+        END
+
+        DECLARE @TotalPagos DECIMAL(12,2) = (SELECT SUM(Importe) FROM @PagosVenta);
+
+        IF @TotalPagos <> @TotalNeto
+        BEGIN
+            DECLARE @MensajePagos NVARCHAR(300) =
+                'La suma de los pagos ($' + FORMAT(@TotalPagos, 'N2', 'es-AR') +
+                ') no coincide con el total de la venta ($' + FORMAT(@TotalNeto, 'N2', 'es-AR') + ').';
+            RAISERROR(@MensajePagos, 16, 1);
+        END
+
+        -- La cabecera guarda el método del pago más grande
+        SELECT TOP 1 @Id_MetodoPago = Id_MetodoPago
+        FROM @PagosVenta
+        ORDER BY Importe DESC;
+
         -- Cabecera de la venta
         DECLARE @IdVenta INT;
         DECLARE @FechaVenta DATETIME = ISNULL(@Fecha, GETDATE());
@@ -391,6 +484,12 @@ BEGIN
         INSERT INTO DetalleVenta (Id_Venta, Id_Producto, Cantidad, Precio_Unitario)
         SELECT @IdVenta, Id_Producto, Cantidad, Precio
         FROM @Detalle;
+
+        -- Pagos (si un método se repite, se suma en un solo pago)
+        INSERT INTO PagoVenta (Id_Venta, Id_MetodoPago, Importe)
+        SELECT @IdVenta, Id_MetodoPago, SUM(Importe)
+        FROM @PagosVenta
+        GROUP BY Id_MetodoPago;
 
         -- Descuento de stock
         UPDATE p

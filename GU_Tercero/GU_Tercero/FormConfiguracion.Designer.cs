@@ -45,6 +45,7 @@ namespace GU_Tercero
             chkNoRepetir = new CheckBox();
             chkDatosPersonales = new CheckBox();
             btnRestaurar = new Button();
+            lblResultado = new Label();
             btnCancelar = new Button();
             btnGuardar = new Button();
             panelHeader.SuspendLayout();
@@ -121,7 +122,7 @@ namespace GU_Tercero
             lblCantidadPreguntas.Name = "lblCantidadPreguntas";
             lblCantidadPreguntas.Size = new Size(154, 17);
             lblCantidadPreguntas.TabIndex = 2;
-            lblCantidadPreguntas.Text = "Cantidad de preguntas:";
+            lblCantidadPreguntas.Text = "Preguntas al recuperar:";
             //
             // nudCantidadPreguntas
             //
@@ -288,12 +289,22 @@ namespace GU_Tercero
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             //
+            // lblResultado
+            //
+            lblResultado.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(16, 288);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(290, 42);
+            //
             // FormConfiguracion
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
             ClientSize = new Size(760, 342);
+            Controls.Add(lblResultado);
             Controls.Add(btnGuardar);
             Controls.Add(btnCancelar);
             Controls.Add(btnRestaurar);
@@ -319,6 +330,8 @@ namespace GU_Tercero
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblTitulo;

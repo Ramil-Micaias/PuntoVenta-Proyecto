@@ -39,6 +39,11 @@ namespace Datos
                 cmd.Parameters.Add("@Detalles", SqlDbType.NVarChar, -1)
                     .Value = SerializarDetalle(venta);
 
+                cmd.Parameters.Add("@Pagos", SqlDbType.NVarChar, -1)
+                    .Value = venta.Pagos.Count == 0
+                        ? DBNull.Value
+                        : SerializarPagos(venta);
+
                 conn.Open();
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -77,6 +82,22 @@ namespace Datos
             }
 
             return JsonSerializer.Serialize(items);
+        }
+
+        private static string SerializarPagos(Venta venta)
+        {
+            List<object> pagos = new List<object>();
+
+            foreach (PagoVenta pago in venta.Pagos)
+            {
+                pagos.Add(new
+                {
+                    pago.Id_MetodoPago,
+                    pago.Importe
+                });
+            }
+
+            return JsonSerializer.Serialize(pagos);
         }
     }
 }

@@ -4,6 +4,40 @@ GO
 -- =============================================
 -- 1. SP: Obtener Productos
 -- =============================================
+-- Proveedor de un producto: el de la última compra de ese producto; si nunca se
+-- compró, el proveedor vinculado en ProductoProveedor. Aunque el proveedor esté
+-- dado de baja se muestra igual (se le compró a él), con la aclaración.
+CREATE OR ALTER FUNCTION dbo.fn_ProveedorProducto(@Id_Producto INT)
+RETURNS NVARCHAR(130)
+AS
+BEGIN
+    DECLARE @IdProveedor INT = (
+        SELECT TOP 1 c.Id_Proveedor
+        FROM DetalleCompra d
+        INNER JOIN Compra c ON c.Id_Compra = d.Id_Compra
+        WHERE d.Id_Producto = @Id_Producto
+        ORDER BY c.Fecha_Compra DESC, c.Id_Compra DESC
+    );
+
+    IF @IdProveedor IS NULL
+        SET @IdProveedor = (
+            SELECT TOP 1 Id_Proveedor
+            FROM ProductoProveedor
+            WHERE Id_Producto = @Id_Producto
+            ORDER BY Id_ProductoProveedor DESC
+        );
+
+    IF @IdProveedor IS NULL
+        RETURN 'Sin proveedor';
+
+    RETURN (
+        SELECT Razon_Social + CASE WHEN Activo = 0 THEN ' (dado de baja)' ELSE '' END
+        FROM Proveedor
+        WHERE Id_Proveedor = @IdProveedor
+    );
+END
+GO
+
 CREATE OR ALTER PROCEDURE sp_ObtenerProductos
 AS
 BEGIN
@@ -19,7 +53,8 @@ BEGIN
         p.Stock_Minimo,
         p.Es_Repuesto,
         p.Activo,
-        c.Nombre_Categoria AS NombreCategoria
+        c.Nombre_Categoria AS NombreCategoria,
+        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor
     FROM Producto p
     INNER JOIN CategoriaProducto c 
         ON p.Id_Categoria = c.Id_Categoria
@@ -67,7 +102,8 @@ BEGIN
         p.Stock_Minimo,
         p.Es_Repuesto,
         p.Activo,
-        c.Nombre_Categoria AS NombreCategoria
+        c.Nombre_Categoria AS NombreCategoria,
+        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor
     FROM Producto p
     INNER JOIN CategoriaProducto c 
         ON p.Id_Categoria = c.Id_Categoria
@@ -408,7 +444,7 @@ BEGIN
           AND Activo = 1
     )
     BEGIN
-        THROW 50000, 'No se puede eliminar la categoría porque tiene productos activos.', 1;
+        THROW 50000, 'No se puede dar de baja la categoría porque tiene productos activos.', 1;
     END;
 
     UPDATE CategoriaProducto

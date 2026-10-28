@@ -36,8 +36,9 @@ GO
 CREATE OR ALTER PROCEDURE sp_GuardarConfiguracion
 (
     @Id_Configuracion INT,
-    @Nombre_Empresa NVARCHAR(100),
-    @Email_Emisor NVARCHAR(150),
+    -- Opcionales: la pantalla de Configuración no los edita; si no vienen se conserva el valor guardado.
+    @Nombre_Empresa NVARCHAR(100) = NULL,
+    @Email_Emisor NVARCHAR(150) = NULL,
     @Min_Caracteres INT,
     @Requiere_Mayusculas BIT,
     @Requiere_Numeros BIT,
@@ -57,8 +58,8 @@ BEGIN
 
         UPDATE ConfiguracionSistema
         SET
-            Nombre_Empresa = @Nombre_Empresa,
-            Email_Emisor = @Email_Emisor,
+            Nombre_Empresa = ISNULL(@Nombre_Empresa, Nombre_Empresa),
+            Email_Emisor = ISNULL(@Email_Emisor, Email_Emisor),
             Min_Caracteres = @Min_Caracteres,
             Requiere_Mayusculas = @Requiere_Mayusculas,
             Requiere_Numeros = @Requiere_Numeros,
@@ -138,17 +139,45 @@ BEGIN
         DECLARE @IdUsuario INT;
         DECLARE @IdTipoCorreo INT;
 
-        -- 1. Insertar Persona
-        INSERT INTO Persona (Apellido, Nombre, DNI, Fecha_Alta, Activo)
-        VALUES (@Apellido, @Nombre, @DNI, GETDATE(), 1);
+        -- 1. Persona: la misma persona puede ser cliente del taller y usuario.
+        --    Si el DNI ya existe se reutiliza esa persona (DNI es único en Persona).
+        SELECT @IdPersona = Id_Persona FROM Persona WHERE DNI = @DNI;
 
-        SET @IdPersona = SCOPE_IDENTITY();
+        IF @IdPersona IS NOT NULL
+           AND EXISTS (SELECT 1 FROM Usuario WHERE Id_Persona = @IdPersona)
+        BEGIN
+            RAISERROR('Ya existe un usuario con el DNI ingresado.', 16, 1);
+        END
 
-        -- 2. Insertar Correo
+        IF @IdPersona IS NULL
+        BEGIN
+            INSERT INTO Persona (Apellido, Nombre, DNI, Fecha_Alta, Activo)
+            VALUES (@Apellido, @Nombre, @DNI, GETDATE(), 1);
+
+            SET @IdPersona = SCOPE_IDENTITY();
+        END
+        ELSE
+        BEGIN
+            UPDATE Persona
+            SET Apellido = @Apellido,
+                Nombre = @Nombre,
+                Activo = 1
+            WHERE Id_Persona = @IdPersona;
+        END
+
+        -- 2. Insertar Correo (si esa persona todavía no lo tiene)
         SELECT TOP 1 @IdTipoCorreo = Id_TipoCorreo FROM TipoCorreo WHERE Activo = 1;
 
-        INSERT INTO Correo (Id_Persona, Id_TipoCorreo, Direccion_Correo, Verificado, Activo)
-        VALUES (@IdPersona, ISNULL(@IdTipoCorreo, 1), @Direccion_Correo, 0, 1);
+        IF NOT EXISTS (SELECT 1 FROM Correo WHERE Id_Persona = @IdPersona AND Direccion_Correo = @Direccion_Correo)
+        BEGIN
+            INSERT INTO Correo (Id_Persona, Id_TipoCorreo, Direccion_Correo, Verificado, Activo)
+            VALUES (@IdPersona, ISNULL(@IdTipoCorreo, 1), @Direccion_Correo, 0, 1);
+        END
+        ELSE
+        BEGIN
+            UPDATE Correo SET Activo = 1
+            WHERE Id_Persona = @IdPersona AND Direccion_Correo = @Direccion_Correo;
+        END
 
         -- 3. Insertar Usuario
         INSERT INTO Usuario (

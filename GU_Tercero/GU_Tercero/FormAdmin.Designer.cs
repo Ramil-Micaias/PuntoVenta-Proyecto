@@ -33,6 +33,7 @@ namespace GU_Tercero
             dgvUsuarios = new DataGridView();
             grpDatos = new GroupBox();
             btnVolver = new Button();
+            txtResultado = new TextBox();
             btnEliminar = new Button();
             btnModificar = new Button();
             btnGuardar = new Button();
@@ -90,6 +91,7 @@ namespace GU_Tercero
             // grpDatos
             //
             grpDatos.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpDatos.Controls.Add(txtResultado);
             grpDatos.Controls.Add(btnVolver);
             grpDatos.Controls.Add(btnEliminar);
             grpDatos.Controls.Add(btnModificar);
@@ -345,6 +347,19 @@ namespace GU_Tercero
             lblApellido.TabIndex = 0;
             lblApellido.Text = "Apellido:";
             //
+            // txtResultado
+            //
+            txtResultado.BorderStyle = BorderStyle.None;
+            txtResultado.Multiline = true;
+            txtResultado.ReadOnly = true;
+            txtResultado.TabStop = false;
+            txtResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            txtResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            txtResultado.Location = new Point(20, 188);
+            txtResultado.Name = "txtResultado";
+            txtResultado.Size = new Size(670, 40);
+            txtResultado.BackColor = Color.FromArgb(241, 245, 249);
+            //
             // FormAdmin
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -369,6 +384,8 @@ namespace GU_Tercero
         }
 
         #endregion
+
+        private TextBox txtResultado;
 
         private Panel panelHeader;
         private Label lblTitulo;

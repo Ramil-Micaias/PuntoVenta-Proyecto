@@ -205,7 +205,9 @@ namespace GU_Tercero
             proveedoresToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.PROVEEDORES);
             ventasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
             comprasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
+            cajaToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CAJA);
             tallerToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
+            clientesToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CLIENTES);
             miPerfilToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.MI_PERFIL);
             configuraciónDelSistemaToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CONFIGURACION);
 
@@ -285,7 +287,9 @@ namespace GU_Tercero
             if (pantalla == Navegacion.PROVEEDORES) return new FormProveedores();
             if (pantalla == Navegacion.VENTAS) return new FormVentas(usuarioLogueado);
             if (pantalla == Navegacion.COMPRAS) return new FormCompras(usuarioLogueado);
+            if (pantalla == Navegacion.CAJA) return new FormCaja(usuarioLogueado);
             if (pantalla == Navegacion.TALLER) return new FormTaller(usuarioLogueado);
+            if (pantalla == Navegacion.CLIENTES) return new FormClientes();
             if (pantalla == Navegacion.MI_PERFIL) return new FormUsuario(usuarioLogueado);
             return new FormConfiguracion();
         }
@@ -346,9 +350,19 @@ namespace GU_Tercero
             AbrirPantalla(Navegacion.COMPRAS);
         }
 
+        private void cajaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirPantalla(Navegacion.CAJA);
+        }
+
         private void miPerfilToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.MI_PERFIL);
+        }
+
+        private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirPantalla(Navegacion.CLIENTES);
         }
 
         private void tallerToolStripMenuItem_Click(object sender, EventArgs e)

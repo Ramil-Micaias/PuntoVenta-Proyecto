@@ -41,7 +41,9 @@ namespace GU_Tercero
             proveedoresToolStripMenuItem = new ToolStripMenuItem();
             ventasToolStripMenuItem = new ToolStripMenuItem();
             comprasToolStripMenuItem = new ToolStripMenuItem();
+            cajaToolStripMenuItem = new ToolStripMenuItem();
             tallerToolStripMenuItem = new ToolStripMenuItem();
+            clientesToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -63,7 +65,7 @@ namespace GU_Tercero
             // 
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, tallerToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1000, 24);
@@ -154,12 +156,26 @@ namespace GU_Tercero
             comprasToolStripMenuItem.Text = "Compras";
             comprasToolStripMenuItem.Click += comprasToolStripMenuItem_Click;
             // 
+            // cajaToolStripMenuItem
+            // 
+            cajaToolStripMenuItem.Name = "cajaToolStripMenuItem";
+            cajaToolStripMenuItem.Size = new Size(84, 20);
+            cajaToolStripMenuItem.Text = "Caja Diaria";
+            cajaToolStripMenuItem.Click += cajaToolStripMenuItem_Click;
+            // 
             // tallerToolStripMenuItem
             // 
             tallerToolStripMenuItem.Name = "tallerToolStripMenuItem";
             tallerToolStripMenuItem.Size = new Size(58, 20);
             tallerToolStripMenuItem.Text = "Taller";
             tallerToolStripMenuItem.Click += tallerToolStripMenuItem_Click;
+            //
+            // clientesToolStripMenuItem
+            //
+            clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
+            clientesToolStripMenuItem.Size = new Size(70, 20);
+            clientesToolStripMenuItem.Text = "Clientes";
+            clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -352,7 +368,9 @@ namespace GU_Tercero
         private ToolStripMenuItem proveedoresToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;
         private ToolStripMenuItem comprasToolStripMenuItem;
+        private ToolStripMenuItem cajaToolStripMenuItem;
         private ToolStripMenuItem tallerToolStripMenuItem;
+        private ToolStripMenuItem clientesToolStripMenuItem;
         private ToolStripMenuItem miPerfilToolStripMenuItem;
         private Label lblResumen;
         private TableLayoutPanel tlpPaneles;

@@ -41,6 +41,7 @@ namespace Vista
             btnEliminar = new Button();
             btnVolverMenu = new Button();
             txtDireccion = new TextBox();
+            lblResultado = new Label();
             lblDireccion = new Label();
             txtEmail = new TextBox();
             lblEmail = new Label();
@@ -110,6 +111,7 @@ namespace Vista
             // grpDetalleProveedores
             //
             grpDetalleProveedores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpDetalleProveedores.Controls.Add(lblResultado);
             grpDetalleProveedores.Controls.Add(flpAcciones);
             grpDetalleProveedores.Controls.Add(btnVolverMenu);
             grpDetalleProveedores.Controls.Add(txtDireccion);
@@ -317,6 +319,14 @@ namespace Vista
             lblRazonSocial.TabIndex = 0;
             lblRazonSocial.Text = "Razón Social:";
             //
+            // lblResultado
+            //
+            lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultado.Location = new Point(20, 146);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(670, 44);
+            //
             // FormProveedores
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -344,6 +354,8 @@ namespace Vista
         }
 
         #endregion
+
+        private Label lblResultado;
 
         private Panel panelHeader;
         private Label lblTitulo;

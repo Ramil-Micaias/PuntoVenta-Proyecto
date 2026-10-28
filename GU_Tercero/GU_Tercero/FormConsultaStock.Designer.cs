@@ -41,7 +41,6 @@ namespace Vista
             grpExistencias = new GroupBox();
             lblResumen = new Label();
             btnVolver = new Button();
-            btnExportar = new Button();
             dgvStock = new DataGridView();
             panelHeader.SuspendLayout();
             grpFiltros.SuspendLayout();
@@ -173,7 +172,6 @@ namespace Vista
             grpExistencias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpExistencias.Controls.Add(lblResumen);
             grpExistencias.Controls.Add(btnVolver);
-            grpExistencias.Controls.Add(btnExportar);
             grpExistencias.Controls.Add(dgvStock);
             grpExistencias.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpExistencias.ForeColor = Color.FromArgb(15, 23, 42);
@@ -205,21 +203,6 @@ namespace Vista
             lblResumen.TabIndex = 1;
             lblResumen.Text = "Productos: 0";
             //
-            // btnExportar
-            //
-            btnExportar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnExportar.BackColor = Color.FromArgb(16, 185, 129);
-            btnExportar.FlatAppearance.BorderSize = 0;
-            btnExportar.FlatStyle = FlatStyle.Flat;
-            btnExportar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnExportar.ForeColor = Color.White;
-            btnExportar.Location = new Point(608, 386);
-            btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(170, 34);
-            btnExportar.TabIndex = 2;
-            btnExportar.Text = "Exportar a Excel";
-            btnExportar.UseVisualStyleBackColor = false;
-            //
             // btnVolver
             //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -231,7 +214,7 @@ namespace Vista
             btnVolver.Location = new Point(788, 386);
             btnVolver.Name = "btnVolver";
             btnVolver.Size = new Size(126, 34);
-            btnVolver.TabIndex = 3;
+            btnVolver.TabIndex = 2;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
             //
@@ -274,7 +257,6 @@ namespace Vista
         private GroupBox grpExistencias;
         private DataGridView dgvStock;
         private Label lblResumen;
-        private Button btnExportar;
         private Button btnVolver;
     }
 }

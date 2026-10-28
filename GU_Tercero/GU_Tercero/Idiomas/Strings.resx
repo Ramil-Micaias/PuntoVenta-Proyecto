@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormProductos" xml:space="preserve">
+    <value>ApIBigStore - Producto y Stock</value>
+  </data>
+  <data name="lblIdioma" xml:space="preserve">
+    <value>Idioma:</value>
+  </data>
+  <data name="tabPage1" xml:space="preserve">
+    <value>Productos</value>
+  </data>
+  <data name="tabPage2" xml:space="preserve">
+    <value>Categorías</value>
+  </data>
+  <data name="lblCatalogoExistencia" xml:space="preserve">
+    <value>Catálogo de Existencias</value>
+  </data>
+  <data name="lblBuscar" xml:space="preserve">
+    <value>Buscar:</value>
+  </data>
+  <data name="grpDetalleProducto" xml:space="preserve">
+    <value>Detalle del Producto</value>
+  </data>
+  <data name="btnNuevo" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="btnGuardar" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="btnModificar" xml:space="preserve">
+    <value>Modificar</value>
+  </data>
+  <data name="btnVolverMenu" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="lblCategorias" xml:space="preserve">
+    <value>Categoría:</value>
+  </data>
+  <data name="lblNombreProducto" xml:space="preserve">
+    <value>Nombre:</value>
+  </data>
+  <data name="lblDescripcion" xml:space="preserve">
+    <value>Descripción:</value>
+  </data>
+  <data name="lblPrecioVenta" xml:space="preserve">
+    <value>Precio Venta:</value>
+  </data>
+  <data name="lblStockActual" xml:space="preserve">
+    <value>Stock Actual:</value>
+  </data>
+  <data name="lblStockMinimo" xml:space="preserve">
+    <value>Stock Mínimo:</value>
+  </data>
+  <data name="lblListadoCategoria" xml:space="preserve">
+    <value>Listado de Categorías</value>
+  </data>
+  <data name="grpGestionCategoria" xml:space="preserve">
+    <value>Gestión de Categoría</value>
+  </data>
+  <data name="lblNombreCategoria" xml:space="preserve">
+    <value>Nombre:</value>
+  </data>
+  <data name="btnNuevaCategoria" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="btnGuardarCategoria" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="btnModificarCategoria" xml:space="preserve">
+    <value>Modificar</value>
+  </data>
+  <data name="btnEliminarCategoria" xml:space="preserve">
+    <value>Dar de baja</value>
+  </data>
+  <data name="btnVolverCategoria" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="txtBuscar_Placeholder" xml:space="preserve">
+    <value>Buscar por nombre del producto o categoría</value>
+  </data>
+  <data name="txtNombreProducto_Placeholder" xml:space="preserve">
+    <value>Ej: Funda Silicona iPhone 15</value>
+  </data>
+  <data name="txtDescripcion_Placeholder" xml:space="preserve">
+    <value>Detalle breve del producto</value>
+  </data>
+  <data name="txtPrecioVenta_Placeholder" xml:space="preserve">
+    <value>Ej: 15000</value>
+  </data>
+  <data name="txtStockActual_Placeholder" xml:space="preserve">
+    <value>Unidades disponibles</value>
+  </data>
+  <data name="txtStockMinimo_Placeholder" xml:space="preserve">
+    <value>Aviso de stock bajo</value>
+  </data>
+  <data name="txtNombreCategoria_Placeholder" xml:space="preserve">
+    <value>Ej: Fundas y Protectores</value>
+  </data>
+  <data name="Columna_Nombre_Producto" xml:space="preserve">
+    <value>Nombre Producto</value>
+  </data>
+  <data name="Columna_Descripcion" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="Columna_Precio_Venta" xml:space="preserve">
+    <value>Precio Venta</value>
+  </data>
+  <data name="Columna_Stock_Actual" xml:space="preserve">
+    <value>Stock Actual</value>
+  </data>
+  <data name="Columna_Stock_Minimo" xml:space="preserve">
+    <value>Stock Mínimo</value>
+  </data>
+  <data name="Columna_Es_Repuesto" xml:space="preserve">
+    <value>Es Repuesto</value>
+  </data>
+  <data name="Columna_Activo" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Columna_NombreCategoria" xml:space="preserve">
+    <value>Categoría</value>
+  </data>
+  <data name="Columna_Nombre_Categoria" xml:space="preserve">
+    <value>Categoría</value>
+  </data>
+  <data name="Titulo_Exito" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
+  <data name="Titulo_Atencion" xml:space="preserve">
+    <value>Atención</value>
+  </data>
+  <data name="Titulo_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Titulo_Confirmar" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="Msg_ErrorCategorias" xml:space="preserve">
+    <value>Error al cargar las categorías: </value>
+  </data>
+  <data name="Msg_ErrorProductos" xml:space="preserve">
+    <value>Error al cargar productos: </value>
+  </data>
+  <data name="Msg_ProductoRegistrado" xml:space="preserve">
+    <value>Producto registrado con éxito.</value>
+  </data>
+  <data name="Msg_ProductoModificado" xml:space="preserve">
+    <value>Producto modificado correctamente.</value>
+  </data>
+  <data name="Msg_SeleccioneProducto" xml:space="preserve">
+    <value>Debe seleccionar un producto de la lista para modificar.</value>
+  </data>
+  <data name="Msg_CategoriaRegistrada" xml:space="preserve">
+    <value>Categoría registrada con éxito.</value>
+  </data>
+  <data name="Msg_CategoriaModificada" xml:space="preserve">
+    <value>Categoría modificada correctamente.</value>
+  </data>
+  <data name="Msg_CategoriaEliminada" xml:space="preserve">
+    <value>Categoría dada de baja correctamente.</value>
+  </data>
+  <data name="Msg_ConfirmarEliminarCategoria" xml:space="preserve">
+    <value>¿Desea dar de baja la categoría "{0}"? Queda guardada pero ya no se ofrece al cargar productos.</value>
+  </data>
+  <data name="btnConfirmar" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="btnCancelarEdicion" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="btnConfirmarCategoria" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="btnCancelarCategoria" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Grp_NuevoProducto" xml:space="preserve">
+    <value>Nuevo Producto</value>
+  </data>
+  <data name="Grp_ModificandoProducto" xml:space="preserve">
+    <value>Modificando Producto</value>
+  </data>
+  <data name="Grp_NuevaCategoria" xml:space="preserve">
+    <value>Nueva Categoría</value>
+  </data>
+  <data name="Grp_ModificandoCategoria" xml:space="preserve">
+    <value>Modificando Categoría</value>
+  </data>
+  <data name="Msg_ModoNuevo" xml:space="preserve">
+    <value>Complete los datos y presione Guardar, o Cancelar para descartar.</value>
+  </data>
+  <data name="Msg_ModoModificar" xml:space="preserve">
+    <value>Modifique los datos y presione Confirmar para guardar, o Cancelar para descartar.</value>
+  </data>
+  <data name="Columna_Proveedor" xml:space="preserve">
+    <value>Proveedor</value>
+  </data>
+</root>

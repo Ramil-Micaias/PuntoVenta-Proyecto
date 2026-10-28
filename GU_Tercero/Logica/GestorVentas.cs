@@ -63,6 +63,21 @@ namespace Logica
 
             if (venta.TotalNeto <= 0)
                 throw new Exception("El total de la venta debe ser mayor a cero.");
+
+            if (venta.Pagos.Count == 0)
+                throw new Exception("Debe indicar al menos un pago.");
+
+            foreach (PagoVenta pago in venta.Pagos)
+            {
+                if (pago.Id_MetodoPago <= 0)
+                    throw new Exception("Uno de los pagos no tiene método de pago.");
+
+                if (pago.Importe <= 0)
+                    throw new Exception("Cada pago debe tener un importe mayor a cero.");
+            }
+
+            if (venta.TotalPagos != venta.TotalNeto)
+                throw new Exception("La suma de los pagos ($" + venta.TotalPagos.ToString("N2") + ") no coincide con el total de la venta ($" + venta.TotalNeto.ToString("N2") + ").");
         }
     }
 }
