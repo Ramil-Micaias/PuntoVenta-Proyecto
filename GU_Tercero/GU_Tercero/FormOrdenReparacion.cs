@@ -550,8 +550,8 @@ namespace Vista
                 ResultadoOperacion resultado = gestorTaller.GuardarOrden(orden);
 
                 MensajeResultado =
-                    "Orden " + resultado.Comprobante + " guardada correctamente.\n" +
-                    "Total del presupuesto: " + FormatoMoneda(resultado.Total);
+                    "Orden " + resultado.Comprobante + " guardada correctamente. Total del presupuesto: " +
+                    FormatoMoneda(resultado.Total);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

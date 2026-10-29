@@ -11,6 +11,7 @@ namespace Logica
         public const int LARGO_MAXIMO_MOTIVO = 200;
 
         private readonly CajaDAO cajaDAO = new CajaDAO();
+        private readonly MetodoPagoDAO metodoPagoDAO = new MetodoPagoDAO();
 
         public Caja? ObtenerCajaActual()
         {
@@ -39,6 +40,38 @@ namespace Logica
                 throw new Exception("Debe iniciar sesión para cerrar la caja.");
 
             return cajaDAO.CerrarCaja(idCaja, idUsuario);
+        }
+
+        // ---------- Historial de Caja ----------
+
+        public DataTable ObtenerMetodosPago()
+        {
+            return metodoPagoDAO.ObtenerMetodosPago();
+        }
+
+        public DataTable ListarCajas(DateTime desde, DateTime hasta)
+        {
+            ValidarPeriodo(desde, hasta);
+            return cajaDAO.ListarCajas(desde, hasta);
+        }
+
+        // Movimientos de días completos: desde las 00:00 de "desde" hasta el final de "hasta".
+        public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
+        {
+            ValidarPeriodo(desde, hasta);
+            return cajaDAO.ListarMovimientosPeriodo(desde.Date, hasta.Date.AddDays(1), idMetodoPago);
+        }
+
+        // Movimientos de una caja: entre el inicio y el fin de su período (los da sp_ListarCajas).
+        public DataTable ListarMovimientosDeCaja(DateTime inicio, DateTime fin, int? idMetodoPago)
+        {
+            return cajaDAO.ListarMovimientosPeriodo(inicio, fin, idMetodoPago);
+        }
+
+        private static void ValidarPeriodo(DateTime desde, DateTime hasta)
+        {
+            if (desde.Date > hasta.Date)
+                throw new Exception("La fecha desde no puede ser posterior a la fecha hasta.");
         }
 
         public void ReabrirCaja(int idCaja, int idUsuario)

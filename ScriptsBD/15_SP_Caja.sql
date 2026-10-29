@@ -473,3 +473,110 @@ BEGIN
     END CATCH
 END
 GO
+
+
+-- ------------------------------------------------------------
+-- 8. SP: Cajas de un período (Historial de Caja)
+--    Desde y Hasta son días completos. Devuelve también el inicio
+--    y el fin del período de cada caja para consultar sus movimientos.
+-- ------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_ListarCajas
+    @Desde DATE,
+    @Hasta DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        c.Id_Caja,
+        c.Fecha_Apertura,
+        u.Nombre_Usuario AS Abrio,
+        c.Saldo_Inicial,
+        dbo.fn_IngresosCaja(c.Id_Caja) AS Ingresos,
+        dbo.fn_EgresosCaja(c.Id_Caja) AS Egresos,
+        dbo.fn_SaldoCaja(c.Id_Caja) AS Saldo,
+        CASE WHEN c.Abierta = 1 THEN 'Abierta' ELSE 'Cerrada' END AS Estado,
+        c.Fecha_Cierre,
+        dbo.fn_InicioPeriodoCaja(c.Id_Caja) AS Id_Desde,
+        dbo.fn_FinPeriodoCaja(c.Id_Caja) AS Id_Hasta
+    FROM Caja c
+    INNER JOIN Usuario u ON u.Id_Usuario = c.Id_Usuario_Apertura
+    WHERE CAST(c.Fecha_Apertura AS DATE) BETWEEN @Desde AND @Hasta
+    ORDER BY c.Fecha_Apertura DESC;
+END
+GO
+
+
+-- ------------------------------------------------------------
+-- 9. SP: Movimientos de un período (Historial de Caja / reporte de ventas)
+--    Ventas (un renglón por cada pago), compras y movimientos manuales
+--    entre @Desde y @Hasta (fecha y hora). @Id_MetodoPago NULL = todos.
+-- ------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_ListarMovimientosPeriodo
+    @Desde DATETIME,
+    @Hasta DATETIME,
+    @Id_MetodoPago INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
+
+    SELECT Fecha, Tipo, Origen, Comprobante, Medio, Detalle, Importe, Usuario
+    FROM (
+        SELECT
+            v.Fecha_Venta AS Fecha,
+            'Ingreso' AS Tipo,
+            'Venta' AS Origen,
+            v.Numero_Factura AS Comprobante,
+            mp.Nombre AS Medio,
+            'Venta' AS Detalle,
+            pv.Importe,
+            u.Nombre_Usuario AS Usuario,
+            pv.Id_MetodoPago
+        FROM PagoVenta pv
+        INNER JOIN Venta v ON v.Id_Venta = pv.Id_Venta
+        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = pv.Id_MetodoPago
+        INNER JOIN Usuario u ON u.Id_Usuario = v.Id_Usuario_Vendedor
+        WHERE v.Anulada = 0
+          AND v.Fecha_Venta >= @Desde AND v.Fecha_Venta < @Hasta
+
+        UNION ALL
+
+        SELECT
+            c.Fecha_Compra,
+            'Egreso',
+            'Compra',
+            c.Numero_Comprobante,
+            mp.Nombre,
+            'Compra a ' + pr.Razon_Social,
+            c.Total,
+            u.Nombre_Usuario,
+            c.Id_MetodoPago
+        FROM Compra c
+        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = c.Id_MetodoPago
+        INNER JOIN Proveedor pr ON pr.Id_Proveedor = c.Id_Proveedor
+        INNER JOIN Usuario u ON u.Id_Usuario = c.Id_Usuario
+        WHERE c.Estado = 1
+          AND c.Fecha_Compra >= @Desde AND c.Fecha_Compra < @Hasta
+
+        UNION ALL
+
+        SELECT
+            m.Fecha,
+            m.Tipo,
+            'Manual',
+            NULL,
+            'Efectivo',
+            m.Motivo,
+            m.Importe,
+            u.Nombre_Usuario,
+            @IdEfectivo
+        FROM MovimientoCaja m
+        INNER JOIN Usuario u ON u.Id_Usuario = m.Id_Usuario
+        WHERE m.Fecha >= @Desde AND m.Fecha < @Hasta
+    ) movimientos
+    WHERE @Id_MetodoPago IS NULL OR Id_MetodoPago = @Id_MetodoPago
+    ORDER BY Fecha DESC;
+END
+GO

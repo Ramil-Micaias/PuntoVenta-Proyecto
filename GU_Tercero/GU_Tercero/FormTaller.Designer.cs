@@ -250,7 +250,7 @@
             dgvOrdenes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvOrdenes.Location = new Point(16, 28);
             dgvOrdenes.Name = "dgvOrdenes";
-            dgvOrdenes.Size = new Size(1016, 376);
+            dgvOrdenes.Size = new Size(1016, 366);
             dgvOrdenes.TabIndex = 0;
             //
             // lblResumen
@@ -259,7 +259,7 @@
             lblResumen.AutoSize = true;
             lblResumen.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblResumen.ForeColor = Color.FromArgb(71, 85, 105);
-            lblResumen.Location = new Point(16, 428);
+            lblResumen.Location = new Point(16, 404);
             lblResumen.Name = "lblResumen";
             lblResumen.Size = new Size(64, 17);
             lblResumen.TabIndex = 1;
@@ -270,9 +270,10 @@
             lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
-            lblResultado.Location = new Point(130, 416);
+            lblResultado.Location = new Point(16, 428);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(460, 42);
+            lblResultado.Size = new Size(570, 24);
+            lblResultado.Visible = false;
             //
             // btnNuevaOrden
             //

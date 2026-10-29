@@ -22,6 +22,7 @@ namespace Vista
             lblTitulo = new Label();
             grpResumen = new GroupBox();
             lblEstado = new Label();
+            btnHistorial = new Button();
             lblSaldoInicialTitulo = new Label();
             lblSaldoInicialValor = new Label();
             lblIngresosTitulo = new Label();
@@ -83,6 +84,7 @@ namespace Vista
             //
             grpResumen.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpResumen.Controls.Add(lblEstado);
+            grpResumen.Controls.Add(btnHistorial);
             grpResumen.Controls.Add(lblSaldoInicialTitulo);
             grpResumen.Controls.Add(lblSaldoInicialValor);
             grpResumen.Controls.Add(lblIngresosTitulo);
@@ -109,6 +111,21 @@ namespace Vista
             lblEstado.Name = "lblEstado";
             lblEstado.Size = new Size(10, 17);
             lblEstado.TabIndex = 0;
+            // 
+            // btnHistorial
+            // 
+            btnHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnHistorial.BackColor = Color.FromArgb(37, 99, 235);
+            btnHistorial.FlatAppearance.BorderSize = 0;
+            btnHistorial.FlatStyle = FlatStyle.Flat;
+            btnHistorial.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnHistorial.ForeColor = Color.White;
+            btnHistorial.Location = new Point(882, 20);
+            btnHistorial.Name = "btnHistorial";
+            btnHistorial.Size = new Size(150, 30);
+            btnHistorial.TabIndex = 9;
+            btnHistorial.Text = "Historial";
+            btnHistorial.UseVisualStyleBackColor = false;
             //
             // lblSaldoInicialTitulo
             //
@@ -362,6 +379,7 @@ namespace Vista
         private Label lblCu;
         private GroupBox grpResumen;
         private Label lblEstado;
+        private Button btnHistorial;
         private Label lblSaldoInicialTitulo;
         private Label lblSaldoInicialValor;
         private Label lblIngresosTitulo;

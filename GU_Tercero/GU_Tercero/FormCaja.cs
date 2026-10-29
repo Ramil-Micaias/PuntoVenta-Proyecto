@@ -23,6 +23,7 @@ namespace Vista
             this.btnCerrarCaja.Click += btnCerrarCaja_Click;
             this.btnRegistrarMovimiento.Click += btnRegistrarMovimiento_Click;
             this.btnVolver.Click += btnVolver_Click;
+            this.btnHistorial.Click += btnHistorial_Click;
             this.txtSaldoInicial.KeyDown += txtSaldoInicial_KeyDown;
             this.dgvMovimientos.CellFormatting += dgvMovimientos_CellFormatting;
         }
@@ -34,6 +35,9 @@ namespace Vista
 
         private void FormCaja_Load(object sender, EventArgs e)
         {
+            // El historial de cajas (CU10) lo consulta el administrador.
+            btnHistorial.Visible = usuarioLogueado == null || usuarioLogueado.Nombre_Rol == "Administrador";
+
             Grillas.Configurar(dgvMovimientos);
             CargarCaja();
         }
@@ -383,6 +387,14 @@ namespace Vista
         private void btnRegistrarMovimiento_Click(object? sender, EventArgs e)
         {
             RegistrarMovimiento();
+        }
+
+        private void btnHistorial_Click(object? sender, EventArgs e)
+        {
+            using (FormHistorialCaja historial = new FormHistorialCaja())
+            {
+                historial.ShowDialog(this);
+            }
         }
 
         private void btnVolver_Click(object? sender, EventArgs e)
