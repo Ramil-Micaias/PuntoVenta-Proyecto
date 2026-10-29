@@ -92,6 +92,46 @@ namespace Datos
             }
         }
 
+        // Cajas abiertas entre dos días (Historial de Caja).
+        public DataTable ListarCajas(DateTime desde, DateTime hasta)
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ListarCajas", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Desde", SqlDbType.Date).Value = desde.Date;
+                cmd.Parameters.Add("@Hasta", SqlDbType.Date).Value = hasta.Date;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(tabla);
+            }
+
+            return tabla;
+        }
+
+        // Ventas, compras y movimientos manuales entre dos momentos. idMetodoPago null = todos.
+        public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ListarMovimientosPeriodo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Desde", SqlDbType.DateTime).Value = desde;
+                cmd.Parameters.Add("@Hasta", SqlDbType.DateTime).Value = hasta;
+                cmd.Parameters.Add("@Id_MetodoPago", SqlDbType.Int).Value =
+                    idMetodoPago.HasValue ? idMetodoPago.Value : DBNull.Value;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(tabla);
+            }
+
+            return tabla;
+        }
+
         // Vuelve a abrir la caja de hoy que se cerró por error.
         public void ReabrirCaja(int idCaja, int idUsuario)
         {

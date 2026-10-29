@@ -558,33 +558,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE sp_GenerarCodigo2FA
-    @IdUsuario INT,
-    @Codigo NVARCHAR(10)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    INSERT INTO Codigo2FA (Id_Usuario, Codigo, Fecha_Expiracion, Usado)
-    VALUES (@IdUsuario, @Codigo, DATEADD(MINUTE, 10, GETDATE()), 0);
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ValidarCodigo2FA
-    @IdUsuario INT,
-    @Codigo NVARCHAR(10)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT Id_Codigo2FA
-    FROM Codigo2FA
-    WHERE Id_Usuario = @IdUsuario
-      AND Codigo = @Codigo
-      AND Fecha_Expiracion >= GETDATE()
-      AND Usado = 0;
-END;
-GO
+-- sp_GenerarCodigo2FA y sp_ValidarCodigo2FA estan en 16_SP_2FA.sql
 
 CREATE OR ALTER PROCEDURE sp_ReestablecerPassword
     @NombreUsuario NVARCHAR(50),
