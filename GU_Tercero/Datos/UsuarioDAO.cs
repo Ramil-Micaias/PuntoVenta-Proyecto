@@ -305,17 +305,40 @@ namespace Datos
             }
         }
 
-        // Correo cargado para otra persona (distinta de la del DNI indicado).
-        // La columna Direccion_Correo es única, así que no puede repetirse entre personas.
-        public bool ExisteCorreoDeOtraPersona(string correo, string dni)
+        // Persona "propia" para comparar: al modificar, la del usuario (aunque se le cambie el DNI);
+        // al dar de alta, la que ya tenga ese DNI (un cliente que pasa a ser usuario). -1 si no hay.
+        private const string PERSONA_PROPIA =
+            "COALESCE((SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario), "
+            + "(SELECT Id_Persona FROM Persona WHERE DNI = @DNI), -1)";
+
+        // Correo cargado para otra persona. La columna Direccion_Correo es única,
+        // así que no puede repetirse entre personas.
+        public bool ExisteCorreoDeOtraPersona(string correo, string dni, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Correo C INNER JOIN Persona P ON P.Id_Persona = C.Id_Persona "
-                    + "WHERE C.Direccion_Correo = @Correo AND P.DNI <> @DNI";
+                string query = "SELECT COUNT(1) FROM Correo WHERE Direccion_Correo = @Correo AND Id_Persona <> " + PERSONA_PROPIA;
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Correo", correo);
                 cmd.Parameters.AddWithValue("@DNI", dni);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // Al modificar: el DNI nuevo ya pertenece a otra persona (usuario o cliente).
+        // La columna DNI de Persona es única.
+        public bool ExisteDniDeOtraPersona(string dni, int idUsuario)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                string query = "SELECT COUNT(1) FROM Persona WHERE DNI = @DNI "
+                    + "AND Id_Persona <> (SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DNI", dni);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
                 conn.Open();
                 return Convert.ToInt32(cmd.ExecuteScalar()) > 0;

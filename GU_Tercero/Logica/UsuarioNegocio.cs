@@ -243,7 +243,10 @@ namespace Logica
             if (usuarioDAO.ExisteDniEnOtroUsuario(dni.Trim(), idUsuario))
                 throw new Exception("Ya existe un usuario con el DNI ingresado.");
 
-            if (usuarioDAO.ExisteCorreoDeOtraPersona(correo.Trim(), dni.Trim()))
+            if (idUsuario > 0 && usuarioDAO.ExisteDniDeOtraPersona(dni.Trim(), idUsuario))
+                throw new Exception("El DNI ingresado ya pertenece a otra persona registrada en el sistema.");
+
+            if (usuarioDAO.ExisteCorreoDeOtraPersona(correo.Trim(), dni.Trim(), idUsuario))
                 throw new Exception("El correo ingresado ya está registrado para otra persona.");
 
             if (usuarioDAO.ExisteNombreUsuario(nombreUsuario.Trim(), idUsuario))
