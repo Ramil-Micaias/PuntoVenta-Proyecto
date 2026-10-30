@@ -88,6 +88,38 @@ namespace GU_Tercero
             CargarConfiguracion();
         }
 
+        // CU20: copia de seguridad de la base. Se elige la carpeta y SQL Server genera el .bak.
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            GestorBackup gestor = new GestorBackup();
+
+            using (FolderBrowserDialog dialogo = new FolderBrowserDialog())
+            {
+                dialogo.Description = "Elija la carpeta donde guardar el backup";
+                dialogo.UseDescriptionForTitle = true;
+                dialogo.SelectedPath = gestor.ObtenerCarpetaPorDefecto();
+
+                if (dialogo.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    string mensaje = gestor.GenerarBackup(dialogo.SelectedPath);
+                    Mensajes.Exito(lblResultadoBackup, mensaje);
+                }
+                catch (Exception ex)
+                {
+                    Mensajes.Limpiar(lblResultadoBackup);
+                    MessageBox.Show(ex.Message, "Backup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();

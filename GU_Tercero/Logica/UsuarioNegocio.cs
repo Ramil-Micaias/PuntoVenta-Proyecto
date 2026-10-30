@@ -192,10 +192,9 @@ namespace Logica
         // y registra el nuevo usuario con sus datos personales, correo y rol asignado.
         public string InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
         {
-            if (usuarioDAO.ExisteDni(dni))
-            {
-                throw new Exception("Ya existe un usuario con el DNI ingresado.");
-            }
+            // Todo se valida antes de guardar: si se creara con un dato mal, después no se
+            // podría volver a cargar esa persona porque el DNI ya existiría.
+            ValidarDatosUsuario(0, apellido, nombre, dni, correo, nombreUsuario, idRol);
 
             // 2. Proceso normal
             string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
@@ -213,13 +212,60 @@ namespace Logica
         //mediante la capa de acceso a datos.
         public void ModificarUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol, bool activo, bool bloqueado)
         {
+            ValidarDatosUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol);
+
             usuarioDAO.ModificarUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol, activo, bloqueado);
+        }
+
+        // Controla formato y duplicados de los datos del usuario (idUsuario = 0 al dar de alta).
+        // Lanza una excepción con el mensaje para mostrar si algo no es válido.
+        public void ValidarDatosUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
+        {
+            if (string.IsNullOrWhiteSpace(apellido) || string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(dni)
+                || string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(nombreUsuario) || idRol <= 0)
+                throw new Exception("Debe completar todos los campos obligatorios.");
+
+            if (!Validaciones.EsNombreValido(apellido))
+                throw new Exception("El apellido solo puede tener letras y espacios (hasta 50 caracteres).");
+
+            if (!Validaciones.EsNombreValido(nombre))
+                throw new Exception("El nombre solo puede tener letras y espacios (hasta 50 caracteres).");
+
+            if (!Validaciones.EsDniValido(dni))
+                throw new Exception("El DNI debe tener 7 u 8 números, sin puntos.");
+
+            if (!Validaciones.EsEmailValido(correo))
+                throw new Exception("El correo no es válido. Debe tener el formato nombre@dominio.com.");
+
+            if (!Validaciones.EsNombreUsuarioValido(nombreUsuario))
+                throw new Exception("El nombre de usuario debe tener entre 3 y 50 caracteres, sin espacios (letras, números, punto, guion o guion bajo).");
+
+            if (usuarioDAO.ExisteDniEnOtroUsuario(dni.Trim(), idUsuario))
+                throw new Exception("Ya existe un usuario con el DNI ingresado.");
+
+            if (usuarioDAO.ExisteCorreoDeOtraPersona(correo.Trim(), dni.Trim()))
+                throw new Exception("El correo ingresado ya está registrado para otra persona.");
+
+            if (usuarioDAO.ExisteNombreUsuario(nombreUsuario.Trim(), idUsuario))
+                throw new Exception("El nombre de usuario ya está en uso.");
         }
 
         // Gestiona la baja lógica de un usuario y delega la operación a la capa de acceso a datos.
         public void DesactivarUsuario(int idUsuario)
         {
             usuarioDAO.DesactivarUsuario(idUsuario);
+        }
+
+        // Activa al usuario y además le quita el bloqueo, para que pueda volver a ingresar.
+        public void ActivarUsuario(int idUsuario)
+        {
+            usuarioDAO.ActivarUsuario(idUsuario);
+            usuarioDAO.DesbloquearUsuario(idUsuario);
+        }
+
+        public void DesbloquearUsuario(int idUsuario)
+        {
+            usuarioDAO.DesbloquearUsuario(idUsuario);
         }
 
         // Este método solicita a la capa de datos las preguntas de seguridad del usuario.

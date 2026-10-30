@@ -42,6 +42,7 @@ namespace GU_Tercero
             txtConfirmarPassword = new TextBox();
             lblAyudaPassword = new Label();
             btnCambiarPassword = new Button();
+            btnConfirmarCambios = new Button();
             grpPreguntasSeguridad = new GroupBox();
             lblPreguntaUno = new Label();
             txtRespuestaUno = new TextBox();
@@ -50,7 +51,6 @@ namespace GU_Tercero
             lblPreguntaTres = new Label();
             txtRespuestaTres = new TextBox();
             lblMensaje = new Label();
-            btnGuardarPreguntas = new Button();
             btnVolver = new Button();
             lblResultado = new Label();
             panelHeader.SuspendLayout();
@@ -141,7 +141,7 @@ namespace GU_Tercero
             // grpCambiarContraseña
             //
             grpCambiarContraseña.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpCambiarContraseña.Controls.Add(btnCambiarPassword);
+            grpCambiarContraseña.Controls.Add(btnConfirmarCambios);
             grpCambiarContraseña.Controls.Add(lblAyudaPassword);
             grpCambiarContraseña.Controls.Add(txtConfirmarPassword);
             grpCambiarContraseña.Controls.Add(lblConfirmarPassword);
@@ -149,10 +149,10 @@ namespace GU_Tercero
             grpCambiarContraseña.Controls.Add(lblNuevaPassword);
             grpCambiarContraseña.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpCambiarContraseña.ForeColor = Color.FromArgb(15, 23, 42);
-            grpCambiarContraseña.Location = new Point(16, 160);
+            grpCambiarContraseña.Location = new Point(16, 372);
             grpCambiarContraseña.Name = "grpCambiarContraseña";
             grpCambiarContraseña.Size = new Size(728, 160);
-            grpCambiarContraseña.TabIndex = 2;
+            grpCambiarContraseña.TabIndex = 3;
             grpCambiarContraseña.TabStop = false;
             grpCambiarContraseña.Text = "Cambiar contraseña";
             //
@@ -206,7 +206,7 @@ namespace GU_Tercero
             lblAyudaPassword.Name = "lblAyudaPassword";
             lblAyudaPassword.Size = new Size(360, 64);
             lblAyudaPassword.TabIndex = 4;
-            lblAyudaPassword.Text = "Presione \"Cambiar contraseña\" y responda sus 3 preguntas de seguridad. Si son correctas se habilitan los campos para ingresar la nueva contraseña.";
+            lblAyudaPassword.Text = "Si las respuestas son correctas se habilitan estos campos. Ingrese la nueva contraseña y presione \"Confirmar cambios\".";
             //
             // btnCambiarPassword
             //
@@ -215,7 +215,7 @@ namespace GU_Tercero
             btnCambiarPassword.FlatStyle = FlatStyle.Flat;
             btnCambiarPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnCambiarPassword.ForeColor = Color.White;
-            btnCambiarPassword.Location = new Point(350, 106);
+            btnCambiarPassword.Location = new Point(350, 100);
             btnCambiarPassword.Name = "btnCambiarPassword";
             btnCambiarPassword.Size = new Size(200, 32);
             btnCambiarPassword.TabIndex = 5;
@@ -223,10 +223,25 @@ namespace GU_Tercero
             btnCambiarPassword.UseVisualStyleBackColor = false;
             btnCambiarPassword.Click += btnCambiarPassword_Click;
             //
+            // btnConfirmarCambios
+            //
+            btnConfirmarCambios.BackColor = Color.FromArgb(16, 185, 129);
+            btnConfirmarCambios.FlatAppearance.BorderSize = 0;
+            btnConfirmarCambios.FlatStyle = FlatStyle.Flat;
+            btnConfirmarCambios.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnConfirmarCambios.ForeColor = Color.White;
+            btnConfirmarCambios.Location = new Point(350, 106);
+            btnConfirmarCambios.Name = "btnConfirmarCambios";
+            btnConfirmarCambios.Size = new Size(200, 32);
+            btnConfirmarCambios.TabIndex = 5;
+            btnConfirmarCambios.Text = "Confirmar cambios";
+            btnConfirmarCambios.UseVisualStyleBackColor = false;
+            btnConfirmarCambios.Click += btnConfirmarCambios_Click;
+            //
             // grpPreguntasSeguridad
             //
             grpPreguntasSeguridad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpPreguntasSeguridad.Controls.Add(btnGuardarPreguntas);
+            grpPreguntasSeguridad.Controls.Add(btnCambiarPassword);
             grpPreguntasSeguridad.Controls.Add(lblMensaje);
             grpPreguntasSeguridad.Controls.Add(txtRespuestaTres);
             grpPreguntasSeguridad.Controls.Add(lblPreguntaTres);
@@ -236,10 +251,10 @@ namespace GU_Tercero
             grpPreguntasSeguridad.Controls.Add(lblPreguntaUno);
             grpPreguntasSeguridad.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpPreguntasSeguridad.ForeColor = Color.FromArgb(15, 23, 42);
-            grpPreguntasSeguridad.Location = new Point(16, 332);
+            grpPreguntasSeguridad.Location = new Point(16, 160);
             grpPreguntasSeguridad.Name = "grpPreguntasSeguridad";
             grpPreguntasSeguridad.Size = new Size(728, 200);
-            grpPreguntasSeguridad.TabIndex = 3;
+            grpPreguntasSeguridad.TabIndex = 2;
             grpPreguntasSeguridad.TabStop = false;
             grpPreguntasSeguridad.Text = "Preguntas de seguridad";
             //
@@ -311,22 +326,7 @@ namespace GU_Tercero
             lblMensaje.Name = "lblMensaje";
             lblMensaje.Size = new Size(360, 48);
             lblMensaje.TabIndex = 6;
-            lblMensaje.Text = "Presione \"Cambiar preguntas\" y responda las actuales. Si son correctas se habilitan los campos para cargar las nuevas respuestas.";
-            //
-            // btnGuardarPreguntas
-            //
-            btnGuardarPreguntas.BackColor = Color.FromArgb(16, 185, 129);
-            btnGuardarPreguntas.FlatAppearance.BorderSize = 0;
-            btnGuardarPreguntas.FlatStyle = FlatStyle.Flat;
-            btnGuardarPreguntas.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnGuardarPreguntas.ForeColor = Color.White;
-            btnGuardarPreguntas.Location = new Point(350, 100);
-            btnGuardarPreguntas.Name = "btnGuardarPreguntas";
-            btnGuardarPreguntas.Size = new Size(200, 32);
-            btnGuardarPreguntas.TabIndex = 7;
-            btnGuardarPreguntas.Text = "Cambiar preguntas";
-            btnGuardarPreguntas.UseVisualStyleBackColor = false;
-            btnGuardarPreguntas.Click += btnGuardarPreguntas_Click;
+            lblMensaje.Text = "Presione \"Cambiar contraseña\", responda sus 3 preguntas de seguridad y presione \"Verificar respuestas\".";
             //
             // btnVolver
             //
@@ -400,6 +400,7 @@ namespace GU_Tercero
         private TextBox txtConfirmarPassword;
         private Label lblAyudaPassword;
         private Button btnCambiarPassword;
+        private Button btnConfirmarCambios;
         private GroupBox grpPreguntasSeguridad;
         private Label lblPreguntaUno;
         private TextBox txtRespuestaUno;
@@ -408,7 +409,6 @@ namespace GU_Tercero
         private Label lblPreguntaTres;
         private TextBox txtRespuestaTres;
         private Label lblMensaje;
-        private Button btnGuardarPreguntas;
         private Button btnVolver;
     }
 }

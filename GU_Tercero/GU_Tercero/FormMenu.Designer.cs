@@ -30,7 +30,6 @@ namespace GU_Tercero
         {
             menuStrip1 = new MenuStrip();
             gestionDeUsuariosToolStripMenuItem = new ToolStripMenuItem();
-            usuariosToolStripMenuItem = new ToolStripMenuItem();
             productoYStockToolStripMenuItem = new ToolStripMenuItem();
             productosToolStripMenuItem = new ToolStripMenuItem();
             consultaStockToolStripMenuItem = new ToolStripMenuItem();
@@ -74,17 +73,12 @@ namespace GU_Tercero
             // 
             // gestionDeUsuariosToolStripMenuItem
             // 
-            gestionDeUsuariosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { usuariosToolStripMenuItem });
             gestionDeUsuariosToolStripMenuItem.Name = "gestionDeUsuariosToolStripMenuItem";
             gestionDeUsuariosToolStripMenuItem.Size = new Size(125, 20);
             gestionDeUsuariosToolStripMenuItem.Text = "Gestion de Usuarios";
+            gestionDeUsuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
-            // usuariosToolStripMenuItem
             // 
-            usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            usuariosToolStripMenuItem.Size = new Size(121, 22);
-            usuariosToolStripMenuItem.Text = "Usuarios";
-            usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
             // productoYStockToolStripMenuItem
             // 
@@ -359,7 +353,6 @@ namespace GU_Tercero
         private ToolStripMenuItem cerrarSesionToolStripMenuItem;
         private Label lblBienvenido;
         private Label lblNombreUsuario;
-        private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem configuraciónDelSistemaToolStripMenuItem;
         private ToolStripMenuItem productoYStockToolStripMenuItem;
         private ToolStripMenuItem productosToolStripMenuItem;

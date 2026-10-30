@@ -1,6 +1,7 @@
 ﻿using Datos.Entidades;
 using Logica;
 using Logica.Seguridad;
+using System.Data;
 
 using Vista;
 
@@ -10,10 +11,15 @@ namespace GU_Tercero
     {
         private Usuario usuarioLogueado;
 
-        // La contraseña y las preguntas quedan bloqueadas hasta que el usuario
-        // responda sus preguntas de seguridad (FormVerificarIdentidad).
-        private bool passwordHabilitada = false;
-        private bool preguntasHabilitadas = false;
+        // Para cambiar la contraseña primero se responden las 3 preguntas de seguridad
+        // en los campos de abajo. Las preguntas no se pueden cambiar desde Mi Perfil.
+        private enum Paso { Inicio, Respondiendo, NuevaPassword }
+
+        private const int INTENTOS_MAXIMOS = 3;
+
+        private Paso paso = Paso.Inicio;
+        private int intentosFallidos = 0;
+        private readonly List<int> idsPreguntas = new List<int>();
 
         public FormUsuario(Usuario usuario)
         {
@@ -27,65 +33,151 @@ namespace GU_Tercero
             lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
             lblNombreRol.Text = usuarioLogueado.Nombre_Rol;
 
-            // Carga las preguntas de seguridad.
-            lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
-            lblPreguntaDos.Text = "¿Ciudad donde naciste?";
-            lblPreguntaTres.Text = "¿Comida favorita?";
-
-            // Siempre se registran las 3 preguntas (la configuración solo define cuántas se piden al recuperar).
-            lblPreguntaTres.Visible = true;
-            txtRespuestaTres.Visible = true;
-
-            HabilitarPassword(false);
-            HabilitarPreguntas(false);
+            CargarPreguntas();
+            CambiarPaso(Paso.Inicio);
         }
 
-        // Pide las 3 preguntas de seguridad. Devuelve true si el usuario las respondió bien.
-        private bool VerificarIdentidad()
+        // Muestra las 3 preguntas que eligió el usuario.
+        private void CargarPreguntas()
         {
-            using (FormVerificarIdentidad verificacion = new FormVerificarIdentidad(usuarioLogueado))
+            UsuarioNegocio negocio = new UsuarioNegocio();
+            DataTable preguntas = negocio.ObtenerPreguntasUsuario(usuarioLogueado.Nombre_Usuario);
+            Label[] etiquetas = { lblPreguntaUno, lblPreguntaDos, lblPreguntaTres };
+
+            idsPreguntas.Clear();
+            for (int i = 0; i < etiquetas.Length; i++)
             {
-                return verificacion.ShowDialog(this) == DialogResult.OK;
+                if (i < preguntas.Rows.Count)
+                {
+                    idsPreguntas.Add(Convert.ToInt32(preguntas.Rows[i]["Id_Pregunta"]));
+                    etiquetas[i].Text = preguntas.Rows[i]["Pregunta"].ToString();
+                }
+                else
+                {
+                    etiquetas[i].Text = "(sin pregunta cargada)";
+                }
             }
         }
 
-        private void HabilitarPassword(bool habilitar)
+        // Habilita los campos que corresponden a cada paso y limpia lo escrito.
+        private void CambiarPaso(Paso nuevoPaso)
         {
-            passwordHabilitada = habilitar;
-            txtNuevaPassword.Enabled = habilitar;
-            txtConfirmarPassword.Enabled = habilitar;
-            txtNuevaPassword.Clear();
-            txtConfirmarPassword.Clear();
-            btnCambiarPassword.Text = habilitar ? "Guardar contraseña" : "Cambiar contraseña";
-        }
+            paso = nuevoPaso;
 
-        private void HabilitarPreguntas(bool habilitar)
-        {
-            preguntasHabilitadas = habilitar;
-            txtRespuestaUno.Enabled = habilitar;
-            txtRespuestaDos.Enabled = habilitar;
-            txtRespuestaTres.Enabled = habilitar;
+            bool respondiendo = paso == Paso.Respondiendo;
+            txtRespuestaUno.Enabled = respondiendo;
+            txtRespuestaDos.Enabled = respondiendo;
+            txtRespuestaTres.Enabled = respondiendo;
             txtRespuestaUno.Clear();
             txtRespuestaDos.Clear();
             txtRespuestaTres.Clear();
-            btnGuardarPreguntas.Text = habilitar ? "Guardar preguntas" : "Cambiar preguntas";
+
+            bool nuevaPassword = paso == Paso.NuevaPassword;
+            txtNuevaPassword.Enabled = nuevaPassword;
+            txtConfirmarPassword.Enabled = nuevaPassword;
+            txtNuevaPassword.Clear();
+            txtConfirmarPassword.Clear();
+
+            // "Cambiar contraseña" pasa a "Verificar respuestas"; "Confirmar cambios" solo se usa
+            // cuando las respuestas fueron correctas.
+            btnCambiarPassword.Text = respondiendo ? "Verificar respuestas" : "Cambiar contraseña";
+            HabilitarBoton(btnCambiarPassword, !nuevaPassword, Color.FromArgb(37, 99, 235));
+            HabilitarBoton(btnConfirmarCambios, nuevaPassword, Color.FromArgb(16, 185, 129));
+
+            if (paso == Paso.Inicio)
+                intentosFallidos = 0;
+            else if (respondiendo)
+                txtRespuestaUno.Focus();
+            else
+                txtNuevaPassword.Focus();
+        }
+
+        // Los botones planos deshabilitados se ven igual que los habilitados: se pintan de gris.
+        private void HabilitarBoton(Button boton, bool habilitar, Color color)
+        {
+            boton.Enabled = habilitar;
+            boton.BackColor = habilitar ? color : Color.FromArgb(148, 163, 184);
         }
 
         private void btnCambiarPassword_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
 
-            // Primer clic: verificar identidad y habilitar los campos.
-            if (!passwordHabilitada)
+            if (paso == Paso.Inicio)
             {
-                if (VerificarIdentidad())
+                if (idsPreguntas.Count < UsuarioNegocio.TOTAL_PREGUNTAS)
                 {
-                    HabilitarPassword(true);
-                    txtNuevaPassword.Focus();
+                    MessageBox.Show("No tiene sus preguntas de seguridad completas. Vuelva a iniciar sesión para cargarlas.",
+                        "Cambiar contraseña", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                CambiarPaso(Paso.Respondiendo);
                 return;
             }
 
+            VerificarRespuestas();
+        }
+
+        private void btnConfirmarCambios_Click(object sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultado);
+            GuardarPassword();
+        }
+
+        // Controla las 3 respuestas. Si son correctas habilita la nueva contraseña.
+        private void VerificarRespuestas()
+        {
+            string[] respuestas = { txtRespuestaUno.Text, txtRespuestaDos.Text, txtRespuestaTres.Text };
+
+            foreach (string respuesta in respuestas)
+            {
+                if (string.IsNullOrWhiteSpace(respuesta))
+                {
+                    MessageBox.Show("Responda las 3 preguntas.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            UsuarioNegocio negocio = new UsuarioNegocio();
+            bool correctas = true;
+
+            for (int i = 0; i < idsPreguntas.Count; i++)
+            {
+                if (!negocio.ValidarPreguntaSeguridad(usuarioLogueado.Nombre_Usuario, idsPreguntas[i], respuestas[i]))
+                {
+                    correctas = false;
+                    break;
+                }
+            }
+
+            if (correctas)
+            {
+                CambiarPaso(Paso.NuevaPassword);
+                return;
+            }
+
+            intentosFallidos++;
+
+            if (intentosFallidos >= INTENTOS_MAXIMOS)
+            {
+                MessageBox.Show("Superó los " + INTENTOS_MAXIMOS + " intentos. No se habilitó el cambio de contraseña.",
+                    "Cambiar contraseña", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CambiarPaso(Paso.Inicio);
+                return;
+            }
+
+            // No se indica cuál respuesta falló, para no dar pistas.
+            MessageBox.Show("Alguna respuesta no es correcta.\nIntentos restantes: " + (INTENTOS_MAXIMOS - intentosFallidos),
+                "Cambiar contraseña", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtRespuestaUno.Clear();
+            txtRespuestaDos.Clear();
+            txtRespuestaTres.Clear();
+            txtRespuestaUno.Focus();
+        }
+
+        private void GuardarPassword()
+        {
             // Valida que la nueva contraseña haya sido ingresada.
             if (txtNuevaPassword.Text.Trim() == "")
             {
@@ -129,49 +221,7 @@ namespace GU_Tercero
             Mensajes.Exito(lblResultado, "La contraseña fue modificada correctamente.");
 
             // Vuelve a bloquear los campos (limpia lo escrito).
-            HabilitarPassword(false);
-        }
-
-        private void btnGuardarPreguntas_Click(object sender, EventArgs e)
-        {
-            Mensajes.Limpiar(lblResultado);
-
-            // Primer clic: verificar con las preguntas actuales y habilitar los campos.
-            if (!preguntasHabilitadas)
-            {
-                if (VerificarIdentidad())
-                {
-                    HabilitarPreguntas(true);
-                    txtRespuestaUno.Focus();
-                }
-                return;
-            }
-
-            // Verifica que las 3 respuestas hayan sido ingresadas.
-            if (txtRespuestaUno.Text.Trim() == "" || txtRespuestaDos.Text.Trim() == "" || txtRespuestaTres.Text.Trim() == "")
-            {
-                MessageBox.Show("Complete las 3 respuestas.");
-                return;
-            }
-
-            UsuarioNegocio negocio = new UsuarioNegocio();
-
-            // Se usa el helper centralizado para que el hash guardado se pueda validar
-            // después desde la pantalla de recuperación de contraseña.
-            string hash1 = HashHelper.GenerarHashRespuesta(txtRespuestaUno.Text);
-            negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 1, hash1);
-
-            // Guarda la segunda respuesta.
-            string hash2 = HashHelper.GenerarHashRespuesta(txtRespuestaDos.Text);
-            negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 2, hash2);
-
-            // Guarda la tercera respuesta.
-            string hash3 = HashHelper.GenerarHashRespuesta(txtRespuestaTres.Text);
-            negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 3, hash3);
-
-            Mensajes.Exito(lblResultado, "Las preguntas de seguridad fueron actualizadas correctamente.");
-
-            HabilitarPreguntas(false);
+            CambiarPaso(Paso.Inicio);
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
