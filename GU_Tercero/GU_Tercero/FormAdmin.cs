@@ -91,8 +91,8 @@ namespace GU_Tercero
             txtNombreUsuario.ReadOnly = !editando;
             cmbRol.Enabled = editando;
 
-            // Mientras se edita no se puede elegir otro usuario.
-            dgvUsuarios.Enabled = !editando;
+            // Mientras se edita no se puede elegir otro usuario: la grilla sigue habilitada para
+            // poder desplazarla, pero los clics se ignoran en dgvUsuarios_CellClick.
 
             // Al tocar Nuevo desaparece Modificar y al tocar Modificar desaparece Nuevo.
             btnNuevo.Visible = modo != Modo.Modificando;

@@ -21,10 +21,18 @@ namespace Logica
             Usuario usuario = usuarioDAO.Login(nombreUsuario);
 
             if (usuario == null)
+            {
+                GestorBitacora.RegistrarParaUsuario(nombreUsuario, GestorBitacora.SEGURIDAD,
+                    "Ingreso fallido: el usuario no existe.", GestorBitacora.ADVERTENCIA);
                 return null;
+            }
 
             if (usuario.Bloqueado || !usuario.Activo)
+            {
+                GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
+                    "Intento de ingreso de un usuario " + (usuario.Bloqueado ? "bloqueado." : "inactivo."), GestorBitacora.ADVERTENCIA);
                 return null;
+            }
 
             string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + password);
 
@@ -42,8 +50,17 @@ namespace Logica
 
             usuario = usuarioDAO.Login(nombreUsuario);
 
+            GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
+                "Ingreso fallido: contraseña incorrecta (intento " + usuario.Intentos_Fallidos + " de " + INTENTOS_MAXIMOS_LOGIN + ").",
+                GestorBitacora.ADVERTENCIA);
+
             if (usuario.Intentos_Fallidos >= INTENTOS_MAXIMOS_LOGIN)
+            {
                 usuarioDAO.BloquearUsuario(usuario.Id_Usuario);
+                GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
+                    "Usuario bloqueado por superar los " + INTENTOS_MAXIMOS_LOGIN + " intentos fallidos.", GestorBitacora.CRITICA,
+                    new Dictionary<string, object?> { ["Bloqueado"] = false }, new Dictionary<string, object?> { ["Bloqueado"] = true });
+            }
 
             return null;
         }
@@ -79,6 +96,24 @@ namespace Logica
             dao.CambiarPassword(idUsuario, passwordHash);
 
             dao.RegistrarHistorialPassword(idUsuario, passwordHash);
+
+            // La contraseña no se guarda en la bitácora, solo que se cambió.
+            var estado = EstadoUsuario(idUsuario);
+            string nombreUsuario = estado?["Nombre_Usuario"]?.ToString() ?? ("Id " + idUsuario);
+            GestorBitacora.RegistrarParaUsuario(nombreUsuario, GestorBitacora.SEGURIDAD, "Cambio de contraseña.", GestorBitacora.ADVERTENCIA);
+        }
+
+        // Datos actuales de un usuario para guardar en la bitácora (sin contraseña).
+        private Dictionary<string, object?>? EstadoUsuario(int idUsuario)
+        {
+            try
+            {
+                return GestorBitacora.EstadoDeFila(usuarioDAO.ObtenerUsuarios(), "Id_Usuario", idUsuario);
+            }
+            catch
+            {
+                return null;
+            }
         }
         
         // Registra la contraseña utilizada por el usuario en el historial.
@@ -205,6 +240,9 @@ namespace Logica
 
             RegistrarHistorialPassword(idUsuario, passwordHash);
 
+            GestorBitacora.Registrar(GestorBitacora.USUARIOS, "Alta del usuario " + nombreUsuario.Trim() + ".", GestorBitacora.INFORMATIVA,
+                null, EstadoUsuario(idUsuario));
+
             return passwordTemporal;
         }
 
@@ -214,7 +252,17 @@ namespace Logica
         {
             ValidarDatosUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol);
 
+            var antes = EstadoUsuario(idUsuario);
+
             usuarioDAO.ModificarUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol, activo, bloqueado);
+
+            var despues = EstadoUsuario(idUsuario);
+
+            // Cambiar el rol de un usuario es una operación crítica.
+            bool cambioRol = antes != null && despues != null && !Equals(antes["Nombre_Rol"], despues["Nombre_Rol"]);
+            GestorBitacora.RegistrarCambios(GestorBitacora.USUARIOS,
+                (cambioRol ? "Cambio de rol del usuario " : "Modificación del usuario ") + nombreUsuario.Trim() + ".",
+                cambioRol ? GestorBitacora.CRITICA : GestorBitacora.ADVERTENCIA, antes, despues);
         }
 
         // Controla formato y duplicados de los datos del usuario (idUsuario = 0 al dar de alta).
@@ -256,19 +304,33 @@ namespace Logica
         // Gestiona la baja lógica de un usuario y delega la operación a la capa de acceso a datos.
         public void DesactivarUsuario(int idUsuario)
         {
+            var antes = EstadoUsuario(idUsuario);
             usuarioDAO.DesactivarUsuario(idUsuario);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.USUARIOS, "Inactivación del usuario " + antes?["Nombre_Usuario"] + ".",
+                GestorBitacora.CRITICA, antes, EstadoUsuario(idUsuario));
         }
 
         // Activa al usuario y además le quita el bloqueo, para que pueda volver a ingresar.
         public void ActivarUsuario(int idUsuario)
         {
+            var antes = EstadoUsuario(idUsuario);
+
             usuarioDAO.ActivarUsuario(idUsuario);
             usuarioDAO.DesbloquearUsuario(idUsuario);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.USUARIOS, "Activación del usuario " + antes?["Nombre_Usuario"] + ".",
+                GestorBitacora.ADVERTENCIA, antes, EstadoUsuario(idUsuario));
         }
 
         public void DesbloquearUsuario(int idUsuario)
         {
+            var antes = EstadoUsuario(idUsuario);
+
             usuarioDAO.DesbloquearUsuario(idUsuario);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.USUARIOS, "Desbloqueo del usuario " + antes?["Nombre_Usuario"] + ".",
+                GestorBitacora.ADVERTENCIA, antes, EstadoUsuario(idUsuario));
         }
 
         // Este método solicita a la capa de datos las preguntas de seguridad del usuario.
@@ -352,6 +414,9 @@ namespace Logica
 
             resultado.Exitoso = true;
             resultado.CorreoDestinatario = correo;
+
+            GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
+                "Recuperación de contraseña: se envió una contraseña temporal al correo.", GestorBitacora.ADVERTENCIA);
 
             return resultado;
         }

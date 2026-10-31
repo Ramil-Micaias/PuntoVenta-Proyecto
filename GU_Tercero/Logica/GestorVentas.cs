@@ -14,7 +14,18 @@ namespace Logica
         public ResultadoOperacion RegistrarVenta(Venta venta)
         {
             ValidarVenta(venta);
-            return ventaDAO.RegistrarVenta(venta);
+            ResultadoOperacion resultado = ventaDAO.RegistrarVenta(venta);
+
+            GestorBitacora.Registrar(GestorBitacora.VENTAS, "Venta " + resultado.Comprobante + ".", GestorBitacora.INFORMATIVA, null,
+                new System.Collections.Generic.Dictionary<string, object?>
+                {
+                    ["Comprobante"] = resultado.Comprobante,
+                    ["Productos"] = venta.Detalle.Count,
+                    ["Descuento"] = resultado.Descuento,
+                    ["Total"] = resultado.Total,
+                });
+
+            return resultado;
         }
 
         public DataTable ObtenerMetodosPago()

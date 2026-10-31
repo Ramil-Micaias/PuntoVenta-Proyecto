@@ -13,7 +13,13 @@ namespace Logica
         public bool RegistrarProveedor(Proveedor proveedor)
         {
             ValidarProveedor(proveedor);
-            return proveedoresDAO.RegistrarProveedor(proveedor);
+            bool reactivado = proveedoresDAO.RegistrarProveedor(proveedor);
+
+            GestorBitacora.Registrar(GestorBitacora.PROVEEDORES,
+                (reactivado ? "Reactivación del proveedor " : "Alta del proveedor ") + proveedor.Razon_Social + ".",
+                GestorBitacora.INFORMATIVA, null, GestorBitacora.EstadoDeObjeto(proveedor));
+
+            return reactivado;
         }
 
         public void ModificarProveedor(Proveedor proveedor)
@@ -22,7 +28,14 @@ namespace Logica
                 throw new Exception("Debe seleccionar un proveedor válido para modificar.");
 
             ValidarProveedor(proveedor);
+
+            var antes = GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", proveedor.Id_Proveedor);
+
             proveedoresDAO.ModificarProveedor(proveedor);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.PROVEEDORES, "Modificación del proveedor " + proveedor.Razon_Social + ".",
+                GestorBitacora.ADVERTENCIA, antes,
+                GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", proveedor.Id_Proveedor));
         }
 
         public void InactivarProveedor(int idProveedor)
@@ -30,7 +43,39 @@ namespace Logica
             if (idProveedor <= 0)
                 throw new Exception("Debe seleccionar un proveedor válido.");
 
+            var antes = GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor);
+
             proveedoresDAO.InactivarProveedor(idProveedor);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.PROVEEDORES, "Baja del proveedor " + antes?["Razon_Social"] + ".",
+                GestorBitacora.ADVERTENCIA, antes,
+                GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor));
+        }
+
+        // Vuelve a activar un proveedor inactivo. No se permite si ya hay otro activo con la misma razón social.
+        public void ActivarProveedor(int idProveedor)
+        {
+            if (idProveedor <= 0)
+                throw new Exception("Debe seleccionar un proveedor válido.");
+
+            DataTable todos = proveedoresDAO.ObtenerTodosProveedores();
+            var antes = GestorBitacora.EstadoDeFila(todos, "Id_Proveedor", idProveedor);
+            string razonSocial = antes?["Razon_Social"]?.ToString() ?? "";
+
+            foreach (DataRow fila in todos.Rows)
+            {
+                bool otroActivo = Convert.ToInt32(fila["Id_Proveedor"]) != idProveedor
+                    && fila["Activo"] != DBNull.Value && Convert.ToBoolean(fila["Activo"]);
+
+                if (otroActivo && string.Equals(fila["Razon_Social"]?.ToString(), razonSocial, StringComparison.OrdinalIgnoreCase))
+                    throw new Exception("Ya existe otro proveedor activo con la razón social \"" + razonSocial + "\".");
+            }
+
+            proveedoresDAO.ReactivarProveedor(idProveedor);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.PROVEEDORES, "Activación del proveedor " + razonSocial + ".",
+                GestorBitacora.ADVERTENCIA, antes,
+                GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor));
         }
 
         public DataTable ObtenerProveedores()

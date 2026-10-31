@@ -152,9 +152,6 @@
   <data name="Columna_Stock_Minimo" xml:space="preserve">
     <value>Stock Mínimo</value>
   </data>
-  <data name="Columna_Es_Repuesto" xml:space="preserve">
-    <value>Es Repuesto</value>
-  </data>
   <data name="Columna_Activo" xml:space="preserve">
     <value>Activo</value>
   </data>
@@ -235,5 +232,50 @@
   </data>
   <data name="Columna_Proveedor" xml:space="preserve">
     <value>Proveedor</value>
+  </data>
+  <data name="Btn_Inactivar" xml:space="preserve">
+    <value>Inactivar</value>
+  </data>
+  <data name="Btn_Activar" xml:space="preserve">
+    <value>Activar</value>
+  </data>
+  <data name="Msg_FaltaCategoria" xml:space="preserve">
+    <value>Debe seleccionar una categoría.</value>
+  </data>
+  <data name="Msg_CamposObligatorios" xml:space="preserve">
+    <value>Todos los campos son obligatorios.</value>
+  </data>
+  <data name="Msg_PrecioInvalido" xml:space="preserve">
+    <value>El precio de venta debe ser un número (por ejemplo 15000 o 15000,50).</value>
+  </data>
+  <data name="Msg_StockActualInvalido" xml:space="preserve">
+    <value>El stock actual debe ser un número entero.</value>
+  </data>
+  <data name="Msg_StockMinimoInvalido" xml:space="preserve">
+    <value>El stock mínimo debe ser un número entero.</value>
+  </data>
+  <data name="Msg_ConfirmarInactivarProducto" xml:space="preserve">
+    <value>¿Está seguro de que desea inactivar este producto? No se podrá vender ni comprar hasta que se vuelva a activar.</value>
+  </data>
+  <data name="Msg_ProductoInactivado" xml:space="preserve">
+    <value>Producto inactivado correctamente.</value>
+  </data>
+  <data name="Msg_ProductoActivado" xml:space="preserve">
+    <value>Producto activado correctamente.</value>
+  </data>
+  <data name="lblProveedor" xml:space="preserve">
+    <value>Proveedor:</value>
+  </data>
+  <data name="Msg_FaltaProveedor" xml:space="preserve">
+    <value>Debe seleccionar el proveedor del producto.</value>
+  </data>
+  <data name="Msg_ErrorProveedores" xml:space="preserve">
+    <value>Error al cargar los proveedores: </value>
+  </data>
+  <data name="Txt_DadoDeBaja" xml:space="preserve">
+    <value>dado de baja</value>
+  </data>
+  <data name="Msg_ProveedorDadoDeBaja" xml:space="preserve">
+    <value>El proveedor elegido está dado de baja. Elija un proveedor activo.</value>
   </data>
 </root>

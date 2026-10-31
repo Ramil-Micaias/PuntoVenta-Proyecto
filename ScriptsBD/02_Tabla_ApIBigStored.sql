@@ -75,10 +75,26 @@ BEGIN
         Precio_Venta DECIMAL(12,2) NOT NULL,
         Stock_Actual INT DEFAULT 0 NOT NULL,
         Stock_Minimo INT DEFAULT 2 NOT NULL,
-        Es_Repuesto BIT DEFAULT 1 NOT NULL,
         Activo BIT DEFAULT 1 NOT NULL,
         FOREIGN KEY (Id_Categoria) REFERENCES CategoriaProducto(Id_Categoria)
     );
+END
+GO
+
+-- Las bases creadas antes tenían una columna de producto que el sistema no usaba: se elimina.
+IF COL_LENGTH('Producto', 'Es_Repuesto') IS NOT NULL
+BEGIN
+    DECLARE @Restriccion NVARCHAR(200) = (
+        SELECT dc.name
+        FROM sys.default_constraints dc
+        WHERE dc.parent_object_id = OBJECT_ID('Producto')
+          AND COL_NAME(dc.parent_object_id, dc.parent_column_id) = 'Es_Repuesto'
+    );
+
+    IF @Restriccion IS NOT NULL
+        EXEC('ALTER TABLE Producto DROP CONSTRAINT ' + @Restriccion);
+
+    ALTER TABLE Producto DROP COLUMN Es_Repuesto;
 END
 GO
 

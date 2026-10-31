@@ -32,6 +32,9 @@ namespace Logica
                 throw new Exception("El saldo inicial no puede ser negativo.");
 
             cajaDAO.AbrirCaja(idUsuario, saldoInicial);
+
+            GestorBitacora.Registrar(GestorBitacora.CAJA, "Apertura de caja.", GestorBitacora.INFORMATIVA, null,
+                new System.Collections.Generic.Dictionary<string, object?> { ["Saldo_Inicial"] = saldoInicial });
         }
 
         public decimal CerrarCaja(int idCaja, int idUsuario)
@@ -39,7 +42,13 @@ namespace Logica
             if (idUsuario <= 0)
                 throw new Exception("Debe iniciar sesión para cerrar la caja.");
 
-            return cajaDAO.CerrarCaja(idCaja, idUsuario);
+            decimal saldoFinal = cajaDAO.CerrarCaja(idCaja, idUsuario);
+
+            GestorBitacora.Registrar(GestorBitacora.CAJA, "Cierre de caja.", GestorBitacora.INFORMATIVA,
+                new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Abierta" },
+                new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Cerrada", ["Saldo_Final"] = saldoFinal });
+
+            return saldoFinal;
         }
 
         // ---------- Historial de Caja ----------
@@ -80,13 +89,24 @@ namespace Logica
                 throw new Exception("Debe iniciar sesión para reabrir la caja.");
 
             cajaDAO.ReabrirCaja(idCaja, idUsuario);
+
+            GestorBitacora.Registrar(GestorBitacora.CAJA, "Reapertura de una caja cerrada.", GestorBitacora.CRITICA,
+                new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Cerrada" },
+                new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Abierta" });
         }
 
         // El saldo disponible es el que muestra la pantalla; el SP lo vuelve a verificar al guardar.
         public decimal RegistrarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)
         {
             ValidarMovimiento(movimiento, saldoDisponible);
-            return cajaDAO.RegistrarMovimiento(movimiento);
+            decimal saldo = cajaDAO.RegistrarMovimiento(movimiento);
+
+            GestorBitacora.Registrar(GestorBitacora.CAJA, movimiento.Tipo + " manual de caja: " + movimiento.Motivo.Trim() + ".",
+                GestorBitacora.ADVERTENCIA,
+                new System.Collections.Generic.Dictionary<string, object?> { ["Saldo"] = saldoDisponible },
+                new System.Collections.Generic.Dictionary<string, object?> { ["Importe"] = movimiento.Importe, ["Saldo"] = saldo });
+
+            return saldo;
         }
 
         private void ValidarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)

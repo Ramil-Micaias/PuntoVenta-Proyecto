@@ -93,9 +93,9 @@ namespace Vista
                 FormatoColumna(dgvCajas, "Fecha_Cierre", "Cierre", "dd/MM/yyyy HH:mm");
                 FormatoColumna(dgvCajas, "Abrio", "Abrió", "");
                 FormatoColumna(dgvCajas, "Saldo_Inicial", "Saldo Inicial", "N2");
-                FormatoColumna(dgvCajas, "Ingresos", "Ingresos (efectivo)", "N2");
-                FormatoColumna(dgvCajas, "Egresos", "Egresos (efectivo)", "N2");
-                FormatoColumna(dgvCajas, "Saldo", "Saldo", "N2");
+                FormatoColumna(dgvCajas, "Ingresos", "Ingresos", "N2");
+                FormatoColumna(dgvCajas, "Egresos", "Egresos", "N2");
+                FormatoColumna(dgvCajas, "Saldo", "Saldo (efectivo)", "N2");
                 dgvCajas.ClearSelection();
 
                 DataTable movimientos = gestorCaja.ListarMovimientosPeriodo(dtpDesde.Value, dtpHasta.Value, MedioSeleccionado());
@@ -306,6 +306,7 @@ namespace Vista
         }
 
         // Importes de ingresos en verde y de egresos en rojo (igual que Caja Diaria).
+        // Las compras se muestran en gris: son informativas, no salen de la caja.
         private void dgvMovimientos_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Importe") || e.ColumnIndex != dgvMovimientos.Columns["Importe"].Index)
@@ -317,7 +318,9 @@ namespace Vista
 
             e.CellStyle!.ForeColor = tipo == "Egreso"
                 ? Color.FromArgb(239, 68, 68)
-                : Color.FromArgb(16, 185, 129);
+                : tipo == "Compra"
+                    ? Color.FromArgb(100, 116, 139)
+                    : Color.FromArgb(16, 185, 129);
         }
 
         private void btnBuscar_Click(object? sender, EventArgs e)

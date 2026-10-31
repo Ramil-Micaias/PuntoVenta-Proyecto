@@ -12,7 +12,14 @@ namespace Vista
     {
         private readonly GestorCompras gestorCompras = new GestorCompras();
         private readonly DataTable detalle = new DataTable();
+
+        // Pagos de la compra (cuando se paga con más de un método).
+        private readonly DataTable pagos = new DataTable();
         private Usuario? usuarioLogueado;
+        private DataTable productos = new DataTable();
+
+        // Proveedor de la compra: lo define el primer producto agregado (0 = todavía ninguno).
+        private int idProveedorCompra = 0;
 
         public FormCompras()
         {
@@ -26,6 +33,9 @@ namespace Vista
             this.txtCosto.KeyDown += txtImporte_KeyDown;
             this.txtCantidad.KeyDown += txtImporte_KeyDown;
             this.dgvDetalle.CellDoubleClick += dgvDetalle_CellDoubleClick;
+            this.btnAgregarPago.Click += btnAgregarPago_Click;
+            this.txtImportePago.KeyDown += txtImportePago_KeyDown;
+            this.dgvPagos.CellDoubleClick += dgvPagos_CellDoubleClick;
         }
 
         public FormCompras(Usuario? usuario) : this()
@@ -37,10 +47,15 @@ namespace Vista
         {
             ConfigurarGrid();
             CrearDetalle();
+            CrearPagos();
             CargarProveedores();
             CargarMetodosPago();
             CargarProductos();
             ActualizarTotal();
+
+            // El proveedor no se elige: sale del producto (el que tiene asignado en Productos).
+            cmbProveedor.Enabled = false;
+            MostrarProveedorDelProducto();
             grpProveedor.Focus();
         }
 
@@ -82,6 +97,142 @@ namespace Vista
             EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 4, "0.##");
         }
 
+        // Lista de pagos de la compra. Sin pagos agregados se paga todo con el método elegido.
+        private void CrearPagos()
+        {
+            Grillas.Configurar(dgvPagos);
+
+            pagos.Columns.Add("Id_MetodoPago", typeof(int));
+            pagos.Columns.Add("Metodo", typeof(string));
+            pagos.Columns.Add("Importe", typeof(decimal));
+
+            dgvPagos.DataSource = pagos;
+
+            OcultarColumna(dgvPagos, "Id_MetodoPago");
+            EncabezadoColumna(dgvPagos, "Metodo", "Método", 0);
+            EncabezadoColumna(dgvPagos, "Importe", "Importe", 1, "0.##");
+        }
+
+        private decimal CalcularTotalPagado()
+        {
+            decimal pagado = 0;
+
+            foreach (DataRow pago in pagos.Rows)
+            {
+                pagado += Convert.ToDecimal(pago["Importe"]);
+            }
+
+            return pagado;
+        }
+
+        // Muestra cuánto falta pagar cuando se carga más de un pago.
+        private void ActualizarPagos()
+        {
+            if (pagos.Rows.Count == 0)
+            {
+                lblFaltaPagar.Text = "Sin pagos agregados se paga todo con el método elegido.";
+                lblFaltaPagar.ForeColor = Color.FromArgb(100, 116, 139);
+                return;
+            }
+
+            decimal falta = CalcularTotal() - CalcularTotalPagado();
+
+            if (falta > 0)
+            {
+                lblFaltaPagar.Text = "Falta pagar: " + FormatoMoneda(falta);
+                lblFaltaPagar.ForeColor = Color.FromArgb(217, 119, 6);
+            }
+            else if (falta < 0)
+            {
+                lblFaltaPagar.Text = "Los pagos superan el total en " + FormatoMoneda(-falta);
+                lblFaltaPagar.ForeColor = Color.FromArgb(239, 68, 68);
+            }
+            else
+            {
+                lblFaltaPagar.Text = "Pagos completos.";
+                lblFaltaPagar.ForeColor = Color.FromArgb(16, 185, 129);
+            }
+        }
+
+        // Agrega un pago con el método y el importe elegidos. Si el importe queda vacío se agrega lo que falta pagar.
+        private void AgregarPago()
+        {
+            if (detalle.Rows.Count == 0)
+            {
+                MessageBox.Show("Primero agregue productos al detalle.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value)
+            {
+                MessageBox.Show("Debe seleccionar un método de pago.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal falta = CalcularTotal() - CalcularTotalPagado();
+
+            if (falta <= 0)
+            {
+                MessageBox.Show("Los pagos ya cubren el total de la compra.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal importe = falta;
+
+            if (txtImportePago.Text.Trim().Length > 0)
+            {
+                if (!IntentarParsearDecimal(txtImportePago.Text, out importe) || importe <= 0)
+                {
+                    MessageBox.Show("Ingrese un importe mayor a cero.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtImportePago.Focus();
+                    return;
+                }
+
+                importe = Math.Round(importe, 2, MidpointRounding.AwayFromZero);
+
+                if (importe > falta)
+                {
+                    MessageBox.Show("El importe supera lo que falta pagar (" + FormatoMoneda(falta) + ").", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtImportePago.Focus();
+                    return;
+                }
+            }
+
+            int idMetodo = Convert.ToInt32(cmbMetodoPago.SelectedValue);
+
+            // Si el método ya estaba en la lista se suma al pago existente.
+            DataRow? existente = null;
+            foreach (DataRow pago in pagos.Rows)
+            {
+                if (Convert.ToInt32(pago["Id_MetodoPago"]) == idMetodo)
+                {
+                    existente = pago;
+                    break;
+                }
+            }
+
+            if (existente == null)
+            {
+                pagos.Rows.Add(idMetodo, cmbMetodoPago.Text, importe);
+            }
+            else
+            {
+                existente["Importe"] = Convert.ToDecimal(existente["Importe"]) + importe;
+            }
+
+            txtImportePago.Clear();
+            ActualizarPagos();
+        }
+
+        private void QuitarPago(int fila)
+        {
+            if (fila >= 0 && fila < pagos.Rows.Count)
+            {
+                pagos.Rows.RemoveAt(fila);
+                ActualizarPagos();
+            }
+        }
+
         private void CargarProveedores()
         {
             try
@@ -108,6 +259,9 @@ namespace Vista
                 cmbMetodoPago.DisplayMember = "Nombre";
                 cmbMetodoPago.ValueMember = "Id_MetodoPago";
                 cmbMetodoPago.DataSource = gestorCompras.ObtenerMetodosPago();
+
+                // Arranca vacío: el método de pago se elige siempre (no queda Efectivo por defecto).
+                cmbMetodoPago.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -124,11 +278,12 @@ namespace Vista
         {
             try
             {
-                DataTable productos = gestorCompras.BuscarProductos(string.Empty, null);
+                productos = gestorCompras.BuscarProductos();
 
                 cmbProducto.DisplayMember = "Producto";
                 cmbProducto.ValueMember = "Id_Producto";
-                cmbProducto.DataSource = productos;
+                cmbProducto.DataSource = productos.DefaultView;
+                FiltrarProductosPorProveedor();
             }
             catch (Exception ex)
             {
@@ -177,6 +332,21 @@ namespace Vista
                 );
                 txtCantidad.Focus();
                 return;
+            }
+
+            // Proveedor asignado al producto, un solo proveedor por compra y costo no mayor al precio de venta.
+            string? error = GestorCompras.ValidarRenglon(fila.Row, costo, idProveedorCompra);
+            if (error != null)
+            {
+                MessageBox.Show(error, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCosto.Focus();
+                return;
+            }
+
+            if (idProveedorCompra == 0)
+            {
+                idProveedorCompra = Convert.ToInt32(fila["Id_Proveedor"]);
+                FiltrarProductosPorProveedor();
             }
 
             int idProducto = Convert.ToInt32(fila["Id_Producto"]);
@@ -232,6 +402,14 @@ namespace Vista
             if (dgvDetalle.CurrentRow.DataBoundItem is DataRowView vista)
             {
                 detalle.Rows.Remove(vista.Row);
+
+                // Sin productos en el detalle, la compra vuelve a quedar sin proveedor.
+                if (detalle.Rows.Count == 0)
+                {
+                    idProveedorCompra = 0;
+                    FiltrarProductosPorProveedor();
+                }
+
                 ActualizarTotal();
             }
         }
@@ -252,6 +430,7 @@ namespace Vista
         {
             lblTotalValor.Text = FormatoMoneda(CalcularTotal());
             btnRegistrar.Visible = detalle.Rows.Count > 0;
+            ActualizarPagos();
         }
 
         private void RegistrarCompra()
@@ -267,7 +446,7 @@ namespace Vista
                 return;
             }
 
-            if (cmbProveedor.SelectedValue == null || cmbProveedor.SelectedValue == DBNull.Value)
+            if (idProveedorCompra <= 0)
             {
                 MessageBox.Show(
                     "Debe seleccionar un proveedor.",
@@ -278,10 +457,23 @@ namespace Vista
                 return;
             }
 
-            if (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value)
+            // Sin pagos agregados hace falta el método para pagar todo con él.
+            if (pagos.Rows.Count == 0 && (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value))
             {
                 MessageBox.Show(
                     "Debe seleccionar un método de pago.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (pagos.Rows.Count > 0 && CalcularTotalPagado() != CalcularTotal())
+            {
+                MessageBox.Show(
+                    "La suma de los pagos (" + FormatoMoneda(CalcularTotalPagado()) + ") no coincide con el total de la compra (" + FormatoMoneda(CalcularTotal()) + ").\n" +
+                    "Agregue o quite pagos (doble clic en un pago para quitarlo).",
                     "Atención",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
@@ -303,9 +495,8 @@ namespace Vista
             Compra compra = new Compra
             {
                 Numero_Comprobante = null,
-                Id_Proveedor = Convert.ToInt32(cmbProveedor.SelectedValue),
+                Id_Proveedor = idProveedorCompra,
                 Id_Usuario = usuarioLogueado.Id_Usuario,
-                Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
                 Total = CalcularTotal(),
                 Fecha_Compra = DateTime.Now
             };
@@ -321,6 +512,40 @@ namespace Vista
                     Precio_Costo_Unitario = Convert.ToDecimal(fila["Precio_Costo_Unitario"])
                 });
             }
+
+            if (pagos.Rows.Count == 0)
+            {
+                // Un solo método: se paga todo con el método elegido.
+                compra.Pagos.Add(new PagoCompra
+                {
+                    Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
+                    MetodoPago = cmbMetodoPago.Text,
+                    Importe = compra.Total
+                });
+            }
+            else
+            {
+                foreach (DataRow pago in pagos.Rows)
+                {
+                    compra.Pagos.Add(new PagoCompra
+                    {
+                        Id_MetodoPago = Convert.ToInt32(pago["Id_MetodoPago"]),
+                        MetodoPago = Convert.ToString(pago["Metodo"]) ?? string.Empty,
+                        Importe = Convert.ToDecimal(pago["Importe"])
+                    });
+                }
+            }
+
+            // La compra queda registrada con el método del pago más grande.
+            PagoCompra principal = compra.Pagos[0];
+            foreach (PagoCompra pago in compra.Pagos)
+            {
+                if (pago.Importe > principal.Importe)
+                {
+                    principal = pago;
+                }
+            }
+            compra.Id_MetodoPago = principal.Id_MetodoPago;
 
             try
             {
@@ -348,19 +573,17 @@ namespace Vista
         private void LimpiarCompra()
         {
             detalle.Rows.Clear();
+            pagos.Rows.Clear();
             txtCosto.Clear();
             txtCantidad.Clear();
+            txtImportePago.Clear();
             lblMensaje.Text = string.Empty;
 
-            if (cmbProveedor.Items.Count > 0)
-            {
-                cmbProveedor.SelectedIndex = 0;
-            }
+            idProveedorCompra = 0;
+            FiltrarProductosPorProveedor();
+            MostrarProveedorDelProducto();
 
-            if (cmbMetodoPago.Items.Count > 0)
-            {
-                cmbMetodoPago.SelectedIndex = 0;
-            }
+            cmbMetodoPago.SelectedIndex = -1;
 
             ActualizarTotal();
         }
@@ -431,8 +654,30 @@ namespace Vista
             return "$" + valor.ToString("0.##");
         }
 
+        // Con productos en el detalle solo se listan los del mismo proveedor (una compra es a un solo proveedor).
+        private void FiltrarProductosPorProveedor()
+        {
+            productos.DefaultView.RowFilter = idProveedorCompra > 0 ? "Id_Proveedor = " + idProveedorCompra : string.Empty;
+        }
+
+        // Muestra (sin dejar cambiarlo) el proveedor asignado al producto elegido.
+        private void MostrarProveedorDelProducto()
+        {
+            int idProveedor = idProveedorCompra;
+
+            if (idProveedor == 0 && cmbProducto.SelectedItem is DataRowView fila && fila["Id_Proveedor"] != DBNull.Value)
+                idProveedor = Convert.ToInt32(fila["Id_Proveedor"]);
+
+            if (idProveedor > 0)
+                cmbProveedor.SelectedValue = idProveedor;
+            else
+                cmbProveedor.SelectedIndex = -1;
+        }
+
         private void cmbProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
+            MostrarProveedorDelProducto();
+
             if (cmbProducto.SelectedItem is DataRowView fila)
             {
                 txtCosto.Text = fila["Precio_Costo"] == DBNull.Value
@@ -461,6 +706,25 @@ namespace Vista
             {
                 QuitarSeleccionado();
             }
+        }
+
+        private void btnAgregarPago_Click(object? sender, EventArgs e)
+        {
+            AgregarPago();
+        }
+
+        private void txtImportePago_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AgregarPago();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void dgvPagos_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            QuitarPago(e.RowIndex);
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e)

@@ -43,6 +43,7 @@ namespace GU_Tercero
             cajaToolStripMenuItem = new ToolStripMenuItem();
             tallerToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
+            bitacoraToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -64,7 +65,7 @@ namespace GU_Tercero
             // 
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, bitacoraToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1000, 24);
@@ -170,6 +171,13 @@ namespace GU_Tercero
             clientesToolStripMenuItem.Size = new Size(70, 20);
             clientesToolStripMenuItem.Text = "Clientes";
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
+            //
+            // bitacoraToolStripMenuItem
+            //
+            bitacoraToolStripMenuItem.Name = "bitacoraToolStripMenuItem";
+            bitacoraToolStripMenuItem.Size = new Size(64, 20);
+            bitacoraToolStripMenuItem.Text = "Bitácora";
+            bitacoraToolStripMenuItem.Click += bitacoraToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -364,6 +372,7 @@ namespace GU_Tercero
         private ToolStripMenuItem cajaToolStripMenuItem;
         private ToolStripMenuItem tallerToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
+        private ToolStripMenuItem bitacoraToolStripMenuItem;
         private ToolStripMenuItem miPerfilToolStripMenuItem;
         private Label lblResumen;
         private TableLayoutPanel tlpPaneles;

@@ -40,10 +40,14 @@ namespace Logica
                 var (ruta, tamanioBytes) = backupDAO.GenerarBackup(carpeta);
 
                 decimal megas = Math.Round(tamanioBytes / 1024m / 1024m, 2);
+                GestorBitacora.Registrar(GestorBitacora.BACKUP, "Backup de la base de datos generado.", GestorBitacora.INFORMATIVA, null,
+                    new System.Collections.Generic.Dictionary<string, object?> { ["Archivo"] = ruta, ["Tamanio_MB"] = megas });
                 return "Backup generado: " + Path.GetFileName(ruta) + " (" + megas + " MB).";
             }
             catch (SqlException ex)
             {
+                GestorBitacora.Registrar(GestorBitacora.BACKUP, "Error al generar el backup en " + carpeta + ".", GestorBitacora.CRITICA);
+
                 if (ex.Message.Contains("error 5"))
                     throw new Exception("SQL Server no tiene permiso para escribir en esa carpeta. Elija otra, por ejemplo " + CARPETA_POR_DEFECTO + ".");
 

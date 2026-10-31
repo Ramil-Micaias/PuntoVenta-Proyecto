@@ -24,6 +24,10 @@ namespace Vista
             cmbMetodoPago = new ComboBox();
             lblMetodoPago = new Label();
             cmbProveedor = new ComboBox();
+            txtImportePago = new TextBox();
+            btnAgregarPago = new Button();
+            dgvPagos = new DataGridView();
+            lblFaltaPagar = new Label();
             lblProveedor = new Label();
             grpAgregar = new GroupBox();
             btnAgregarDetalle = new Button();
@@ -85,8 +89,6 @@ namespace Vista
             // grpProveedor
             // 
             grpProveedor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpProveedor.Controls.Add(cmbMetodoPago);
-            grpProveedor.Controls.Add(lblMetodoPago);
             grpProveedor.Controls.Add(cmbProveedor);
             grpProveedor.Controls.Add(lblProveedor);
             grpProveedor.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
@@ -123,9 +125,9 @@ namespace Vista
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
             cmbMetodoPago.FormattingEnabled = true;
-            cmbMetodoPago.Location = new Point(570, 26);
+            cmbMetodoPago.Location = new Point(16, 370);
             cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(300, 25);
+            cmbMetodoPago.Size = new Size(200, 25);
             cmbMetodoPago.TabIndex = 3;
             // 
             // lblMetodoPago
@@ -133,16 +135,22 @@ namespace Vista
             lblMetodoPago.AutoSize = true;
             lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
-            lblMetodoPago.Location = new Point(445, 29);
+            lblMetodoPago.Location = new Point(16, 348);
             lblMetodoPago.Name = "lblMetodoPago";
-            lblMetodoPago.Size = new Size(113, 17);
+            lblMetodoPago.Size = new Size(170, 17);
             lblMetodoPago.TabIndex = 2;
-            lblMetodoPago.Text = "Método de Pago:";
+            lblMetodoPago.Text = "Pagos (método e importe):";
             // 
             // grpAgregar
             // 
             grpAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpAgregar.Controls.Add(btnAgregarDetalle);
+            grpAgregar.Controls.Add(lblMetodoPago);
+            grpAgregar.Controls.Add(cmbMetodoPago);
+            grpAgregar.Controls.Add(txtImportePago);
+            grpAgregar.Controls.Add(btnAgregarPago);
+            grpAgregar.Controls.Add(dgvPagos);
+            grpAgregar.Controls.Add(lblFaltaPagar);
             grpAgregar.Controls.Add(lblMensaje);
             grpAgregar.Controls.Add(txtCantidad);
             grpAgregar.Controls.Add(lblCantidad);
@@ -181,7 +189,7 @@ namespace Vista
             lblMensaje.ForeColor = Color.FromArgb(16, 185, 129);
             lblMensaje.Location = new Point(16, 280);
             lblMensaje.Name = "lblMensaje";
-            lblMensaje.Size = new Size(398, 70);
+            lblMensaje.Size = new Size(398, 62);
             lblMensaje.TabIndex = 7;
             // 
             // txtCantidad
@@ -248,6 +256,49 @@ namespace Vista
             lblProducto.TabIndex = 0;
             lblProducto.Text = "Producto:";
             // 
+            // txtImportePago
+            //
+            txtImportePago.Font = new Font("Segoe UI", 9.5F);
+            txtImportePago.Location = new Point(222, 370);
+            txtImportePago.Name = "txtImportePago";
+            txtImportePago.PlaceholderText = "Importe";
+            txtImportePago.Size = new Size(110, 24);
+            txtImportePago.TabIndex = 9;
+            //
+            // btnAgregarPago
+            //
+            btnAgregarPago.BackColor = Color.FromArgb(37, 99, 235);
+            btnAgregarPago.FlatAppearance.BorderSize = 0;
+            btnAgregarPago.FlatStyle = FlatStyle.Flat;
+            btnAgregarPago.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnAgregarPago.ForeColor = Color.White;
+            btnAgregarPago.Location = new Point(338, 369);
+            btnAgregarPago.Name = "btnAgregarPago";
+            btnAgregarPago.Size = new Size(76, 27);
+            btnAgregarPago.TabIndex = 10;
+            btnAgregarPago.Text = "Agregar";
+            btnAgregarPago.UseVisualStyleBackColor = false;
+            //
+            // dgvPagos
+            //
+            dgvPagos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPagos.Location = new Point(16, 402);
+            dgvPagos.Name = "dgvPagos";
+            dgvPagos.Size = new Size(398, 72);
+            dgvPagos.TabIndex = 11;
+            //
+            // lblFaltaPagar
+            //
+            lblFaltaPagar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblFaltaPagar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblFaltaPagar.ForeColor = Color.FromArgb(100, 116, 139);
+            lblFaltaPagar.Location = new Point(16, 478);
+            lblFaltaPagar.Name = "lblFaltaPagar";
+            lblFaltaPagar.Size = new Size(398, 20);
+            lblFaltaPagar.TabIndex = 12;
+            lblFaltaPagar.Text = "Sin pagos agregados se paga todo con el método elegido.";
+            //
             // grpDetalle
             // 
             grpDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -388,6 +439,10 @@ namespace Vista
         private Label lblCu;
         private GroupBox grpProveedor;
         private ComboBox cmbProveedor;
+        private TextBox txtImportePago;
+        private Button btnAgregarPago;
+        private DataGridView dgvPagos;
+        private Label lblFaltaPagar;
         private Label lblProveedor;
         private GroupBox grpAgregar;
         private Label lblProducto;

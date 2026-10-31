@@ -39,6 +39,7 @@ namespace Vista
             btnGuardar = new Button();
             btnModificar = new Button();
             btnEliminar = new Button();
+            btnCancelar = new Button();
             btnVolverMenu = new Button();
             txtDireccion = new TextBox();
             lblResultado = new Label();
@@ -137,8 +138,9 @@ namespace Vista
             //
             flpAcciones.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             flpAcciones.Controls.Add(btnNuevo);
-            flpAcciones.Controls.Add(btnGuardar);
             flpAcciones.Controls.Add(btnModificar);
+            flpAcciones.Controls.Add(btnGuardar);
+            flpAcciones.Controls.Add(btnCancelar);
             flpAcciones.Controls.Add(btnEliminar);
             flpAcciones.FlowDirection = FlowDirection.TopDown;
             flpAcciones.Location = new Point(706, 22);
@@ -172,7 +174,7 @@ namespace Vista
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(146, 32);
             btnGuardar.TabIndex = 1;
-            btnGuardar.Text = "Guardar";
+            btnGuardar.Text = "Confirmar";
             btnGuardar.UseVisualStyleBackColor = false;
             //
             // btnModificar
@@ -200,8 +202,22 @@ namespace Vista
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(146, 32);
             btnEliminar.TabIndex = 3;
-            btnEliminar.Text = "Eliminar";
+            btnEliminar.Text = "Inactivar";
             btnEliminar.UseVisualStyleBackColor = false;
+            //
+            // btnCancelar
+            //
+            btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Margin = new Padding(0, 0, 0, 6);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(146, 32);
+            btnCancelar.TabIndex = 4;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
             //
             // btnVolverMenu
             //
@@ -378,6 +394,7 @@ namespace Vista
         private Button btnNuevo;
         private Button btnEliminar;
         private Button btnGuardar;
+        private Button btnCancelar;
         private Button btnVolverMenu;
     }
 }

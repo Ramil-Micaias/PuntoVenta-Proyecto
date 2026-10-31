@@ -11,20 +11,23 @@ CREATE OR ALTER FUNCTION dbo.fn_ProveedorProducto(@Id_Producto INT)
 RETURNS NVARCHAR(130)
 AS
 BEGIN
+    -- Primero el proveedor asociado al producto (se elige en la pantalla Productos).
     DECLARE @IdProveedor INT = (
-        SELECT TOP 1 c.Id_Proveedor
-        FROM DetalleCompra d
-        INNER JOIN Compra c ON c.Id_Compra = d.Id_Compra
-        WHERE d.Id_Producto = @Id_Producto
-        ORDER BY c.Fecha_Compra DESC, c.Id_Compra DESC
+        SELECT TOP 1 Id_Proveedor
+        FROM ProductoProveedor
+        WHERE Id_Producto = @Id_Producto
+          AND Activo = 1
+        ORDER BY Id_ProductoProveedor DESC
     );
 
+    -- Si no tiene uno asociado, el de la última compra.
     IF @IdProveedor IS NULL
         SET @IdProveedor = (
-            SELECT TOP 1 Id_Proveedor
-            FROM ProductoProveedor
-            WHERE Id_Producto = @Id_Producto
-            ORDER BY Id_ProductoProveedor DESC
+            SELECT TOP 1 c.Id_Proveedor
+            FROM DetalleCompra d
+            INNER JOIN Compra c ON c.Id_Compra = d.Id_Compra
+            WHERE d.Id_Producto = @Id_Producto
+            ORDER BY c.Fecha_Compra DESC, c.Id_Compra DESC
         );
 
     IF @IdProveedor IS NULL
@@ -51,15 +54,18 @@ BEGIN
         p.Precio_Venta,
         p.Stock_Actual,
         p.Stock_Minimo,
-        p.Es_Repuesto,
         p.Activo,
         c.Nombre_Categoria AS NombreCategoria,
-        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor
+        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor,
+        (SELECT TOP 1 pp.Id_Proveedor
+         FROM ProductoProveedor pp
+         WHERE pp.Id_Producto = p.Id_Producto AND pp.Activo = 1
+         ORDER BY pp.Id_ProductoProveedor DESC) AS Id_Proveedor
     FROM Producto p
     INNER JOIN CategoriaProducto c 
         ON p.Id_Categoria = c.Id_Categoria
-    WHERE p.Activo = 1
-    ORDER BY p.Nombre_Producto ASC;
+    -- Se listan también los inactivos para poder volver a activarlos desde la pantalla.
+    ORDER BY p.Activo DESC, p.Nombre_Producto ASC;
 END;
 GO
 
@@ -100,19 +106,19 @@ BEGIN
         p.Precio_Venta,
         p.Stock_Actual,
         p.Stock_Minimo,
-        p.Es_Repuesto,
         p.Activo,
         c.Nombre_Categoria AS NombreCategoria,
-        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor
+        dbo.fn_ProveedorProducto(p.Id_Producto) AS Proveedor,
+        (SELECT TOP 1 pp.Id_Proveedor
+         FROM ProductoProveedor pp
+         WHERE pp.Id_Producto = p.Id_Producto AND pp.Activo = 1
+         ORDER BY pp.Id_ProductoProveedor DESC) AS Id_Proveedor
     FROM Producto p
     INNER JOIN CategoriaProducto c 
         ON p.Id_Categoria = c.Id_Categoria
-    WHERE p.Activo = 1
-      AND (
-          p.Nombre_Producto LIKE '%' + @Filtro + '%'
-          OR c.Nombre_Categoria LIKE '%' + @Filtro + '%'
-      )
-    ORDER BY p.Nombre_Producto ASC;
+    WHERE p.Nombre_Producto LIKE '%' + @Filtro + '%'
+       OR c.Nombre_Categoria LIKE '%' + @Filtro + '%'
+    ORDER BY p.Activo DESC, p.Nombre_Producto ASC;
 END;
 GO
 
@@ -127,7 +133,7 @@ CREATE OR ALTER PROCEDURE sp_InsertarProducto
     @Precio_Venta DECIMAL(12,2),
     @Stock_Actual INT = 0,
     @Stock_Minimo INT = 2,
-    @Es_Repuesto BIT = 1
+    @Id_Proveedor INT
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -144,26 +150,58 @@ BEGIN
         THROW 50000, 'Ya existe un producto activo con ese nombre.', 1;
     END;
 
-    INSERT INTO Producto (
-        Id_Categoria,
-        Nombre_Producto,
-        Descripcion,
-        Precio_Venta,
-        Stock_Actual,
-        Stock_Minimo,
-        Es_Repuesto,
-        Activo
-    )
-    VALUES (
-        @Id_Categoria,
-        @Nombre_Producto,
-        @Descripcion,
-        @Precio_Venta,
-        @Stock_Actual,
-        @Stock_Minimo,
-        @Es_Repuesto,
-        1
-    );
+    -- Cada producto debe tener un proveedor activo asociado
+    IF NOT EXISTS (SELECT 1 FROM Proveedor WHERE Id_Proveedor = @Id_Proveedor AND Activo = 1)
+    BEGIN
+        THROW 50000, 'Debe elegir un proveedor activo para el producto.', 1;
+    END;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        INSERT INTO Producto (
+            Id_Categoria,
+            Nombre_Producto,
+            Descripcion,
+            Precio_Venta,
+            Stock_Actual,
+            Stock_Minimo,
+            Activo
+        )
+        VALUES (
+            @Id_Categoria,
+            @Nombre_Producto,
+            @Descripcion,
+            @Precio_Venta,
+            @Stock_Actual,
+            @Stock_Minimo,
+            1
+        );
+
+        DECLARE @Id_Producto INT = SCOPE_IDENTITY();
+
+        -- El producto queda con un solo proveedor asociado: el elegido.
+        UPDATE ProductoProveedor
+        SET Activo = 0
+        WHERE Id_Producto = @Id_Producto
+          AND Id_Proveedor <> @Id_Proveedor;
+
+        IF EXISTS (SELECT 1 FROM ProductoProveedor WHERE Id_Producto = @Id_Producto AND Id_Proveedor = @Id_Proveedor)
+            UPDATE ProductoProveedor
+            SET Activo = 1
+            WHERE Id_Producto = @Id_Producto
+              AND Id_Proveedor = @Id_Proveedor;
+        ELSE
+            INSERT INTO ProductoProveedor (Id_Producto, Id_Proveedor, Activo)
+            VALUES (@Id_Producto, @Id_Proveedor, 1);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
 END;
 GO
 
@@ -179,8 +217,8 @@ CREATE OR ALTER PROCEDURE sp_ModificarProducto
     @Precio_Venta DECIMAL(12,2),
     @Stock_Actual INT,
     @Stock_Minimo INT,
-    @Es_Repuesto BIT,
-    @Activo BIT = 1
+    @Activo BIT = 1,
+    @Id_Proveedor INT
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -198,17 +236,48 @@ BEGIN
         THROW 50000, 'Ya existe otro producto activo con ese nombre.', 1;
     END;
 
-    UPDATE Producto
-    SET 
-        Id_Categoria = @Id_Categoria,
-        Nombre_Producto = @Nombre_Producto,
-        Descripcion = @Descripcion,
-        Precio_Venta = @Precio_Venta,
-        Stock_Actual = @Stock_Actual,
-        Stock_Minimo = @Stock_Minimo,
-        Es_Repuesto = @Es_Repuesto,
-        Activo = @Activo
-    WHERE Id_Producto = @Id_Producto;
+    -- Cada producto debe tener un proveedor activo asociado
+    IF NOT EXISTS (SELECT 1 FROM Proveedor WHERE Id_Proveedor = @Id_Proveedor AND Activo = 1)
+    BEGIN
+        THROW 50000, 'Debe elegir un proveedor activo para el producto.', 1;
+    END;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        UPDATE Producto
+        SET
+            Id_Categoria = @Id_Categoria,
+            Nombre_Producto = @Nombre_Producto,
+            Descripcion = @Descripcion,
+            Precio_Venta = @Precio_Venta,
+            Stock_Actual = @Stock_Actual,
+            Stock_Minimo = @Stock_Minimo,
+            Activo = @Activo
+        WHERE Id_Producto = @Id_Producto;
+
+        -- El producto queda con un solo proveedor asociado: el elegido.
+        UPDATE ProductoProveedor
+        SET Activo = 0
+        WHERE Id_Producto = @Id_Producto
+          AND Id_Proveedor <> @Id_Proveedor;
+
+        IF EXISTS (SELECT 1 FROM ProductoProveedor WHERE Id_Producto = @Id_Producto AND Id_Proveedor = @Id_Proveedor)
+            UPDATE ProductoProveedor
+            SET Activo = 1
+            WHERE Id_Producto = @Id_Producto
+              AND Id_Proveedor = @Id_Proveedor;
+        ELSE
+            INSERT INTO ProductoProveedor (Id_Producto, Id_Proveedor, Activo)
+            VALUES (@Id_Producto, @Id_Proveedor, 1);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
 END;
 GO
 
@@ -225,6 +294,35 @@ BEGIN
 
     UPDATE Producto
     SET Activo = 0
+    WHERE Id_Producto = @Id_Producto;
+END;
+GO
+
+
+-- =============================================
+-- 6 b. SP: Reactivar Producto (vuelve a darlo de alta)
+-- =============================================
+CREATE OR ALTER PROCEDURE sp_ReactivarProducto
+    @Id_Producto INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Producto P
+        INNER JOIN Producto Otro
+            ON Otro.Nombre_Producto = P.Nombre_Producto
+           AND Otro.Id_Producto <> P.Id_Producto
+           AND Otro.Activo = 1
+        WHERE P.Id_Producto = @Id_Producto
+    )
+    BEGIN
+        THROW 50000, 'Ya existe otro producto activo con ese nombre.', 1;
+    END;
+
+    UPDATE Producto
+    SET Activo = 1
     WHERE Id_Producto = @Id_Producto;
 END;
 GO

@@ -291,7 +291,6 @@ BEGIN
         Precio_Venta,
         Stock_Actual,
         Stock_Minimo,
-        Es_Repuesto,
         Activo
     )
     VALUES (
@@ -301,7 +300,6 @@ BEGIN
         6500.00,
         15,
         3,
-        0,
         1
     );
 END;
@@ -321,7 +319,6 @@ BEGIN
         Precio_Venta,
         Stock_Actual,
         Stock_Minimo,
-        Es_Repuesto,
         Activo
     )
     VALUES (
@@ -331,7 +328,6 @@ BEGIN
         9900.00,
         10,
         2,
-        0,
         1
     );
 END;
@@ -351,7 +347,6 @@ BEGIN
         Precio_Venta,
         Stock_Actual,
         Stock_Minimo,
-        Es_Repuesto,
         Activo
     )
     VALUES (
@@ -360,7 +355,6 @@ BEGIN
         'Módulo Display Completo iPhone 13',
         68000.00,
         4,
-        1,
         1,
         1
     );
@@ -381,7 +375,6 @@ BEGIN
         Precio_Venta,
         Stock_Actual,
         Stock_Minimo,
-        Es_Repuesto,
         Activo
     )
     VALUES (
@@ -391,7 +384,6 @@ BEGIN
         24000.00,
         6,
         2,
-        1,
         1
     );
 END;

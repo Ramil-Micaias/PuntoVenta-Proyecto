@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using Datos.Entidades;
 using Logica;
@@ -8,7 +9,17 @@ namespace Vista
 {
     public partial class FormProveedores : Form
     {
+        // Consulta: los campos están bloqueados. Agregando o Modificando: se habilitan
+        // y se termina con Confirmar (graba) o Cancelar (descarta).
+        private enum Modo { Consulta, Agregando, Modificando }
+
+        private static readonly Color ROJO = Color.FromArgb(239, 68, 68);
+        private static readonly Color VERDE = Color.FromArgb(16, 185, 129);
+        private static readonly Color GRIS = Color.FromArgb(148, 163, 184);
+
+        private Modo modo = Modo.Consulta;
         private int idProveedorSeleccionado = 0;
+        private bool activoSeleccionado = true;
         private readonly GestorProveedores gestorProveedores = new GestorProveedores();
 
         public FormProveedores()
@@ -17,10 +28,12 @@ namespace Vista
 
             this.Load += FormProveedores_Load;
             this.dgvProveedores.CellClick += dgvProveedores_CellClick;
+            this.dgvProveedores.DataBindingComplete += dgvProveedores_DataBindingComplete;
             this.btnGuardar.Click += btnGuardar_Click;
             this.btnModificar.Click += btnModificar_Click;
             this.btnEliminar.Click += btnEliminar_Click;
             this.btnNuevo.Click += btnNuevo_Click;
+            this.btnCancelar.Click += btnCancelar_Click;
             this.txtBuscar.TextChanged += txtBuscar_TextChanged;
         }
 
@@ -29,29 +42,68 @@ namespace Vista
             Grillas.Configurar(dgvProveedores);
             CargarProveedores();
             LimpiarControles();
+            AplicarModo(Modo.Consulta);
         }
 
-        // Muestra solo los botones que tienen sentido en cada momento:
-        // agregando -> solo Guardar; con un proveedor elegido -> Modificar / Eliminar (y Agregar para empezar otro).
-        private void MostrarBotones(bool agregando)
+        // Bloquea o habilita los campos y muestra solo los botones que sirven en cada momento.
+        // Al tocar Agregar desaparece Modificar y al tocar Modificar desaparece Agregar.
+        private void AplicarModo(Modo nuevoModo)
         {
+            modo = nuevoModo;
+            bool editando = modo != Modo.Consulta;
             bool haySeleccion = idProveedorSeleccionado != 0;
 
-            btnNuevo.Visible = !agregando;
-            btnGuardar.Visible = agregando;
-            btnModificar.Visible = haySeleccion;
-            btnEliminar.Visible = haySeleccion;
+            txtRazonSocial.ReadOnly = !editando;
+            txtCUIT.ReadOnly = !editando;
+            txtTelefono.ReadOnly = !editando;
+            txtEmail.ReadOnly = !editando;
+            txtDireccion.ReadOnly = !editando;
+
+            // Mientras se edita no se puede elegir otro proveedor ni buscar: la grilla sigue habilitada
+            // para poder desplazarla, pero los clics se ignoran en dgvProveedores_CellClick.
+            txtBuscar.Enabled = !editando;
+
+            btnNuevo.Visible = modo != Modo.Modificando;
+            btnModificar.Visible = modo == Modo.Modificando || (modo == Modo.Consulta && haySeleccion);
+            btnGuardar.Visible = editando;
+            btnCancelar.Visible = editando;
+            btnEliminar.Visible = modo == Modo.Consulta && haySeleccion;
+
+            // Inactivar (rojo) si el proveedor está activo; Activar (verde) si está dado de baja.
+            btnEliminar.Text = activoSeleccionado ? "Inactivar" : "Activar";
+            btnEliminar.BackColor = activoSeleccionado ? ROJO : VERDE;
+
+            if (modo == Modo.Agregando)
+            {
+                grpDetalleProveedores.Text = "Nuevo Proveedor";
+                txtRazonSocial.Focus();
+            }
+            else if (modo == Modo.Modificando)
+            {
+                grpDetalleProveedores.Text = "Modificando Proveedor";
+                txtRazonSocial.Focus();
+            }
+            else
+            {
+                grpDetalleProveedores.Text = "Detalle del Proveedor";
+            }
         }
 
+        // Se muestran todos, también los inactivos (en gris), para poder volver a activarlos.
         private void CargarProveedores()
         {
             try
             {
-                string filtro = txtBuscar.Text.Trim();
+                DataTable proveedores = gestorProveedores.ObtenerTodosProveedores();
+                string filtro = txtBuscar.Text.Trim().Replace("'", "''");
 
-                dgvProveedores.DataSource = string.IsNullOrEmpty(filtro)
-                    ? gestorProveedores.ObtenerProveedores()
-                    : gestorProveedores.BuscarProveedores(filtro);
+                if (!string.IsNullOrEmpty(filtro))
+                {
+                    proveedores.DefaultView.RowFilter =
+                        "Razon_Social LIKE '%" + filtro + "%' OR CUIT LIKE '%" + filtro + "%' OR Email LIKE '%" + filtro + "%'";
+                }
+
+                dgvProveedores.DataSource = proveedores.DefaultView;
             }
             catch (Exception ex)
             {
@@ -64,9 +116,39 @@ namespace Vista
             }
         }
 
+        private void dgvProveedores_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (dgvProveedores.Columns.Contains("Razon_Social"))
+                dgvProveedores.Columns["Razon_Social"].HeaderText = "Razón Social";
+
+            if (dgvProveedores.Columns.Contains("Telefono"))
+                dgvProveedores.Columns["Telefono"].HeaderText = "Teléfono";
+
+            if (dgvProveedores.Columns.Contains("Direccion"))
+                dgvProveedores.Columns["Direccion"].HeaderText = "Dirección";
+
+            if (dgvProveedores.Columns.Contains("Fecha_Alta"))
+            {
+                dgvProveedores.Columns["Fecha_Alta"].HeaderText = "Fecha de alta";
+                dgvProveedores.Columns["Fecha_Alta"].DefaultCellStyle.Format = "dd/MM/yyyy";
+            }
+
+            if (!dgvProveedores.Columns.Contains("Activo"))
+                return;
+
+            foreach (DataGridViewRow fila in dgvProveedores.Rows)
+            {
+                bool activo = fila.Cells["Activo"].Value != DBNull.Value && Convert.ToBoolean(fila.Cells["Activo"].Value);
+
+                if (!activo)
+                    fila.DefaultCellStyle.ForeColor = GRIS;
+            }
+        }
+
         private void LimpiarControles()
         {
             idProveedorSeleccionado = 0;
+            activoSeleccionado = true;
 
             txtRazonSocial.Clear();
             txtCUIT.Clear();
@@ -75,31 +157,54 @@ namespace Vista
             txtDireccion.Clear();
 
             dgvProveedores.ClearSelection();
-            MostrarBotones(false);
         }
 
+        private Proveedor LeerProveedor()
+        {
+            return new Proveedor()
+            {
+                Id_Proveedor = idProveedorSeleccionado,
+                Razon_Social = txtRazonSocial.Text.Trim(),
+                CUIT = string.IsNullOrWhiteSpace(txtCUIT.Text) ? null : txtCUIT.Text.Trim(),
+                Telefono = string.IsNullOrWhiteSpace(txtTelefono.Text) ? null : txtTelefono.Text.Trim(),
+                Email = string.IsNullOrWhiteSpace(txtEmail.Text) ? null : txtEmail.Text.Trim(),
+                Direccion = string.IsNullOrWhiteSpace(txtDireccion.Text) ? null : txtDireccion.Text.Trim(),
+                // Al modificar se mantiene el estado que tenía (un inactivo sigue inactivo).
+                Activo = modo == Modo.Agregando || activoSeleccionado
+            };
+        }
+
+        // Confirmar: graba el alta o la modificación según lo que se esté haciendo.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            Mensajes.Limpiar(lblResultado);
+
             try
             {
-                Proveedor prov = new Proveedor()
+                string mensaje;
+
+                if (modo == Modo.Agregando)
                 {
-                    Razon_Social = txtRazonSocial.Text.Trim(),
-                    CUIT = string.IsNullOrWhiteSpace(txtCUIT.Text) ? null : txtCUIT.Text.Trim(),
-                    Telefono = string.IsNullOrWhiteSpace(txtTelefono.Text) ? null : txtTelefono.Text.Trim(),
-                    Email = string.IsNullOrWhiteSpace(txtEmail.Text) ? null : txtEmail.Text.Trim(),
-                    Direccion = string.IsNullOrWhiteSpace(txtDireccion.Text) ? null : txtDireccion.Text.Trim(),
-                    Activo = true
-                };
+                    bool reactivado = gestorProveedores.RegistrarProveedor(LeerProveedor());
 
-                bool reactivado = gestorProveedores.RegistrarProveedor(prov);
-
-                Mensajes.Exito(lblResultado, reactivado
-                    ? "El proveedor estaba dado de baja: se reactivó con los datos ingresados (conserva su historial)."
-                    : "Proveedor registrado con éxito.");
+                    mensaje = reactivado
+                        ? "El proveedor estaba dado de baja: se reactivó con los datos ingresados (conserva su historial)."
+                        : "Proveedor registrado con éxito.";
+                }
+                else if (modo == Modo.Modificando)
+                {
+                    gestorProveedores.ModificarProveedor(LeerProveedor());
+                    mensaje = "Proveedor modificado correctamente.";
+                }
+                else
+                {
+                    return;
+                }
 
                 CargarProveedores();
                 LimpiarControles();
+                AplicarModo(Modo.Consulta);
+                Mensajes.Exito(lblResultado, mensaje);
             }
             catch (Exception ex)
             {
@@ -112,6 +217,7 @@ namespace Vista
             }
         }
 
+        // Modificar solo habilita los campos; los cambios se graban con Confirmar.
         private void btnModificar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -127,25 +233,61 @@ namespace Vista
                 return;
             }
 
+            AplicarModo(Modo.Modificando);
+        }
+
+        private void btnCancelar_Click(object? sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultado);
+            LimpiarControles();
+            AplicarModo(Modo.Consulta);
+        }
+
+        // Inactivar (baja lógica) o Activar, según el estado del proveedor elegido.
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultado);
+
+            if (idProveedorSeleccionado == 0)
+            {
+                MessageBox.Show(
+                    "Debe seleccionar un proveedor de la lista.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
             try
             {
-                Proveedor prov = new Proveedor()
+                string mensaje;
+
+                if (activoSeleccionado)
                 {
-                    Id_Proveedor = idProveedorSeleccionado,
-                    Razon_Social = txtRazonSocial.Text.Trim(),
-                    CUIT = string.IsNullOrWhiteSpace(txtCUIT.Text) ? null : txtCUIT.Text.Trim(),
-                    Telefono = string.IsNullOrWhiteSpace(txtTelefono.Text) ? null : txtTelefono.Text.Trim(),
-                    Email = string.IsNullOrWhiteSpace(txtEmail.Text) ? null : txtEmail.Text.Trim(),
-                    Direccion = string.IsNullOrWhiteSpace(txtDireccion.Text) ? null : txtDireccion.Text.Trim(),
-                    Activo = true
-                };
+                    DialogResult resultado = MessageBox.Show(
+                        "¿Está seguro de que desea inactivar este proveedor?",
+                        "Confirmar Inactivación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
 
-                gestorProveedores.ModificarProveedor(prov);
+                    if (resultado != DialogResult.Yes)
+                        return;
 
-                Mensajes.Exito(lblResultado, "Proveedor modificado correctamente.");
+                    gestorProveedores.InactivarProveedor(idProveedorSeleccionado);
+                    mensaje = "Proveedor inactivado con éxito.";
+                }
+                else
+                {
+                    gestorProveedores.ActivarProveedor(idProveedorSeleccionado);
+                    mensaje = "Proveedor activado con éxito.";
+                }
 
                 CargarProveedores();
                 LimpiarControles();
+                AplicarModo(Modo.Consulta);
+                Mensajes.Exito(lblResultado, mensaje);
             }
             catch (Exception ex)
             {
@@ -158,57 +300,14 @@ namespace Vista
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            Mensajes.Limpiar(lblResultado);
-
-            if (idProveedorSeleccionado == 0)
-            {
-                MessageBox.Show(
-                    "Debe seleccionar un proveedor de la lista para eliminar.",
-                    "Atención",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            DialogResult resultado = MessageBox.Show(
-                "¿Está seguro de que desea inactivar este proveedor?",
-                "Confirmar Inactivación",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (resultado == DialogResult.Yes)
-            {
-                try
-                {
-                    gestorProveedores.InactivarProveedor(idProveedorSeleccionado);
-
-                    Mensajes.Exito(lblResultado, "Proveedor inactivado con éxito.");
-
-                    CargarProveedores();
-                    LimpiarControles();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        ex.Message,
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-        }
-
         private void dgvProveedores_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
+            if (e.RowIndex < 0 || modo != Modo.Consulta)
             {
                 return;
             }
+
+            Mensajes.Limpiar(lblResultado);
 
             DataGridViewRow fila = dgvProveedores.Rows[e.RowIndex];
 
@@ -217,27 +316,21 @@ namespace Vista
                 idProveedorSeleccionado = Convert.ToInt32(fila.Cells["Id_Proveedor"].Value);
             }
 
-            txtRazonSocial.Text = fila.Cells["Razon_Social"].Value != DBNull.Value
-                ? fila.Cells["Razon_Social"].Value?.ToString() ?? ""
-                : "";
+            txtRazonSocial.Text = Texto(fila, "Razon_Social");
+            txtCUIT.Text = Texto(fila, "CUIT");
+            txtTelefono.Text = Texto(fila, "Telefono");
+            txtEmail.Text = Texto(fila, "Email");
+            txtDireccion.Text = Texto(fila, "Direccion");
 
-            txtCUIT.Text = fila.Cells["CUIT"].Value != DBNull.Value
-                ? fila.Cells["CUIT"].Value?.ToString() ?? ""
-                : "";
+            activoSeleccionado = fila.Cells["Activo"].Value != DBNull.Value && Convert.ToBoolean(fila.Cells["Activo"].Value);
 
-            txtTelefono.Text = fila.Cells["Telefono"].Value != DBNull.Value
-                ? fila.Cells["Telefono"].Value?.ToString() ?? ""
-                : "";
+            AplicarModo(Modo.Consulta);
+        }
 
-            txtEmail.Text = fila.Cells["Email"].Value != DBNull.Value
-                ? fila.Cells["Email"].Value?.ToString() ?? ""
-                : "";
-
-            txtDireccion.Text = fila.Cells["Direccion"].Value != DBNull.Value
-                ? fila.Cells["Direccion"].Value?.ToString() ?? ""
-                : "";
-
-            MostrarBotones(false);
+        private static string Texto(DataGridViewRow fila, string columna)
+        {
+            object? valor = fila.Cells[columna].Value;
+            return valor == null || valor == DBNull.Value ? "" : valor.ToString() ?? "";
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -245,8 +338,7 @@ namespace Vista
             Mensajes.Limpiar(lblResultado);
 
             LimpiarControles();
-            MostrarBotones(true);
-            txtRazonSocial.Focus();
+            AplicarModo(Modo.Agregando);
         }
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
