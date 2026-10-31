@@ -202,7 +202,7 @@ namespace Vista
             lblSaldoTitulo.Name = "lblSaldoTitulo";
             lblSaldoTitulo.Size = new Size(114, 17);
             lblSaldoTitulo.TabIndex = 7;
-            lblSaldoTitulo.Text = "Saldo Disponible";
+            lblSaldoTitulo.Text = "Saldo Disponible (efectivo)";
             //
             // lblSaldoValor
             //

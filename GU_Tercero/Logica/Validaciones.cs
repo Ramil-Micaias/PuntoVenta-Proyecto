@@ -32,6 +32,26 @@ namespace Logica
             }
         }
 
+        // DNI: solo números, 7 u 8 dígitos (sin puntos).
+        public static bool EsDniValido(string? dni)
+        {
+            return !string.IsNullOrWhiteSpace(dni) && Regex.IsMatch(dni.Trim(), @"^[0-9]{7,8}$");
+        }
+
+        // Nombre o apellido: letras (con acentos y ñ), espacios, apóstrofo o guion, hasta 50 caracteres.
+        public static bool EsNombreValido(string? texto)
+        {
+            return !string.IsNullOrWhiteSpace(texto)
+                && texto.Trim().Length <= 50
+                && Regex.IsMatch(texto.Trim(), @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' \-]+$");
+        }
+
+        // Nombre de usuario: letras, números, punto, guion o guion bajo, sin espacios, de 3 a 50 caracteres.
+        public static bool EsNombreUsuarioValido(string? usuario)
+        {
+            return !string.IsNullOrWhiteSpace(usuario) && Regex.IsMatch(usuario.Trim(), @"^[A-Za-z0-9._\-]{3,50}$");
+        }
+
         // Teléfono: solo números, espacios, guiones, + y paréntesis, con entre 8 y 15 números.
         public static bool EsTelefonoValido(string? telefono)
         {

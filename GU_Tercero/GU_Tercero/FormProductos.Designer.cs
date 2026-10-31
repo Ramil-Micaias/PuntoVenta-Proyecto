@@ -42,12 +42,15 @@ namespace Vista
             btnNuevo = new Button();
             btnGuardar = new Button();
             btnModificar = new Button();
+            btnEstadoProducto = new Button();
             btnConfirmar = new Button();
             btnCancelarEdicion = new Button();
             btnVolverMenu = new Button();
             lblCategorias = new Label();
             lblResultadoProducto = new Label();
             cmbCategoria = new ComboBox();
+            lblProveedor = new Label();
+            cmbProveedor = new ComboBox();
             lblNombreProducto = new Label();
             txtNombreProducto = new TextBox();
             lblDescripcion = new Label();
@@ -184,7 +187,7 @@ namespace Vista
             dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProductos.Location = new Point(12, 84);
             dgvProductos.Name = "dgvProductos";
-            dgvProductos.Size = new Size(868, 252);
+            dgvProductos.Size = new Size(868, 216);
             dgvProductos.TabIndex = 3;
             dgvProductos.CellClick += dgvProductos_CellClick;
             //
@@ -206,11 +209,13 @@ namespace Vista
             grpDetalleProducto.Controls.Add(lblNombreProducto);
             grpDetalleProducto.Controls.Add(cmbCategoria);
             grpDetalleProducto.Controls.Add(lblCategorias);
+            grpDetalleProducto.Controls.Add(lblProveedor);
+            grpDetalleProducto.Controls.Add(cmbProveedor);
             grpDetalleProducto.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             grpDetalleProducto.ForeColor = Color.FromArgb(15, 23, 42);
-            grpDetalleProducto.Location = new Point(12, 346);
+            grpDetalleProducto.Location = new Point(12, 310);
             grpDetalleProducto.Name = "grpDetalleProducto";
-            grpDetalleProducto.Size = new Size(868, 200);
+            grpDetalleProducto.Size = new Size(868, 236);
             grpDetalleProducto.TabIndex = 4;
             grpDetalleProducto.TabStop = false;
             grpDetalleProducto.Text = "Detalle del Producto";
@@ -223,6 +228,7 @@ namespace Vista
             flpAcciones.Controls.Add(btnModificar);
             flpAcciones.Controls.Add(btnConfirmar);
             flpAcciones.Controls.Add(btnCancelarEdicion);
+            flpAcciones.Controls.Add(btnEstadoProducto);
             flpAcciones.FlowDirection = FlowDirection.TopDown;
             flpAcciones.Location = new Point(706, 22);
             flpAcciones.Name = "flpAcciones";
@@ -275,6 +281,21 @@ namespace Vista
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
             //
+            // btnEstadoProducto
+            //
+            btnEstadoProducto.BackColor = Color.FromArgb(239, 68, 68);
+            btnEstadoProducto.FlatAppearance.BorderSize = 0;
+            btnEstadoProducto.FlatStyle = FlatStyle.Flat;
+            btnEstadoProducto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnEstadoProducto.ForeColor = Color.White;
+            btnEstadoProducto.Margin = new Padding(0, 0, 0, 6);
+            btnEstadoProducto.Name = "btnEstadoProducto";
+            btnEstadoProducto.Size = new Size(146, 32);
+            btnEstadoProducto.TabIndex = 5;
+            btnEstadoProducto.Text = "Inactivar";
+            btnEstadoProducto.UseVisualStyleBackColor = false;
+            btnEstadoProducto.Click += btnEstadoProducto_Click;
+            //
             // btnConfirmar
             //
             btnConfirmar.BackColor = Color.FromArgb(16, 185, 129);
@@ -313,7 +334,7 @@ namespace Vista
             btnVolverMenu.FlatStyle = FlatStyle.Flat;
             btnVolverMenu.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnVolverMenu.ForeColor = Color.White;
-            btnVolverMenu.Location = new Point(706, 152);
+            btnVolverMenu.Location = new Point(706, 188);
             btnVolverMenu.Name = "btnVolverMenu";
             btnVolverMenu.Size = new Size(146, 32);
             btnVolverMenu.TabIndex = 11;
@@ -341,6 +362,27 @@ namespace Vista
             cmbCategoria.Name = "cmbCategoria";
             cmbCategoria.Size = new Size(210, 25);
             cmbCategoria.TabIndex = 1;
+            //
+            // lblProveedor
+            //
+            lblProveedor.AutoSize = true;
+            lblProveedor.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblProveedor.ForeColor = Color.FromArgb(30, 41, 59);
+            lblProveedor.Location = new Point(20, 147);
+            lblProveedor.Name = "lblProveedor";
+            lblProveedor.Size = new Size(71, 17);
+            lblProveedor.TabIndex = 0;
+            lblProveedor.Text = "Proveedor:";
+            //
+            // cmbProveedor
+            //
+            cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbProveedor.Font = new Font("Segoe UI", 9.5F);
+            cmbProveedor.FormattingEnabled = true;
+            cmbProveedor.Location = new Point(130, 144);
+            cmbProveedor.Name = "cmbProveedor";
+            cmbProveedor.Size = new Size(550, 25);
+            cmbProveedor.TabIndex = 7;
             //
             // lblNombreProducto
             //
@@ -635,7 +677,7 @@ namespace Vista
             //
             lblResultadoProducto.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultadoProducto.ForeColor = Color.FromArgb(16, 185, 129);
-            lblResultadoProducto.Location = new Point(20, 146);
+            lblResultadoProducto.Location = new Point(20, 182);
             lblResultadoProducto.Name = "lblResultadoProducto";
             lblResultadoProducto.Size = new Size(670, 44);
             //
@@ -701,11 +743,14 @@ namespace Vista
         private Button btnNuevo;
         private Button btnGuardar;
         private Button btnModificar;
+        private Button btnEstadoProducto;
         private Button btnConfirmar;
         private Button btnCancelarEdicion;
         private Button btnVolverMenu;
         private Label lblCategorias;
         private ComboBox cmbCategoria;
+        private Label lblProveedor;
+        private ComboBox cmbProveedor;
         private Label lblNombreProducto;
         private TextBox txtNombreProducto;
         private Label lblDescripcion;

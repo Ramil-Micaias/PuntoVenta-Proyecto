@@ -45,6 +45,8 @@ namespace GU_Tercero
                 // Al cerrar el menú, volvemos a mostrar la pantalla de Login limpia (o la cerramos si fue por X)
                 menu.FormClosed += (s, args) =>
                 {
+                    Sesion.Cerrar();
+
                     if (menu.EsCierreSesion)
                     {
                         txtUsuario.Clear();
@@ -67,6 +69,7 @@ namespace GU_Tercero
                 // Si la vista de usuario no es el menú principal, al cerrarla volvemos al login
                 formUsuario.FormClosed += (s, args) =>
                 {
+                    Sesion.Cerrar();
                     txtUsuario.Clear();
                     txtPassword.Clear();
                     this.Show();
@@ -131,6 +134,7 @@ namespace GU_Tercero
                 }
 
                 // 3. ENTRADA AL SISTEMA: Si pasó todas las validaciones, entra al Menú
+                Sesion.Iniciar(usuario);
                 AbrirMenu(usuario);
             }
             else

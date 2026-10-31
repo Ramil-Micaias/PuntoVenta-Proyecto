@@ -12,7 +12,6 @@ INSERT INTO Producto (
     Precio_Venta,
     Stock_Actual,
     Stock_Minimo,
-    Es_Repuesto,
     Activo
 )
 SELECT
@@ -22,7 +21,6 @@ SELECT
     V.Precio_Venta,
     V.Stock_Actual,
     V.Stock_Minimo,
-    V.Es_Repuesto,
     1
 FROM
 (
@@ -33,8 +31,7 @@ FROM
         'Cargadores y Cables',
         8500.00,
         15,
-        3,
-        0
+        3
     ),
     (
         'Módulo Display iPhone 11',
@@ -42,8 +39,7 @@ FROM
         'Módulos y Pantallas',
         32000.00,
         5,
-        2,
-        1
+        2
     )
 ) AS V (
     Nombre_Producto,
@@ -51,8 +47,7 @@ FROM
     Nombre_Categoria,
     Precio_Venta,
     Stock_Actual,
-    Stock_Minimo,
-    Es_Repuesto
+    Stock_Minimo
 )
 INNER JOIN CategoriaProducto c
     ON c.Nombre_Categoria = V.Nombre_Categoria
@@ -77,7 +72,6 @@ SELECT
     p.Precio_Venta,
     p.Stock_Actual,
     p.Stock_Minimo,
-    p.Es_Repuesto,
     p.Activo
 FROM Producto p
 INNER JOIN CategoriaProducto c

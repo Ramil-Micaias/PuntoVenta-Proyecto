@@ -48,12 +48,17 @@ namespace GU_Tercero
             lblResultado = new Label();
             btnCancelar = new Button();
             btnGuardar = new Button();
+            grpBaseDatos = new GroupBox();
+            lblBackup = new Label();
+            btnBackup = new Button();
+            lblResultadoBackup = new Label();
             panelHeader.SuspendLayout();
             grpContrasenas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudCantidadMinimaCaracteres).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudCantidadPreguntas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudHistorialCantidadContraseña).BeginInit();
             grpPolitasSeguridad.SuspendLayout();
+            grpBaseDatos.SuspendLayout();
             SuspendLayout();
             //
             // panelHeader
@@ -249,7 +254,7 @@ namespace GU_Tercero
             btnRestaurar.FlatStyle = FlatStyle.Flat;
             btnRestaurar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnRestaurar.ForeColor = Color.White;
-            btnRestaurar.Location = new Point(316, 292);
+            btnRestaurar.Location = new Point(316, 392);
             btnRestaurar.Name = "btnRestaurar";
             btnRestaurar.Size = new Size(140, 34);
             btnRestaurar.TabIndex = 3;
@@ -265,7 +270,7 @@ namespace GU_Tercero
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnCancelar.ForeColor = Color.White;
-            btnCancelar.Location = new Point(468, 292);
+            btnCancelar.Location = new Point(468, 392);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(130, 34);
             btnCancelar.TabIndex = 4;
@@ -281,7 +286,7 @@ namespace GU_Tercero
             btnGuardar.FlatStyle = FlatStyle.Flat;
             btnGuardar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(610, 292);
+            btnGuardar.Location = new Point(610, 392);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(134, 34);
             btnGuardar.TabIndex = 5;
@@ -294,25 +299,78 @@ namespace GU_Tercero
             lblResultado.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
-            lblResultado.Location = new Point(16, 288);
+            lblResultado.Location = new Point(16, 388);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(290, 42);
+            //
+            // grpBaseDatos
+            //
+            grpBaseDatos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpBaseDatos.Controls.Add(btnBackup);
+            grpBaseDatos.Controls.Add(lblBackup);
+            grpBaseDatos.Controls.Add(lblResultadoBackup);
+            grpBaseDatos.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpBaseDatos.ForeColor = Color.FromArgb(15, 23, 42);
+            grpBaseDatos.Location = new Point(16, 288);
+            grpBaseDatos.Name = "grpBaseDatos";
+            grpBaseDatos.Size = new Size(728, 84);
+            grpBaseDatos.TabIndex = 7;
+            grpBaseDatos.TabStop = false;
+            grpBaseDatos.Text = "Base de datos";
+            //
+            // btnBackup
+            //
+            btnBackup.BackColor = Color.FromArgb(37, 99, 235);
+            btnBackup.FlatAppearance.BorderSize = 0;
+            btnBackup.FlatStyle = FlatStyle.Flat;
+            btnBackup.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnBackup.ForeColor = Color.White;
+            btnBackup.Location = new Point(20, 32);
+            btnBackup.Name = "btnBackup";
+            btnBackup.Size = new Size(160, 34);
+            btnBackup.TabIndex = 0;
+            btnBackup.Text = "Generar backup";
+            btnBackup.UseVisualStyleBackColor = false;
+            btnBackup.Click += btnBackup_Click;
+            //
+            // lblBackup
+            //
+            lblBackup.AutoSize = true;
+            lblBackup.Font = new Font("Segoe UI", 9.5F);
+            lblBackup.ForeColor = Color.FromArgb(30, 41, 59);
+            lblBackup.Location = new Point(196, 30);
+            lblBackup.Name = "lblBackup";
+            lblBackup.Size = new Size(320, 17);
+            lblBackup.TabIndex = 1;
+            lblBackup.Text = "Guarda una copia completa de la base de datos (.bak).";
+            //
+            // lblResultadoBackup
+            //
+            lblResultadoBackup.AutoSize = true;
+            lblResultadoBackup.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblResultadoBackup.ForeColor = Color.FromArgb(16, 185, 129);
+            lblResultadoBackup.Location = new Point(196, 52);
+            lblResultadoBackup.Name = "lblResultadoBackup";
+            lblResultadoBackup.Size = new Size(0, 17);
+            lblResultadoBackup.TabIndex = 2;
+            lblResultadoBackup.Visible = false;
             //
             // FormConfiguracion
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
-            ClientSize = new Size(760, 342);
+            ClientSize = new Size(760, 442);
             Controls.Add(lblResultado);
             Controls.Add(btnGuardar);
             Controls.Add(btnCancelar);
             Controls.Add(btnRestaurar);
+            Controls.Add(grpBaseDatos);
             Controls.Add(grpPolitasSeguridad);
             Controls.Add(grpContrasenas);
             Controls.Add(panelHeader);
             Font = new Font("Segoe UI", 9F);
-            MinimumSize = new Size(776, 381);
+            MinimumSize = new Size(776, 481);
             Name = "FormConfiguracion";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ApIBigStore - Configuración del Sistema";
@@ -326,6 +384,8 @@ namespace GU_Tercero
             ((System.ComponentModel.ISupportInitialize)nudHistorialCantidadContraseña).EndInit();
             grpPolitasSeguridad.ResumeLayout(false);
             grpPolitasSeguridad.PerformLayout();
+            grpBaseDatos.ResumeLayout(false);
+            grpBaseDatos.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -352,5 +412,9 @@ namespace GU_Tercero
         private NumericUpDown nudCantidadMinimaCaracteres;
         private NumericUpDown nudCantidadPreguntas;
         private NumericUpDown nudHistorialCantidadContraseña;
+        private GroupBox grpBaseDatos;
+        private Label lblBackup;
+        private Button btnBackup;
+        private Label lblResultadoBackup;
     }
 }

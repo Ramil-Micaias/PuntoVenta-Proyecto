@@ -21,41 +21,19 @@ namespace GU_Tercero
         {
             InitializeComponent();
 
-            txtNombreUsuario.Leave += txtNombreUsuario_Leave;
-
-            // El Enter se atiende a nivel del formulario con ProcessDialogKey y no con el
-            // evento KeyDown del TextBox. Con AcceptButton configurado, Windows se come la
-            // tecla Enter cuando el boton esta deshabilitado y el KeyDown nunca se dispara,
-            // por lo que escribir el usuario y apretar Enter no cargaba las preguntas.
-            // En cambio Tab si dispara el Leave y por eso funcionaba solo de esa forma.
+            // Las preguntas se cargan solo al presionar Confirmar (o Enter). Antes se cargaban
+            // al salir del campo de usuario: al hacer clic en Cancelar los botones se movían
+            // debajo del mouse y el clic se perdía, por eso Cancelar parecía confirmar.
+            txtNombreUsuario.TextChanged += txtNombreUsuario_TextChanged;
         }
 
-        // Intercepta Enter antes que Windows. En el campo de usuario carga las preguntas
-        // y en los campos de respuesta valida, que es lo que se espera al apretar Enter.
+        // Enter en el usuario o en las respuestas hace lo mismo que el botón Confirmar.
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (keyData == Keys.Enter)
+            if (keyData == Keys.Enter && !btnCancelar.Focused && btnValidar.Enabled)
             {
-                if (txtNombreUsuario.Focused)
-                {
-                    CargarPreguntasDelUsuario();
-
-                    if (idsPreguntasCargadas.Count > 0)
-                    {
-                        txtRespuesta1.Focus();
-                    }
-
-                    return true;
-                }
-
-                if (txtRespuesta1.Focused || txtRespuesta2.Focused || txtRespuesta3.Focused)
-                {
-                    if (btnValidar.Enabled)
-                    {
-                        btnValidar.PerformClick();
-                        return true;
-                    }
-                }
+                btnValidar.PerformClick();
+                return true;
             }
 
             return base.ProcessDialogKey(keyData);
@@ -68,22 +46,21 @@ namespace GU_Tercero
 
             OcultarPreguntas();
 
-            // Ambos botones quedan visibles desde el arranque; el de validar se
-            // deshabilita solo hasta que se carguen las preguntas del usuario.
             btnValidar.Visible = true;
-            btnValidar.Enabled = false;
             btnCancelar.Visible = true;
             ReubicarControles();
 
             txtNombreUsuario.Focus();
         }
 
-        // Al salir del campo se consultan las preguntas que el usuario tiene configuradas
-        // realmente. Antes se mostraban siempre tres textos fijos y se validaban contra los
-        // Id_Pregunta 1, 2 y 3 suponiendo que ese era el orden elegido por cada usuario.
-        private void txtNombreUsuario_Leave(object? sender, EventArgs e)
+        // Si se cambia el usuario después de cargar sus preguntas, se ocultan y hay que
+        // volver a presionar Confirmar.
+        private void txtNombreUsuario_TextChanged(object? sender, EventArgs e)
         {
-            CargarPreguntasDelUsuario();
+            if (idsPreguntasCargadas.Count > 0)
+            {
+                OcultarPreguntas();
+            }
         }
 
         private void CargarPreguntasDelUsuario()
@@ -105,15 +82,13 @@ namespace GU_Tercero
 
             if (preguntas.Rows.Count == 0)
             {
-                // No se muestra un MessageBox acá: este método se dispara cada vez que el
-                // usuario sale del campo o presiona Enter, y el aviso se repite molesto.
-                avisoSinPreguntas = "El usuario no tiene preguntas de seguridad configuradas, por lo que no puede recuperar la contraseña. "
-                    + "Debe solicitar al administrador que las configure.";
+                // Mismo mensaje si el usuario no existe o si no tiene preguntas, para no
+                // revelar qué nombres de usuario existen.
+                avisoSinPreguntas = "El usuario ingresado no existe o no tiene preguntas de seguridad configuradas. "
+                    + "Verifique el nombre de usuario o solicite ayuda al administrador.";
 
                 return;
             }
-
-            btnValidar.Enabled = true;
 
             idsPreguntasCargadas.Clear();
 
@@ -190,11 +165,10 @@ namespace GU_Tercero
             lblPregunta3.Visible = mostrarTercera;
             txtRespuesta3.Visible = mostrarTercera;
 
-            // Los dos botones quedan siempre visibles. Ocultar el de validar dejaba la
-            // pantalla inicial con un solo boton, y se lee como que al formulario le
-            // falta algo. Se deshabilita hasta que haya preguntas cargadas para validar.
+            // Confirmar siempre se puede usar: sin preguntas cargadas busca al usuario,
+            // con preguntas cargadas valida las respuestas.
             btnValidar.Visible = true;
-            btnValidar.Enabled = mostrarPrimera && !operacionEnCurso;
+            btnValidar.Enabled = !operacionEnCurso;
 
             ReubicarControles();
         }
@@ -251,26 +225,20 @@ namespace GU_Tercero
                 return;
             }
 
+            // Primer paso: buscar al usuario y mostrar sus preguntas.
             if (idsPreguntasCargadas.Count == 0)
             {
                 CargarPreguntasDelUsuario();
-            }
 
-            if (idsPreguntasCargadas.Count == 0)
-            {
-                if (avisoSinPreguntas != null)
+                if (idsPreguntasCargadas.Count == 0)
                 {
                     MessageBox.Show(avisoSinPreguntas, "Recuperación no disponible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Complete el nombre de usuario y presione Tab o Enter para cargar sus preguntas de seguridad.",
-                        "Recuperación de contraseña",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    txtNombreUsuario.Focus();
+                    txtNombreUsuario.SelectAll();
+                    return;
                 }
 
+                txtRespuesta1.Focus();
                 return;
             }
 
@@ -353,7 +321,7 @@ namespace GU_Tercero
                 if (!IsDisposed)
                 {
                     Cursor = Cursors.Default;
-                    btnValidar.Enabled = idsPreguntasCargadas.Count > 0;
+                    btnValidar.Enabled = true;
                 }
             }
         }

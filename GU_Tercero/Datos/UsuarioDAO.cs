@@ -289,6 +289,77 @@ namespace Datos
             }
         }
 
+        // DNI usado por otro usuario (distinto de idUsuarioExcluido; 0 al dar de alta).
+        public bool ExisteDniEnOtroUsuario(string dni, int idUsuarioExcluido)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                string query = "SELECT COUNT(1) FROM Usuario U INNER JOIN Persona P ON P.Id_Persona = U.Id_Persona "
+                    + "WHERE P.DNI = @DNI AND U.Id_Usuario <> @IdUsuario";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DNI", dni);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuarioExcluido);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // Persona "propia" para comparar: al modificar, la del usuario (aunque se le cambie el DNI);
+        // al dar de alta, la que ya tenga ese DNI (un cliente que pasa a ser usuario). -1 si no hay.
+        private const string PERSONA_PROPIA =
+            "COALESCE((SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario), "
+            + "(SELECT Id_Persona FROM Persona WHERE DNI = @DNI), -1)";
+
+        // Correo cargado para otra persona. La columna Direccion_Correo es única,
+        // así que no puede repetirse entre personas.
+        public bool ExisteCorreoDeOtraPersona(string correo, string dni, int idUsuario)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                string query = "SELECT COUNT(1) FROM Correo WHERE Direccion_Correo = @Correo AND Id_Persona <> " + PERSONA_PROPIA;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@DNI", dni);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // Al modificar: el DNI nuevo ya pertenece a otra persona (usuario o cliente).
+        // La columna DNI de Persona es única.
+        public bool ExisteDniDeOtraPersona(string dni, int idUsuario)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                string query = "SELECT COUNT(1) FROM Persona WHERE DNI = @DNI "
+                    + "AND Id_Persona <> (SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DNI", dni);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // Nombre de usuario usado por otro usuario (distinto de idUsuarioExcluido; 0 al dar de alta).
+        public bool ExisteNombreUsuario(string nombreUsuario, int idUsuarioExcluido)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                string query = "SELECT COUNT(1) FROM Usuario WHERE Nombre_Usuario = @NombreUsuario AND Id_Usuario <> @IdUsuario";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@NombreUsuario", nombreUsuario);
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuarioExcluido);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
         //Ejecuta el Stored Procedure sp_InsertarUsuarioCompleto enviando todos los datos necesarios
         //para crear un usuario con su persona, correo y rol asociado.
         public int InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, string passwordHash, int idRol)
@@ -359,6 +430,31 @@ namespace Datos
                 
                 conn.Open();
                 
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Vuelve a activar un usuario dado de baja (sp_ActivarUsuario).
+        public void ActivarUsuario(int idUsuario)
+        {
+            EjecutarPorId("sp_ActivarUsuario", idUsuario);
+        }
+
+        // Quita el bloqueo por intentos fallidos (sp_DesbloquearUsuario).
+        public void DesbloquearUsuario(int idUsuario)
+        {
+            EjecutarPorId("sp_DesbloquearUsuario", idUsuario);
+        }
+
+        private void EjecutarPorId(string procedimiento, int idUsuario)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand(procedimiento, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+
+                conn.Open();
                 cmd.ExecuteNonQuery();
             }
         }

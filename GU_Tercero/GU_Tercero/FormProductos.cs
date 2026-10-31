@@ -16,9 +16,13 @@ namespace Vista
         private enum Modo { Consulta, Agregando, Modificando }
 
         private Modo modoProducto = Modo.Consulta;
+        private bool productoActivo = true;
         private Modo modoCategoria = Modo.Consulta;
 
         private static readonly System.Drawing.Color NARANJA = System.Drawing.Color.FromArgb(217, 119, 6);
+        private static readonly System.Drawing.Color ROJO = System.Drawing.Color.FromArgb(239, 68, 68);
+        private static readonly System.Drawing.Color VERDE = System.Drawing.Color.FromArgb(16, 185, 129);
+        private static readonly System.Drawing.Color GRIS = System.Drawing.Color.FromArgb(148, 163, 184);
 
         public FormProductos()
         {
@@ -39,9 +43,37 @@ namespace Vista
 
             CargarComboLenguajes();
             CargarCategorias();
+            CargarProveedores();
             CargarProductos();
             LimpiarControles();
             LimpiarCategoria();
+        }
+
+        // Proveedores para asociar al producto. Se cargan todos para poder mostrar el de cada producto
+        // aunque esté dado de baja (con la aclaración); al guardar solo se acepta uno activo.
+        private void CargarProveedores()
+        {
+            try
+            {
+                DataTable proveedores = new GestorProveedores().ObtenerTodosProveedores();
+                proveedores.Columns.Add("Nombre", typeof(string),
+                    "Razon_Social + IIF(Activo, '', ' (" + Idioma.Texto("Txt_DadoDeBaja", "dado de baja") + ")')");
+                proveedores.DefaultView.Sort = "Activo DESC, Razon_Social ASC";
+
+                cmbProveedor.DisplayMember = "Nombre";
+                cmbProveedor.ValueMember = "Id_Proveedor";
+                cmbProveedor.DataSource = proveedores.DefaultView;
+                cmbProveedor.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    Idioma.Texto("Msg_ErrorProveedores", "Error al cargar los proveedores: ") + ex.Message,
+                    Idioma.Texto("Titulo_Error", "Error"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void CargarCategorias()
@@ -105,9 +137,10 @@ namespace Vista
             txtStockActual.ReadOnly = !editando;
             txtStockMinimo.ReadOnly = !editando;
             cmbCategoria.Enabled = editando;
+            cmbProveedor.Enabled = editando;
 
-            // Mientras se edita no se puede elegir otro producto.
-            dgvProductos.Enabled = !editando;
+            // Mientras se edita no se puede elegir otro producto (la grilla sigue habilitada
+            // para poder desplazarla; los clics se ignoran en dgvProductos_CellClick).
             txtBuscar.Enabled = !editando;
 
             btnNuevo.Visible = modo == Modo.Consulta;
@@ -115,6 +148,11 @@ namespace Vista
             btnGuardar.Visible = modo == Modo.Agregando;
             btnConfirmar.Visible = modo == Modo.Modificando;
             btnCancelarEdicion.Visible = editando;
+
+            // Inactivar (rojo) si el producto está activo; Activar (verde) si está dado de baja.
+            btnEstadoProducto.Visible = modo == Modo.Consulta && idProductoSeleccionado != 0;
+            btnEstadoProducto.Text = productoActivo ? Idioma.Texto("Btn_Inactivar", "Inactivar") : Idioma.Texto("Btn_Activar", "Activar");
+            btnEstadoProducto.BackColor = productoActivo ? ROJO : VERDE;
 
             if (modo == Modo.Agregando)
             {
@@ -143,6 +181,7 @@ namespace Vista
         private void LimpiarControles()
         {
             idProductoSeleccionado = 0;
+            productoActivo = true;
 
             txtNombreProducto.Clear();
             txtDescripcion.Clear();
@@ -151,6 +190,7 @@ namespace Vista
             txtStockMinimo.Clear();
 
             cmbCategoria.SelectedIndex = -1;
+            cmbProveedor.SelectedIndex = -1;
 
             dgvProductos.ClearSelection();
             AplicarModoProducto(Modo.Consulta);
@@ -162,36 +202,7 @@ namespace Vista
 
             try
             {
-                decimal.TryParse(
-                    txtPrecioVenta.Text.Trim(),
-                    out decimal venta
-                );
-
-                int.TryParse(
-                    txtStockActual.Text.Trim(),
-                    out int stockAct
-                );
-
-                int.TryParse(
-                    txtStockMinimo.Text.Trim(),
-                    out int stockMin
-                );
-
-                int idCat = cmbCategoria.SelectedValue != null
-                    ? Convert.ToInt32(cmbCategoria.SelectedValue)
-                    : 0;
-
-                Producto prod = new Producto()
-                {
-                    Nombre_Producto = txtNombreProducto.Text.Trim(),
-                    Descripcion = txtDescripcion.Text.Trim(),
-                    Id_Categoria = idCat,
-                    Precio_Venta = venta,
-                    Stock_Actual = stockAct,
-                    Stock_Minimo = stockMin,
-                    Es_Repuesto = false,
-                    Activo = true
-                };
+                Producto prod = LeerProducto();
 
                 GestorProducto gestor = new GestorProducto();
 
@@ -250,37 +261,7 @@ namespace Vista
 
             try
             {
-                decimal.TryParse(
-                    txtPrecioVenta.Text.Trim(),
-                    out decimal venta
-                );
-
-                int.TryParse(
-                    txtStockActual.Text.Trim(),
-                    out int stockAct
-                );
-
-                int.TryParse(
-                    txtStockMinimo.Text.Trim(),
-                    out int stockMin
-                );
-
-                int idCat = cmbCategoria.SelectedValue != null
-                    ? Convert.ToInt32(cmbCategoria.SelectedValue)
-                    : 0;
-
-                Producto prod = new Producto()
-                {
-                    Id_Producto = idProductoSeleccionado,
-                    Nombre_Producto = txtNombreProducto.Text.Trim(),
-                    Descripcion = txtDescripcion.Text.Trim(),
-                    Id_Categoria = idCat,
-                    Precio_Venta = venta,
-                    Stock_Actual = stockAct,
-                    Stock_Minimo = stockMin,
-                    Es_Repuesto = false,
-                    Activo = true
-                };
+                Producto prod = LeerProducto();
 
                 GestorProducto gestor = new GestorProducto();
 
@@ -304,8 +285,9 @@ namespace Vista
 
         private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Escudo protector contra clics en los encabezados de columna
-            if (e.RowIndex < 0)
+            // Escudo protector contra clics en los encabezados de columna.
+            // Mientras se agrega o modifica no se puede elegir otro producto.
+            if (e.RowIndex < 0 || modoProducto != Modo.Consulta)
             {
                 return;
             }
@@ -342,6 +324,8 @@ namespace Vista
                 ? fila.Cells["Stock_Minimo"].Value?.ToString() ?? "0"
                 : "0";
 
+            productoActivo = fila.Cells["Activo"].Value != DBNull.Value && Convert.ToBoolean(fila.Cells["Activo"].Value);
+
             if (fila.Cells["Id_Categoria"].Value != null && fila.Cells["Id_Categoria"].Value != DBNull.Value)
             {
                 cmbCategoria.SelectedValue = Convert.ToInt32(fila.Cells["Id_Categoria"].Value);
@@ -349,6 +333,13 @@ namespace Vista
             else
             {
                 cmbCategoria.SelectedIndex = -1;
+            }
+
+            // Proveedor asociado (si está dado de baja no figura en el combo y hay que elegir otro al modificar).
+            cmbProveedor.SelectedIndex = -1;
+            if (fila.Cells["Id_Proveedor"].Value != null && fila.Cells["Id_Proveedor"].Value != DBNull.Value)
+            {
+                cmbProveedor.SelectedValue = Convert.ToInt32(fila.Cells["Id_Proveedor"].Value);
             }
 
             AplicarModoProducto(Modo.Consulta);
@@ -388,6 +379,116 @@ namespace Vista
             this.Close();
         }
 
+        // Lee los campos del producto. Todos son obligatorios y los números tienen que ser números
+        // (antes un precio con letras se guardaba como 0 sin avisar).
+        private Producto LeerProducto()
+        {
+            if (cmbCategoria.SelectedValue == null)
+                throw new Exception(Idioma.Texto("Msg_FaltaCategoria", "Debe seleccionar una categoría."));
+
+            if (cmbProveedor.SelectedValue == null)
+                throw new Exception(Idioma.Texto("Msg_FaltaProveedor", "Debe seleccionar el proveedor del producto."));
+
+            if (cmbProveedor.SelectedItem is DataRowView proveedor && !Convert.ToBoolean(proveedor["Activo"]))
+                throw new Exception(Idioma.Texto("Msg_ProveedorDadoDeBaja", "El proveedor elegido está dado de baja. Elija un proveedor activo."));
+
+            if (string.IsNullOrWhiteSpace(txtNombreProducto.Text) || string.IsNullOrWhiteSpace(txtDescripcion.Text)
+                || string.IsNullOrWhiteSpace(txtPrecioVenta.Text) || string.IsNullOrWhiteSpace(txtStockActual.Text)
+                || string.IsNullOrWhiteSpace(txtStockMinimo.Text))
+                throw new Exception(Idioma.Texto("Msg_CamposObligatorios", "Todos los campos son obligatorios."));
+
+            if (!LeerPrecio(txtPrecioVenta.Text, out decimal precio))
+                throw new Exception(Idioma.Texto("Msg_PrecioInvalido", "El precio de venta debe ser un número (por ejemplo 15000 o 15000,50)."));
+
+            if (!int.TryParse(txtStockActual.Text.Trim(), out int stockActual))
+                throw new Exception(Idioma.Texto("Msg_StockActualInvalido", "El stock actual debe ser un número entero."));
+
+            if (!int.TryParse(txtStockMinimo.Text.Trim(), out int stockMinimo))
+                throw new Exception(Idioma.Texto("Msg_StockMinimoInvalido", "El stock mínimo debe ser un número entero."));
+
+            return new Producto()
+            {
+                Id_Producto = idProductoSeleccionado,
+                Nombre_Producto = txtNombreProducto.Text.Trim(),
+                Descripcion = txtDescripcion.Text.Trim(),
+                Id_Categoria = Convert.ToInt32(cmbCategoria.SelectedValue),
+                Id_Proveedor = Convert.ToInt32(cmbProveedor.SelectedValue),
+                Precio_Venta = precio,
+                Stock_Actual = stockActual,
+                Stock_Minimo = stockMinimo,
+                // Al modificar se mantiene el estado que tenía (un inactivo sigue inactivo).
+                Activo = modoProducto == Modo.Agregando || productoActivo
+            };
+        }
+
+        // Acepta el precio con coma o con punto decimal (15000,50 o 15000.50) y con punto de miles (15.000 o 15.000,50).
+        private static bool LeerPrecio(string texto, out decimal precio)
+        {
+            texto = texto.Trim().Replace("$", string.Empty).Replace(" ", string.Empty);
+
+            // Si hay coma, la coma es el decimal y los puntos son de miles (formato argentino).
+            if (texto.Contains(','))
+                return decimal.TryParse(texto, System.Globalization.NumberStyles.Number, new System.Globalization.CultureInfo("es-AR"), out precio);
+
+            // Un solo punto seguido de 1 o 2 dígitos es el decimal (15000.50); si no, los puntos son de miles (15.000).
+            int punto = texto.LastIndexOf('.');
+            bool puntoDecimal = punto >= 0 && texto.IndexOf('.') == punto && texto.Length - punto - 1 <= 2;
+
+            if (!puntoDecimal)
+                texto = texto.Replace(".", string.Empty);
+
+            return decimal.TryParse(texto, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out precio);
+        }
+
+        // Inactivar (baja lógica) o Activar, según el estado del producto elegido.
+        private void btnEstadoProducto_Click(object? sender, EventArgs e)
+        {
+            Mensajes.Limpiar(lblResultadoProducto);
+
+            if (idProductoSeleccionado == 0)
+                return;
+
+            try
+            {
+                GestorProducto gestor = new GestorProducto();
+                string mensaje;
+
+                if (productoActivo)
+                {
+                    DialogResult resultado = MessageBox.Show(
+                        Idioma.Texto("Msg_ConfirmarInactivarProducto", "¿Está seguro de que desea inactivar este producto? No se podrá vender ni comprar hasta que se vuelva a activar."),
+                        Idioma.Texto("Titulo_Confirmar", "Confirmar"),
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (resultado != DialogResult.Yes)
+                        return;
+
+                    gestor.InactivarProducto(idProductoSeleccionado);
+                    mensaje = Idioma.Texto("Msg_ProductoInactivado", "Producto inactivado correctamente.");
+                }
+                else
+                {
+                    gestor.ActivarProducto(idProductoSeleccionado);
+                    mensaje = Idioma.Texto("Msg_ProductoActivado", "Producto activado correctamente.");
+                }
+
+                CargarProductos();
+                LimpiarControles();
+                Mensajes.Exito(lblResultadoProducto, mensaje);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    Idioma.Texto("Titulo_Atencion", "Atención"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+        }
+
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             CargarProductos();
@@ -420,7 +521,18 @@ namespace Vista
 
         private void Grilla_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
-            Idioma.TraducirColumnas((DataGridView)sender!);
+            DataGridView grilla = (DataGridView)sender!;
+            Idioma.TraducirColumnas(grilla);
+
+            // Los productos dados de baja se ven en gris.
+            if (grilla == dgvProductos && grilla.Columns.Contains("Activo"))
+            {
+                foreach (DataGridViewRow fila in grilla.Rows)
+                {
+                    bool activo = fila.Cells["Activo"].Value != DBNull.Value && Convert.ToBoolean(fila.Cells["Activo"].Value);
+                    fila.DefaultCellStyle.ForeColor = activo ? grilla.DefaultCellStyle.ForeColor : GRIS;
+                }
+            }
         }
 
         // ---------------------------------------------
@@ -473,6 +585,7 @@ namespace Vista
         private void RefrescarCategorias()
         {
             CargarCategorias();
+            CargarProveedores();
             CargarProductos();
             LimpiarCategoria();
         }

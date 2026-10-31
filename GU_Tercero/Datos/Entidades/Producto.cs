@@ -18,7 +18,6 @@ namespace Datos.Entidades
         public decimal Precio_Venta { get; set; }
         public int Stock_Actual { get; set; }
         public int Stock_Minimo { get; set; }
-        public bool Es_Repuesto { get; set; }
         public bool Activo { get; set; }
 
         // Propiedad auxiliar para mostrar el nombre de la categoría en la grilla

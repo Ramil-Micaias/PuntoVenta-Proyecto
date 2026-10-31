@@ -7,6 +7,22 @@ namespace Datos
 {
     public class CompraDAO
     {
+        // Productos activos con su precio de venta y el proveedor que tienen asignado (sp_BuscarProductosCompra).
+        public DataTable BuscarProductosCompra()
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_BuscarProductosCompra", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                new SqlDataAdapter(cmd).Fill(tabla);
+            }
+
+            return tabla;
+        }
+
         public ResultadoOperacion RegistrarCompra(Compra compra)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -52,6 +68,19 @@ namespace Datos
                         cmdDetalle.Parameters.Add("@Cantidad", SqlDbType.Int).Value = item.Cantidad;
 
                         cmdDetalle.ExecuteNonQuery();
+                    }
+
+                    // 3. Registrar cada pago (puede ser uno solo o varios métodos)
+                    foreach (PagoCompra pago in compra.Pagos)
+                    {
+                        SqlCommand cmdPago = new SqlCommand("sp_RegistrarPagoCompra", conn, transaccion);
+                        cmdPago.CommandType = CommandType.StoredProcedure;
+
+                        cmdPago.Parameters.Add("@Id_Compra", SqlDbType.Int).Value = idCompraGenerado;
+                        cmdPago.Parameters.Add("@Id_MetodoPago", SqlDbType.Int).Value = pago.Id_MetodoPago;
+                        cmdPago.Parameters.Add("@Importe", SqlDbType.Decimal).Value = pago.Importe;
+
+                        cmdPago.ExecuteNonQuery();
                     }
 
                     // Confirmamos la transacción

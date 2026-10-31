@@ -97,6 +97,26 @@ AS
 BEGIN
     DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
+
+    -- Todo lo que entró: ventas con cualquier método de pago y los ingresos manuales.
+    RETURN
+        ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
+                WHERE Id_Caja = @Id_Caja AND Tipo = 'Ingreso'), 0)
+      + ISNULL((SELECT SUM(pv.Importe)
+                FROM PagoVenta pv
+                INNER JOIN Venta v ON v.Id_Venta = pv.Id_Venta
+                WHERE v.Anulada = 0
+                  AND v.Fecha_Venta >= @Desde AND v.Fecha_Venta < @Hasta), 0);
+END
+GO
+
+-- Lo que entró en efectivo (lo único que suma al saldo disponible de la caja).
+CREATE OR ALTER FUNCTION dbo.fn_IngresosEfectivoCaja(@Id_Caja INT)
+RETURNS DECIMAL(12,2)
+AS
+BEGIN
+    DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
+    DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
     -- De las ventas se cuenta solo la parte pagada en efectivo (puede ser un pago mixto).
@@ -115,16 +135,10 @@ CREATE OR ALTER FUNCTION dbo.fn_EgresosCaja(@Id_Caja INT)
 RETURNS DECIMAL(12,2)
 AS
 BEGIN
-    DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
-    DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
-    DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
-
-    RETURN
-        ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
-                WHERE Id_Caja = @Id_Caja AND Tipo = 'Egreso'), 0)
-      + ISNULL((SELECT SUM(Total) FROM Compra
-                WHERE Estado = 1 AND Id_MetodoPago = @IdEfectivo
-                  AND Fecha_Compra >= @Desde AND Fecha_Compra < @Hasta), 0);
+    -- Solo los egresos registrados en la caja. Las compras a proveedores no se descuentan solas:
+    -- si se pagan con plata de la caja se registra el egreso desde "Registrar Movimiento".
+    RETURN ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
+                   WHERE Id_Caja = @Id_Caja AND Tipo = 'Egreso'), 0);
 END
 GO
 
@@ -137,7 +151,8 @@ BEGIN
     IF @SaldoInicial IS NULL
         RETURN 0;
 
-    RETURN @SaldoInicial + dbo.fn_IngresosCaja(@Id_Caja) - dbo.fn_EgresosCaja(@Id_Caja);
+    -- Saldo disponible = efectivo de la caja: lo pagado con otros métodos no está en la caja.
+    RETURN @SaldoInicial + dbo.fn_IngresosEfectivoCaja(@Id_Caja) - dbo.fn_EgresosCaja(@Id_Caja);
 END
 GO
 
@@ -186,8 +201,9 @@ BEGIN
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
-    -- Se listan todas las ventas y compras del período con su medio de pago.
-    -- Solo las de "Efectivo" (y los movimientos manuales) suman o restan al saldo de la caja.
+    -- Se listan las ventas del período con su medio de pago y los movimientos manuales.
+    -- Todas las ventas son ingresos, pero solo las de "Efectivo" suman al saldo disponible.
+    -- Las compras a proveedores no son movimientos de la caja.
     SELECT Fecha, Tipo, Origen, Medio, Motivo, Importe, Usuario
     FROM (
         SELECT
@@ -220,22 +236,6 @@ BEGIN
         WHERE v.Anulada = 0
           AND v.Fecha_Venta >= @Desde AND v.Fecha_Venta < @Hasta
 
-        UNION ALL
-
-        SELECT
-            c.Fecha_Compra,
-            'Egreso',
-            'Compra',
-            mp.Nombre,
-            'Compra ' + ISNULL(c.Numero_Comprobante, '') +
-                CASE WHEN c.Id_MetodoPago = @IdEfectivo THEN '' ELSE ' (no resta al efectivo)' END,
-            c.Total,
-            u.Nombre_Usuario
-        FROM Compra c
-        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = c.Id_MetodoPago
-        INNER JOIN Usuario u ON u.Id_Usuario = c.Id_Usuario
-        WHERE c.Estado = 1
-          AND c.Fecha_Compra >= @Desde AND c.Fecha_Compra < @Hasta
     ) movimientos
     ORDER BY Fecha DESC;
 END
@@ -545,16 +545,17 @@ BEGIN
 
         SELECT
             c.Fecha_Compra,
-            'Egreso',
+            'Compra',
             'Compra',
             c.Numero_Comprobante,
             mp.Nombre,
-            'Compra a ' + pr.Razon_Social,
-            c.Total,
+            'Compra a ' + pr.Razon_Social + ' (no afecta la caja)',
+            pc.Importe,
             u.Nombre_Usuario,
-            c.Id_MetodoPago
-        FROM Compra c
-        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = c.Id_MetodoPago
+            pc.Id_MetodoPago
+        FROM PagoCompra pc
+        INNER JOIN Compra c ON c.Id_Compra = pc.Id_Compra
+        INNER JOIN MetodoPago mp ON mp.Id_MetodoPago = pc.Id_MetodoPago
         INNER JOIN Proveedor pr ON pr.Id_Proveedor = c.Id_Proveedor
         INNER JOIN Usuario u ON u.Id_Usuario = c.Id_Usuario
         WHERE c.Estado = 1

@@ -137,5 +137,21 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+
+        // Vuelve a activar un proveedor dado de baja (sp_ReactivarProveedor).
+        public void ReactivarProveedor(int idProveedor)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ReactivarProveedor", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Id_Proveedor", SqlDbType.Int)
+                    .Value = idProveedor;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

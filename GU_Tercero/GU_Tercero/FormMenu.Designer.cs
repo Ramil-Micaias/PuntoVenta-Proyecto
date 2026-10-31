@@ -30,7 +30,6 @@ namespace GU_Tercero
         {
             menuStrip1 = new MenuStrip();
             gestionDeUsuariosToolStripMenuItem = new ToolStripMenuItem();
-            usuariosToolStripMenuItem = new ToolStripMenuItem();
             productoYStockToolStripMenuItem = new ToolStripMenuItem();
             productosToolStripMenuItem = new ToolStripMenuItem();
             consultaStockToolStripMenuItem = new ToolStripMenuItem();
@@ -44,6 +43,7 @@ namespace GU_Tercero
             cajaToolStripMenuItem = new ToolStripMenuItem();
             tallerToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
+            bitacoraToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
             picLogoMenu = new PictureBox();
@@ -65,7 +65,7 @@ namespace GU_Tercero
             // 
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, bitacoraToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1000, 24);
@@ -74,17 +74,12 @@ namespace GU_Tercero
             // 
             // gestionDeUsuariosToolStripMenuItem
             // 
-            gestionDeUsuariosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { usuariosToolStripMenuItem });
             gestionDeUsuariosToolStripMenuItem.Name = "gestionDeUsuariosToolStripMenuItem";
             gestionDeUsuariosToolStripMenuItem.Size = new Size(125, 20);
             gestionDeUsuariosToolStripMenuItem.Text = "Gestion de Usuarios";
+            gestionDeUsuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
-            // usuariosToolStripMenuItem
             // 
-            usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            usuariosToolStripMenuItem.Size = new Size(121, 22);
-            usuariosToolStripMenuItem.Text = "Usuarios";
-            usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
             // productoYStockToolStripMenuItem
             // 
@@ -176,6 +171,13 @@ namespace GU_Tercero
             clientesToolStripMenuItem.Size = new Size(70, 20);
             clientesToolStripMenuItem.Text = "Clientes";
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
+            //
+            // bitacoraToolStripMenuItem
+            //
+            bitacoraToolStripMenuItem.Name = "bitacoraToolStripMenuItem";
+            bitacoraToolStripMenuItem.Size = new Size(64, 20);
+            bitacoraToolStripMenuItem.Text = "Bitácora";
+            bitacoraToolStripMenuItem.Click += bitacoraToolStripMenuItem_Click;
             // 
             // lblBienvenido
             // 
@@ -359,7 +361,6 @@ namespace GU_Tercero
         private ToolStripMenuItem cerrarSesionToolStripMenuItem;
         private Label lblBienvenido;
         private Label lblNombreUsuario;
-        private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem configuraciónDelSistemaToolStripMenuItem;
         private ToolStripMenuItem productoYStockToolStripMenuItem;
         private ToolStripMenuItem productosToolStripMenuItem;
@@ -371,6 +372,7 @@ namespace GU_Tercero
         private ToolStripMenuItem cajaToolStripMenuItem;
         private ToolStripMenuItem tallerToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
+        private ToolStripMenuItem bitacoraToolStripMenuItem;
         private ToolStripMenuItem miPerfilToolStripMenuItem;
         private Label lblResumen;
         private TableLayoutPanel tlpPaneles;

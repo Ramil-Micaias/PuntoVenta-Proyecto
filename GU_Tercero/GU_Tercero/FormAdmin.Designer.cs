@@ -33,13 +33,12 @@ namespace GU_Tercero
             dgvUsuarios = new DataGridView();
             grpDatos = new GroupBox();
             btnVolver = new Button();
+            btnCancelar = new Button();
             txtResultado = new TextBox();
             btnEliminar = new Button();
             btnModificar = new Button();
             btnGuardar = new Button();
             btnNuevo = new Button();
-            chkBloqueado = new CheckBox();
-            chkActivo = new CheckBox();
             cmbRol = new ComboBox();
             lblRol = new Label();
             txtNombreUsuario = new TextBox();
@@ -93,12 +92,11 @@ namespace GU_Tercero
             grpDatos.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpDatos.Controls.Add(txtResultado);
             grpDatos.Controls.Add(btnVolver);
+            grpDatos.Controls.Add(btnCancelar);
             grpDatos.Controls.Add(btnEliminar);
             grpDatos.Controls.Add(btnModificar);
             grpDatos.Controls.Add(btnGuardar);
             grpDatos.Controls.Add(btnNuevo);
-            grpDatos.Controls.Add(chkBloqueado);
-            grpDatos.Controls.Add(chkActivo);
             grpDatos.Controls.Add(cmbRol);
             grpDatos.Controls.Add(lblRol);
             grpDatos.Controls.Add(txtNombreUsuario);
@@ -136,6 +134,23 @@ namespace GU_Tercero
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += btnVolver_Click;
             //
+            // btnCancelar
+            //
+            btnCancelar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(706, 136);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(146, 32);
+            btnCancelar.TabIndex = 14;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
+            btnCancelar.Visible = false;
+            btnCancelar.Click += btnCancelar_Click;
+            //
             // btnEliminar
             //
             btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -148,7 +163,7 @@ namespace GU_Tercero
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(146, 32);
             btnEliminar.TabIndex = 12;
-            btnEliminar.Text = "Eliminar";
+            btnEliminar.Text = "Inactivar";
             btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click_1;
             //
@@ -200,32 +215,6 @@ namespace GU_Tercero
             btnNuevo.UseVisualStyleBackColor = false;
             btnNuevo.Click += btnNuevo_Click;
             //
-            // chkBloqueado
-            //
-            chkBloqueado.AutoSize = true;
-            chkBloqueado.Font = new Font("Segoe UI", 9.5F);
-            chkBloqueado.ForeColor = Color.FromArgb(30, 41, 59);
-            chkBloqueado.Location = new Point(220, 158);
-            chkBloqueado.Name = "chkBloqueado";
-            chkBloqueado.Size = new Size(87, 21);
-            chkBloqueado.TabIndex = 8;
-            chkBloqueado.Text = "Bloqueado";
-            chkBloqueado.UseVisualStyleBackColor = true;
-            //
-            // chkActivo
-            //
-            chkActivo.AutoSize = true;
-            chkActivo.Checked = true;
-            chkActivo.CheckState = CheckState.Checked;
-            chkActivo.Font = new Font("Segoe UI", 9.5F);
-            chkActivo.ForeColor = Color.FromArgb(30, 41, 59);
-            chkActivo.Location = new Point(130, 158);
-            chkActivo.Name = "chkActivo";
-            chkActivo.Size = new Size(61, 21);
-            chkActivo.TabIndex = 7;
-            chkActivo.Text = "Activo";
-            chkActivo.UseVisualStyleBackColor = true;
-            //
             // cmbRol
             //
             cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -251,6 +240,7 @@ namespace GU_Tercero
             //
             txtNombreUsuario.Font = new Font("Segoe UI", 9.5F);
             txtNombreUsuario.Location = new Point(130, 106);
+            txtNombreUsuario.MaxLength = 50;
             txtNombreUsuario.Name = "txtNombreUsuario";
             txtNombreUsuario.PlaceholderText = "Ej: jperez";
             txtNombreUsuario.Size = new Size(200, 24);
@@ -271,6 +261,7 @@ namespace GU_Tercero
             //
             txtCorreo.Font = new Font("Segoe UI", 9.5F);
             txtCorreo.Location = new Point(470, 68);
+            txtCorreo.MaxLength = 150;
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: usuario@correo.com";
             txtCorreo.Size = new Size(200, 24);
@@ -291,6 +282,7 @@ namespace GU_Tercero
             //
             txtDni.Font = new Font("Segoe UI", 9.5F);
             txtDni.Location = new Point(130, 68);
+            txtDni.MaxLength = 8;
             txtDni.Name = "txtDni";
             txtDni.PlaceholderText = "Sin puntos. Ej: 30123456";
             txtDni.Size = new Size(200, 24);
@@ -311,6 +303,7 @@ namespace GU_Tercero
             //
             txtNombre.Font = new Font("Segoe UI", 9.5F);
             txtNombre.Location = new Point(470, 30);
+            txtNombre.MaxLength = 50;
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Juan";
             txtNombre.Size = new Size(200, 24);
@@ -331,6 +324,7 @@ namespace GU_Tercero
             //
             txtApellido.Font = new Font("Segoe UI", 9.5F);
             txtApellido.Location = new Point(130, 30);
+            txtApellido.MaxLength = 50;
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Pérez";
             txtApellido.Size = new Size(200, 24);
@@ -396,8 +390,7 @@ namespace GU_Tercero
         private Button btnModificar;
         private Button btnEliminar;
         private Button btnVolver;
-        private CheckBox chkActivo;
-        private CheckBox chkBloqueado;
+        private Button btnCancelar;
         private ComboBox cmbRol;
         private Label lblRol;
         private TextBox txtNombreUsuario;

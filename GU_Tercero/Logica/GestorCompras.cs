@@ -15,7 +15,17 @@ namespace Logica
         public ResultadoOperacion RegistrarCompra(Compra compra)
         {
             ValidarCompra(compra);
-            return compraDAO.RegistrarCompra(compra);
+            ResultadoOperacion resultado = compraDAO.RegistrarCompra(compra);
+
+            GestorBitacora.Registrar(GestorBitacora.COMPRAS, "Compra " + resultado.Comprobante + ".", GestorBitacora.INFORMATIVA, null,
+                new System.Collections.Generic.Dictionary<string, object?>
+                {
+                    ["Comprobante"] = resultado.Comprobante,
+                    ["Productos"] = compra.Detalles.Count,
+                    ["Total"] = resultado.Total,
+                });
+
+            return resultado;
         }
 
         public DataTable ObtenerMetodosPago()
@@ -28,9 +38,30 @@ namespace Logica
             return proveedoresDAO.ObtenerProveedores();
         }
 
-        public DataTable BuscarProductos(string filtro, int? idCategoria)
+        // Productos que se pueden comprar, con su precio de venta y su proveedor asignado.
+        public DataTable BuscarProductos()
         {
-            return productoDAO.BuscarProductosPOS(filtro, idCategoria);
+            return compraDAO.BuscarProductosCompra();
+        }
+
+        // Controles de cada renglón antes de agregarlo a la compra. Devuelve el mensaje de error o null si está bien.
+        // El proveedor de la compra es el del primer producto: todos los demás tienen que ser del mismo.
+        public static string? ValidarRenglon(DataRow producto, decimal costo, int idProveedorCompra)
+        {
+            if (producto["Id_Proveedor"] == DBNull.Value)
+                return "El producto " + producto["Producto"] + " no tiene proveedor asignado. Asígnelo en Producto y Stock > Productos y Categorías.";
+
+            if (!Convert.ToBoolean(producto["Proveedor_Activo"]))
+                return "El proveedor de " + producto["Producto"] + " (" + producto["Proveedor"] + ") está dado de baja.";
+
+            if (idProveedorCompra > 0 && Convert.ToInt32(producto["Id_Proveedor"]) != idProveedorCompra)
+                return "La compra es a un solo proveedor. " + producto["Producto"] + " es de " + producto["Proveedor"] + ": regístrelo en otra compra.";
+
+            decimal precioVenta = Convert.ToDecimal(producto["Precio_Venta"]);
+            if (costo > precioVenta)
+                return "El costo unitario ($" + costo.ToString("N2") + ") no puede ser mayor al precio de venta del producto ($" + precioVenta.ToString("N2") + ").";
+
+            return null;
         }
 
         private void ValidarCompra(Compra compra)
@@ -64,6 +95,22 @@ namespace Logica
 
             if (compra.Subtotal <= 0)
                 throw new Exception("El total de la compra debe ser mayor a cero.");
+
+            // Pagos: uno o varios métodos, cada uno mayor a cero, que sumen exactamente el total.
+            if (compra.Pagos.Count == 0)
+                throw new Exception("Debe indicar cómo se paga la compra.");
+
+            foreach (PagoCompra pago in compra.Pagos)
+            {
+                if (pago.Id_MetodoPago <= 0)
+                    throw new Exception("Hay un pago sin método de pago.");
+
+                if (pago.Importe <= 0)
+                    throw new Exception("El importe de cada pago debe ser mayor a cero.");
+            }
+
+            if (compra.TotalPagos != compra.Total)
+                throw new Exception("La suma de los pagos ($" + compra.TotalPagos.ToString("N2") + ") no coincide con el total de la compra ($" + compra.Total.ToString("N2") + ").");
         }
     }
 }

@@ -549,9 +549,11 @@ namespace Vista
             {
                 ResultadoOperacion resultado = gestorTaller.GuardarOrden(orden);
 
-                MensajeResultado =
-                    "Orden " + resultado.Comprobante + " guardada correctamente. Total del presupuesto: " +
-                    FormatoMoneda(resultado.Total);
+                // Una orden cancelada no tiene presupuesto que informar.
+                MensajeResultado = cmbEstado.Text == "Cancelado"
+                    ? "Orden " + resultado.Comprobante + " cancelada correctamente."
+                    : "Orden " + resultado.Comprobante + " guardada correctamente. Total del presupuesto: " +
+                      FormatoMoneda(resultado.Total);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

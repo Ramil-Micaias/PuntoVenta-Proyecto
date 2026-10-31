@@ -22,7 +22,12 @@ namespace Logica
         // Guarda la configuración modificada por el administrador.
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
+            var antes = GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion());
+
             configuracionDAO.GuardarConfiguracion(configuracion);
+
+            GestorBitacora.RegistrarCambios(GestorBitacora.CONFIGURACION, "Cambio en la configuración del sistema.",
+                GestorBitacora.CRITICA, antes, GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion()));
         }
 
         //Este método valida que la contraseña cumpla con las políticas de seguridad configuradas.
