@@ -32,6 +32,24 @@ WHERE c.Total > 0
 GO
 
 
+-- Una compra puede tener productos de varios proveedores: cada renglón guarda el suyo.
+-- Las compras anteriores eran de un solo proveedor: se completa con el de la compra.
+IF COL_LENGTH('DetalleCompra', 'Id_Proveedor') IS NULL
+BEGIN
+    ALTER TABLE DetalleCompra ADD Id_Proveedor INT NULL;
+    ALTER TABLE DetalleCompra ADD CONSTRAINT FK_DetalleCompra_Proveedor
+        FOREIGN KEY (Id_Proveedor) REFERENCES Proveedor(Id_Proveedor);
+END
+GO
+
+UPDATE d
+SET d.Id_Proveedor = c.Id_Proveedor
+FROM DetalleCompra d
+INNER JOIN Compra c ON c.Id_Compra = d.Id_Compra
+WHERE d.Id_Proveedor IS NULL;
+GO
+
+
 -- 1. SP PARA REGISTRAR LA CABECERA DE COMPRA
 CREATE OR ALTER PROCEDURE sp_RegistrarCompra
     @Numero_Comprobante VARCHAR(50) = NULL,
@@ -120,23 +138,25 @@ BEGIN
         RETURN;
     END
 
-    -- El producto tiene que ser del proveedor de la compra (el que tiene asignado en Productos).
-    IF NOT EXISTS (
-        SELECT 1
+    -- El producto tiene que tener asignado un proveedor activo (en Productos); ese es el proveedor del renglón.
+    DECLARE @Id_Proveedor INT = (
+        SELECT TOP 1 pp.Id_Proveedor
         FROM ProductoProveedor pp
-        INNER JOIN Compra c ON c.Id_Proveedor = pp.Id_Proveedor
-        WHERE c.Id_Compra = @Id_Compra
-          AND pp.Id_Producto = @Id_Producto
+        INNER JOIN Proveedor pr ON pr.Id_Proveedor = pp.Id_Proveedor AND pr.Activo = 1
+        WHERE pp.Id_Producto = @Id_Producto
           AND pp.Activo = 1
-    )
+        ORDER BY pp.Id_ProductoProveedor DESC
+    );
+
+    IF @Id_Proveedor IS NULL
     BEGIN
-        RAISERROR('El producto %s no corresponde al proveedor de la compra.', 16, 1, @Nombre);
+        RAISERROR('El producto %s no tiene asignado un proveedor activo.', 16, 1, @Nombre);
         RETURN;
     END
 
-    -- 1. Insertar el ítem en la tabla DetalleCompra
-    INSERT INTO DetalleCompra (Id_Compra, Id_Producto, Cantidad, Precio_Costo_Unitario)
-    VALUES (@Id_Compra, @Id_Producto, @Cantidad, @Precio_Costo_Unitario);
+    -- 1. Insertar el ítem en la tabla DetalleCompra (con el proveedor del producto)
+    INSERT INTO DetalleCompra (Id_Compra, Id_Producto, Cantidad, Precio_Costo_Unitario, Id_Proveedor)
+    VALUES (@Id_Compra, @Id_Producto, @Cantidad, @Precio_Costo_Unitario, @Id_Proveedor);
 
     -- 2. Incrementar el stock del producto y actualizar su precio de costo
     UPDATE Producto 

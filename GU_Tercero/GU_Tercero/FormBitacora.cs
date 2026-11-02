@@ -7,13 +7,10 @@ using System.Windows.Forms;
 namespace Vista
 {
     // Consulta de la bitácora del sistema (CU19). Solo la ven los usuarios con el
-    // permiso VER_BITACORA. Es de solo lectura: muestra quién hizo cada operación,
-    // cuándo, su criticidad y el estado anterior y posterior de lo que se cambió.
+    // permiso VER_BITACORA. Una sola grilla con todos los movimientos, del más nuevo
+    // al más viejo: quién hizo cada operación, cuándo, su criticidad y qué cambió.
     public partial class FormBitacora : Form
     {
-        private const string TODAS = "Todas";
-        private const string TODOS = "Todos";
-
         private static readonly Color ROJO = Color.FromArgb(185, 28, 28);
         private static readonly Color NARANJA = Color.FromArgb(180, 83, 9);
 
@@ -22,47 +19,33 @@ namespace Vista
             InitializeComponent();
 
             this.Load += FormBitacora_Load;
-            this.btnBuscar.Click += btnBuscar_Click;
             this.btnVolver.Click += btnVolver_Click;
-            this.txtTexto.KeyDown += txtTexto_KeyDown;
-            this.dgvBitacora.SelectionChanged += dgvBitacora_SelectionChanged;
             this.dgvBitacora.DataBindingComplete += dgvBitacora_DataBindingComplete;
         }
 
         private void FormBitacora_Load(object? sender, EventArgs e)
         {
             Grillas.Configurar(dgvBitacora);
-
-            cmbCriticidad.Items.Add(TODAS);
-            cmbCriticidad.Items.AddRange(GestorBitacora.CRITICIDADES);
-            cmbCriticidad.SelectedIndex = 0;
-
-            cmbModulo.Items.Add(TODOS);
-            cmbModulo.Items.AddRange(GestorBitacora.MODULOS);
-            cmbModulo.SelectedIndex = 0;
-
-            // Por defecto, la última semana.
-            dtpDesde.Value = DateTime.Today.AddDays(-7);
-            dtpHasta.Value = DateTime.Today;
-
-            Buscar();
+            CargarMovimientos();
         }
 
-        private void Buscar()
+        private void CargarMovimientos()
         {
             try
             {
-                string? criticidad = cmbCriticidad.Text == TODAS ? null : cmbCriticidad.Text;
-                string? modulo = cmbModulo.Text == TODOS ? null : cmbModulo.Text;
+                DataTable movimientos = GestorBitacora.ListarTodo();
 
-                DataTable operaciones = GestorBitacora.Listar(dtpDesde.Value, dtpHasta.Value, criticidad, modulo, txtTexto.Text);
-                dgvBitacora.DataSource = operaciones;
+                // El estado anterior y el posterior se muestran como texto ("Rol: Tecnico").
+                movimientos.Columns.Add("Antes", typeof(string));
+                movimientos.Columns.Add("Despues", typeof(string));
+                foreach (DataRow fila in movimientos.Rows)
+                {
+                    fila["Antes"] = GestorBitacora.TextoEstado(fila["Estado_Anterior"] as string);
+                    fila["Despues"] = GestorBitacora.TextoEstado(fila["Estado_Posterior"] as string);
+                }
 
-                lblCantidad.Text = operaciones.Rows.Count == 0
-                    ? "No se encontraron operaciones para los filtros elegidos."
-                    : "Operaciones encontradas: " + operaciones.Rows.Count;
-
-                MostrarEstados();
+                dgvBitacora.DataSource = movimientos;
+                lblCantidad.Text = "Movimientos: " + movimientos.Rows.Count;
             }
             catch (Exception ex)
             {
@@ -70,40 +53,27 @@ namespace Vista
             }
         }
 
-        // Títulos y colores de la grilla: las operaciones críticas en rojo y las advertencias en naranja.
+        // Títulos, anchos y colores: las operaciones críticas en rojo y las advertencias en naranja.
         private void dgvBitacora_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
-            string[] ocultas = { "Id_Bitacora", "Estado_Anterior", "Estado_Posterior" };
-            foreach (string columna in ocultas)
+            foreach (string columna in new[] { "Id_Bitacora", "Estado_Anterior", "Estado_Posterior" })
             {
                 if (dgvBitacora.Columns.Contains(columna))
                     dgvBitacora.Columns[columna].Visible = false;
             }
 
-            if (dgvBitacora.Columns.Contains("Fecha_Hora"))
-            {
-                dgvBitacora.Columns["Fecha_Hora"].HeaderText = "Fecha y hora";
-                dgvBitacora.Columns["Fecha_Hora"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm:ss";
-            }
-
-            if (dgvBitacora.Columns.Contains("Apellido_Nombre"))
-                dgvBitacora.Columns["Apellido_Nombre"].HeaderText = "Apellido y nombre";
-
-            if (dgvBitacora.Columns.Contains("Modulo"))
-                dgvBitacora.Columns["Modulo"].HeaderText = "Módulo";
-
-            // La Operación es la columna más ancha (la grilla reparte el ancho según este peso).
-            if (dgvBitacora.Columns.Contains("Operacion"))
-            {
-                dgvBitacora.Columns["Operacion"].HeaderText = "Operación";
-                dgvBitacora.Columns["Operacion"].FillWeight = 260;
-            }
+            Columna("Fecha_Hora", "Fecha y hora", 120);
+            Columna("Usuario", "Usuario", 80);
+            Columna("Apellido_Nombre", "Apellido y nombre", 130);
+            Columna("Rol", "Rol", 90);
+            Columna("Modulo", "Módulo", 90);
+            Columna("Operacion", "Operación", 230);
+            Columna("Criticidad", "Criticidad", 85);
+            Columna("Antes", "Antes", 150);
+            Columna("Despues", "Después", 150);
 
             if (dgvBitacora.Columns.Contains("Fecha_Hora"))
-                dgvBitacora.Columns["Fecha_Hora"].FillWeight = 140;
-
-            if (dgvBitacora.Columns.Contains("Apellido_Nombre"))
-                dgvBitacora.Columns["Apellido_Nombre"].FillWeight = 140;
+                dgvBitacora.Columns["Fecha_Hora"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
 
             foreach (DataGridViewRow fila in dgvBitacora.Rows)
             {
@@ -114,45 +84,18 @@ namespace Vista
                 else if (criticidad == GestorBitacora.ADVERTENCIA)
                     fila.DefaultCellStyle.ForeColor = NARANJA;
             }
+
+            dgvBitacora.ClearSelection();
         }
 
-        private void dgvBitacora_SelectionChanged(object? sender, EventArgs e)
+        // La grilla reparte el ancho según el peso de cada columna.
+        private void Columna(string nombre, string titulo, int peso)
         {
-            MostrarEstados();
-        }
-
-        // Muestra el estado anterior y el posterior (JSON) de la operación elegida.
-        private void MostrarEstados()
-        {
-            if (dgvBitacora.CurrentRow == null || dgvBitacora.CurrentRow.DataBoundItem is not DataRowView fila)
-            {
-                txtAnterior.Clear();
-                txtPosterior.Clear();
+            if (!dgvBitacora.Columns.Contains(nombre))
                 return;
-            }
 
-            txtAnterior.Text = ConSaltos(GestorBitacora.FormatearJson(fila["Estado_Anterior"] as string));
-            txtPosterior.Text = ConSaltos(GestorBitacora.FormatearJson(fila["Estado_Posterior"] as string));
-        }
-
-        // El TextBox necesita saltos de línea de Windows.
-        private static string ConSaltos(string texto)
-        {
-            return texto.Replace("\r\n", "\n").Replace("\n", Environment.NewLine);
-        }
-
-        private void btnBuscar_Click(object? sender, EventArgs e)
-        {
-            Buscar();
-        }
-
-        private void txtTexto_KeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                Buscar();
-            }
+            dgvBitacora.Columns[nombre].HeaderText = titulo;
+            dgvBitacora.Columns[nombre].FillWeight = peso;
         }
 
         private void btnVolver_Click(object? sender, EventArgs e)

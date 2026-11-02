@@ -22,6 +22,29 @@ namespace Logica
 
         public int RegistrarCliente(string apellido, string nombre, string dni, string telefono)
         {
+            ValidarCliente(ref apellido, ref nombre, ref dni, ref telefono);
+
+            return tallerDAO.InsertarCliente(apellido, nombre, dni, telefono);
+        }
+
+        public DataTable ObtenerCliente(int idCliente)
+        {
+            return tallerDAO.ObtenerCliente(idCliente);
+        }
+
+        // Corrige los datos de un cliente (mismas reglas que el alta).
+        public void ModificarCliente(int idCliente, string apellido, string nombre, string dni, string telefono)
+        {
+            if (idCliente <= 0)
+                throw new Exception("Debe seleccionar un cliente.");
+
+            ValidarCliente(ref apellido, ref nombre, ref dni, ref telefono);
+
+            tallerDAO.ModificarCliente(idCliente, apellido, nombre, dni, telefono);
+        }
+
+        private static void ValidarCliente(ref string apellido, ref string nombre, ref string dni, ref string telefono)
+        {
             apellido = (apellido ?? string.Empty).Trim();
             nombre = (nombre ?? string.Empty).Trim();
             dni = (dni ?? string.Empty).Trim();
@@ -38,8 +61,6 @@ namespace Logica
 
             if (telefono.Length > 15)
                 throw new Exception("El teléfono no puede superar los 15 caracteres.");
-
-            return tallerDAO.InsertarCliente(apellido, nombre, dni, telefono);
         }
 
         public DataTable ObtenerEquipos(int idCliente)
@@ -138,8 +159,21 @@ namespace Logica
             if (orden.Costo_Mano_Obra < 0)
                 throw new Exception("La mano de obra no puede ser negativa.");
 
-            if (orden.Fecha_Prometida.HasValue && orden.Fecha_Prometida.Value.Date < DateTime.Today && orden.Id_Orden == 0)
-                throw new Exception("La fecha prometida no puede ser anterior a hoy.");
+            if (orden.Fecha_Prometida.HasValue)
+            {
+                // La fecha prometida no puede ser anterior al día en que se registró la orden (hoy, si es nueva).
+                DateTime registro = DateTime.Today;
+
+                if (orden.Id_Orden > 0)
+                {
+                    DataTable existente = tallerDAO.ObtenerOrden(orden.Id_Orden);
+                    if (existente.Rows.Count > 0 && existente.Rows[0]["Fecha_Ingreso"] != DBNull.Value)
+                        registro = Convert.ToDateTime(existente.Rows[0]["Fecha_Ingreso"]).Date;
+                }
+
+                if (orden.Fecha_Prometida.Value.Date < registro)
+                    throw new Exception("La fecha prometida no puede ser anterior a la fecha de registro de la orden (" + registro.ToString("dd/MM/yyyy") + ").");
+            }
 
             foreach (DetalleOrdenRepuesto item in orden.Repuestos)
             {

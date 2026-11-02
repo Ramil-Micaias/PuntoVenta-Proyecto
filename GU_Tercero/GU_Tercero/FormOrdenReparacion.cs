@@ -38,6 +38,7 @@ namespace Vista
             this.cmbCliente.SelectedIndexChanged += cmbCliente_SelectedIndexChanged;
             this.cmbRepuesto.SelectedIndexChanged += cmbRepuesto_SelectedIndexChanged;
             this.btnNuevoCliente.Click += btnNuevoCliente_Click;
+            this.btnEditarCliente.Click += btnEditarCliente_Click;
             this.btnNuevoEquipo.Click += btnNuevoEquipo_Click;
             this.btnAgregarRepuesto.Click += btnAgregarRepuesto_Click;
             this.btnQuitarRepuesto.Click += btnQuitarRepuesto_Click;
@@ -167,7 +168,6 @@ namespace Vista
         private void PrepararOrdenNueva()
         {
             lblTitulo.Text = "NUEVA ORDEN DE REPARACIÓN";
-            lblCu.Text = "CU05";
             lblRecepcion.Text = "Recibe: " + usuarioLogueado.Nombre_Usuario + "   |   Ingreso: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm");
 
             SeleccionarEstado("Ingresado");
@@ -178,6 +178,7 @@ namespace Vista
                 cmbTecnico.SelectedValue = usuarioLogueado.Id_Usuario;
             }
 
+            dtpPrometida.MinDate = DateTime.Today;
             dtpPrometida.Value = DateTime.Today.AddDays(3);
             dtpPrometida.Checked = false;
 
@@ -220,7 +221,6 @@ namespace Vista
             DataRow orden = datos.Rows[0];
 
             lblTitulo.Text = "ORDEN OR-" + idOrden.ToString("00000000");
-            lblCu.Text = "CU09";
             lblRecepcion.Text = "Recibió: " + Convert.ToString(orden["Recepcion"])
                 + "   |   Ingreso: " + Convert.ToDateTime(orden["Fecha_Ingreso"]).ToString("dd/MM/yyyy HH:mm");
 
@@ -254,9 +254,16 @@ namespace Vista
 
             cmbEstado.SelectedValue = Convert.ToInt32(orden["Id_Estado"]);
 
+            DateTime ingreso = Convert.ToDateTime(orden["Fecha_Ingreso"]).Date;
+            dtpPrometida.MinDate = ingreso;
+
             if (orden["Fecha_Prometida"] != DBNull.Value)
             {
-                dtpPrometida.Value = Convert.ToDateTime(orden["Fecha_Prometida"]);
+                DateTime prometida = Convert.ToDateTime(orden["Fecha_Prometida"]).Date;
+                if (prometida < ingreso)
+                    dtpPrometida.MinDate = prometida;
+
+                dtpPrometida.Value = prometida;
                 dtpPrometida.Checked = true;
             }
             else
@@ -269,10 +276,12 @@ namespace Vista
             txtDiagnostico.Text = Convert.ToString(orden["Diagnostico_Tecnico"]);
             txtManoObra.Text = Convert.ToDecimal(orden["Costo_Mano_Obra"]).ToString("0.##", CultureInfo.CurrentCulture);
 
-            // El cliente y el equipo no se cambian en una orden ya registrada.
+            // El cliente y el equipo no se cambian en una orden ya registrada
+            // (los datos del cliente sí se pueden corregir con "Editar").
             cmbCliente.Enabled = false;
             cmbEquipo.Enabled = false;
             btnNuevoCliente.Visible = false;
+            btnEditarCliente.Left = btnNuevoCliente.Left;
             btnNuevoEquipo.Visible = false;
 
             repuestosOriginales = gestorTaller.ObtenerRepuestosOrden(idOrden);
@@ -621,6 +630,41 @@ namespace Vista
                     cargando = false;
                     cmbCliente.SelectedValue = formCliente.IdClienteNuevo;
                     CargarEquipos();
+                }
+            }
+        }
+
+        // Corrige los datos del cliente elegido (apellido, nombre, DNI y teléfono).
+        private void btnEditarCliente_Click(object? sender, EventArgs e)
+        {
+            if (cmbCliente.SelectedValue == null || cmbCliente.SelectedIndex < 0)
+            {
+                MessageBox.Show(
+                    "Primero seleccione el cliente a modificar.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            int idCliente = Convert.ToInt32(cmbCliente.SelectedValue);
+
+            using (FormNuevoCliente formCliente = new FormNuevoCliente(idCliente))
+            {
+                if (formCliente.ShowDialog() == DialogResult.OK)
+                {
+                    // Se recarga la lista para ver el nombre corregido, sin perder el equipo elegido.
+                    object? equipo = cmbEquipo.SelectedValue;
+                    cargando = true;
+                    CargarClientes();
+                    cmbCliente.SelectedValue = idCliente;
+                    cargando = false;
+
+                    if (cmbEquipo.Items.Count == 0)
+                        CargarEquipos();
+                    if (equipo != null)
+                        cmbEquipo.SelectedValue = equipo;
                 }
             }
         }
