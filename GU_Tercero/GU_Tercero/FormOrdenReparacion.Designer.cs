@@ -18,12 +18,12 @@ namespace Vista
         private void InitializeComponent()
         {
             panelHeader = new Panel();
-            lblCu = new Label();
             lblTitulo = new Label();
             grpEquipo = new GroupBox();
             lblCliente = new Label();
             cmbCliente = new ComboBox();
             btnNuevoCliente = new Button();
+            btnEditarCliente = new Button();
             lblEquipo = new Label();
             cmbEquipo = new ComboBox();
             btnNuevoEquipo = new Button();
@@ -81,25 +81,12 @@ namespace Vista
             // panelHeader
             //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
-            panelHeader.Controls.Add(lblCu);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1000, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblCu
-            //
-            lblCu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblCu.AutoSize = true;
-            lblCu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblCu.ForeColor = Color.FromArgb(148, 163, 184);
-            lblCu.Location = new Point(937, 18);
-            lblCu.Name = "lblCu";
-            lblCu.Size = new Size(44, 19);
-            lblCu.TabIndex = 1;
-            lblCu.Text = "CU05";
             //
             // lblTitulo
             //
@@ -126,6 +113,7 @@ namespace Vista
             grpEquipo.Controls.Add(cmbEquipo);
             grpEquipo.Controls.Add(lblEquipo);
             grpEquipo.Controls.Add(btnNuevoCliente);
+            grpEquipo.Controls.Add(btnEditarCliente);
             grpEquipo.Controls.Add(cmbCliente);
             grpEquipo.Controls.Add(lblCliente);
             grpEquipo.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
@@ -155,7 +143,7 @@ namespace Vista
             cmbCliente.FormattingEnabled = true;
             cmbCliente.Location = new Point(100, 30);
             cmbCliente.Name = "cmbCliente";
-            cmbCliente.Size = new Size(300, 25);
+            cmbCliente.Size = new Size(226, 25);
             cmbCliente.TabIndex = 1;
             //
             // btnNuevoCliente
@@ -165,12 +153,26 @@ namespace Vista
             btnNuevoCliente.FlatStyle = FlatStyle.Flat;
             btnNuevoCliente.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             btnNuevoCliente.ForeColor = Color.White;
-            btnNuevoCliente.Location = new Point(408, 29);
+            btnNuevoCliente.Location = new Point(332, 29);
             btnNuevoCliente.Name = "btnNuevoCliente";
-            btnNuevoCliente.Size = new Size(90, 27);
+            btnNuevoCliente.Size = new Size(80, 27);
             btnNuevoCliente.TabIndex = 2;
             btnNuevoCliente.Text = "+ Nuevo";
             btnNuevoCliente.UseVisualStyleBackColor = false;
+            //
+            // btnEditarCliente
+            //
+            btnEditarCliente.BackColor = Color.FromArgb(100, 116, 139);
+            btnEditarCliente.FlatAppearance.BorderSize = 0;
+            btnEditarCliente.FlatStyle = FlatStyle.Flat;
+            btnEditarCliente.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnEditarCliente.ForeColor = Color.White;
+            btnEditarCliente.Location = new Point(418, 29);
+            btnEditarCliente.Name = "btnEditarCliente";
+            btnEditarCliente.Size = new Size(80, 27);
+            btnEditarCliente.TabIndex = 3;
+            btnEditarCliente.Text = "Editar";
+            btnEditarCliente.UseVisualStyleBackColor = false;
             //
             // lblEquipo
             //
@@ -701,12 +703,12 @@ namespace Vista
         #endregion
 
         private Panel panelHeader;
-        private Label lblCu;
         private Label lblTitulo;
         private GroupBox grpEquipo;
         private Label lblCliente;
         private ComboBox cmbCliente;
         private Button btnNuevoCliente;
+        private Button btnEditarCliente;
         private Label lblEquipo;
         private ComboBox cmbEquipo;
         private Button btnNuevoEquipo;

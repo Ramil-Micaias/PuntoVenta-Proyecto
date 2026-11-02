@@ -530,7 +530,12 @@ BEGIN
             'Venta' AS Origen,
             v.Numero_Factura AS Comprobante,
             mp.Nombre AS Medio,
-            'Venta' AS Detalle,
+            -- Los productos de la venta, uno por renglón dentro de la misma celda (ej: "Funda Silicona x2").
+            (SELECT STRING_AGG(p.Nombre_Producto + ' x' + CAST(dv.Cantidad AS NVARCHAR(10)), CHAR(13) + CHAR(10))
+                    WITHIN GROUP (ORDER BY dv.Id_DetalleVenta)
+             FROM DetalleVenta dv
+             INNER JOIN Producto p ON p.Id_Producto = dv.Id_Producto
+             WHERE dv.Id_Venta = v.Id_Venta) AS Detalle,
             pv.Importe,
             u.Nombre_Usuario AS Usuario,
             pv.Id_MetodoPago
@@ -549,7 +554,10 @@ BEGIN
             'Compra',
             c.Numero_Comprobante,
             mp.Nombre,
-            'Compra a ' + pr.Razon_Social + ' (no afecta la caja)',
+            'Compra a ' +
+                CASE WHEN (SELECT COUNT(DISTINCT d.Id_Proveedor) FROM DetalleCompra d WHERE d.Id_Compra = c.Id_Compra) > 1
+                     THEN 'varios proveedores'
+                     ELSE pr.Razon_Social END + ' (no afecta la caja)',
             pc.Importe,
             u.Nombre_Usuario,
             pc.Id_MetodoPago

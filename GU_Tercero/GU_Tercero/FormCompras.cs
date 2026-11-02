@@ -18,9 +18,6 @@ namespace Vista
         private Usuario? usuarioLogueado;
         private DataTable productos = new DataTable();
 
-        // Proveedor de la compra: lo define el primer producto agregado (0 = todavía ninguno).
-        private int idProveedorCompra = 0;
-
         public FormCompras()
         {
             InitializeComponent();
@@ -83,6 +80,8 @@ namespace Vista
             detalle.Columns.Add("Id_Producto", typeof(int));
             detalle.Columns.Add("Codigo", typeof(string));
             detalle.Columns.Add("Producto", typeof(string));
+            detalle.Columns.Add("Id_Proveedor", typeof(int));
+            detalle.Columns.Add("Proveedor", typeof(string));
             detalle.Columns.Add("Cantidad", typeof(int));
             detalle.Columns.Add("Precio_Costo_Unitario", typeof(decimal));
             detalle.Columns.Add("Subtotal", typeof(decimal));
@@ -91,10 +90,12 @@ namespace Vista
 
             OcultarColumna(dgvDetalle, "Id_Producto");
             OcultarColumna(dgvDetalle, "Codigo");
+            OcultarColumna(dgvDetalle, "Id_Proveedor");
             EncabezadoColumna(dgvDetalle, "Producto", "Producto", 1);
-            EncabezadoColumna(dgvDetalle, "Precio_Costo_Unitario", "Costo Unit.", 2, "0.##");
-            EncabezadoColumna(dgvDetalle, "Cantidad", "Cant.", 3);
-            EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 4, "0.##");
+            EncabezadoColumna(dgvDetalle, "Proveedor", "Proveedor", 2);
+            EncabezadoColumna(dgvDetalle, "Precio_Costo_Unitario", "Costo Unit.", 3, "0.##");
+            EncabezadoColumna(dgvDetalle, "Cantidad", "Cant.", 4);
+            EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 5, "0.##");
         }
 
         // Lista de pagos de la compra. Sin pagos agregados se paga todo con el método elegido.
@@ -283,7 +284,6 @@ namespace Vista
                 cmbProducto.DisplayMember = "Producto";
                 cmbProducto.ValueMember = "Id_Producto";
                 cmbProducto.DataSource = productos.DefaultView;
-                FiltrarProductosPorProveedor();
             }
             catch (Exception ex)
             {
@@ -334,19 +334,13 @@ namespace Vista
                 return;
             }
 
-            // Proveedor asignado al producto, un solo proveedor por compra y costo no mayor al precio de venta.
-            string? error = GestorCompras.ValidarRenglon(fila.Row, costo, idProveedorCompra);
+            // Proveedor activo asignado al producto y costo no mayor al precio de venta.
+            string? error = GestorCompras.ValidarRenglon(fila.Row, costo);
             if (error != null)
             {
                 MessageBox.Show(error, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtCosto.Focus();
                 return;
-            }
-
-            if (idProveedorCompra == 0)
-            {
-                idProveedorCompra = Convert.ToInt32(fila["Id_Proveedor"]);
-                FiltrarProductosPorProveedor();
             }
 
             int idProducto = Convert.ToInt32(fila["Id_Producto"]);
@@ -367,6 +361,8 @@ namespace Vista
                 nuevo["Id_Producto"] = idProducto;
                 nuevo["Codigo"] = Convert.ToString(fila["Codigo"]) ?? string.Empty;
                 nuevo["Producto"] = Convert.ToString(fila["Producto"]) ?? string.Empty;
+                nuevo["Id_Proveedor"] = Convert.ToInt32(fila["Id_Proveedor"]);
+                nuevo["Proveedor"] = Convert.ToString(fila["Proveedor"]) ?? string.Empty;
                 nuevo["Cantidad"] = cantidad;
                 nuevo["Precio_Costo_Unitario"] = costo;
                 nuevo["Subtotal"] = cantidad * costo;
@@ -402,14 +398,6 @@ namespace Vista
             if (dgvDetalle.CurrentRow.DataBoundItem is DataRowView vista)
             {
                 detalle.Rows.Remove(vista.Row);
-
-                // Sin productos en el detalle, la compra vuelve a quedar sin proveedor.
-                if (detalle.Rows.Count == 0)
-                {
-                    idProveedorCompra = 0;
-                    FiltrarProductosPorProveedor();
-                }
-
                 ActualizarTotal();
             }
         }
@@ -439,17 +427,6 @@ namespace Vista
             {
                 MessageBox.Show(
                     "Debe agregar al menos un producto al detalle de la compra.",
-                    "Atención",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            if (idProveedorCompra <= 0)
-            {
-                MessageBox.Show(
-                    "Debe seleccionar un proveedor.",
                     "Atención",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
@@ -495,7 +472,7 @@ namespace Vista
             Compra compra = new Compra
             {
                 Numero_Comprobante = null,
-                Id_Proveedor = idProveedorCompra,
+                Id_Proveedor = ProveedorPrincipal(),
                 Id_Usuario = usuarioLogueado.Id_Usuario,
                 Total = CalcularTotal(),
                 Fecha_Compra = DateTime.Now
@@ -579,8 +556,6 @@ namespace Vista
             txtImportePago.Clear();
             lblMensaje.Text = string.Empty;
 
-            idProveedorCompra = 0;
-            FiltrarProductosPorProveedor();
             MostrarProveedorDelProducto();
 
             cmbMetodoPago.SelectedIndex = -1;
@@ -654,18 +629,39 @@ namespace Vista
             return "$" + valor.ToString("0.##");
         }
 
-        // Con productos en el detalle solo se listan los del mismo proveedor (una compra es a un solo proveedor).
-        private void FiltrarProductosPorProveedor()
+        // La compra puede tener productos de varios proveedores. Como proveedor de la compra queda
+        // el del mayor importe; cada renglón del detalle guarda su propio proveedor.
+        private int ProveedorPrincipal()
         {
-            productos.DefaultView.RowFilter = idProveedorCompra > 0 ? "Id_Proveedor = " + idProveedorCompra : string.Empty;
+            var importes = new System.Collections.Generic.Dictionary<int, decimal>();
+
+            foreach (DataRow item in detalle.Rows)
+            {
+                int idProveedor = Convert.ToInt32(item["Id_Proveedor"]);
+                importes.TryGetValue(idProveedor, out decimal importe);
+                importes[idProveedor] = importe + Convert.ToDecimal(item["Subtotal"]);
+            }
+
+            int principal = 0;
+            decimal mayor = -1;
+            foreach (var proveedor in importes)
+            {
+                if (proveedor.Value > mayor)
+                {
+                    mayor = proveedor.Value;
+                    principal = proveedor.Key;
+                }
+            }
+
+            return principal;
         }
 
         // Muestra (sin dejar cambiarlo) el proveedor asignado al producto elegido.
         private void MostrarProveedorDelProducto()
         {
-            int idProveedor = idProveedorCompra;
+            int idProveedor = 0;
 
-            if (idProveedor == 0 && cmbProducto.SelectedItem is DataRowView fila && fila["Id_Proveedor"] != DBNull.Value)
+            if (cmbProducto.SelectedItem is DataRowView fila && fila["Id_Proveedor"] != DBNull.Value)
                 idProveedor = Convert.ToInt32(fila["Id_Proveedor"]);
 
             if (idProveedor > 0)

@@ -65,6 +65,42 @@ namespace Datos
         }
 
 
+        // Apellido, nombre, DNI y teléfono de un cliente (sp_ObtenerClienteTaller).
+        public DataTable ObtenerCliente(int idCliente)
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ObtenerClienteTaller", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = idCliente;
+
+                new SqlDataAdapter(cmd).Fill(tabla);
+            }
+
+            return tabla;
+        }
+
+        public void ModificarCliente(int idCliente, string apellido, string nombre, string dni, string? telefono)
+        {
+            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_ModificarClienteTaller", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = idCliente;
+                cmd.Parameters.Add("@Apellido", SqlDbType.NVarChar, 50).Value = apellido;
+                cmd.Parameters.Add("@Nombre", SqlDbType.NVarChar, 50).Value = nombre;
+                cmd.Parameters.Add("@DNI", SqlDbType.NVarChar, 20).Value = dni;
+                cmd.Parameters.Add("@Telefono", SqlDbType.NVarChar, 15).Value =
+                    string.IsNullOrWhiteSpace(telefono) ? DBNull.Value : telefono;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public DataTable ObtenerEquipos(int idCliente)
         {
             DataTable tabla = new DataTable();

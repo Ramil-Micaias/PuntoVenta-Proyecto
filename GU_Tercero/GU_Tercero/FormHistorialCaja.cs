@@ -196,6 +196,15 @@ namespace Vista
             FormatoColumna(dgvMovimientos, "Fecha", "Fecha y Hora", "dd/MM/yyyy HH:mm");
             FormatoColumna(dgvMovimientos, "Importe", "Importe", "N2");
 
+            // En las ventas se ven sus productos, uno debajo del otro en la misma celda; en los manuales, el motivo.
+            if (dgvMovimientos.Columns.Contains("Detalle"))
+            {
+                dgvMovimientos.Columns["Detalle"].HeaderText = "Productos / Motivo";
+                dgvMovimientos.Columns["Detalle"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dgvMovimientos.Columns["Detalle"].FillWeight = 200;
+                dgvMovimientos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            }
+
             if (filtrados.Rows.Count == 0)
             {
                 lblResumen.Text = "No hay ventas ni movimientos para el período o el filtro indicado.";

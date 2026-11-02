@@ -167,6 +167,9 @@ namespace Vista
                 cmbMetodoPago.DisplayMember = "Nombre";
                 cmbMetodoPago.ValueMember = "Id_MetodoPago";
                 cmbMetodoPago.DataSource = gestorVentas.ObtenerMetodosPago();
+
+                // Arranca vacío: el método de pago se elige siempre (no queda Efectivo por defecto).
+                cmbMetodoPago.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -544,7 +547,8 @@ namespace Vista
                 return;
             }
 
-            if (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value)
+            // Sin pagos agregados se cobra todo con el método del combo: tiene que estar elegido.
+            if (pagos.Rows.Count == 0 && (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value))
             {
                 MessageBox.Show(
                     "Debe seleccionar un método de pago.",
@@ -690,10 +694,7 @@ namespace Vista
                 cmbCategoria.SelectedIndex = 0;
             }
 
-            if (cmbMetodoPago.Items.Count > 0)
-            {
-                cmbMetodoPago.SelectedIndex = 0;
-            }
+            cmbMetodoPago.SelectedIndex = -1;
 
             ActualizarResumen();
             txtBuscar.Focus();

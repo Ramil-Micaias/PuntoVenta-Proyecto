@@ -157,6 +157,46 @@ namespace Logica
             return bitacoraDAO.Listar(desde, hasta, criticidad, modulo, string.IsNullOrWhiteSpace(texto) ? null : texto.Trim());
         }
 
+        // Todos los movimientos de la bitácora, del más nuevo al más viejo.
+        public static DataTable ListarTodo()
+        {
+            return bitacoraDAO.Listar(new DateTime(2000, 1, 1), DateTime.Today, null, null, null);
+        }
+
+        // Pasa el estado guardado en JSON a texto para leerlo en la grilla.
+        // Ejemplo: {"Nombre_Rol":"Tecnico","Activo":true} -> "Nombre Rol: Tecnico; Activo: Sí".
+        public static string TextoEstado(string? json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return string.Empty;
+
+            try
+            {
+                using JsonDocument documento = JsonDocument.Parse(json);
+                var partes = new List<string>();
+
+                foreach (JsonProperty dato in documento.RootElement.EnumerateObject())
+                {
+                    string valor = dato.Value.ValueKind switch
+                    {
+                        JsonValueKind.True => "Sí",
+                        JsonValueKind.False => "No",
+                        JsonValueKind.Null => "-",
+                        JsonValueKind.String => dato.Value.GetString() ?? "",
+                        _ => dato.Value.ToString(),
+                    };
+
+                    partes.Add(dato.Name.Replace("_", " ") + ": " + valor);
+                }
+
+                return string.Join("; ", partes);
+            }
+            catch
+            {
+                return json;
+            }
+        }
+
         public static bool UsuarioTienePermiso(int idUsuario, string codigo)
         {
             try

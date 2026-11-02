@@ -552,3 +552,90 @@ BEGIN
     ORDER BY h.Fecha DESC, h.Id_Historial DESC;
 END
 GO
+
+
+-- ------------------------------------------------------------
+-- Datos de un cliente (para corregirlos desde la orden de reparación)
+-- ------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_ObtenerClienteTaller
+    @Id_Cliente INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        c.Id_Cliente,
+        p.Apellido,
+        p.Nombre,
+        p.DNI,
+        (SELECT TOP 1 t.Numero
+         FROM PersonaTelefono pt
+         INNER JOIN Telefono t ON t.Id_Telefono = pt.Id_Telefono
+         WHERE pt.Id_Persona = p.Id_Persona AND t.Activo = 1) AS Telefono
+    FROM Cliente c
+    INNER JOIN Persona p ON p.Id_Persona = c.Id_Persona
+    WHERE c.Id_Cliente = @Id_Cliente;
+END
+GO
+
+
+-- ------------------------------------------------------------
+-- Modificar un cliente: apellido, nombre, DNI y teléfono
+-- ------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_ModificarClienteTaller
+    @Id_Cliente INT,
+    @Apellido NVARCHAR(50),
+    @Nombre NVARCHAR(50),
+    @DNI NVARCHAR(20),
+    @Telefono NVARCHAR(15) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        DECLARE @Id_Persona INT = (SELECT Id_Persona FROM Cliente WHERE Id_Cliente = @Id_Cliente);
+
+        IF @Id_Persona IS NULL
+            RAISERROR('El cliente no existe.', 16, 1);
+
+        -- El DNI no puede ser de otra persona (cliente o usuario)
+        IF EXISTS (SELECT 1 FROM Persona WHERE DNI = @DNI AND Id_Persona <> @Id_Persona)
+            RAISERROR('Ya existe otra persona registrada con ese DNI.', 16, 1);
+
+        UPDATE Persona
+        SET Apellido = @Apellido,
+            Nombre = @Nombre,
+            DNI = @DNI
+        WHERE Id_Persona = @Id_Persona;
+
+        -- El teléfono es opcional: se reemplaza el que tenía por el nuevo
+        DELETE FROM PersonaTelefono WHERE Id_Persona = @Id_Persona;
+
+        IF @Telefono IS NOT NULL AND LTRIM(RTRIM(@Telefono)) <> ''
+        BEGIN
+            DECLARE @Id_Telefono INT = (SELECT Id_Telefono FROM Telefono WHERE Numero = @Telefono);
+
+            IF @Id_Telefono IS NULL
+            BEGIN
+                INSERT INTO Telefono (Id_TipoTelefono, Numero, Activo)
+                VALUES ((SELECT TOP 1 Id_TipoTelefono FROM TipoTelefono WHERE Descripcion = 'Celular'), @Telefono, 1);
+
+                SET @Id_Telefono = SCOPE_IDENTITY();
+            END
+            ELSE
+                UPDATE Telefono SET Activo = 1 WHERE Id_Telefono = @Id_Telefono;
+
+            INSERT INTO PersonaTelefono (Id_Persona, Id_Telefono) VALUES (@Id_Persona, @Id_Telefono);
+        END
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO

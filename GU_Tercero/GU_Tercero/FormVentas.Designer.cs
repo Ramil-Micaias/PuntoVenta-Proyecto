@@ -18,7 +18,6 @@
         private void InitializeComponent()
         {
             panelHeader = new Panel();
-            lblCu = new Label();
             lblTitulo = new Label();
             panelIzq = new Panel();
             grpBusqueda = new GroupBox();
@@ -71,25 +70,12 @@
             // panelHeader
             // 
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
-            panelHeader.Controls.Add(lblCu);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            // 
-            // lblCu
-            // 
-            lblCu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblCu.AutoSize = true;
-            lblCu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblCu.ForeColor = Color.FromArgb(148, 163, 184);
-            lblCu.Location = new Point(1017, 18);
-            lblCu.Name = "lblCu";
-            lblCu.Size = new Size(44, 19);
-            lblCu.TabIndex = 1;
-            lblCu.Text = "CU01";
             // 
             // lblTitulo
             // 
@@ -585,7 +571,6 @@
 
         private Panel panelHeader;
         private Label lblTitulo;
-        private Label lblCu;
         private Panel panelIzq;
         private GroupBox grpBusqueda;
         private Label lblBuscarNombre;

@@ -45,17 +45,14 @@ namespace Logica
         }
 
         // Controles de cada renglón antes de agregarlo a la compra. Devuelve el mensaje de error o null si está bien.
-        // El proveedor de la compra es el del primer producto: todos los demás tienen que ser del mismo.
-        public static string? ValidarRenglon(DataRow producto, decimal costo, int idProveedorCompra)
+        // Una compra puede tener productos de distintos proveedores: cada uno usa el proveedor que tiene asignado.
+        public static string? ValidarRenglon(DataRow producto, decimal costo)
         {
             if (producto["Id_Proveedor"] == DBNull.Value)
                 return "El producto " + producto["Producto"] + " no tiene proveedor asignado. Asígnelo en Producto y Stock > Productos y Categorías.";
 
             if (!Convert.ToBoolean(producto["Proveedor_Activo"]))
                 return "El proveedor de " + producto["Producto"] + " (" + producto["Proveedor"] + ") está dado de baja.";
-
-            if (idProveedorCompra > 0 && Convert.ToInt32(producto["Id_Proveedor"]) != idProveedorCompra)
-                return "La compra es a un solo proveedor. " + producto["Producto"] + " es de " + producto["Proveedor"] + ": regístrelo en otra compra.";
 
             decimal precioVenta = Convert.ToDecimal(producto["Precio_Venta"]);
             if (costo > precioVenta)
