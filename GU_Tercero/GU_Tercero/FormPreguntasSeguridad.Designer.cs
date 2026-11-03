@@ -2,15 +2,8 @@
 {
     partial class FormPreguntasSeguridad
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             btnGuardar = new Button();
@@ -38,9 +27,6 @@
             btnCancelar = new Button();
             lblTitulo = new Label();
             SuspendLayout();
-            // 
-            // btnGuardar
-            // 
             btnGuardar.Anchor = AnchorStyles.None;
             btnGuardar.BackColor = Color.FromArgb(37, 99, 235);
             btnGuardar.FlatAppearance.BorderSize = 0;
@@ -54,9 +40,6 @@
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            // 
-            // txtRespuestaUno
-            // 
             txtRespuestaUno.Anchor = AnchorStyles.None;
             txtRespuestaUno.Font = new Font("Segoe UI", 10F);
             txtRespuestaUno.Location = new Point(248, 135);
@@ -64,9 +47,6 @@
             txtRespuestaUno.PlaceholderText = "Escriba su respuesta";
             txtRespuestaUno.Size = new Size(304, 25);
             txtRespuestaUno.TabIndex = 1;
-            // 
-            // txtRespuestaDos
-            // 
             txtRespuestaDos.Anchor = AnchorStyles.None;
             txtRespuestaDos.Font = new Font("Segoe UI", 10F);
             txtRespuestaDos.Location = new Point(248, 205);
@@ -74,9 +54,6 @@
             txtRespuestaDos.PlaceholderText = "Escriba su respuesta";
             txtRespuestaDos.Size = new Size(304, 25);
             txtRespuestaDos.TabIndex = 2;
-            // 
-            // txtRespuestaTres
-            // 
             txtRespuestaTres.Anchor = AnchorStyles.None;
             txtRespuestaTres.Font = new Font("Segoe UI", 10F);
             txtRespuestaTres.Location = new Point(248, 275);
@@ -84,9 +61,6 @@
             txtRespuestaTres.PlaceholderText = "Escriba su respuesta";
             txtRespuestaTres.Size = new Size(304, 25);
             txtRespuestaTres.TabIndex = 3;
-            // 
-            // lblPreguntaUno
-            // 
             lblPreguntaUno.Anchor = AnchorStyles.None;
             lblPreguntaUno.AutoSize = true;
             lblPreguntaUno.BackColor = Color.Transparent;
@@ -98,9 +72,6 @@
             lblPreguntaUno.TabIndex = 0;
             lblPreguntaUno.TabStop = false;
             lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
-            // 
-            // lblPreguntaDos
-            // 
             lblPreguntaDos.Anchor = AnchorStyles.None;
             lblPreguntaDos.AutoSize = true;
             lblPreguntaDos.BackColor = Color.Transparent;
@@ -112,9 +83,6 @@
             lblPreguntaDos.TabIndex = 0;
             lblPreguntaDos.TabStop = false;
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
-            // 
-            // lblPreguntaTres
-            // 
             lblPreguntaTres.Anchor = AnchorStyles.None;
             lblPreguntaTres.AutoSize = true;
             lblPreguntaTres.BackColor = Color.Transparent;
@@ -126,9 +94,6 @@
             lblPreguntaTres.TabIndex = 0;
             lblPreguntaTres.TabStop = false;
             lblPreguntaTres.Text = "¿Comida favorita?";
-            // 
-            // btnCancelar
-            // 
             btnCancelar.Anchor = AnchorStyles.None;
             btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -142,9 +107,6 @@
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
-            // 
-            // lblTitulo
-            // 
             lblTitulo.Anchor = AnchorStyles.None;
             lblTitulo.AutoSize = true;
             lblTitulo.BackColor = Color.Transparent;
@@ -156,9 +118,6 @@
             lblTitulo.TabIndex = 0;
             lblTitulo.TabStop = false;
             lblTitulo.Text = "Preguntas de Seguridad";
-            // 
-            // FormPreguntasSeguridad
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

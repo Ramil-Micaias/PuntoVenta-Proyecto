@@ -7,8 +7,6 @@ namespace Logica
 {
     public class GestorBackup
     {
-        // Carpeta propuesta: el servicio de SQL Server puede escribir ahí
-        // (en Escritorio o Documentos no tiene permiso).
         public const string CARPETA_POR_DEFECTO = @"C:\BackupsAplBigStore";
 
         private readonly BackupDAO backupDAO = new BackupDAO();
@@ -21,12 +19,10 @@ namespace Logica
             }
             catch
             {
-                // Si no se puede crear, el usuario elige otra carpeta.
             }
             return CARPETA_POR_DEFECTO;
         }
 
-        // Devuelve el mensaje para mostrar con el nombre y el tamaño del archivo.
         public string GenerarBackup(string carpeta)
         {
             if (string.IsNullOrWhiteSpace(carpeta))

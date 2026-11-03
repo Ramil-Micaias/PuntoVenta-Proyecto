@@ -8,14 +8,10 @@ using System.Text;
 
 namespace Logica
 {
-    //La clase UsuarioNegocio pertenece a la capa de negocio y contiene las reglas principales del sistema.
-    //Se encarga de validar accesos, controlar seguridad, aplicar restricciones y coordinar la comunicación entre la interfaz y la capa de datos.
     public class UsuarioNegocio
     {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        //método ValidarLogin: Centraliza toda la lógica de autenticación y
-        //seguridad del login, incluyendo validación de contraseña, bloqueo por intentos fallidos y actualización de accesos.
         public Usuario ValidarLogin(string nombreUsuario, string password)
         {
             Usuario usuario = usuarioDAO.Login(nombreUsuario);
@@ -34,8 +30,6 @@ namespace Logica
                 return null;
             }
 
-            // Dígito verificador: si la contraseña guardada no coincide con su dígito, se alteró
-            // por fuera del sistema y no se deja ingresar.
             if (!HashHelper.DigitoVerificadorValido(usuario.PasswordHash))
             {
                 GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
@@ -45,7 +39,6 @@ namespace Logica
 
             string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, password);
 
-            //Si coincide: Reinicia intentos, Actualiza ultimo LOGIN, devuelve el usuario correspondiente.
             if (usuario.PasswordHash == passwordHash)
             {
                 usuarioDAO.ReiniciarIntentos(usuario.Id_Usuario);
@@ -54,7 +47,6 @@ namespace Logica
                 return usuario;
             }
 
-            //Si no coincide: Aumenta Intentos, Verifica si llego al limite y bloquea el usuario correspondiente.
             usuarioDAO.AumentarIntentos(usuario.Id_Usuario);
 
             usuario = usuarioDAO.Login(nombreUsuario);
@@ -76,8 +68,6 @@ namespace Logica
 
         public const int INTENTOS_MAXIMOS_LOGIN = 3;
 
-        // Mensaje para mostrar cuando el inicio de sesión falla: avisa cuántos intentos
-        // quedan antes del bloqueo, o si el usuario ya está bloqueado o inactivo.
         public string MensajeLoginFallido(string nombreUsuario)
         {
             Usuario usuario = usuarioDAO.Login(nombreUsuario);
@@ -102,7 +92,6 @@ namespace Logica
                 + "Intentos restantes: " + restantes + ". Si se agotan, el usuario se bloquea.";
         }
 
-        //método Actualiza la contraseña del usuario y registra el cambio en el historial.
         public void CambiarPassword(int idUsuario, string passwordHash)
         {
             UsuarioDAO dao = new UsuarioDAO();
@@ -110,13 +99,11 @@ namespace Logica
 
             dao.RegistrarHistorialPassword(idUsuario, passwordHash);
 
-            // La contraseña no se guarda en la bitácora, solo que se cambió.
             var estado = EstadoUsuario(idUsuario);
             string nombreUsuario = estado?["Nombre_Usuario"]?.ToString() ?? ("Id " + idUsuario);
             GestorBitacora.RegistrarParaUsuario(nombreUsuario, GestorBitacora.SEGURIDAD, "Cambio de contraseña.", GestorBitacora.ADVERTENCIA);
         }
 
-        // Datos actuales de un usuario para guardar en la bitácora (sin contraseña).
         private Dictionary<string, object?>? EstadoUsuario(int idUsuario)
         {
             try
@@ -129,52 +116,38 @@ namespace Logica
             }
         }
         
-        // Registra la contraseña utilizada por el usuario en el historial.
         public void RegistrarHistorialPassword(int idUsuario, string passwordHash)
         {
             usuarioDAO.RegistrarHistorialPassword(idUsuario, passwordHash);
         }
 
-        //método ObtenerPreguntas: Le pide a DAO las Preguntas de Seguridad.
         public List<PreguntasSeguridad> ObtenerPreguntas()
         {
             return usuarioDAO.ObtenerPreguntas();
         }
 
-        //método GuardarPreguntaSeguridad: recibe los datos desde la Vista y le pide al DAO que los guarde en SQL Server.
-        //para luego validar identidad del usuario más adelante.
         public void GuardarPreguntaSeguridad(int idUsuario, int idPregunta, string respuestaHash)
         {
             usuarioDAO.GuardarPreguntaSeguridad(idUsuario, idPregunta, respuestaHash);
         }
 
-        //metodo UsuarioTienePreguntas: Determina si el usuario ya configuró preguntas de seguridad.
-        // Cada usuario registra siempre las 3 preguntas de seguridad. La configuración
-        // (2 o 3) solo define cuántas se piden al recuperar la contraseña; así, si el
-        // administrador cambia la configuración, ningún usuario queda con preguntas de menos.
         public const int TOTAL_PREGUNTAS = 3;
 
-        // true si el usuario ya tiene cargadas las 3 preguntas; si no, al iniciar sesión se le piden.
         public bool UsuarioTienePreguntas(int idUsuario)
         {
             return usuarioDAO.CantidadPreguntasUsuario(idUsuario) >= TOTAL_PREGUNTAS;
         }
 
-        //método ObtenerUsuarios: Le pide al DAO los usuarios y devuelve el DataTable a la Vista.
         public DataTable ObtenerUsuarios()
         {
             return usuarioDAO.ObtenerUsuarios();
         }
 
-        //método ObtenerRoles: Pide al DAO los roles y los devuelve a la Vista.
         public DataTable ObtenerRoles()
         {
             return usuarioDAO.ObtenerRoles();
         }
 
-        //// Genera una contraseña temporal que cumple con la política de seguridad vigente.
-        // Antes generaba 8 caracteres al azar sin importar la configuración: si el sistema
-        // exigía mayúscula, número o carácter especial, la contraseña enviada podía incumplirla.
         private string GenerarPasswordTemporal(ConfiguracionSistema configuracion)
         {
             const string mayusculas = "ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -215,8 +188,6 @@ namespace Logica
                 password[i] = Character(pool.ToString());
             }
 
-            // Se reemplazan las primeras posiciones por los caracteres obligatorios
-            // para garantizar que la contraseña cumpla con la configuración.
             for (int i = 0; i < obligatorios.Count; i++)
             {
                 password[i] = obligatorios[i];
@@ -225,7 +196,6 @@ namespace Logica
             return new string(password);
         }
 
-        // Elige un carácter al azar de forma criptográficamente segura.
         private static char Character(string conjunto)
         {
             return conjunto[RandomNumberGenerator.GetInt32(conjunto.Length)];
@@ -236,15 +206,10 @@ namespace Logica
             return usuarioDAO.ExisteDni(dni);
         }
 
-        //// Genera una contraseña temporal, calcula su hash SHA256 junto al nombre de usuario
-        // y registra el nuevo usuario con sus datos personales, correo y rol asignado.
         public string InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
         {
-            // Todo se valida antes de guardar: si se creara con un dato mal, después no se
-            // podría volver a cargar esa persona porque el DNI ya existiría.
             ValidarDatosUsuario(0, apellido, nombre, dni, correo, nombreUsuario, idRol);
 
-            // 2. Proceso normal
             string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
 
             string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, passwordTemporal);
@@ -259,8 +224,6 @@ namespace Logica
             return passwordTemporal;
         }
 
-        //Recibe los datos modificados del usuario y coordina su actualización
-        //mediante la capa de acceso a datos.
         public void ModificarUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol, bool activo, bool bloqueado)
         {
             ValidarDatosUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol);
@@ -271,15 +234,12 @@ namespace Logica
 
             var despues = EstadoUsuario(idUsuario);
 
-            // Cambiar el rol de un usuario es una operación crítica.
             bool cambioRol = antes != null && despues != null && !Equals(antes["Nombre_Rol"], despues["Nombre_Rol"]);
             GestorBitacora.RegistrarCambios(GestorBitacora.USUARIOS,
                 (cambioRol ? "Cambio de rol del usuario " : "Modificación del usuario ") + nombreUsuario.Trim() + ".",
                 cambioRol ? GestorBitacora.CRITICA : GestorBitacora.ADVERTENCIA, antes, despues);
         }
 
-        // Controla formato y duplicados de los datos del usuario (idUsuario = 0 al dar de alta).
-        // Lanza una excepción con el mensaje para mostrar si algo no es válido.
         public void ValidarDatosUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
         {
             if (string.IsNullOrWhiteSpace(apellido) || string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(dni)
@@ -314,7 +274,6 @@ namespace Logica
                 throw new Exception("El nombre de usuario ya está en uso.");
         }
 
-        // Gestiona la baja lógica de un usuario y delega la operación a la capa de acceso a datos.
         public void DesactivarUsuario(int idUsuario)
         {
             var antes = EstadoUsuario(idUsuario);
@@ -324,7 +283,6 @@ namespace Logica
                 GestorBitacora.CRITICA, antes, EstadoUsuario(idUsuario));
         }
 
-        // Activa al usuario y además le quita el bloqueo, para que pueda volver a ingresar.
         public void ActivarUsuario(int idUsuario)
         {
             var antes = EstadoUsuario(idUsuario);
@@ -346,16 +304,11 @@ namespace Logica
                 GestorBitacora.ADVERTENCIA, antes, EstadoUsuario(idUsuario));
         }
 
-        // Este método solicita a la capa de datos las preguntas de seguridad del usuario.
         public DataTable ObtenerPreguntasUsuario(string nombreUsuario)
         {
             return usuarioDAO.ObtenerPreguntasUsuario(nombreUsuario);
         }
 
-        // Este método valida la respuesta de seguridad ingresada contra la guardada para el usuario.
-        // Se aceptan los dos formatos de hash del sistema: el actual (normalizado a minúsculas)
-        // y el histórico de las pantallas que guardaban la respuesta sin normalizar. Sin esto,
-        // los usuarios dados de alta por el administrador nunca podían recuperar su contraseña.
         public bool ValidarPreguntaSeguridad(string nombreUsuario, int idPregunta, string respuesta)
         {
             string hashGuardado = usuarioDAO.ObtenerHashRespuesta(nombreUsuario, idPregunta);
@@ -373,10 +326,6 @@ namespace Logica
             return HashHelper.CompararHashSeguro(hashGuardado, HashHelper.GenerarHashRespuestaLegado(respuesta));
         }
 
-        // Este método genera una nueva contraseña temporal, la encripta y la envía al correo
-        // registrado del usuario. El orden es intencional: primero se envía el correo y solo
-        // después se guarda el hash en la base. Así, si el servidor de correo falla, la cuenta
-        // conserva su contraseña anterior y el usuario no queda bloqueado sin acceso.
         public ResultadoRecuperacionPassword RecuperarPassword(string nombreUsuario)
         {
             ResultadoRecuperacionPassword resultado = new ResultadoRecuperacionPassword();
@@ -400,7 +349,6 @@ namespace Logica
                 return resultado;
             }
 
-            // Se genera una contraseña que cumple con la política de seguridad configurada.
             string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
 
             string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, passwordTemporal);
@@ -414,8 +362,6 @@ namespace Logica
 
             if (!envio.Enviado)
             {
-                // No se toca la base: el usuario conserva su contraseña actual y el formulario
-                // le muestra la contraseña temporal por pantalla para que no quede sin acceso.
                 resultado.Error = envio.Error;
                 resultado.PasswordTemporalParaMostrar = passwordTemporal;
 
@@ -434,8 +380,6 @@ namespace Logica
             return resultado;
         }
 
-        // Envía al correo del usuario nuevo su contraseña inicial (temporal).
-        // Al ingresar por primera vez el sistema le pide que la cambie.
         public ResultadoEnvioEmail EnviarPasswordInicial(string correo, string nombreUsuario, string passwordTemporal)
         {
             string cuerpo = "Hola " + nombreUsuario + "," + Environment.NewLine + Environment.NewLine
@@ -447,7 +391,6 @@ namespace Logica
             return EmailHelper.EnviarCorreo(correo, "Alta de usuario - Punto Venta", cuerpo);
         }
 
-        // Obtiene el correo electrónico asociado al usuario.
         public string ObtenerCorreoUsuario(string nombreUsuario)
         {
             return usuarioDAO.ObtenerCorreoUsuario(nombreUsuario);

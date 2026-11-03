@@ -1,6 +1,3 @@
---------------------------------------------------
--- CREACIÓN DE BASE DE DATOS (SI NO EXISTE)     --
---------------------------------------------------
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'GU_Tercero')
 BEGIN
     CREATE DATABASE GU_Tercero;
@@ -9,10 +6,6 @@ GO
 
 USE GU_Tercero;
 GO
-
-----------------------------------------
--- 1. CONFIGURACION                   --
-----------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'ConfiguracionSistema')
 BEGIN
@@ -32,10 +25,6 @@ BEGIN
     );
 END
 GO
-
-----------------------------------------
--- 2. DATOS PERSONA                   --
-----------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Persona')
 BEGIN
@@ -181,10 +170,6 @@ BEGIN
     );
 END
 GO
-
-----------------------------------------
--- 3. USUARIO Y SEGURIDAD             --
-----------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Usuario')
 BEGIN

@@ -7,15 +7,12 @@ using System.Windows.Forms;
 
 namespace GU_Tercero
 {
-    // Segundo paso del inicio de sesión: el usuario ingresa el código que recibió por correo.
-    // Devuelve DialogResult.OK solo si el código fue validado.
     public partial class FormAutenticacion2FA : Form
     {
         private readonly Autenticacion2FANegocio negocio = new Autenticacion2FANegocio();
         private readonly Usuario usuario;
         private int intentosFallidos = 0;
 
-        // Indica si el código ingresado fue validado correctamente.
         public bool CodigoValidado { get; private set; } = false;
 
         public FormAutenticacion2FA(Usuario usuario)
@@ -33,7 +30,6 @@ namespace GU_Tercero
             txtCodigo.Focus();
         }
 
-        // Solo se pueden escribir números.
         private void txtCodigo_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))

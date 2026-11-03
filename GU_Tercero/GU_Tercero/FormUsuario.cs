@@ -11,8 +11,6 @@ namespace GU_Tercero
     {
         private Usuario usuarioLogueado;
 
-        // Para cambiar la contraseña primero se responden las 3 preguntas de seguridad
-        // en los campos de abajo. Las preguntas no se pueden cambiar desde Mi Perfil.
         private enum Paso { Inicio, Respondiendo, NuevaPassword }
 
         private const int INTENTOS_MAXIMOS = 3;
@@ -29,7 +27,6 @@ namespace GU_Tercero
 
         private void FormUsuario_Load(object sender, EventArgs e)
         {
-            // Muestra la información del usuario.
             lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
             lblNombreRol.Text = usuarioLogueado.Nombre_Rol;
 
@@ -37,7 +34,6 @@ namespace GU_Tercero
             CambiarPaso(Paso.Inicio);
         }
 
-        // Muestra las 3 preguntas que eligió el usuario.
         private void CargarPreguntas()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -59,7 +55,6 @@ namespace GU_Tercero
             }
         }
 
-        // Habilita los campos que corresponden a cada paso y limpia lo escrito.
         private void CambiarPaso(Paso nuevoPaso)
         {
             paso = nuevoPaso;
@@ -78,8 +73,6 @@ namespace GU_Tercero
             txtNuevaPassword.Clear();
             txtConfirmarPassword.Clear();
 
-            // "Cambiar contraseña" pasa a "Verificar respuestas"; "Confirmar cambios" solo se usa
-            // cuando las respuestas fueron correctas.
             btnCambiarPassword.Text = respondiendo ? "Verificar respuestas" : "Cambiar contraseña";
             HabilitarBoton(btnCambiarPassword, !nuevaPassword, Color.FromArgb(37, 99, 235));
             HabilitarBoton(btnConfirmarCambios, nuevaPassword, Color.FromArgb(16, 185, 129));
@@ -92,7 +85,6 @@ namespace GU_Tercero
                 txtNuevaPassword.Focus();
         }
 
-        // Los botones planos deshabilitados se ven igual que los habilitados: se pintan de gris.
         private void HabilitarBoton(Button boton, bool habilitar, Color color)
         {
             boton.Enabled = habilitar;
@@ -125,7 +117,6 @@ namespace GU_Tercero
             GuardarPassword();
         }
 
-        // Controla las 3 respuestas. Si son correctas habilita la nueva contraseña.
         private void VerificarRespuestas()
         {
             string[] respuestas = { txtRespuestaUno.Text, txtRespuestaDos.Text, txtRespuestaTres.Text };
@@ -167,7 +158,6 @@ namespace GU_Tercero
                 return;
             }
 
-            // No se indica cuál respuesta falló, para no dar pistas.
             MessageBox.Show("Alguna respuesta no es correcta.\nIntentos restantes: " + (INTENTOS_MAXIMOS - intentosFallidos),
                 "Cambiar contraseña", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             txtRespuestaUno.Clear();
@@ -178,21 +168,18 @@ namespace GU_Tercero
 
         private void GuardarPassword()
         {
-            // Valida que la nueva contraseña haya sido ingresada.
             if (txtNuevaPassword.Text.Trim() == "")
             {
                 MessageBox.Show("Ingrese la nueva contraseña.");
                 return;
             }
 
-            // Valida que se confirme la nueva contraseña.
             if (txtConfirmarPassword.Text.Trim() == "")
             {
                 MessageBox.Show("Confirme la nueva contraseña.");
                 return;
             }
 
-            // Verifica que ambas contraseñas sean iguales.
             if (txtNuevaPassword.Text != txtConfirmarPassword.Text)
             {
                 MessageBox.Show("Las contraseñas no coinciden.");
@@ -201,7 +188,6 @@ namespace GU_Tercero
 
             ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
 
-            // Valida que la contraseña cumpla las políticas configuradas.
             string resultado = configuracionNegocio.ValidarPassword(txtNuevaPassword.Text.Trim(), usuarioLogueado);
 
             if (resultado != "OK")
@@ -210,17 +196,14 @@ namespace GU_Tercero
                 return;
             }
 
-            // Genera el hash de la nueva contraseña.
             string nuevaPasswordHash = HashHelper.GenerarHashPassword(usuarioLogueado.Nombre_Usuario, txtNuevaPassword.Text);
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Actualiza la contraseña del usuario.
             negocio.CambiarPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
 
             Mensajes.Exito(lblResultado, "La contraseña fue modificada correctamente.");
 
-            // Vuelve a bloquear los campos (limpia lo escrito).
             CambiarPaso(Paso.Inicio);
         }
 

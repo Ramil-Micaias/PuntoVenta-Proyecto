@@ -2,15 +2,8 @@
 {
     partial class FormAutenticacion2FA
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             lblTitulo = new Label();
@@ -37,9 +26,6 @@
             lnkReenviar = new LinkLabel();
             lblVencimiento = new Label();
             SuspendLayout();
-            //
-            // lblTitulo
-            //
             lblTitulo.BackColor = Color.Transparent;
             lblTitulo.Font = new Font("Segoe UI Bold", 18F);
             lblTitulo.ForeColor = Color.FromArgb(15, 23, 42);
@@ -49,9 +35,6 @@
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Verificación en Dos Pasos";
             lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
-            //
-            // lblMensaje
-            //
             lblMensaje.Font = new Font("Segoe UI", 10F);
             lblMensaje.ForeColor = Color.FromArgb(51, 65, 85);
             lblMensaje.Location = new Point(20, 70);
@@ -60,9 +43,6 @@
             lblMensaje.TabIndex = 1;
             lblMensaje.Text = "Ingrese el código de verificación enviado a su correo electrónico:";
             lblMensaje.TextAlign = ContentAlignment.MiddleCenter;
-            //
-            // lblCorreo
-            //
             lblCorreo.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblCorreo.ForeColor = Color.FromArgb(37, 99, 235);
             lblCorreo.Location = new Point(20, 94);
@@ -70,9 +50,6 @@
             lblCorreo.Size = new Size(480, 22);
             lblCorreo.TabIndex = 2;
             lblCorreo.TextAlign = ContentAlignment.MiddleCenter;
-            //
-            // txtCodigo
-            //
             txtCodigo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             txtCodigo.Location = new Point(170, 132);
             txtCodigo.MaxLength = 6;
@@ -81,9 +58,6 @@
             txtCodigo.Size = new Size(180, 36);
             txtCodigo.TabIndex = 3;
             txtCodigo.TextAlign = HorizontalAlignment.Center;
-            //
-            // lblVencimiento
-            //
             lblVencimiento.Font = new Font("Segoe UI", 9F);
             lblVencimiento.ForeColor = Color.FromArgb(100, 116, 139);
             lblVencimiento.Location = new Point(20, 176);
@@ -91,9 +65,6 @@
             lblVencimiento.Size = new Size(480, 20);
             lblVencimiento.TabIndex = 4;
             lblVencimiento.TextAlign = ContentAlignment.MiddleCenter;
-            //
-            // btnVerificar
-            //
             btnVerificar.BackColor = Color.FromArgb(37, 99, 235);
             btnVerificar.FlatAppearance.BorderSize = 0;
             btnVerificar.FlatStyle = FlatStyle.Flat;
@@ -106,9 +77,6 @@
             btnVerificar.Text = "Verificar";
             btnVerificar.UseVisualStyleBackColor = false;
             btnVerificar.Click += btnVerificar_Click;
-            //
-            // lnkReenviar
-            //
             lnkReenviar.Font = new Font("Segoe UI", 9.5F);
             lnkReenviar.LinkColor = Color.FromArgb(37, 99, 235);
             lnkReenviar.Location = new Point(140, 256);
@@ -119,9 +87,6 @@
             lnkReenviar.Text = "Reenviar código";
             lnkReenviar.TextAlign = ContentAlignment.MiddleCenter;
             lnkReenviar.LinkClicked += lnkReenviar_LinkClicked;
-            //
-            // btnCancelar
-            //
             btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
             btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
@@ -134,9 +99,6 @@
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
-            //
-            // FormAutenticacion2FA
-            //
             AcceptButton = btnVerificar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;

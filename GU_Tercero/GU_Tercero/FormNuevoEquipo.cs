@@ -4,12 +4,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // Alta rápida del equipo que trae el cliente, desde la orden de reparación.
     public partial class FormNuevoEquipo : Form
     {
         private int idCliente;
 
-        // Id del equipo que se acaba de crear (lo usa la orden para seleccionarlo).
         public int IdEquipoNuevo { get; private set; }
 
         public FormNuevoEquipo(int idCliente, string nombreCliente)

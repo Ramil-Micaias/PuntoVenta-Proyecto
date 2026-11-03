@@ -5,7 +5,6 @@ using System.Data;
 
 namespace Logica
 {
-    // Reglas de negocio del taller (CU05, CU08 y CU09).
     public class GestorTaller
     {
         private readonly TallerDAO tallerDAO = new TallerDAO();
@@ -13,11 +12,6 @@ namespace Logica
         public DataTable ObtenerClientes()
         {
             return tallerDAO.ObtenerClientes();
-        }
-
-        public DataTable ListarClientes(string filtro)
-        {
-            return tallerDAO.ListarClientes(filtro);
         }
 
         public int RegistrarCliente(string apellido, string nombre, string dni, string telefono)
@@ -32,7 +26,6 @@ namespace Logica
             return tallerDAO.ObtenerCliente(idCliente);
         }
 
-        // Corrige los datos de un cliente (mismas reglas que el alta).
         public void ModificarCliente(int idCliente, string apellido, string nombre, string dni, string telefono)
         {
             if (idCliente <= 0)
@@ -161,7 +154,6 @@ namespace Logica
 
             if (orden.Fecha_Prometida.HasValue)
             {
-                // La fecha prometida no puede ser anterior al día en que se registró la orden (hoy, si es nueva).
                 DateTime registro = DateTime.Today;
 
                 if (orden.Id_Orden > 0)

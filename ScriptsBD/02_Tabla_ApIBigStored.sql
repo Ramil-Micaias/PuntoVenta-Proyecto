@@ -1,10 +1,6 @@
 USE GU_Tercero;
 GO
 
-------------------------------------------
--- 1. CLIENTE Y EQUIPO                  --
-------------------------------------------
-
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Cliente')
 BEGIN
     CREATE TABLE Cliente (
@@ -35,10 +31,6 @@ BEGIN
     );
 END
 GO
-
-------------------------------------------
--- 2. PROVEEDOR, CATEGORIA Y PRODUCTO    --
-------------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Proveedor')
 BEGIN
@@ -81,7 +73,6 @@ BEGIN
 END
 GO
 
--- Las bases creadas antes tenían una columna de producto que el sistema no usaba: se elimina.
 IF COL_LENGTH('Producto', 'Es_Repuesto') IS NOT NULL
 BEGIN
     DECLARE @Restriccion NVARCHAR(200) = (
@@ -111,10 +102,6 @@ BEGIN
     );
 END
 GO
-
-------------------------------------------
--- 3. ORDENES DE REPARACION             --
-------------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'EstadoOrden')
 BEGIN
@@ -165,10 +152,6 @@ BEGIN
 END
 GO
 
-------------------------------------------
--- 4. METODO DE PAGO Y VENTAS           --
-------------------------------------------
-
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'MetodoPago')
 BEGIN
     CREATE TABLE MetodoPago (
@@ -212,10 +195,6 @@ BEGIN
     );
 END
 GO
-
-------------------------------------------
--- 5. COMPRAS Y DETALLE DE COMPRA       --
-------------------------------------------
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Compra')
 BEGIN

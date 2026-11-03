@@ -12,8 +12,6 @@ namespace Seguridad
         private const string CredencialRemitente = "joxy grrq mqdp kgky";
         private const int TimeoutMilisegundos = 20000;
 
-        // Envía un correo de texto plano. Nunca lanza excepciones: devuelve el resultado
-        // del intento para que la capa de negocio decida cómo continuar.
         public static ResultadoEnvioEmail EnviarCorreo(string? destino, string asunto, string mensaje)
         {
             ResultadoEnvioEmail resultado = new ResultadoEnvioEmail();

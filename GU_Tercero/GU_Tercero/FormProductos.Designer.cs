@@ -2,15 +2,8 @@ namespace Vista
 {
     partial class FormProductos
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace Vista
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelIdioma = new Panel();
@@ -87,9 +76,6 @@ namespace Vista
             grpGestionCategoria.SuspendLayout();
             flpAccionesCategoria.SuspendLayout();
             SuspendLayout();
-            //
-            // panelIdioma
-            //
             panelIdioma.BackColor = Color.FromArgb(241, 245, 249);
             panelIdioma.Controls.Add(lblIdioma);
             panelIdioma.Controls.Add(cmbIdioma);
@@ -98,9 +84,6 @@ namespace Vista
             panelIdioma.Name = "panelIdioma";
             panelIdioma.Size = new Size(900, 36);
             panelIdioma.TabIndex = 1;
-            //
-            // lblIdioma
-            //
             lblIdioma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblIdioma.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblIdioma.ForeColor = Color.FromArgb(30, 41, 59);
@@ -110,9 +93,6 @@ namespace Vista
             lblIdioma.TabIndex = 0;
             lblIdioma.Text = "Idioma:";
             lblIdioma.TextAlign = ContentAlignment.MiddleRight;
-            //
-            // cmbIdioma
-            //
             cmbIdioma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             cmbIdioma.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbIdioma.Font = new Font("Segoe UI", 9.5F);
@@ -121,9 +101,6 @@ namespace Vista
             cmbIdioma.Name = "cmbIdioma";
             cmbIdioma.Size = new Size(140, 25);
             cmbIdioma.TabIndex = 1;
-            //
-            // tabProductoCategoria
-            //
             tabProductoCategoria.Controls.Add(tabPage1);
             tabProductoCategoria.Controls.Add(tabPage2);
             tabProductoCategoria.Dock = DockStyle.Fill;
@@ -133,9 +110,6 @@ namespace Vista
             tabProductoCategoria.SelectedIndex = 0;
             tabProductoCategoria.Size = new Size(900, 590);
             tabProductoCategoria.TabIndex = 0;
-            //
-            // tabPage1
-            //
             tabPage1.BackColor = Color.FromArgb(241, 245, 249);
             tabPage1.Controls.Add(grpDetalleProducto);
             tabPage1.Controls.Add(dgvProductos);
@@ -148,9 +122,6 @@ namespace Vista
             tabPage1.Size = new Size(892, 560);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Productos";
-            //
-            // lblCatalogoExistencia
-            //
             lblCatalogoExistencia.AutoSize = true;
             lblCatalogoExistencia.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblCatalogoExistencia.ForeColor = Color.FromArgb(15, 23, 42);
@@ -159,9 +130,6 @@ namespace Vista
             lblCatalogoExistencia.Size = new Size(225, 25);
             lblCatalogoExistencia.TabIndex = 0;
             lblCatalogoExistencia.Text = "Catálogo de Existencias";
-            //
-            // lblBuscar
-            //
             lblBuscar.AutoSize = true;
             lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
@@ -170,9 +138,6 @@ namespace Vista
             lblBuscar.Size = new Size(50, 17);
             lblBuscar.TabIndex = 1;
             lblBuscar.Text = "Buscar:";
-            //
-            // txtBuscar
-            //
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
             txtBuscar.Location = new Point(72, 49);
@@ -180,9 +145,6 @@ namespace Vista
             txtBuscar.PlaceholderText = "Buscar por nombre del producto o categoría";
             txtBuscar.Size = new Size(808, 24);
             txtBuscar.TabIndex = 2;
-            //
-            // dgvProductos
-            //
             dgvProductos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProductos.Location = new Point(12, 84);
@@ -190,9 +152,6 @@ namespace Vista
             dgvProductos.Size = new Size(868, 216);
             dgvProductos.TabIndex = 3;
             dgvProductos.CellClick += dgvProductos_CellClick;
-            //
-            // grpDetalleProducto
-            //
             grpDetalleProducto.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpDetalleProducto.Controls.Add(lblResultadoProducto);
             grpDetalleProducto.Controls.Add(flpAcciones);
@@ -219,9 +178,6 @@ namespace Vista
             grpDetalleProducto.TabIndex = 4;
             grpDetalleProducto.TabStop = false;
             grpDetalleProducto.Text = "Detalle del Producto";
-            //
-            // flpAcciones
-            //
             flpAcciones.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             flpAcciones.Controls.Add(btnNuevo);
             flpAcciones.Controls.Add(btnGuardar);
@@ -235,9 +191,6 @@ namespace Vista
             flpAcciones.Size = new Size(150, 120);
             flpAcciones.TabIndex = 10;
             flpAcciones.WrapContents = false;
-            //
-            // btnNuevo
-            //
             btnNuevo.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatStyle = FlatStyle.Flat;
@@ -250,9 +203,6 @@ namespace Vista
             btnNuevo.Text = "Agregar";
             btnNuevo.UseVisualStyleBackColor = false;
             btnNuevo.Click += btnNuevo_Click;
-            //
-            // btnGuardar
-            //
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
@@ -265,9 +215,6 @@ namespace Vista
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            //
-            // btnModificar
-            //
             btnModificar.BackColor = Color.FromArgb(37, 99, 235);
             btnModificar.FlatAppearance.BorderSize = 0;
             btnModificar.FlatStyle = FlatStyle.Flat;
@@ -280,9 +227,6 @@ namespace Vista
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
-            //
-            // btnEstadoProducto
-            //
             btnEstadoProducto.BackColor = Color.FromArgb(239, 68, 68);
             btnEstadoProducto.FlatAppearance.BorderSize = 0;
             btnEstadoProducto.FlatStyle = FlatStyle.Flat;
@@ -295,9 +239,6 @@ namespace Vista
             btnEstadoProducto.Text = "Inactivar";
             btnEstadoProducto.UseVisualStyleBackColor = false;
             btnEstadoProducto.Click += btnEstadoProducto_Click;
-            //
-            // btnConfirmar
-            //
             btnConfirmar.BackColor = Color.FromArgb(16, 185, 129);
             btnConfirmar.FlatAppearance.BorderSize = 0;
             btnConfirmar.FlatStyle = FlatStyle.Flat;
@@ -310,9 +251,6 @@ namespace Vista
             btnConfirmar.Text = "Confirmar";
             btnConfirmar.UseVisualStyleBackColor = false;
             btnConfirmar.Click += btnConfirmar_Click;
-            //
-            // btnCancelarEdicion
-            //
             btnCancelarEdicion.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelarEdicion.FlatAppearance.BorderSize = 0;
             btnCancelarEdicion.FlatStyle = FlatStyle.Flat;
@@ -325,9 +263,6 @@ namespace Vista
             btnCancelarEdicion.Text = "Cancelar";
             btnCancelarEdicion.UseVisualStyleBackColor = false;
             btnCancelarEdicion.Click += btnCancelarEdicion_Click;
-            //
-            // btnVolverMenu
-            //
             btnVolverMenu.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolverMenu.BackColor = Color.FromArgb(100, 116, 139);
             btnVolverMenu.FlatAppearance.BorderSize = 0;
@@ -341,9 +276,6 @@ namespace Vista
             btnVolverMenu.Text = "Volver";
             btnVolverMenu.UseVisualStyleBackColor = false;
             btnVolverMenu.Click += btnVolverMenu_Click;
-            //
-            // lblCategorias
-            //
             lblCategorias.AutoSize = true;
             lblCategorias.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCategorias.ForeColor = Color.FromArgb(30, 41, 59);
@@ -352,9 +284,6 @@ namespace Vista
             lblCategorias.Size = new Size(70, 17);
             lblCategorias.TabIndex = 0;
             lblCategorias.Text = "Categoría:";
-            //
-            // cmbCategoria
-            //
             cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategoria.Font = new Font("Segoe UI", 9.5F);
             cmbCategoria.FormattingEnabled = true;
@@ -362,9 +291,6 @@ namespace Vista
             cmbCategoria.Name = "cmbCategoria";
             cmbCategoria.Size = new Size(210, 25);
             cmbCategoria.TabIndex = 1;
-            //
-            // lblProveedor
-            //
             lblProveedor.AutoSize = true;
             lblProveedor.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblProveedor.ForeColor = Color.FromArgb(30, 41, 59);
@@ -373,9 +299,6 @@ namespace Vista
             lblProveedor.Size = new Size(71, 17);
             lblProveedor.TabIndex = 0;
             lblProveedor.Text = "Proveedor:";
-            //
-            // cmbProveedor
-            //
             cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProveedor.Font = new Font("Segoe UI", 9.5F);
             cmbProveedor.FormattingEnabled = true;
@@ -383,9 +306,6 @@ namespace Vista
             cmbProveedor.Name = "cmbProveedor";
             cmbProveedor.Size = new Size(550, 25);
             cmbProveedor.TabIndex = 7;
-            //
-            // lblNombreProducto
-            //
             lblNombreProducto.AutoSize = true;
             lblNombreProducto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNombreProducto.ForeColor = Color.FromArgb(30, 41, 59);
@@ -394,18 +314,12 @@ namespace Vista
             lblNombreProducto.Size = new Size(61, 17);
             lblNombreProducto.TabIndex = 0;
             lblNombreProducto.Text = "Nombre:";
-            //
-            // txtNombreProducto
-            //
             txtNombreProducto.Font = new Font("Segoe UI", 9.5F);
             txtNombreProducto.Location = new Point(130, 68);
             txtNombreProducto.Name = "txtNombreProducto";
             txtNombreProducto.PlaceholderText = "Ej: Funda Silicona iPhone 15";
             txtNombreProducto.Size = new Size(210, 24);
             txtNombreProducto.TabIndex = 2;
-            //
-            // lblDescripcion
-            //
             lblDescripcion.AutoSize = true;
             lblDescripcion.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDescripcion.ForeColor = Color.FromArgb(30, 41, 59);
@@ -414,18 +328,12 @@ namespace Vista
             lblDescripcion.Size = new Size(80, 17);
             lblDescripcion.TabIndex = 0;
             lblDescripcion.Text = "Descripción:";
-            //
-            // txtDescripcion
-            //
             txtDescripcion.Font = new Font("Segoe UI", 9.5F);
             txtDescripcion.Location = new Point(130, 106);
             txtDescripcion.Name = "txtDescripcion";
             txtDescripcion.PlaceholderText = "Detalle breve del producto";
             txtDescripcion.Size = new Size(210, 24);
             txtDescripcion.TabIndex = 3;
-            //
-            // lblPrecioVenta
-            //
             lblPrecioVenta.AutoSize = true;
             lblPrecioVenta.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPrecioVenta.ForeColor = Color.FromArgb(30, 41, 59);
@@ -434,18 +342,12 @@ namespace Vista
             lblPrecioVenta.Size = new Size(86, 17);
             lblPrecioVenta.TabIndex = 0;
             lblPrecioVenta.Text = "Precio Venta:";
-            //
-            // txtPrecioVenta
-            //
             txtPrecioVenta.Font = new Font("Segoe UI", 9.5F);
             txtPrecioVenta.Location = new Point(490, 30);
             txtPrecioVenta.Name = "txtPrecioVenta";
             txtPrecioVenta.PlaceholderText = "Ej: 15000";
             txtPrecioVenta.Size = new Size(190, 24);
             txtPrecioVenta.TabIndex = 4;
-            //
-            // lblStockActual
-            //
             lblStockActual.AutoSize = true;
             lblStockActual.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblStockActual.ForeColor = Color.FromArgb(30, 41, 59);
@@ -454,18 +356,12 @@ namespace Vista
             lblStockActual.Size = new Size(86, 17);
             lblStockActual.TabIndex = 0;
             lblStockActual.Text = "Stock Actual:";
-            //
-            // txtStockActual
-            //
             txtStockActual.Font = new Font("Segoe UI", 9.5F);
             txtStockActual.Location = new Point(490, 68);
             txtStockActual.Name = "txtStockActual";
             txtStockActual.PlaceholderText = "Unidades disponibles";
             txtStockActual.Size = new Size(190, 24);
             txtStockActual.TabIndex = 5;
-            //
-            // lblStockMinimo
-            //
             lblStockMinimo.AutoSize = true;
             lblStockMinimo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblStockMinimo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -474,18 +370,12 @@ namespace Vista
             lblStockMinimo.Size = new Size(94, 17);
             lblStockMinimo.TabIndex = 0;
             lblStockMinimo.Text = "Stock Mínimo:";
-            //
-            // txtStockMinimo
-            //
             txtStockMinimo.Font = new Font("Segoe UI", 9.5F);
             txtStockMinimo.Location = new Point(490, 106);
             txtStockMinimo.Name = "txtStockMinimo";
             txtStockMinimo.PlaceholderText = "Aviso de stock bajo";
             txtStockMinimo.Size = new Size(190, 24);
             txtStockMinimo.TabIndex = 6;
-            //
-            // tabPage2
-            //
             tabPage2.BackColor = Color.FromArgb(241, 245, 249);
             tabPage2.Controls.Add(lblResultadoCategoria);
             tabPage2.Controls.Add(grpGestionCategoria);
@@ -497,9 +387,6 @@ namespace Vista
             tabPage2.Size = new Size(892, 560);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Categorías";
-            //
-            // lblListadoCategoria
-            //
             lblListadoCategoria.AutoSize = true;
             lblListadoCategoria.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblListadoCategoria.ForeColor = Color.FromArgb(15, 23, 42);
@@ -508,9 +395,6 @@ namespace Vista
             lblListadoCategoria.Size = new Size(204, 25);
             lblListadoCategoria.TabIndex = 0;
             lblListadoCategoria.Text = "Listado de Categorías";
-            //
-            // dgvCategorias
-            //
             dgvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCategorias.Location = new Point(12, 48);
@@ -518,9 +402,6 @@ namespace Vista
             dgvCategorias.Size = new Size(524, 498);
             dgvCategorias.TabIndex = 1;
             dgvCategorias.CellClick += dgvCategorias_CellClick;
-            //
-            // grpGestionCategoria
-            //
             grpGestionCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             grpGestionCategoria.Controls.Add(btnVolverCategoria);
             grpGestionCategoria.Controls.Add(btnEliminarCategoria);
@@ -535,9 +416,6 @@ namespace Vista
             grpGestionCategoria.TabIndex = 2;
             grpGestionCategoria.TabStop = false;
             grpGestionCategoria.Text = "Gestión de Categoría";
-            //
-            // lblNombreCategoria
-            //
             lblNombreCategoria.AutoSize = true;
             lblNombreCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNombreCategoria.ForeColor = Color.FromArgb(30, 41, 59);
@@ -546,18 +424,12 @@ namespace Vista
             lblNombreCategoria.Size = new Size(61, 17);
             lblNombreCategoria.TabIndex = 0;
             lblNombreCategoria.Text = "Nombre:";
-            //
-            // txtNombreCategoria
-            //
             txtNombreCategoria.Font = new Font("Segoe UI", 9.5F);
             txtNombreCategoria.Location = new Point(16, 54);
             txtNombreCategoria.Name = "txtNombreCategoria";
             txtNombreCategoria.PlaceholderText = "Ej: Fundas y Protectores";
             txtNombreCategoria.Size = new Size(296, 24);
             txtNombreCategoria.TabIndex = 1;
-            //
-            // flpAccionesCategoria
-            //
             flpAccionesCategoria.Controls.Add(btnNuevaCategoria);
             flpAccionesCategoria.Controls.Add(btnGuardarCategoria);
             flpAccionesCategoria.Controls.Add(btnModificarCategoria);
@@ -567,9 +439,6 @@ namespace Vista
             flpAccionesCategoria.Name = "flpAccionesCategoria";
             flpAccionesCategoria.Size = new Size(308, 42);
             flpAccionesCategoria.TabIndex = 2;
-            //
-            // btnNuevaCategoria
-            //
             btnNuevaCategoria.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevaCategoria.FlatAppearance.BorderSize = 0;
             btnNuevaCategoria.FlatStyle = FlatStyle.Flat;
@@ -582,9 +451,6 @@ namespace Vista
             btnNuevaCategoria.Text = "Agregar";
             btnNuevaCategoria.UseVisualStyleBackColor = false;
             btnNuevaCategoria.Click += btnNuevaCategoria_Click;
-            //
-            // btnGuardarCategoria
-            //
             btnGuardarCategoria.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardarCategoria.FlatAppearance.BorderSize = 0;
             btnGuardarCategoria.FlatStyle = FlatStyle.Flat;
@@ -597,9 +463,6 @@ namespace Vista
             btnGuardarCategoria.Text = "Guardar";
             btnGuardarCategoria.UseVisualStyleBackColor = false;
             btnGuardarCategoria.Click += btnGuardarCategoria_Click;
-            //
-            // btnModificarCategoria
-            //
             btnModificarCategoria.BackColor = Color.FromArgb(37, 99, 235);
             btnModificarCategoria.FlatAppearance.BorderSize = 0;
             btnModificarCategoria.FlatStyle = FlatStyle.Flat;
@@ -612,9 +475,6 @@ namespace Vista
             btnModificarCategoria.Text = "Modificar";
             btnModificarCategoria.UseVisualStyleBackColor = false;
             btnModificarCategoria.Click += btnModificarCategoria_Click;
-            //
-            // btnEliminarCategoria
-            //
             btnEliminarCategoria.BackColor = Color.FromArgb(239, 68, 68);
             btnEliminarCategoria.FlatAppearance.BorderSize = 0;
             btnEliminarCategoria.FlatStyle = FlatStyle.Flat;
@@ -627,9 +487,6 @@ namespace Vista
             btnEliminarCategoria.Text = "Dar de baja";
             btnEliminarCategoria.UseVisualStyleBackColor = false;
             btnEliminarCategoria.Click += btnEliminarCategoria_Click;
-            //
-            // btnConfirmarCategoria
-            //
             btnConfirmarCategoria.BackColor = Color.FromArgb(16, 185, 129);
             btnConfirmarCategoria.FlatAppearance.BorderSize = 0;
             btnConfirmarCategoria.FlatStyle = FlatStyle.Flat;
@@ -642,9 +499,6 @@ namespace Vista
             btnConfirmarCategoria.Text = "Confirmar";
             btnConfirmarCategoria.UseVisualStyleBackColor = false;
             btnConfirmarCategoria.Click += btnConfirmarCategoria_Click;
-            //
-            // btnCancelarCategoria
-            //
             btnCancelarCategoria.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelarCategoria.FlatAppearance.BorderSize = 0;
             btnCancelarCategoria.FlatStyle = FlatStyle.Flat;
@@ -657,9 +511,6 @@ namespace Vista
             btnCancelarCategoria.Text = "Cancelar";
             btnCancelarCategoria.UseVisualStyleBackColor = false;
             btnCancelarCategoria.Click += btnCancelarCategoria_Click;
-            //
-            // btnVolverCategoria
-            //
             btnVolverCategoria.BackColor = Color.FromArgb(100, 116, 139);
             btnVolverCategoria.FlatAppearance.BorderSize = 0;
             btnVolverCategoria.FlatStyle = FlatStyle.Flat;
@@ -672,26 +523,17 @@ namespace Vista
             btnVolverCategoria.Text = "Volver";
             btnVolverCategoria.UseVisualStyleBackColor = false;
             btnVolverCategoria.Click += btnVolverMenu_Click;
-            //
-            // lblResultadoProducto
-            //
             lblResultadoProducto.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultadoProducto.ForeColor = Color.FromArgb(16, 185, 129);
             lblResultadoProducto.Location = new Point(20, 182);
             lblResultadoProducto.Name = "lblResultadoProducto";
             lblResultadoProducto.Size = new Size(670, 44);
-            //
-            // lblResultadoCategoria
-            //
             lblResultadoCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblResultadoCategoria.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultadoCategoria.ForeColor = Color.FromArgb(16, 185, 129);
             lblResultadoCategoria.Location = new Point(552, 310);
             lblResultadoCategoria.Name = "lblResultadoCategoria";
             lblResultadoCategoria.Size = new Size(328, 60);
-            //
-            // FormProductos
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

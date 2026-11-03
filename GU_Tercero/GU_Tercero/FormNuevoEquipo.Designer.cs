@@ -36,9 +36,6 @@ namespace Vista
             btnCancelar = new Button();
             panelHeader.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -46,9 +43,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(420, 50);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -57,9 +51,6 @@ namespace Vista
             lblTitulo.Size = new Size(141, 25);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "NUEVO EQUIPO";
-            //
-            // lblCliente
-            //
             lblCliente.Font = new Font("Segoe UI", 9.5F);
             lblCliente.ForeColor = Color.FromArgb(71, 85, 105);
             lblCliente.Location = new Point(24, 60);
@@ -67,9 +58,6 @@ namespace Vista
             lblCliente.Size = new Size(366, 20);
             lblCliente.TabIndex = 0;
             lblCliente.Text = "Cliente:";
-            //
-            // lblTipo
-            //
             lblTipo.AutoSize = true;
             lblTipo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblTipo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -78,9 +66,6 @@ namespace Vista
             lblTipo.Size = new Size(37, 17);
             lblTipo.TabIndex = 0;
             lblTipo.Text = "Tipo:";
-            //
-            // cmbTipo
-            //
             cmbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipo.Font = new Font("Segoe UI", 9.5F);
             cmbTipo.FormattingEnabled = true;
@@ -89,9 +74,6 @@ namespace Vista
             cmbTipo.Name = "cmbTipo";
             cmbTipo.Size = new Size(260, 25);
             cmbTipo.TabIndex = 1;
-            //
-            // lblMarca
-            //
             lblMarca.AutoSize = true;
             lblMarca.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMarca.ForeColor = Color.FromArgb(30, 41, 59);
@@ -100,9 +82,6 @@ namespace Vista
             lblMarca.Size = new Size(48, 17);
             lblMarca.TabIndex = 0;
             lblMarca.Text = "Marca:";
-            //
-            // txtMarca
-            //
             txtMarca.Font = new Font("Segoe UI", 9.5F);
             txtMarca.Location = new Point(130, 130);
             txtMarca.MaxLength = 50;
@@ -111,9 +90,6 @@ namespace Vista
             txtMarca.Size = new Size(260, 24);
             txtMarca.TabIndex = 2;
             txtMarca.Text = "Apple";
-            //
-            // lblModelo
-            //
             lblModelo.AutoSize = true;
             lblModelo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblModelo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -122,9 +98,6 @@ namespace Vista
             lblModelo.Size = new Size(55, 17);
             lblModelo.TabIndex = 0;
             lblModelo.Text = "Modelo:";
-            //
-            // txtModelo
-            //
             txtModelo.Font = new Font("Segoe UI", 9.5F);
             txtModelo.Location = new Point(130, 168);
             txtModelo.MaxLength = 80;
@@ -132,9 +105,6 @@ namespace Vista
             txtModelo.PlaceholderText = "Ej: iPhone 14";
             txtModelo.Size = new Size(260, 24);
             txtModelo.TabIndex = 3;
-            //
-            // lblColor
-            //
             lblColor.AutoSize = true;
             lblColor.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblColor.ForeColor = Color.FromArgb(30, 41, 59);
@@ -143,9 +113,6 @@ namespace Vista
             lblColor.Size = new Size(44, 17);
             lblColor.TabIndex = 0;
             lblColor.Text = "Color:";
-            //
-            // txtColor
-            //
             txtColor.Font = new Font("Segoe UI", 9.5F);
             txtColor.Location = new Point(130, 206);
             txtColor.MaxLength = 30;
@@ -153,9 +120,6 @@ namespace Vista
             txtColor.PlaceholderText = "Opcional. Ej: Negro";
             txtColor.Size = new Size(260, 24);
             txtColor.TabIndex = 4;
-            //
-            // lblImei
-            //
             lblImei.AutoSize = true;
             lblImei.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblImei.ForeColor = Color.FromArgb(30, 41, 59);
@@ -164,9 +128,6 @@ namespace Vista
             lblImei.Size = new Size(39, 17);
             lblImei.TabIndex = 0;
             lblImei.Text = "IMEI:";
-            //
-            // txtImei
-            //
             txtImei.Font = new Font("Segoe UI", 9.5F);
             txtImei.Location = new Point(130, 244);
             txtImei.MaxLength = 15;
@@ -174,9 +135,6 @@ namespace Vista
             txtImei.PlaceholderText = "Opcional. 15 números";
             txtImei.Size = new Size(260, 24);
             txtImei.TabIndex = 5;
-            //
-            // lblSerie
-            //
             lblSerie.AutoSize = true;
             lblSerie.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblSerie.ForeColor = Color.FromArgb(30, 41, 59);
@@ -185,9 +143,6 @@ namespace Vista
             lblSerie.Size = new Size(68, 17);
             lblSerie.TabIndex = 0;
             lblSerie.Text = "N° de serie:";
-            //
-            // txtSerie
-            //
             txtSerie.Font = new Font("Segoe UI", 9.5F);
             txtSerie.Location = new Point(130, 282);
             txtSerie.MaxLength = 50;
@@ -195,9 +150,6 @@ namespace Vista
             txtSerie.PlaceholderText = "Opcional";
             txtSerie.Size = new Size(260, 24);
             txtSerie.TabIndex = 6;
-            //
-            // btnGuardar
-            //
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
@@ -210,9 +162,6 @@ namespace Vista
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            //
-            // btnCancelar
-            //
             btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
             btnCancelar.DialogResult = DialogResult.Cancel;
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -225,9 +174,6 @@ namespace Vista
             btnCancelar.TabIndex = 8;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            //
-            // FormNuevoEquipo
-            //
             AcceptButton = btnGuardar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;

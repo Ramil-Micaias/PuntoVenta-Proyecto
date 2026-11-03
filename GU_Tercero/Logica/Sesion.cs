@@ -2,9 +2,6 @@ using Datos.Entidades;
 
 namespace Logica
 {
-    // Usuario que tiene la sesión abierta. Se usa para saber quién hizo cada
-    // operación al registrarla en la bitácora y qué permisos especiales tiene.
-    // Los ingresos correctos no se registran en la bitácora (solo los fallidos y los bloqueos).
     public static class Sesion
     {
         public static Usuario? UsuarioActual { get; private set; }

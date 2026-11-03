@@ -2,15 +2,8 @@ namespace GU_Tercero
 {
     partial class FormUsuario
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace GU_Tercero
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelHeader = new Panel();
@@ -58,9 +47,6 @@ namespace GU_Tercero
             grpCambiarContraseña.SuspendLayout();
             grpPreguntasSeguridad.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblMiCuenta);
             panelHeader.Dock = DockStyle.Top;
@@ -68,9 +54,6 @@ namespace GU_Tercero
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(760, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblMiCuenta
-            //
             lblMiCuenta.AutoSize = true;
             lblMiCuenta.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblMiCuenta.ForeColor = Color.White;
@@ -79,9 +62,6 @@ namespace GU_Tercero
             lblMiCuenta.Size = new Size(115, 28);
             lblMiCuenta.TabIndex = 0;
             lblMiCuenta.Text = "MI PERFIL";
-            //
-            // grpInformacionUsuario
-            //
             grpInformacionUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpInformacionUsuario.Controls.Add(lblNombreRol);
             grpInformacionUsuario.Controls.Add(lblRol);
@@ -95,9 +75,6 @@ namespace GU_Tercero
             grpInformacionUsuario.TabIndex = 1;
             grpInformacionUsuario.TabStop = false;
             grpInformacionUsuario.Text = "Información del usuario";
-            //
-            // lblUsuario
-            //
             lblUsuario.AutoSize = true;
             lblUsuario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblUsuario.ForeColor = Color.FromArgb(30, 41, 59);
@@ -106,9 +83,6 @@ namespace GU_Tercero
             lblUsuario.Size = new Size(57, 17);
             lblUsuario.TabIndex = 0;
             lblUsuario.Text = "Usuario:";
-            //
-            // lblNombreUsuario
-            //
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.Font = new Font("Segoe UI", 9.5F);
             lblNombreUsuario.ForeColor = Color.FromArgb(15, 23, 42);
@@ -116,9 +90,6 @@ namespace GU_Tercero
             lblNombreUsuario.Name = "lblNombreUsuario";
             lblNombreUsuario.Size = new Size(0, 17);
             lblNombreUsuario.TabIndex = 1;
-            //
-            // lblRol
-            //
             lblRol.AutoSize = true;
             lblRol.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblRol.ForeColor = Color.FromArgb(30, 41, 59);
@@ -127,9 +98,6 @@ namespace GU_Tercero
             lblRol.Size = new Size(30, 17);
             lblRol.TabIndex = 2;
             lblRol.Text = "Rol:";
-            //
-            // lblNombreRol
-            //
             lblNombreRol.AutoSize = true;
             lblNombreRol.Font = new Font("Segoe UI", 9.5F);
             lblNombreRol.ForeColor = Color.FromArgb(15, 23, 42);
@@ -137,9 +105,6 @@ namespace GU_Tercero
             lblNombreRol.Name = "lblNombreRol";
             lblNombreRol.Size = new Size(0, 17);
             lblNombreRol.TabIndex = 3;
-            //
-            // grpCambiarContraseña
-            //
             grpCambiarContraseña.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpCambiarContraseña.Controls.Add(btnConfirmarCambios);
             grpCambiarContraseña.Controls.Add(lblAyudaPassword);
@@ -155,9 +120,6 @@ namespace GU_Tercero
             grpCambiarContraseña.TabIndex = 3;
             grpCambiarContraseña.TabStop = false;
             grpCambiarContraseña.Text = "Cambiar contraseña";
-            //
-            // lblNuevaPassword
-            //
             lblNuevaPassword.AutoSize = true;
             lblNuevaPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNuevaPassword.ForeColor = Color.FromArgb(30, 41, 59);
@@ -166,9 +128,6 @@ namespace GU_Tercero
             lblNuevaPassword.Size = new Size(122, 17);
             lblNuevaPassword.TabIndex = 0;
             lblNuevaPassword.Text = "Nueva contraseña:";
-            //
-            // txtNuevaPassword
-            //
             txtNuevaPassword.Font = new Font("Segoe UI", 9.5F);
             txtNuevaPassword.Location = new Point(20, 52);
             txtNuevaPassword.Name = "txtNuevaPassword";
@@ -176,9 +135,6 @@ namespace GU_Tercero
             txtNuevaPassword.PlaceholderText = "Ingrese la nueva contraseña";
             txtNuevaPassword.Size = new Size(300, 24);
             txtNuevaPassword.TabIndex = 1;
-            //
-            // lblConfirmarPassword
-            //
             lblConfirmarPassword.AutoSize = true;
             lblConfirmarPassword.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblConfirmarPassword.ForeColor = Color.FromArgb(30, 41, 59);
@@ -187,9 +143,6 @@ namespace GU_Tercero
             lblConfirmarPassword.Size = new Size(147, 17);
             lblConfirmarPassword.TabIndex = 2;
             lblConfirmarPassword.Text = "Confirmar contraseña:";
-            //
-            // txtConfirmarPassword
-            //
             txtConfirmarPassword.Font = new Font("Segoe UI", 9.5F);
             txtConfirmarPassword.Location = new Point(20, 110);
             txtConfirmarPassword.Name = "txtConfirmarPassword";
@@ -197,9 +150,6 @@ namespace GU_Tercero
             txtConfirmarPassword.PlaceholderText = "Repita la nueva contraseña";
             txtConfirmarPassword.Size = new Size(300, 24);
             txtConfirmarPassword.TabIndex = 3;
-            //
-            // lblAyudaPassword
-            //
             lblAyudaPassword.Font = new Font("Segoe UI", 9F);
             lblAyudaPassword.ForeColor = Color.FromArgb(100, 116, 139);
             lblAyudaPassword.Location = new Point(350, 30);
@@ -207,9 +157,6 @@ namespace GU_Tercero
             lblAyudaPassword.Size = new Size(360, 64);
             lblAyudaPassword.TabIndex = 4;
             lblAyudaPassword.Text = "Si las respuestas son correctas se habilitan estos campos. Ingrese la nueva contraseña y presione \"Confirmar cambios\".";
-            //
-            // btnCambiarPassword
-            //
             btnCambiarPassword.BackColor = Color.FromArgb(37, 99, 235);
             btnCambiarPassword.FlatAppearance.BorderSize = 0;
             btnCambiarPassword.FlatStyle = FlatStyle.Flat;
@@ -222,9 +169,6 @@ namespace GU_Tercero
             btnCambiarPassword.Text = "Cambiar contraseña";
             btnCambiarPassword.UseVisualStyleBackColor = false;
             btnCambiarPassword.Click += btnCambiarPassword_Click;
-            //
-            // btnConfirmarCambios
-            //
             btnConfirmarCambios.BackColor = Color.FromArgb(16, 185, 129);
             btnConfirmarCambios.FlatAppearance.BorderSize = 0;
             btnConfirmarCambios.FlatStyle = FlatStyle.Flat;
@@ -237,9 +181,6 @@ namespace GU_Tercero
             btnConfirmarCambios.Text = "Confirmar cambios";
             btnConfirmarCambios.UseVisualStyleBackColor = false;
             btnConfirmarCambios.Click += btnConfirmarCambios_Click;
-            //
-            // grpPreguntasSeguridad
-            //
             grpPreguntasSeguridad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpPreguntasSeguridad.Controls.Add(btnCambiarPassword);
             grpPreguntasSeguridad.Controls.Add(lblMensaje);
@@ -257,9 +198,6 @@ namespace GU_Tercero
             grpPreguntasSeguridad.TabIndex = 2;
             grpPreguntasSeguridad.TabStop = false;
             grpPreguntasSeguridad.Text = "Preguntas de seguridad";
-            //
-            // lblPreguntaUno
-            //
             lblPreguntaUno.AutoSize = true;
             lblPreguntaUno.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPreguntaUno.ForeColor = Color.FromArgb(30, 41, 59);
@@ -268,18 +206,12 @@ namespace GU_Tercero
             lblPreguntaUno.Size = new Size(210, 17);
             lblPreguntaUno.TabIndex = 0;
             lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
-            //
-            // txtRespuestaUno
-            //
             txtRespuestaUno.Font = new Font("Segoe UI", 9.5F);
             txtRespuestaUno.Location = new Point(20, 50);
             txtRespuestaUno.Name = "txtRespuestaUno";
             txtRespuestaUno.PlaceholderText = "Escriba su respuesta";
             txtRespuestaUno.Size = new Size(300, 24);
             txtRespuestaUno.TabIndex = 1;
-            //
-            // lblPreguntaDos
-            //
             lblPreguntaDos.AutoSize = true;
             lblPreguntaDos.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPreguntaDos.ForeColor = Color.FromArgb(30, 41, 59);
@@ -288,18 +220,12 @@ namespace GU_Tercero
             lblPreguntaDos.Size = new Size(152, 17);
             lblPreguntaDos.TabIndex = 2;
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
-            //
-            // txtRespuestaDos
-            //
             txtRespuestaDos.Font = new Font("Segoe UI", 9.5F);
             txtRespuestaDos.Location = new Point(20, 104);
             txtRespuestaDos.Name = "txtRespuestaDos";
             txtRespuestaDos.PlaceholderText = "Escriba su respuesta";
             txtRespuestaDos.Size = new Size(300, 24);
             txtRespuestaDos.TabIndex = 3;
-            //
-            // lblPreguntaTres
-            //
             lblPreguntaTres.AutoSize = true;
             lblPreguntaTres.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPreguntaTres.ForeColor = Color.FromArgb(30, 41, 59);
@@ -308,18 +234,12 @@ namespace GU_Tercero
             lblPreguntaTres.Size = new Size(118, 17);
             lblPreguntaTres.TabIndex = 4;
             lblPreguntaTres.Text = "¿Comida favorita?";
-            //
-            // txtRespuestaTres
-            //
             txtRespuestaTres.Font = new Font("Segoe UI", 9.5F);
             txtRespuestaTres.Location = new Point(20, 158);
             txtRespuestaTres.Name = "txtRespuestaTres";
             txtRespuestaTres.PlaceholderText = "Escriba su respuesta";
             txtRespuestaTres.Size = new Size(300, 24);
             txtRespuestaTres.TabIndex = 5;
-            //
-            // lblMensaje
-            //
             lblMensaje.Font = new Font("Segoe UI", 9F);
             lblMensaje.ForeColor = Color.FromArgb(100, 116, 139);
             lblMensaje.Location = new Point(350, 30);
@@ -327,9 +247,6 @@ namespace GU_Tercero
             lblMensaje.Size = new Size(360, 48);
             lblMensaje.TabIndex = 6;
             lblMensaje.Text = "Presione \"Cambiar contraseña\", responda sus 3 preguntas de seguridad y presione \"Verificar respuestas\".";
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -343,18 +260,12 @@ namespace GU_Tercero
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += btnVolver_Click;
-            //
-            // lblResultado
-            //
             lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
             lblResultado.Location = new Point(16, 546);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(560, 34);
-            //
-            // FormUsuario
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

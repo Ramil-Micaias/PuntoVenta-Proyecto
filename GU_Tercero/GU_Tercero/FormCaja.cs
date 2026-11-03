@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // CU06 Registrar Movimiento de Caja: muestra la caja de la jornada y sus movimientos.
     public partial class FormCaja : Form
     {
         private readonly GestorCaja gestorCaja = new GestorCaja();
@@ -35,14 +34,12 @@ namespace Vista
 
         private void FormCaja_Load(object sender, EventArgs e)
         {
-            // El historial de cajas (CU10) lo consulta el administrador.
             btnHistorial.Visible = usuarioLogueado == null || usuarioLogueado.Nombre_Rol == "Administrador";
 
             Grillas.Configurar(dgvMovimientos);
             CargarCaja();
         }
 
-        // Paso 2: muestra la caja de la jornada con sus totales y movimientos.
         private void CargarCaja()
         {
             try
@@ -63,8 +60,6 @@ namespace Vista
             bool hayCaja = cajaActual != null;
             bool abierta = hayCaja && cajaActual!.Abierta;
 
-            // 2.1: sin caja abierta no se pueden registrar movimientos.
-            // Se ocultan (deshabilitados parecían activos por el estilo plano).
             btnRegistrarMovimiento.Visible = abierta;
             btnCerrarCaja.Visible = abierta;
 
@@ -73,8 +68,6 @@ namespace Vista
                 Mensajes.Limpiar(lblResultado);
             }
 
-            // Sin caja de hoy: se abre con saldo inicial.
-            // Caja de hoy cerrada: se ofrece reabrir la misma (por si se cerró por error).
             bool cerradaHoy = hayCaja && !abierta;
 
             lblApertura.Visible = !hayCaja;
@@ -82,7 +75,6 @@ namespace Vista
             btnAbrirCaja.Visible = !abierta;
             btnAbrirCaja.Text = cerradaHoy ? "Reabrir Caja" : "Abrir Caja";
 
-            // Sin el campo de saldo inicial, Reabrir queda a la izquierda.
             btnAbrirCaja.Left = cerradaHoy ? lblApertura.Left : txtSaldoInicial.Right + 10;
             AcomodarBotones(abierta);
 
@@ -113,8 +105,6 @@ namespace Vista
             CargarMovimientos();
         }
 
-        // Pone los botones visibles de la derecha uno al lado del otro contra el borde, sin huecos.
-        // (Se usa el estado de la caja y no boton.Visible, que es false mientras la pantalla todavía no se mostró.)
         private void AcomodarBotones(bool abierta)
         {
             int x = dgvMovimientos.Right;
@@ -179,7 +169,6 @@ namespace Vista
                 return;
             }
 
-            // Si la caja de hoy está cerrada, el botón la reabre.
             if (cajaActual != null && !cajaActual.Abierta)
             {
                 ReabrirCaja();
@@ -211,7 +200,6 @@ namespace Vista
             }
         }
 
-        // Vuelve a abrir la caja de hoy (misma caja, mismo saldo inicial y movimientos).
         private void ReabrirCaja()
         {
             DialogResult respuesta = MessageBox.Show(
@@ -264,7 +252,6 @@ namespace Vista
                 decimal saldoCierre = gestorCaja.CerrarCaja(cajaActual.Id_Caja, usuarioLogueado.Id_Usuario);
                 CargarCaja();
 
-                // Con la caja cerrada se muestra arriba, en el estado de la caja.
                 Mensajes.Exito(lblEstado, "Caja cerrada correctamente. Saldo de cierre: " + FormatoMoneda(saldoCierre) +
                     ". Si se cerró por error, presione \"Reabrir Caja\".");
             }
@@ -275,12 +262,10 @@ namespace Vista
             }
         }
 
-        // Pasos 3 a 12: abre el formulario del movimiento y, si se guardó, actualiza la caja.
         private void RegistrarMovimiento()
         {
             Mensajes.Limpiar(lblResultado);
 
-            // Se vuelve a leer la caja por si otro usuario la cerró mientras tanto (2.1).
             CargarCaja();
 
             if (cajaActual == null || !cajaActual.Abierta)
@@ -314,7 +299,6 @@ namespace Vista
                 "Movimiento registrado con éxito.\nSaldo disponible: " + FormatoMoneda(cajaActual!.Saldo_Disponible));
         }
 
-        // Importes de ingresos en verde y de egresos en rojo.
         private void dgvMovimientos_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Tipo") || !dgvMovimientos.Columns.Contains("Importe"))
@@ -322,7 +306,6 @@ namespace Vista
                 return;
             }
 
-            // Ventas y compras con tarjeta, transferencia, etc.: se muestran en gris porque no mueven el efectivo.
             if (dgvMovimientos.Columns.Contains("Medio")
                 && (Convert.ToString(dgvMovimientos.Rows[e.RowIndex].Cells["Medio"].Value) ?? "Efectivo") != "Efectivo")
             {

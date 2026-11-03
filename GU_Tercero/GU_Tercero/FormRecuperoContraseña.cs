@@ -21,13 +21,9 @@ namespace GU_Tercero
         {
             InitializeComponent();
 
-            // Las preguntas se cargan solo al presionar Confirmar (o Enter). Antes se cargaban
-            // al salir del campo de usuario: al hacer clic en Cancelar los botones se movían
-            // debajo del mouse y el clic se perdía, por eso Cancelar parecía confirmar.
             txtNombreUsuario.TextChanged += txtNombreUsuario_TextChanged;
         }
 
-        // Enter en el usuario o en las respuestas hace lo mismo que el botón Confirmar.
         protected override bool ProcessDialogKey(Keys keyData)
         {
             if (keyData == Keys.Enter && !btnCancelar.Focused && btnValidar.Enabled)
@@ -53,8 +49,6 @@ namespace GU_Tercero
             txtNombreUsuario.Focus();
         }
 
-        // Si se cambia el usuario después de cargar sus preguntas, se ocultan y hay que
-        // volver a presionar Confirmar.
         private void txtNombreUsuario_TextChanged(object? sender, EventArgs e)
         {
             if (idsPreguntasCargadas.Count > 0)
@@ -82,8 +76,6 @@ namespace GU_Tercero
 
             if (preguntas.Rows.Count == 0)
             {
-                // Mismo mensaje si el usuario no existe o si no tiene preguntas, para no
-                // revelar qué nombres de usuario existen.
                 avisoSinPreguntas = "El usuario ingresado no existe o no tiene preguntas de seguridad configuradas. "
                     + "Verifique el nombre de usuario o solicite ayuda al administrador.";
 
@@ -106,10 +98,6 @@ namespace GU_Tercero
             OcultarPreguntasNoUsadas();
         }
 
-        // Normaliza el texto de la pregunta antes de mostrarlo.
-        // Algunas cargas de la base dejaron un caracter U+00C2 pegado antes del signo
-        // de apertura, y si no se quita se ve "Â¿" y despues se agrega un segundo "?",
-        // dejando la pregunta doble.
         private static string PrepararTextoPregunta(string texto)
         {
             string limpio = texto.Replace("\u00C2", string.Empty).Trim();
@@ -145,8 +133,6 @@ namespace GU_Tercero
 
         private void OcultarPreguntas()
         {
-            // La lista se vacía antes de recalcular la visibilidad: si se hiciera al revés,
-            // las preguntas quedarían visibles sin ninguna cargada detrás.
             idsPreguntasCargadas.Clear();
 
             OcultarPreguntasNoUsadas();
@@ -165,31 +151,21 @@ namespace GU_Tercero
             lblPregunta3.Visible = mostrarTercera;
             txtRespuesta3.Visible = mostrarTercera;
 
-            // Confirmar siempre se puede usar: sin preguntas cargadas busca al usuario,
-            // con preguntas cargadas valida las respuestas.
             btnValidar.Visible = true;
             btnValidar.Enabled = !operacionEnCurso;
 
             ReubicarControles();
         }
 
-        // Las preguntas vienen de la base de datos y su largo es variable, así que los
-        // controles se apilan a medida que se conoce el alto real de cada etiqueta. Sin esto
-        // una pregunta larga se monta sobre su campo de respuesta.
         private void ReubicarControles()
         {
             Label[] etiquetas = { lblPregunta1, lblPregunta2, lblPregunta3 };
             TextBox[] campos = { txtRespuesta1, txtRespuesta2, txtRespuesta3 };
 
-            // Las medidas se toman del campo de usuario y se convierten con LogicalToDeviceUnits
-            // para que respeten el zoom de la pantalla (125%, 150%, 200%...). Con números fijos
-            // en píxeles, en pantallas con zoom los botones quedaban encima del campo de usuario.
             int margenIzquierdo = txtNombreUsuario.Left;
             int anchoDisponible = ClientSize.Width - (margenIzquierdo * 2);
             int separacion = LogicalToDeviceUnits(26);
 
-            // Cuando no hay preguntas para mostrar los botones igual tienen que estar
-            // visibles, asi que se los ubica debajo del campo de usuario.
             int y = txtNombreUsuario.Bottom + LogicalToDeviceUnits(24);
 
             for (int i = 0; i < etiquetas.Length; i++)
@@ -225,7 +201,6 @@ namespace GU_Tercero
                 return;
             }
 
-            // Primer paso: buscar al usuario y mostrar sus preguntas.
             if (idsPreguntasCargadas.Count == 0)
             {
                 CargarPreguntasDelUsuario();
@@ -314,8 +289,6 @@ namespace GU_Tercero
             }
             finally
             {
-                // El formulario se cierra solo cuando la recuperación termina bien, así que
-                // se chequea que siga vivo antes de volver a tocar los controles.
                 operacionEnCurso = false;
 
                 if (!IsDisposed)
@@ -344,9 +317,6 @@ namespace GU_Tercero
 
             if (!string.IsNullOrEmpty(resultado.PasswordTemporalParaMostrar))
             {
-                // No se modificó la contraseña del usuario en la base, así que esta temporal
-                // todavía sirve para ingresar. Se muestra por pantalla porque si el servidor de
-                // correo está caído no hay otro canal para entregarla.
                 DialogResult confirmacion = MessageBox.Show(
                     "No se pudo enviar el correo de recuperación.\n\n"
                     + resultado.Error + "\n\n"
@@ -385,9 +355,6 @@ namespace GU_Tercero
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Form1 ya se muestra solo cuando este formulario se cierra (lo tiene enlazado
-            // en llb_OlvidoContraseña_LinkClicked), así que acá no se crea una segunda
-            // instancia del login.
             this.Close();
         }
     }

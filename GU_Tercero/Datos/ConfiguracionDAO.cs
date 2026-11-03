@@ -4,12 +4,8 @@ using System.Data;
 
 namespace Datos
 {
-    // La clase ConfiguracionDAO pertenece a la capa de datos y se encarga
-    // de obtener y actualizar la configuración del sistema almacenada
-    // en SQL Server mediante procedimientos almacenados.
     public class ConfiguracionDAO
     {
-        // Obtiene la configuración actual del sistema.
         public ConfiguracionSistema ObtenerConfiguracion()
         {
             ConfiguracionSistema configuracion = null;
@@ -53,7 +49,6 @@ namespace Datos
             return configuracion;
         }
 
-        // Guarda las modificaciones realizadas por el administrador.
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

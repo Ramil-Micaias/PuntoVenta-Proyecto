@@ -3,7 +3,6 @@ using System.Data;
 
 namespace Datos
 {
-    // Acceso a la tabla Codigo2FA (autenticación en dos pasos).
     public class Codigo2FADAO
     {
         public void GuardarCodigo(int idUsuario, string codigo, int minutosValidez)
@@ -22,7 +21,6 @@ namespace Datos
             }
         }
 
-        // Devuelve "OK", "INCORRECTO" o "EXPIRADO".
         public string ValidarCodigo(int idUsuario, string codigo)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

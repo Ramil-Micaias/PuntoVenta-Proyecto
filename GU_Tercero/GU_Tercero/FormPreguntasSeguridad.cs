@@ -23,11 +23,9 @@ namespace GU_Tercero
             lblPreguntaDos.Text = "¿Ciudad donde naciste?";
             lblPreguntaTres.Text = "¿Comida favorita?";
 
-            // Siempre se registran las 3 preguntas (la configuración solo define cuántas se piden al recuperar).
             lblPreguntaTres.Visible = true;
             txtRespuestaTres.Visible = true;
 
-            // Deshabilitamos el botón cancelar si la configuración es obligatoria en primer ingreso
             btnCancelar.Enabled = false;
         }
 
@@ -42,9 +40,6 @@ namespace GU_Tercero
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // El hash se genera siempre con el helper centralizado: acá y en la pantalla de
-            // recuperación tienen que aplicar exactamente la misma normalización, o el hash
-            // guardado nunca va a coincidir con el hash calculado al validar.
             string hash1 = HashHelper.GenerarHashRespuesta(txtRespuestaUno.Text);
             negocio.GuardarPreguntaSeguridad(usuarioLogueado.Id_Usuario, 1, hash1);
 
@@ -58,14 +53,12 @@ namespace GU_Tercero
 
             preguntasGuardadas = true;
 
-            // Avisamos a Form1 que se completaron las preguntas con éxito
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void FormPreguntasSeguridad_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Si no guardó las preguntas y el cierre fue iniciado por el usuario (la cruz X)
             if (!preguntasGuardadas && e.CloseReason == CloseReason.UserClosing)
             {
                 DialogResult respuesta = MessageBox.Show(
@@ -80,7 +73,7 @@ namespace GU_Tercero
                 }
                 else
                 {
-                    e.Cancel = true; // Bloquea el cierre y permanece en la pantalla
+                    e.Cancel = true;
                 }
             }
         }

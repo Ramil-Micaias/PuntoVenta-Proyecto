@@ -2,15 +2,8 @@ namespace GU_Tercero
 {
     partial class FormAdmin
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace GU_Tercero
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelHeader = new Panel();
@@ -55,9 +44,6 @@ namespace GU_Tercero
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             grpDatos.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -65,9 +51,6 @@ namespace GU_Tercero
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(900, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -76,9 +59,6 @@ namespace GU_Tercero
             lblTitulo.Size = new Size(229, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "GESTIÓN DE USUARIOS";
-            //
-            // dgvUsuarios
-            //
             dgvUsuarios.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUsuarios.Location = new Point(16, 68);
@@ -86,9 +66,6 @@ namespace GU_Tercero
             dgvUsuarios.Size = new Size(868, 254);
             dgvUsuarios.TabIndex = 1;
             dgvUsuarios.CellClick += dgvUsuarios_CellClick;
-            //
-            // grpDatos
-            //
             grpDatos.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpDatos.Controls.Add(txtResultado);
             grpDatos.Controls.Add(btnVolver);
@@ -117,9 +94,6 @@ namespace GU_Tercero
             grpDatos.TabIndex = 2;
             grpDatos.TabStop = false;
             grpDatos.Text = "Datos del Usuario";
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -133,9 +107,6 @@ namespace GU_Tercero
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += btnVolver_Click;
-            //
-            // btnCancelar
-            //
             btnCancelar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -150,9 +121,6 @@ namespace GU_Tercero
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Visible = false;
             btnCancelar.Click += btnCancelar_Click;
-            //
-            // btnEliminar
-            //
             btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEliminar.BackColor = Color.FromArgb(239, 68, 68);
             btnEliminar.FlatAppearance.BorderSize = 0;
@@ -166,9 +134,6 @@ namespace GU_Tercero
             btnEliminar.Text = "Inactivar";
             btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click_1;
-            //
-            // btnModificar
-            //
             btnModificar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnModificar.BackColor = Color.FromArgb(37, 99, 235);
             btnModificar.FlatAppearance.BorderSize = 0;
@@ -182,9 +147,6 @@ namespace GU_Tercero
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += btnModificar_Click;
-            //
-            // btnGuardar
-            //
             btnGuardar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
@@ -198,9 +160,6 @@ namespace GU_Tercero
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            //
-            // btnNuevo
-            //
             btnNuevo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnNuevo.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevo.FlatAppearance.BorderSize = 0;
@@ -214,9 +173,6 @@ namespace GU_Tercero
             btnNuevo.Text = "Nuevo";
             btnNuevo.UseVisualStyleBackColor = false;
             btnNuevo.Click += btnNuevo_Click;
-            //
-            // cmbRol
-            //
             cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRol.Font = new Font("Segoe UI", 9.5F);
             cmbRol.FormattingEnabled = true;
@@ -224,9 +180,6 @@ namespace GU_Tercero
             cmbRol.Name = "cmbRol";
             cmbRol.Size = new Size(200, 25);
             cmbRol.TabIndex = 6;
-            //
-            // lblRol
-            //
             lblRol.AutoSize = true;
             lblRol.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblRol.ForeColor = Color.FromArgb(30, 41, 59);
@@ -235,9 +188,6 @@ namespace GU_Tercero
             lblRol.Size = new Size(30, 17);
             lblRol.TabIndex = 0;
             lblRol.Text = "Rol:";
-            //
-            // txtNombreUsuario
-            //
             txtNombreUsuario.Font = new Font("Segoe UI", 9.5F);
             txtNombreUsuario.Location = new Point(130, 106);
             txtNombreUsuario.MaxLength = 50;
@@ -245,9 +195,6 @@ namespace GU_Tercero
             txtNombreUsuario.PlaceholderText = "Ej: jperez";
             txtNombreUsuario.Size = new Size(200, 24);
             txtNombreUsuario.TabIndex = 5;
-            //
-            // lblNombreUsuario
-            //
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNombreUsuario.ForeColor = Color.FromArgb(30, 41, 59);
@@ -256,9 +203,6 @@ namespace GU_Tercero
             lblNombreUsuario.Size = new Size(57, 17);
             lblNombreUsuario.TabIndex = 0;
             lblNombreUsuario.Text = "Usuario:";
-            //
-            // txtCorreo
-            //
             txtCorreo.Font = new Font("Segoe UI", 9.5F);
             txtCorreo.Location = new Point(470, 68);
             txtCorreo.MaxLength = 150;
@@ -266,9 +210,6 @@ namespace GU_Tercero
             txtCorreo.PlaceholderText = "Ej: usuario@correo.com";
             txtCorreo.Size = new Size(200, 24);
             txtCorreo.TabIndex = 4;
-            //
-            // lblCorreo
-            //
             lblCorreo.AutoSize = true;
             lblCorreo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCorreo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -277,9 +218,6 @@ namespace GU_Tercero
             lblCorreo.Size = new Size(51, 17);
             lblCorreo.TabIndex = 0;
             lblCorreo.Text = "Correo:";
-            //
-            // txtDni
-            //
             txtDni.Font = new Font("Segoe UI", 9.5F);
             txtDni.Location = new Point(130, 68);
             txtDni.MaxLength = 8;
@@ -287,9 +225,6 @@ namespace GU_Tercero
             txtDni.PlaceholderText = "Sin puntos. Ej: 30123456";
             txtDni.Size = new Size(200, 24);
             txtDni.TabIndex = 3;
-            //
-            // lblDni
-            //
             lblDni.AutoSize = true;
             lblDni.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDni.ForeColor = Color.FromArgb(30, 41, 59);
@@ -298,9 +233,6 @@ namespace GU_Tercero
             lblDni.Size = new Size(33, 17);
             lblDni.TabIndex = 0;
             lblDni.Text = "DNI:";
-            //
-            // txtNombre
-            //
             txtNombre.Font = new Font("Segoe UI", 9.5F);
             txtNombre.Location = new Point(470, 30);
             txtNombre.MaxLength = 50;
@@ -308,9 +240,6 @@ namespace GU_Tercero
             txtNombre.PlaceholderText = "Ej: Juan";
             txtNombre.Size = new Size(200, 24);
             txtNombre.TabIndex = 2;
-            //
-            // lblNombre
-            //
             lblNombre.AutoSize = true;
             lblNombre.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNombre.ForeColor = Color.FromArgb(30, 41, 59);
@@ -319,9 +248,6 @@ namespace GU_Tercero
             lblNombre.Size = new Size(59, 17);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
-            //
-            // txtApellido
-            //
             txtApellido.Font = new Font("Segoe UI", 9.5F);
             txtApellido.Location = new Point(130, 30);
             txtApellido.MaxLength = 50;
@@ -329,9 +255,6 @@ namespace GU_Tercero
             txtApellido.PlaceholderText = "Ej: Pérez";
             txtApellido.Size = new Size(200, 24);
             txtApellido.TabIndex = 1;
-            //
-            // lblApellido
-            //
             lblApellido.AutoSize = true;
             lblApellido.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblApellido.ForeColor = Color.FromArgb(30, 41, 59);
@@ -340,9 +263,6 @@ namespace GU_Tercero
             lblApellido.Size = new Size(60, 17);
             lblApellido.TabIndex = 0;
             lblApellido.Text = "Apellido:";
-            //
-            // txtResultado
-            //
             txtResultado.BorderStyle = BorderStyle.None;
             txtResultado.Multiline = true;
             txtResultado.ReadOnly = true;
@@ -353,9 +273,6 @@ namespace GU_Tercero
             txtResultado.Name = "txtResultado";
             txtResultado.Size = new Size(670, 40);
             txtResultado.BackColor = Color.FromArgb(241, 245, 249);
-            //
-            // FormAdmin
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

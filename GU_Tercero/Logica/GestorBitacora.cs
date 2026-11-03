@@ -8,18 +8,12 @@ using System.Text.Json;
 
 namespace Logica
 {
-    // Bitácora del sistema (CU19). Se llama desde cada operación que hay que registrar:
-    // recibe los datos y los guarda en la tabla Bitacora con quién la hizo y cuándo.
-    // En las modificaciones guarda el estado anterior y el posterior en JSON
-    // (solo los datos que cambiaron).
     public static class GestorBitacora
     {
-        // Criticidad de cada operación.
         public const string CRITICA = "Crítica";
         public const string ADVERTENCIA = "Advertencia";
         public const string INFORMATIVA = "Informativa";
 
-        // Módulos.
         public const string SEGURIDAD = "Seguridad";
         public const string USUARIOS = "Usuarios";
         public const string PRODUCTOS = "Productos";
@@ -33,10 +27,8 @@ namespace Logica
         public static readonly string[] MODULOS = { SEGURIDAD, USUARIOS, PRODUCTOS, PROVEEDORES, VENTAS, COMPRAS, CAJA, CONFIGURACION, BACKUP };
         public static readonly string[] CRITICIDADES = { CRITICA, ADVERTENCIA, INFORMATIVA };
 
-        // Permiso especial para consultar la bitácora.
         public const string PERMISO_VER_BITACORA = "VER_BITACORA";
 
-        // Datos que no se guardan en los estados (no aportan o cambian solos).
         private static readonly HashSet<string> COLUMNAS_IGNORADAS = new HashSet<string>
         {
             "Fecha_Alta", "Ultimo_Login", "Intentos_Fallidos", "PasswordHash"
@@ -44,13 +36,11 @@ namespace Logica
 
         private static readonly JsonSerializerOptions opcionesJson = new JsonSerializerOptions
         {
-            // Deja los acentos y la ñ legibles en el JSON.
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         private static readonly BitacoraDAO bitacoraDAO = new BitacoraDAO();
 
-        // Registra una operación a nombre del usuario que tiene la sesión abierta.
         public static void Registrar(string modulo, string operacion, string criticidad,
             Dictionary<string, object?>? estadoAnterior = null, Dictionary<string, object?>? estadoPosterior = null)
         {
@@ -58,13 +48,9 @@ namespace Logica
             RegistrarParaUsuario(usuario?.Nombre_Usuario ?? "(sin sesión)", modulo, operacion, criticidad, estadoAnterior, estadoPosterior);
         }
 
-        // Registra una operación indicando el usuario (por ejemplo un ingreso fallido, sin sesión abierta).
-        // El apellido y nombre y el rol los completa la base en el momento. Si la bitácora falla,
-        // no se corta lo que estaba haciendo el usuario.
         public static void RegistrarParaUsuario(string nombreUsuario, string modulo, string operacion, string criticidad,
             Dictionary<string, object?>? estadoAnterior = null, Dictionary<string, object?>? estadoPosterior = null)
         {
-            // Si el nombre ya termina en punto (por ejemplo "S.A.") no queda un punto doble.
             if (operacion.EndsWith(".."))
                 operacion = operacion.Substring(0, operacion.Length - 1);
 
@@ -75,11 +61,9 @@ namespace Logica
             }
             catch
             {
-                // La operación del usuario ya se hizo: no se interrumpe por la bitácora.
             }
         }
 
-        // Registra una modificación guardando solo los datos que cambiaron. Si no cambió nada, no registra.
         public static void RegistrarCambios(string modulo, string operacion, string criticidad,
             Dictionary<string, object?>? antes, Dictionary<string, object?>? despues)
         {
@@ -107,7 +91,6 @@ namespace Logica
                 anterior.Count > 0 ? anterior : antes, posterior.Count > 0 ? posterior : despues);
         }
 
-        // Estado de un registro tomado de una fila de una consulta (sin los Id ni las columnas ignoradas).
         public static Dictionary<string, object?>? EstadoDeFila(DataTable tabla, string columnaId, int id)
         {
             foreach (DataRow fila in tabla.Rows)
@@ -131,7 +114,6 @@ namespace Logica
             return null;
         }
 
-        // Estado de un objeto (por ejemplo la configuración): sus propiedades públicas, sin los Id.
         public static Dictionary<string, object?> EstadoDeObjeto(object objeto)
         {
             var estado = new Dictionary<string, object?>();
@@ -147,8 +129,6 @@ namespace Logica
             return estado;
         }
 
-        // ---------- Consulta ----------
-
         public static DataTable Listar(DateTime desde, DateTime hasta, string? criticidad, string? modulo, string? texto)
         {
             if (desde.Date > hasta.Date)
@@ -157,14 +137,11 @@ namespace Logica
             return bitacoraDAO.Listar(desde, hasta, criticidad, modulo, string.IsNullOrWhiteSpace(texto) ? null : texto.Trim());
         }
 
-        // Todos los movimientos de la bitácora, del más nuevo al más viejo.
         public static DataTable ListarTodo()
         {
             return bitacoraDAO.Listar(new DateTime(2000, 1, 1), DateTime.Today, null, null, null);
         }
 
-        // Pasa el estado guardado en JSON a texto para leerlo en la grilla.
-        // Ejemplo: {"Nombre_Rol":"Tecnico","Activo":true} -> "Nombre Rol: Tecnico; Activo: Sí".
         public static string TextoEstado(string? json)
         {
             if (string.IsNullOrWhiteSpace(json))
@@ -209,7 +186,6 @@ namespace Logica
             }
         }
 
-        // Muestra el JSON guardado con sangría para leerlo en pantalla.
         public static string FormatearJson(string? json)
         {
             if (string.IsNullOrWhiteSpace(json))
@@ -239,7 +215,6 @@ namespace Logica
             return JsonSerializer.Serialize(limpio, opcionesJson);
         }
 
-        // Pasa los valores a tipos simples para compararlos y guardarlos igual.
         private static object? Normalizar(object? valor)
         {
             switch (valor)

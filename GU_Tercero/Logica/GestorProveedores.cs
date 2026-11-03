@@ -9,7 +9,6 @@ namespace Logica
     {
         private readonly ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
 
-        // Devuelve true si el proveedor ya existía dado de baja y se reactivó.
         public bool RegistrarProveedor(Proveedor proveedor)
         {
             ValidarProveedor(proveedor);
@@ -52,7 +51,6 @@ namespace Logica
                 GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor));
         }
 
-        // Vuelve a activar un proveedor inactivo. No se permite si ya hay otro activo con la misma razón social.
         public void ActivarProveedor(int idProveedor)
         {
             if (idProveedor <= 0)

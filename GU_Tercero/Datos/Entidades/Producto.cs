@@ -20,7 +20,6 @@ namespace Datos.Entidades
         public int Stock_Minimo { get; set; }
         public bool Activo { get; set; }
 
-        // Propiedad auxiliar para mostrar el nombre de la categoría en la grilla
         public string NombreCategoria { get; set; }
     }
 }

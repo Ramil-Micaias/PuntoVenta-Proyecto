@@ -1,17 +1,6 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: BITÁCORA (CU19)
--- Tabla independiente del resto (sin claves foráneas): cada registro es una
--- "foto" del momento con quién hizo la operación (usuario, apellido y nombre,
--- rol), qué hizo, cuándo, su criticidad y, cuando corresponde, el estado
--- anterior y el posterior en formato JSON.
--- No se puede modificar ni borrar. Se consulta desde el formulario Bitácora,
--- que solo ven los usuarios con el permiso VER_BITACORA.
--- ============================================================
-
--- Primera versión de prueba de la tabla (con Id_Usuario): se reemplaza.
 IF OBJECT_ID('Bitacora', 'U') IS NOT NULL AND COL_LENGTH('Bitacora', 'Apellido_Nombre') IS NULL
     DROP TABLE Bitacora;
 GO
@@ -38,9 +27,6 @@ BEGIN
 END
 GO
 
--- ------------------------------------------------------------
--- 1. Trigger: la bitácora no se puede modificar ni borrar
--- ------------------------------------------------------------
 CREATE OR ALTER TRIGGER TR_Bitacora_NoModificar
 ON Bitacora
 INSTEAD OF UPDATE, DELETE
@@ -52,11 +38,6 @@ BEGIN
 END
 GO
 
--- ------------------------------------------------------------
--- 2. SP: Registrar una operación
---    Si no se pasan el apellido y nombre o el rol, se toman del usuario
---    en ese momento (quedan guardados como texto, no como referencia).
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_RegistrarBitacora
     @Usuario NVARCHAR(50),
     @Apellido_Nombre NVARCHAR(110) = NULL,
@@ -88,10 +69,6 @@ BEGIN
 END
 GO
 
--- ------------------------------------------------------------
--- 3. SP: Consultar la bitácora con filtros (los NULL no filtran)
---    @Hasta incluye todo ese día.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ListarBitacora
     @Desde DATE,
     @Hasta DATE,
@@ -126,9 +103,6 @@ BEGIN
 END
 GO
 
--- ------------------------------------------------------------
--- 4. Permiso especial para ver la bitácora (asignado al rol Administrador)
--- ------------------------------------------------------------
 IF NOT EXISTS (SELECT 1 FROM Permisos WHERE Codigo = 'VER_BITACORA')
     INSERT INTO Permisos (Codigo, Descripcion, Modulo, Activo)
     VALUES ('VER_BITACORA', N'Consultar la bitácora del sistema', N'Bitácora', 1);
@@ -143,10 +117,6 @@ WHERE R.Nombre_Rol = 'Administrador'
   AND NOT EXISTS (SELECT 1 FROM RolPermiso RP WHERE RP.Id_Rol = R.Id_Rol AND RP.Id_Permiso = P.Id_Permiso);
 GO
 
--- ------------------------------------------------------------
--- 5. SP: ¿El usuario tiene el permiso?
---    Un permiso propio del usuario (UsuarioPermiso) manda sobre el de su rol.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_UsuarioTienePermiso
     @Id_Usuario INT,
     @Codigo NVARCHAR(100)

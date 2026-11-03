@@ -9,8 +9,6 @@ namespace Vista
 {
     public partial class FormProveedores : Form
     {
-        // Consulta: los campos están bloqueados. Agregando o Modificando: se habilitan
-        // y se termina con Confirmar (graba) o Cancelar (descarta).
         private enum Modo { Consulta, Agregando, Modificando }
 
         private static readonly Color ROJO = Color.FromArgb(239, 68, 68);
@@ -45,8 +43,6 @@ namespace Vista
             AplicarModo(Modo.Consulta);
         }
 
-        // Bloquea o habilita los campos y muestra solo los botones que sirven en cada momento.
-        // Al tocar Agregar desaparece Modificar y al tocar Modificar desaparece Agregar.
         private void AplicarModo(Modo nuevoModo)
         {
             modo = nuevoModo;
@@ -59,8 +55,6 @@ namespace Vista
             txtEmail.ReadOnly = !editando;
             txtDireccion.ReadOnly = !editando;
 
-            // Mientras se edita no se puede elegir otro proveedor ni buscar: la grilla sigue habilitada
-            // para poder desplazarla, pero los clics se ignoran en dgvProveedores_CellClick.
             txtBuscar.Enabled = !editando;
 
             btnNuevo.Visible = modo != Modo.Modificando;
@@ -69,7 +63,6 @@ namespace Vista
             btnCancelar.Visible = editando;
             btnEliminar.Visible = modo == Modo.Consulta && haySeleccion;
 
-            // Inactivar (rojo) si el proveedor está activo; Activar (verde) si está dado de baja.
             btnEliminar.Text = activoSeleccionado ? "Inactivar" : "Activar";
             btnEliminar.BackColor = activoSeleccionado ? ROJO : VERDE;
 
@@ -89,7 +82,6 @@ namespace Vista
             }
         }
 
-        // Se muestran todos, también los inactivos (en gris), para poder volver a activarlos.
         private void CargarProveedores()
         {
             try
@@ -169,12 +161,10 @@ namespace Vista
                 Telefono = string.IsNullOrWhiteSpace(txtTelefono.Text) ? null : txtTelefono.Text.Trim(),
                 Email = string.IsNullOrWhiteSpace(txtEmail.Text) ? null : txtEmail.Text.Trim(),
                 Direccion = string.IsNullOrWhiteSpace(txtDireccion.Text) ? null : txtDireccion.Text.Trim(),
-                // Al modificar se mantiene el estado que tenía (un inactivo sigue inactivo).
                 Activo = modo == Modo.Agregando || activoSeleccionado
             };
         }
 
-        // Confirmar: graba el alta o la modificación según lo que se esté haciendo.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -217,7 +207,6 @@ namespace Vista
             }
         }
 
-        // Modificar solo habilita los campos; los cambios se graban con Confirmar.
         private void btnModificar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -243,7 +232,6 @@ namespace Vista
             AplicarModo(Modo.Consulta);
         }
 
-        // Inactivar (baja lógica) o Activar, según el estado del proveedor elegido.
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -346,8 +334,6 @@ namespace Vista
             CargarProveedores();
         }
 
-        // Cierra el formulario y devuelve el control al menú principal, que reaparece
-        // solo porque FormMenu abre este form con ShowDialog. Igual que en Productos.
         private void btnVolverMenu_Click(object sender, EventArgs e)
         {
             this.Close();

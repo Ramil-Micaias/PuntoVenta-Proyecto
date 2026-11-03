@@ -1,19 +1,6 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: CAJA DIARIA (CU06 Registrar Movimiento de Caja)
--- Tablas de caja y movimientos + Stored Procedures que usa FormCaja.
--- El saldo de la caja se calcula con:
---   saldo inicial
---   + ingresos manuales + lo pagado en efectivo de las ventas de la caja
---   - egresos manuales - compras en efectivo de la caja
--- Las ventas y compras solo se leen: no se tocan sus SP.
--- ============================================================
-
--- ------------------------------------------------------------
--- 1. TABLAS (Idempotentes)
--- ------------------------------------------------------------
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Caja')
 BEGIN
     CREATE TABLE Caja (
@@ -50,14 +37,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 2. FUNCIONES: Período y saldo de una caja
---    Una caja abarca desde su apertura hasta su cierre. Si sigue
---    abierta, hasta el final del día en que se abrió. Así, si en
---    el mismo día se cierra una caja y se abre otra, cada venta o
---    compra en efectivo cuenta en una sola caja.
--- ------------------------------------------------------------
 CREATE OR ALTER FUNCTION dbo.fn_FinPeriodoCaja(@Id_Caja INT)
 RETURNS DATETIME
 AS
@@ -73,9 +52,6 @@ BEGIN
 END
 GO
 
--- Inicio del período: la primera caja del día empieza a las 00:00 (así cuenta
--- las ventas y compras en efectivo hechas antes de abrirla); si en el día hubo
--- otra caja antes, empieza a la hora en que se abrió.
 CREATE OR ALTER FUNCTION dbo.fn_InicioPeriodoCaja(@Id_Caja INT)
 RETURNS DATETIME
 AS
@@ -98,7 +74,6 @@ BEGIN
     DECLARE @Desde DATETIME = dbo.fn_InicioPeriodoCaja(@Id_Caja);
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
 
-    -- Todo lo que entró: ventas con cualquier método de pago y los ingresos manuales.
     RETURN
         ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
                 WHERE Id_Caja = @Id_Caja AND Tipo = 'Ingreso'), 0)
@@ -110,7 +85,6 @@ BEGIN
 END
 GO
 
--- Lo que entró en efectivo (lo único que suma al saldo disponible de la caja).
 CREATE OR ALTER FUNCTION dbo.fn_IngresosEfectivoCaja(@Id_Caja INT)
 RETURNS DECIMAL(12,2)
 AS
@@ -119,7 +93,6 @@ BEGIN
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
-    -- De las ventas se cuenta solo la parte pagada en efectivo (puede ser un pago mixto).
     RETURN
         ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
                 WHERE Id_Caja = @Id_Caja AND Tipo = 'Ingreso'), 0)
@@ -135,8 +108,6 @@ CREATE OR ALTER FUNCTION dbo.fn_EgresosCaja(@Id_Caja INT)
 RETURNS DECIMAL(12,2)
 AS
 BEGIN
-    -- Solo los egresos registrados en la caja. Las compras a proveedores no se descuentan solas:
-    -- si se pagan con plata de la caja se registra el egreso desde "Registrar Movimiento".
     RETURN ISNULL((SELECT SUM(Importe) FROM MovimientoCaja
                    WHERE Id_Caja = @Id_Caja AND Tipo = 'Egreso'), 0);
 END
@@ -151,17 +122,10 @@ BEGIN
     IF @SaldoInicial IS NULL
         RETURN 0;
 
-    -- Saldo disponible = efectivo de la caja: lo pagado con otros métodos no está en la caja.
     RETURN @SaldoInicial + dbo.fn_IngresosEfectivoCaja(@Id_Caja) - dbo.fn_EgresosCaja(@Id_Caja);
 END
 GO
 
-
--- ------------------------------------------------------------
--- 3. SP: Caja de la jornada actual
---    Devuelve la última caja de hoy (abierta o cerrada) con sus
---    totales. Si no hay caja de hoy no devuelve filas.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerCajaActual
 AS
 BEGIN
@@ -186,11 +150,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 4. SP: Movimientos de una caja
---    Movimientos manuales + ventas y compras en efectivo del período de la caja.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ListarMovimientosCaja
     @Id_Caja INT
 AS
@@ -201,9 +160,6 @@ BEGIN
     DECLARE @Hasta DATETIME = dbo.fn_FinPeriodoCaja(@Id_Caja);
     DECLARE @IdEfectivo INT = (SELECT TOP 1 Id_MetodoPago FROM MetodoPago WHERE Nombre = 'Efectivo');
 
-    -- Se listan las ventas del período con su medio de pago y los movimientos manuales.
-    -- Todas las ventas son ingresos, pero solo las de "Efectivo" suman al saldo disponible.
-    -- Las compras a proveedores no son movimientos de la caja.
     SELECT Fecha, Tipo, Origen, Medio, Motivo, Importe, Usuario
     FROM (
         SELECT
@@ -241,13 +197,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 5. SP: Abrir caja
---    Solo puede haber una caja abierta a la vez. Si ya se cerró la
---    caja de hoy se puede abrir otra. Si quedó abierta una caja de
---    un día anterior, se cierra con su saldo antes de abrir la nueva.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_AbrirCaja
     @Id_Usuario INT,
     @Saldo_Inicial DECIMAL(12,2)
@@ -276,7 +225,6 @@ BEGIN
             RAISERROR('Ya hay una caja abierta para la jornada de hoy. Ciérrela antes de abrir otra.', 16, 1);
         END
 
-        -- Cierra cajas de días anteriores que quedaron abiertas
         UPDATE Caja
         SET Abierta = 0,
             Fecha_Cierre = dbo.fn_FinPeriodoCaja(Id_Caja),
@@ -299,10 +247,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 6. SP: Cerrar caja
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_CerrarCaja
     @Id_Caja INT,
     @Id_Usuario INT
@@ -340,13 +284,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 6b. SP: Reabrir caja
---    Si la caja de hoy se cerró por error se vuelve a abrir la misma,
---    con su saldo inicial y sus movimientos. Solo la última caja de hoy
---    y solo si no hay otra abierta.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ReabrirCaja
     @Id_Caja INT,
     @Id_Usuario INT
@@ -398,12 +335,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 7. SP: Registrar movimiento de caja (CU06)
---    En una única transacción vuelve a verificar que la caja siga
---    abierta y que el saldo alcance para el egreso (flujo 10 / 10.1).
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_RegistrarMovimientoCaja
     @Id_Caja INT,
     @Tipo NVARCHAR(10),
@@ -439,7 +370,6 @@ BEGIN
             RAISERROR('Debe ingresar el motivo del movimiento.', 16, 1);
         END
 
-        -- Bloquea la caja para que dos movimientos no se pisen
         IF NOT EXISTS (SELECT 1 FROM Caja WITH (UPDLOCK, HOLDLOCK)
                        WHERE Id_Caja = @Id_Caja AND Abierta = 1)
         BEGIN
@@ -474,12 +404,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 8. SP: Cajas de un período (Historial de Caja)
---    Desde y Hasta son días completos. Devuelve también el inicio
---    y el fin del período de cada caja para consultar sus movimientos.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ListarCajas
     @Desde DATE,
     @Hasta DATE
@@ -506,12 +430,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 9. SP: Movimientos de un período (Historial de Caja / reporte de ventas)
---    Ventas (un renglón por cada pago), compras y movimientos manuales
---    entre @Desde y @Hasta (fecha y hora). @Id_MetodoPago NULL = todos.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ListarMovimientosPeriodo
     @Desde DATETIME,
     @Hasta DATETIME,
@@ -530,7 +448,6 @@ BEGIN
             'Venta' AS Origen,
             v.Numero_Factura AS Comprobante,
             mp.Nombre AS Medio,
-            -- Los productos de la venta, uno por renglón dentro de la misma celda (ej: "Funda Silicona x2").
             (SELECT STRING_AGG(p.Nombre_Producto + ' x' + CAST(dv.Cantidad AS NVARCHAR(10)), CHAR(13) + CHAR(10))
                     WITHIN GROUP (ORDER BY dv.Id_DetalleVenta)
              FROM DetalleVenta dv

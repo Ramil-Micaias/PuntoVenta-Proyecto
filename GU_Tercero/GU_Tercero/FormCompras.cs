@@ -13,7 +13,6 @@ namespace Vista
         private readonly GestorCompras gestorCompras = new GestorCompras();
         private readonly DataTable detalle = new DataTable();
 
-        // Pagos de la compra (cuando se paga con más de un método).
         private readonly DataTable pagos = new DataTable();
         private Usuario? usuarioLogueado;
         private DataTable productos = new DataTable();
@@ -50,7 +49,6 @@ namespace Vista
             CargarProductos();
             ActualizarTotal();
 
-            // El proveedor no se elige: sale del producto (el que tiene asignado en Productos).
             cmbProveedor.Enabled = false;
             MostrarProveedorDelProducto();
             grpProveedor.Focus();
@@ -98,7 +96,6 @@ namespace Vista
             EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 5, "0.##");
         }
 
-        // Lista de pagos de la compra. Sin pagos agregados se paga todo con el método elegido.
         private void CrearPagos()
         {
             Grillas.Configurar(dgvPagos);
@@ -126,7 +123,6 @@ namespace Vista
             return pagado;
         }
 
-        // Muestra cuánto falta pagar cuando se carga más de un pago.
         private void ActualizarPagos()
         {
             if (pagos.Rows.Count == 0)
@@ -155,7 +151,6 @@ namespace Vista
             }
         }
 
-        // Agrega un pago con el método y el importe elegidos. Si el importe queda vacío se agrega lo que falta pagar.
         private void AgregarPago()
         {
             if (detalle.Rows.Count == 0)
@@ -201,7 +196,6 @@ namespace Vista
 
             int idMetodo = Convert.ToInt32(cmbMetodoPago.SelectedValue);
 
-            // Si el método ya estaba en la lista se suma al pago existente.
             DataRow? existente = null;
             foreach (DataRow pago in pagos.Rows)
             {
@@ -261,7 +255,6 @@ namespace Vista
                 cmbMetodoPago.ValueMember = "Id_MetodoPago";
                 cmbMetodoPago.DataSource = gestorCompras.ObtenerMetodosPago();
 
-                // Arranca vacío: el método de pago se elige siempre (no queda Efectivo por defecto).
                 cmbMetodoPago.SelectedIndex = -1;
             }
             catch (Exception ex)
@@ -334,7 +327,6 @@ namespace Vista
                 return;
             }
 
-            // Proveedor activo asignado al producto y costo no mayor al precio de venta.
             string? error = GestorCompras.ValidarRenglon(fila.Row, costo);
             if (error != null)
             {
@@ -434,7 +426,6 @@ namespace Vista
                 return;
             }
 
-            // Sin pagos agregados hace falta el método para pagar todo con él.
             if (pagos.Rows.Count == 0 && (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value))
             {
                 MessageBox.Show(
@@ -492,7 +483,6 @@ namespace Vista
 
             if (pagos.Rows.Count == 0)
             {
-                // Un solo método: se paga todo con el método elegido.
                 compra.Pagos.Add(new PagoCompra
                 {
                     Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
@@ -513,7 +503,6 @@ namespace Vista
                 }
             }
 
-            // La compra queda registrada con el método del pago más grande.
             PagoCompra principal = compra.Pagos[0];
             foreach (PagoCompra pago in compra.Pagos)
             {
@@ -629,8 +618,6 @@ namespace Vista
             return "$" + valor.ToString("0.##");
         }
 
-        // La compra puede tener productos de varios proveedores. Como proveedor de la compra queda
-        // el del mayor importe; cada renglón del detalle guarda su propio proveedor.
         private int ProveedorPrincipal()
         {
             var importes = new System.Collections.Generic.Dictionary<int, decimal>();
@@ -656,7 +643,6 @@ namespace Vista
             return principal;
         }
 
-        // Muestra (sin dejar cambiarlo) el proveedor asignado al producto elegido.
         private void MostrarProveedorDelProducto()
         {
             int idProveedor = 0;

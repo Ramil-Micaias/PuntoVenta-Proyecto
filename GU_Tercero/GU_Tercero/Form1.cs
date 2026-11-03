@@ -5,7 +5,6 @@ using Seguridad;
 
 namespace GU_Tercero
 {
-    // El Form1 es la interfaz inicial del sistema y actúa como punto de entrada para la autenticación de usuarios.
     public partial class Form1 : Form
     {
         public Form1()
@@ -18,7 +17,7 @@ namespace GU_Tercero
         {
             if (e.KeyCode == Keys.Enter)
             {
-                e.SuppressKeyPress = true; // Evita el sonido beep de Windows
+                e.SuppressKeyPress = true;
                 txtPassword.Focus();
             }
         }
@@ -32,17 +31,15 @@ namespace GU_Tercero
         {
             txtUsuario.Text = string.Empty;
             txtPassword.Text = string.Empty;
-            txtUsuario.Focus(); // Coloca el cursor directamente en el campo usuario
+            txtUsuario.Focus();
         }
 
-        // Abre el menú principal según el rol del usuario.
         private void AbrirMenu(Usuario usuario)
         {
             if (usuario.Nombre_Rol == "Administrador" || usuario.Nombre_Rol == "Vendedor" || usuario.Nombre_Rol == "Tecnico")
             {
                 FormMenu menu = new FormMenu(usuario);
 
-                // Al cerrar el menú, volvemos a mostrar la pantalla de Login limpia (o la cerramos si fue por X)
                 menu.FormClosed += (s, args) =>
                 {
                     Sesion.Cerrar();
@@ -66,7 +63,6 @@ namespace GU_Tercero
             {
                 FormUsuario formUsuario = new FormUsuario(usuario);
 
-                // Si la vista de usuario no es el menú principal, al cerrarla volvemos al login
                 formUsuario.FormClosed += (s, args) =>
                 {
                     Sesion.Cerrar();
@@ -93,8 +89,6 @@ namespace GU_Tercero
                     return;
                 }
 
-                // VERIFICACIÓN EN DOS PASOS: si está habilitada en la configuración,
-                // se envía un código al correo y hay que ingresarlo para continuar.
                 if (!VerificarDosPasos(usuario))
                 {
                     LimpiarCampos();
@@ -102,13 +96,11 @@ namespace GU_Tercero
                     return;
                 }
 
-                // 1. PASO OBLIGATORIO: Cambio de Contraseña
                 if (usuario.Es_Primer_Ingreso || usuario.Debe_Cambiar_Password)
                 {
                     using (FormCambioPassword formCambio = new FormCambioPassword(usuario))
                     {
                         this.Hide();
-                        // Si el usuario cancela o cierra la app desde el cambio, detiene el login
                         if (formCambio.ShowDialog() != DialogResult.OK)
                         {
                             LimpiarCampos();
@@ -118,7 +110,6 @@ namespace GU_Tercero
                     }
                 }
 
-                // 2. PASO OBLIGATORIO: Preguntas de Seguridad
                 if (!negocio.UsuarioTienePreguntas(usuario.Id_Usuario))
                 {
                     using (FormPreguntasSeguridad formPreguntas = new FormPreguntasSeguridad(usuario))
@@ -133,7 +124,6 @@ namespace GU_Tercero
                     }
                 }
 
-                // 3. ENTRADA AL SISTEMA: Si pasó todas las validaciones, entra al Menú
                 Sesion.Iniciar(usuario);
                 AbrirMenu(usuario);
             }
@@ -143,7 +133,6 @@ namespace GU_Tercero
             }
         }
 
-        // Devuelve true si la verificación en dos pasos está deshabilitada o si el usuario ingresó bien el código.
         private bool VerificarDosPasos(Usuario usuario)
         {
             Autenticacion2FANegocio negocio2FA = new Autenticacion2FANegocio();
@@ -221,7 +210,6 @@ namespace GU_Tercero
         {
             FormRecuperoContraseña formrecupero = new FormRecuperoContraseña();
 
-            // Al cerrar el formulario de recuperación, se vuelve a mostrar el Login
             formrecupero.FormClosed += (s, args) => this.Show();
 
             formrecupero.Show();

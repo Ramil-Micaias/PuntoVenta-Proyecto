@@ -3,10 +3,8 @@ using System.Data;
 
 namespace Datos
 {
-    // Copia de seguridad de la base de datos (CU20).
     public class BackupDAO
     {
-        // Genera el .bak en la carpeta indicada y devuelve la ruta y el tamaño en bytes.
         public (string ruta, long tamanioBytes) GenerarBackup(string carpeta)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

@@ -1,17 +1,6 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: AUTENTICACIÓN EN DOS PASOS (2FA)
--- Stored Procedures de la tabla Codigo2FA (creada en 01_Tablas.sql).
--- Si en Configuración del Sistema está tildada "Autenticación en dos pasos",
--- al iniciar sesión se envía un código al correo del usuario.
--- ============================================================
-
--- ------------------------------------------------------------
--- 1. SP: Generar código
---    Invalida los códigos anteriores sin usar del usuario y guarda el nuevo.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_GenerarCodigo2FA
     @Id_Usuario INT,
     @Codigo NVARCHAR(10),
@@ -41,14 +30,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 2. SP: Validar código
---    Devuelve Resultado:
---      'OK'         el código es correcto (queda marcado como usado)
---      'INCORRECTO' el código no coincide
---      'EXPIRADO'   no hay código vigente (venció o ya se usó)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ValidarCodigo2FA
     @Id_Usuario INT,
     @Codigo NVARCHAR(10)
@@ -81,7 +62,6 @@ BEGIN
         RETURN;
     END
 
-    -- Se marca como usado para que no pueda volver a utilizarse
     UPDATE Codigo2FA
     SET Usado = 1
     WHERE Id_Codigo2FA = @IdCodigo
@@ -97,11 +77,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 3. SP: Invalidar códigos
---    Se usa al cancelar la verificación o al superar los intentos.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_InvalidarCodigos2FA
     @Id_Usuario INT
 AS

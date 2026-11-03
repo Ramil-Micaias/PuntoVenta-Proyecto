@@ -2,15 +2,8 @@
 {
     partial class FormCambioPassword
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             btnCambiarPassword = new Button();
@@ -33,9 +22,6 @@
             lblCambioPassword = new Label();
             btnCancelar = new Button();
             SuspendLayout();
-            // 
-            // btnCambiarPassword
-            // 
             btnCambiarPassword.Anchor = AnchorStyles.None;
             btnCambiarPassword.BackColor = Color.FromArgb(37, 99, 235);
             btnCambiarPassword.FlatAppearance.BorderSize = 0;
@@ -49,9 +35,6 @@
             btnCambiarPassword.Text = "Guardar Contraseña";
             btnCambiarPassword.UseVisualStyleBackColor = false;
             btnCambiarPassword.Click += btnCambiarPassword_Click;
-            // 
-            // txtNuevaPassword
-            // 
             txtNuevaPassword.Anchor = AnchorStyles.None;
             txtNuevaPassword.Font = new Font("Segoe UI", 10F);
             txtNuevaPassword.Location = new Point(280, 175);
@@ -60,9 +43,6 @@
             txtNuevaPassword.PasswordChar = '*';
             txtNuevaPassword.Size = new Size(240, 25);
             txtNuevaPassword.TabIndex = 1;
-            // 
-            // lblCambioPassword
-            // 
             lblCambioPassword.Anchor = AnchorStyles.None;
             lblCambioPassword.AutoSize = true;
             lblCambioPassword.BackColor = Color.Transparent;
@@ -74,9 +54,6 @@
             lblCambioPassword.TabIndex = 0;
             lblCambioPassword.TabStop = false;
             lblCambioPassword.Text = "Ingrese una nueva contraseña";
-            // 
-            // btnCancelar
-            // 
             btnCancelar.Anchor = AnchorStyles.None;
             btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -90,9 +67,6 @@
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
-            // 
-            // FormCambioPassword
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

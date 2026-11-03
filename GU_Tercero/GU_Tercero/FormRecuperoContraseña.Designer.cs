@@ -1,17 +1,9 @@
-﻿
-namespace GU_Tercero
+﻿namespace GU_Tercero
 {
     partial class FormRecuperoContraseña
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,10 +15,6 @@ namespace GU_Tercero
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             lblTitulo = new Label();
@@ -41,9 +29,6 @@ namespace GU_Tercero
             btnValidar = new Button();
             btnCancelar = new Button();
             SuspendLayout();
-            // 
-            // lblTitulo
-            // 
             lblTitulo.AutoSize = true;
             lblTitulo.BackColor = Color.Transparent;
             lblTitulo.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
@@ -54,9 +39,6 @@ namespace GU_Tercero
             lblTitulo.TabIndex = 0;
             lblTitulo.TabStop = false;
             lblTitulo.Text = "Recuperación de Contraseña";
-            // 
-            // lblNombreUsuario
-            // 
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.BackColor = Color.Transparent;
             lblNombreUsuario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -67,9 +49,6 @@ namespace GU_Tercero
             lblNombreUsuario.TabIndex = 0;
             lblNombreUsuario.TabStop = false;
             lblNombreUsuario.Text = "Nombre de Usuario:";
-            // 
-            // lblPregunta1
-            // 
             lblPregunta1.AutoSize = true;
             lblPregunta1.BackColor = Color.Transparent;
             lblPregunta1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -79,10 +58,7 @@ namespace GU_Tercero
             lblPregunta1.Size = new Size(211, 17);
             lblPregunta1.TabIndex = 0;
             lblPregunta1.TabStop = false;
-            lblPregunta1.Text = "?Nombre de tu primera mascota?";
-            // 
-            // lblPregunta2
-            // 
+            lblPregunta1.Text = "¿Nombre de tu primera mascota?";
             lblPregunta2.AutoSize = true;
             lblPregunta2.BackColor = Color.Transparent;
             lblPregunta2.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -92,10 +68,7 @@ namespace GU_Tercero
             lblPregunta2.Size = new Size(158, 17);
             lblPregunta2.TabIndex = 0;
             lblPregunta2.TabStop = false;
-            lblPregunta2.Text = "?Ciudad donde naciste?";
-            // 
-            // lblPregunta3
-            // 
+            lblPregunta2.Text = "¿Ciudad donde naciste?";
             lblPregunta3.AutoSize = true;
             lblPregunta3.BackColor = Color.Transparent;
             lblPregunta3.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -105,46 +78,31 @@ namespace GU_Tercero
             lblPregunta3.Size = new Size(125, 17);
             lblPregunta3.TabIndex = 0;
             lblPregunta3.TabStop = false;
-            lblPregunta3.Text = "?Comida favorita?";
-            // 
-            // txtNombreUsuario
-            // 
+            lblPregunta3.Text = "¿Comida favorita?";
             txtNombreUsuario.Font = new Font("Segoe UI", 10F);
             txtNombreUsuario.Location = new Point(30, 102);
             txtNombreUsuario.Name = "txtNombreUsuario";
             txtNombreUsuario.PlaceholderText = "Ingrese su nombre de usuario";
             txtNombreUsuario.Size = new Size(330, 27);
             txtNombreUsuario.TabIndex = 1;
-            // 
-            // txtRespuesta1
-            // 
             txtRespuesta1.Font = new Font("Segoe UI", 10F);
             txtRespuesta1.Location = new Point(30, 176);
             txtRespuesta1.Name = "txtRespuesta1";
             txtRespuesta1.PlaceholderText = "Escriba su respuesta";
             txtRespuesta1.Size = new Size(330, 27);
             txtRespuesta1.TabIndex = 2;
-            // 
-            // txtRespuesta2
-            // 
             txtRespuesta2.Font = new Font("Segoe UI", 10F);
             txtRespuesta2.Location = new Point(30, 248);
             txtRespuesta2.Name = "txtRespuesta2";
             txtRespuesta2.PlaceholderText = "Escriba su respuesta";
             txtRespuesta2.Size = new Size(330, 27);
             txtRespuesta2.TabIndex = 3;
-            // 
-            // txtRespuesta3
-            // 
             txtRespuesta3.Font = new Font("Segoe UI", 10F);
             txtRespuesta3.Location = new Point(30, 320);
             txtRespuesta3.Name = "txtRespuesta3";
             txtRespuesta3.PlaceholderText = "Escriba su respuesta";
             txtRespuesta3.Size = new Size(330, 27);
             txtRespuesta3.TabIndex = 4;
-            // 
-            // btnValidar
-            // 
             btnValidar.BackColor = Color.FromArgb(37, 99, 235);
             btnValidar.FlatAppearance.BorderSize = 0;
             btnValidar.FlatStyle = FlatStyle.Flat;
@@ -157,9 +115,6 @@ namespace GU_Tercero
             btnValidar.Text = "Confirmar";
             btnValidar.UseVisualStyleBackColor = false;
             btnValidar.Click += btnValidar_Click;
-            // 
-            // btnCancelar
-            // 
             btnCancelar.BackColor = Color.FromArgb(226, 232, 240);
             btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
@@ -172,12 +127,6 @@ namespace GU_Tercero
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
-            // 
-            // FormRecuperoContraseña
-            // 
-            // No se define AcceptButton: mientras el boton de validar este deshabilitado,
-            // Windows intercepta la tecla Enter y nunca llega al formulario. El Enter se
-            // resuelve en ProcessDialogKey, en FormRecuperoContraseña.cs.
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

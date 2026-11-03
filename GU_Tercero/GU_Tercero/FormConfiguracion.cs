@@ -88,7 +88,6 @@ namespace GU_Tercero
             CargarConfiguracion();
         }
 
-        // CU20: copia de seguridad de la base. Se elige la carpeta y SQL Server genera el .bak.
         private void btnBackup_Click(object sender, EventArgs e)
         {
             GestorBackup gestor = new GestorBackup();
