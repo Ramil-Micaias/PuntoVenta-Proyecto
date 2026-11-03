@@ -330,6 +330,13 @@ namespace GU_Tercero
 
                 if (!activoSeleccionado)
                 {
+                    DialogResult resultado = MessageBox.Show("¿Está seguro de activar este usuario?", "Confirmar",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (resultado != DialogResult.Yes)
+                        return;
+
                     negocio.ActivarUsuario(idUsuarioSeleccionado);
                     mensaje = "Usuario activado correctamente.";
                 }

@@ -211,7 +211,7 @@ namespace GU_Tercero
             }
 
             // Genera el hash de la nueva contraseña.
-            string nuevaPasswordHash = HashHelper.GenerarSHA256(usuarioLogueado.Nombre_Usuario + txtNuevaPassword.Text);
+            string nuevaPasswordHash = HashHelper.GenerarHashPassword(usuarioLogueado.Nombre_Usuario, txtNuevaPassword.Text);
 
             UsuarioNegocio negocio = new UsuarioNegocio();
 
