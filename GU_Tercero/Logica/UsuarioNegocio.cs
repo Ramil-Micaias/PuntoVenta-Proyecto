@@ -34,7 +34,16 @@ namespace Logica
                 return null;
             }
 
-            string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + password);
+            // Dígito verificador: si la contraseña guardada no coincide con su dígito, se alteró
+            // por fuera del sistema y no se deja ingresar.
+            if (!HashHelper.DigitoVerificadorValido(usuario.PasswordHash))
+            {
+                GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
+                    "Ingreso rechazado: la contraseña guardada no coincide con su dígito verificador.", GestorBitacora.CRITICA);
+                return null;
+            }
+
+            string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, password);
 
             //Si coincide: Reinicia intentos, Actualiza ultimo LOGIN, devuelve el usuario correspondiente.
             if (usuario.PasswordHash == passwordHash)
@@ -82,6 +91,10 @@ namespace Logica
 
             if (!usuario.Activo)
                 return "El usuario está inactivo. Comuníquese con el administrador.";
+
+            if (!HashHelper.DigitoVerificadorValido(usuario.PasswordHash))
+                return "No se pudo validar la contraseña: la contraseña guardada fue alterada.\n"
+                    + "Recupere su contraseña o comuníquese con el administrador.";
 
             int restantes = INTENTOS_MAXIMOS_LOGIN - usuario.Intentos_Fallidos;
 
@@ -234,7 +247,7 @@ namespace Logica
             // 2. Proceso normal
             string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
 
-            string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + passwordTemporal);
+            string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, passwordTemporal);
 
             int idUsuario = usuarioDAO.InsertarUsuarioCompleto(apellido, nombre, dni, correo, nombreUsuario, passwordHash, idRol);
 
@@ -390,7 +403,7 @@ namespace Logica
             // Se genera una contraseña que cumple con la política de seguridad configurada.
             string passwordTemporal = GenerarPasswordTemporal(new ConfiguracionNegocio().ObtenerConfiguracion());
 
-            string passwordHash = HashHelper.GenerarSHA256(nombreUsuario + passwordTemporal);
+            string passwordHash = HashHelper.GenerarHashPassword(nombreUsuario, passwordTemporal);
 
             string cuerpo = "Hola " + usuario.Nombre_Usuario + "," + Environment.NewLine + Environment.NewLine
                 + "Se solicitó el restablecimiento de su contraseña." + Environment.NewLine

@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Logica.Seguridad
@@ -27,6 +29,30 @@ namespace Logica.Seguridad
 
                 return sb.ToString();
             }
+        }
+
+        // Hash de una contraseña con su dígito verificador al final: SHA-256 de usuario + contraseña
+        // (64 caracteres hexadecimales) más un dígito del 0 al 9 calculado con DigitoVerificador (algoritmo de Luhn),
+        // igual que el último número de un código de barras o de un CUIT.
+        public static string GenerarHashPassword(string nombreUsuario, string password)
+        {
+            string hash = GenerarSHA256(nombreUsuario + password);
+            return hash + DigitoVerificador.Calcular(hash);
+        }
+
+        // Controla que el hash guardado no se haya alterado: el último dígito tiene que coincidir
+        // con el que se calcula a partir de los 64 caracteres anteriores.
+        public static bool DigitoVerificadorValido(string? hashGuardado)
+        {
+            if (string.IsNullOrEmpty(hashGuardado) || hashGuardado.Length != 65)
+            {
+                return false;
+            }
+
+            string hash = hashGuardado.Substring(0, 64);
+
+            return hash.All(Uri.IsHexDigit)
+                && DigitoVerificador.Calcular(hash).ToString() == hashGuardado.Substring(64);
         }
 
         // Normaliza una respuesta de seguridad antes de hashearla, de modo que

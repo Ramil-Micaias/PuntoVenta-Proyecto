@@ -129,7 +129,7 @@ namespace Logica
 
             if (configuracion.No_RepetirPasswords)
             {
-                string passwordHash = HashHelper.GenerarSHA256(usuario.Nombre_Usuario + password);
+                string passwordHash = HashHelper.GenerarHashPassword(usuario.Nombre_Usuario, password);
 
                 if (usuarioDAO.ExistePasswordHistorial(usuario.Id_Usuario, passwordHash))
                 {

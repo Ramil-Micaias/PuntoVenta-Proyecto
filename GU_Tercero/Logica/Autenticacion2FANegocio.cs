@@ -65,7 +65,7 @@ namespace Logica
             if (codigo.Length == 0)
                 return "Ingrese el código de verificación.";
 
-            // El dígito verificador (AplicaLhun) detecta errores de tipeo sin consultar la base.
+            // El dígito verificador (DigitoVerificador) detecta errores de tipeo sin consultar la base.
             if (!Autenticacion2FAHelper.TieneFormatoValido(codigo))
                 return "El código no es válido. Revise que haya copiado los " + Autenticacion2FAHelper.LARGO_CODIGO + " dígitos correctamente.";
 

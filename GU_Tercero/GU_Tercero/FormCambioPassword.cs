@@ -67,7 +67,7 @@ namespace GU_Tercero
                 return;
             }
 
-            string nuevaPasswordHash = HashHelper.GenerarSHA256(usuarioLogueado.Nombre_Usuario + txtNuevaPassword.Text.Trim());
+            string nuevaPasswordHash = HashHelper.GenerarHashPassword(usuarioLogueado.Nombre_Usuario, txtNuevaPassword.Text.Trim());
             UsuarioNegocio negocio = new UsuarioNegocio();
 
             negocio.CambiarPassword(usuarioLogueado.Id_Usuario, nuevaPasswordHash);
