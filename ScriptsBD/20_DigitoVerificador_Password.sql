@@ -5,7 +5,7 @@ GO
 -- DIGITO VERIFICADOR DE LAS CONTRASEÑAS
 -- La contraseña se guarda como SHA-256 (64 caracteres hexadecimales) y al
 -- final un dígito verificador calculado con el algoritmo de Luhn (el mismo
--- método AplicaLhun del sistema), como el último número de un código de barras.
+-- clase DigitoVerificador del sistema), como el último número de un código de barras.
 -- Al iniciar sesión el sistema controla primero ese dígito: si no coincide,
 -- la contraseña guardada se alteró y no se deja ingresar.
 -- Este script les agrega el dígito a las contraseñas que ya estaban guardadas
@@ -15,9 +15,13 @@ GO
 
 -- ------------------------------------------------------------
 -- 1. Función: dígito verificador de Luhn de un texto hexadecimal
---    (mismos pasos que AplicaLhun.Calcular)
+--    (mismos pasos que DigitoVerificador.Calcular)
 -- ------------------------------------------------------------
-CREATE OR ALTER FUNCTION fn_DigitoLuhn (@Hexa VARCHAR(100))
+-- La primera versión de este script la llamaba fn_DigitoLuhn
+DROP FUNCTION IF EXISTS fn_DigitoLuhn;
+GO
+
+CREATE OR ALTER FUNCTION fn_DigitoVerificador (@Hexa VARCHAR(100))
 RETURNS INT
 AS
 BEGIN
@@ -52,11 +56,11 @@ GO
 -- 2. Agregar el dígito a las contraseñas ya guardadas
 -- ------------------------------------------------------------
 UPDATE Usuario
-SET PasswordHash = PasswordHash + CAST(dbo.fn_DigitoLuhn(PasswordHash) AS VARCHAR(1))
+SET PasswordHash = PasswordHash + CAST(dbo.fn_DigitoVerificador(PasswordHash) AS VARCHAR(1))
 WHERE LEN(PasswordHash) = 64;
 GO
 
 UPDATE HistorialPassword
-SET PasswordHash = PasswordHash + CAST(dbo.fn_DigitoLuhn(PasswordHash) AS VARCHAR(1))
+SET PasswordHash = PasswordHash + CAST(dbo.fn_DigitoVerificador(PasswordHash) AS VARCHAR(1))
 WHERE LEN(PasswordHash) = 64;
 GO

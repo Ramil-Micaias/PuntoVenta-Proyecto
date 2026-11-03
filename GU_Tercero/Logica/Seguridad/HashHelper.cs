@@ -32,12 +32,12 @@ namespace Logica.Seguridad
         }
 
         // Hash de una contraseña con su dígito verificador al final: SHA-256 de usuario + contraseña
-        // (64 caracteres hexadecimales) más un dígito del 0 al 9 calculado con AplicaLhun (Luhn),
+        // (64 caracteres hexadecimales) más un dígito del 0 al 9 calculado con DigitoVerificador (algoritmo de Luhn),
         // igual que el último número de un código de barras o de un CUIT.
         public static string GenerarHashPassword(string nombreUsuario, string password)
         {
             string hash = GenerarSHA256(nombreUsuario + password);
-            return hash + AplicaLhun.Calcular(hash);
+            return hash + DigitoVerificador.Calcular(hash);
         }
 
         // Controla que el hash guardado no se haya alterado: el último dígito tiene que coincidir
@@ -52,7 +52,7 @@ namespace Logica.Seguridad
             string hash = hashGuardado.Substring(0, 64);
 
             return hash.All(Uri.IsHexDigit)
-                && AplicaLhun.Calcular(hash).ToString() == hashGuardado.Substring(64);
+                && DigitoVerificador.Calcular(hash).ToString() == hashGuardado.Substring(64);
         }
 
         // Normaliza una respuesta de seguridad antes de hashearla, de modo que
