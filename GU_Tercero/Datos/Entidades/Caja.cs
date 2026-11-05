@@ -2,7 +2,6 @@ using System;
 
 namespace Datos.Entidades
 {
-    // Caja de la jornada con los totales que muestra la pantalla Caja Diaria.
     public class Caja
     {
         public int Id_Caja { get; set; }

@@ -1,6 +1,5 @@
 namespace Datos.Entidades
 {
-    // Repuesto usado en una orden de reparación.
     public class DetalleOrdenRepuesto
     {
         public int Id_Producto { get; set; }

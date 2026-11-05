@@ -38,14 +38,11 @@ namespace Logica
             return proveedoresDAO.ObtenerProveedores();
         }
 
-        // Productos que se pueden comprar, con su precio de venta y su proveedor asignado.
         public DataTable BuscarProductos()
         {
             return compraDAO.BuscarProductosCompra();
         }
 
-        // Controles de cada renglón antes de agregarlo a la compra. Devuelve el mensaje de error o null si está bien.
-        // Una compra puede tener productos de distintos proveedores: cada uno usa el proveedor que tiene asignado.
         public static string? ValidarRenglon(DataRow producto, decimal costo)
         {
             if (producto["Id_Proveedor"] == DBNull.Value)
@@ -93,7 +90,6 @@ namespace Logica
             if (compra.Subtotal <= 0)
                 throw new Exception("El total de la compra debe ser mayor a cero.");
 
-            // Pagos: uno o varios métodos, cada uno mayor a cero, que sumen exactamente el total.
             if (compra.Pagos.Count == 0)
                 throw new Exception("Debe indicar cómo se paga la compra.");
 

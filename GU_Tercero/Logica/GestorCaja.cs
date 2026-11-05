@@ -7,7 +7,6 @@ namespace Logica
 {
     public class GestorCaja
     {
-        // Largo máximo del motivo (igual que la columna Motivo de MovimientoCaja).
         public const int LARGO_MAXIMO_MOTIVO = 200;
 
         private readonly CajaDAO cajaDAO = new CajaDAO();
@@ -51,8 +50,6 @@ namespace Logica
             return saldoFinal;
         }
 
-        // ---------- Historial de Caja ----------
-
         public DataTable ObtenerMetodosPago()
         {
             return metodoPagoDAO.ObtenerMetodosPago();
@@ -64,14 +61,12 @@ namespace Logica
             return cajaDAO.ListarCajas(desde, hasta);
         }
 
-        // Movimientos de días completos: desde las 00:00 de "desde" hasta el final de "hasta".
         public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
         {
             ValidarPeriodo(desde, hasta);
             return cajaDAO.ListarMovimientosPeriodo(desde.Date, hasta.Date.AddDays(1), idMetodoPago);
         }
 
-        // Movimientos de una caja: entre el inicio y el fin de su período (los da sp_ListarCajas).
         public DataTable ListarMovimientosDeCaja(DateTime inicio, DateTime fin, int? idMetodoPago)
         {
             return cajaDAO.ListarMovimientosPeriodo(inicio, fin, idMetodoPago);
@@ -95,7 +90,6 @@ namespace Logica
                 new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Abierta" });
         }
 
-        // El saldo disponible es el que muestra la pantalla; el SP lo vuelve a verificar al guardar.
         public decimal RegistrarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)
         {
             ValidarMovimiento(movimiento, saldoDisponible);

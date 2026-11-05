@@ -1,13 +1,6 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: CONSULTA DE STOCK (CU07)
--- Lista los productos activos con sus existencias.
--- Se puede filtrar por nombre o código, por categoría
--- y mostrar solo los que están en el stock mínimo o por debajo.
--- ============================================================
-
 CREATE OR ALTER PROCEDURE sp_ConsultarStock
     @Filtro NVARCHAR(100) = '',
     @Id_Categoria INT = NULL,

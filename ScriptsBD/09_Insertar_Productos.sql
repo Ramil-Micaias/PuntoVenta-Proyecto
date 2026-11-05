@@ -1,10 +1,6 @@
 USE GU_Tercero;
 GO
 
------------------------------------------------
--- CARGA DE PRODUCTOS DE PRUEBA
------------------------------------------------
-
 INSERT INTO Producto (
     Nombre_Producto,
     Descripcion,
@@ -58,11 +54,6 @@ WHERE NOT EXISTS
     WHERE p.Nombre_Producto = V.Nombre_Producto
 );
 GO
-
-
------------------------------------------------
--- CONSULTA DEL CATÁLOGO ACTUAL
------------------------------------------------
 
 SELECT
     p.Id_Producto,

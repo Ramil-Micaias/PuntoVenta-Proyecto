@@ -4,9 +4,6 @@ using System.Data;
 
 namespace Datos
 {
-    //La clase UsuarioDAO pertenece a la capa de datos y se encarga de toda la comunicación con SQL Server.
-    //Su responsabilidad es ejecutar procedimientos almacenados, obtener información de la base de datos y convertir los registros en objetos C#.
-    //No contiene lógica de negocio; solamente acceso a datos.
     public class UsuarioDAO
     {
         public Usuario Login(string nombreUsuario)
@@ -123,7 +120,6 @@ namespace Datos
             }
         }
         
-        // Este método registra una contraseña en el historial del usuario.
         public void RegistrarHistorialPassword(int idUsuario, string passwordHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -142,7 +138,6 @@ namespace Datos
             }
         }
 
-        // Este método verifica si la contraseña ya fue utilizada anteriormente por el usuario.
         public bool ExistePasswordHistorial(int idUsuario, string passwordHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -163,7 +158,6 @@ namespace Datos
             }
         }
         
-        //Este metodo ejecuta SP, trae Preguntas activas, crea Listade objetos, devuelve datos a Negocio
         public List<PreguntasSeguridad> ObtenerPreguntas()
         {
             List<PreguntasSeguridad> lista = new List<PreguntasSeguridad>();
@@ -195,8 +189,6 @@ namespace Datos
             return lista;
         }
 
-        //Ese método ejecuta el Stored Procedure sp_GuardarPreguntaSeguridad
-        //para guardar en SQL Server la Pregunta elegida y la Respuesta encriptada del usuario.
         public void GuardarPreguntaSeguridad(int idUsuario, int idPregunta, string respuestaHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -215,8 +207,6 @@ namespace Datos
             }
         }
 
-        // Verifica si el usuario ya posee preguntas de seguridad configuradas.
-        // Cantidad de preguntas de seguridad que tiene cargadas el usuario.
         public int CantidadPreguntasUsuario(int idUsuario)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
@@ -233,7 +223,6 @@ namespace Datos
             }
         }
 
-        //Este método ejecuta el SP, trae usuarios desde SQL, llena un DataTable, devuelve los datos para el DataGridView
         public DataTable ObtenerUsuarios()
         {
             DataTable tabla = new DataTable();
@@ -244,18 +233,14 @@ namespace Datos
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                //SqlDataAdapter Se encarga de extraer datos de la Base de Datos y
-                //de guardar los cambios locales de vuelta en ella.
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
 
-                //Llena la Tabla.
                 da.Fill(tabla);
             }
 
             return tabla;
         }
 
-        //Este método ejecuta sp_ObtenerRoles y devuelve los roles activos en un DataTable.
         public DataTable ObtenerRoles()
         {
             DataTable tabla = new DataTable();
@@ -272,13 +257,10 @@ namespace Datos
             return tabla;
         }
 
-        //Existencia del DNI
         public bool ExisteDni(string dni)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                // Solo cuenta si esa persona ya es usuario: un cliente del taller con el mismo DNI
-                // puede convertirse en usuario (se reutiliza su registro de Persona).
                 string query = "SELECT COUNT(1) FROM Usuario U INNER JOIN Persona P ON P.Id_Persona = U.Id_Persona WHERE P.DNI = @DNI";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@DNI", dni);
@@ -289,7 +271,6 @@ namespace Datos
             }
         }
 
-        // DNI usado por otro usuario (distinto de idUsuarioExcluido; 0 al dar de alta).
         public bool ExisteDniEnOtroUsuario(string dni, int idUsuarioExcluido)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -305,14 +286,10 @@ namespace Datos
             }
         }
 
-        // Persona "propia" para comparar: al modificar, la del usuario (aunque se le cambie el DNI);
-        // al dar de alta, la que ya tenga ese DNI (un cliente que pasa a ser usuario). -1 si no hay.
         private const string PERSONA_PROPIA =
             "COALESCE((SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario), "
             + "(SELECT Id_Persona FROM Persona WHERE DNI = @DNI), -1)";
 
-        // Correo cargado para otra persona. La columna Direccion_Correo es única,
-        // así que no puede repetirse entre personas.
         public bool ExisteCorreoDeOtraPersona(string correo, string dni, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -328,8 +305,6 @@ namespace Datos
             }
         }
 
-        // Al modificar: el DNI nuevo ya pertenece a otra persona (usuario o cliente).
-        // La columna DNI de Persona es única.
         public bool ExisteDniDeOtraPersona(string dni, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -345,7 +320,6 @@ namespace Datos
             }
         }
 
-        // Nombre de usuario usado por otro usuario (distinto de idUsuarioExcluido; 0 al dar de alta).
         public bool ExisteNombreUsuario(string nombreUsuario, int idUsuarioExcluido)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -360,8 +334,6 @@ namespace Datos
             }
         }
 
-        //Ejecuta el Stored Procedure sp_InsertarUsuarioCompleto enviando todos los datos necesarios
-        //para crear un usuario con su persona, correo y rol asociado.
         public int InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, string passwordHash, int idRol)
         {
             try
@@ -392,8 +364,6 @@ namespace Datos
             }
         }
 
-        //Ejecuta el Stored Procedure sp_ModificarUsuario para actualizar
-        //los datos personales, correo, usuario, rol y estado del usuario en la base de datos.
         public void ModificarUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol, bool activo, bool bloqueado)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -417,7 +387,6 @@ namespace Datos
             }
         }
         
-        //Ejecuta el Stored Procedure sp_DesactivarUsuario para realizar la baja lógica de un usuario en la base de datos.
         public void DesactivarUsuario(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -434,13 +403,11 @@ namespace Datos
             }
         }
 
-        // Vuelve a activar un usuario dado de baja (sp_ActivarUsuario).
         public void ActivarUsuario(int idUsuario)
         {
             EjecutarPorId("sp_ActivarUsuario", idUsuario);
         }
 
-        // Quita el bloqueo por intentos fallidos (sp_DesbloquearUsuario).
         public void DesbloquearUsuario(int idUsuario)
         {
             EjecutarPorId("sp_DesbloquearUsuario", idUsuario);
@@ -459,7 +426,6 @@ namespace Datos
             }
         }
 
-        //Este método obtiene las preguntas de seguridad asociadas a un usuario.
         public DataTable ObtenerPreguntasUsuario(string nombreUsuario)
         {
             DataTable tabla = new DataTable();
@@ -478,9 +444,6 @@ namespace Datos
             return tabla;
         }
 
-        // Obtiene el hash de la respuesta de seguridad guardada para el usuario y la pregunta indicados.
-        // Se lee el hash almacenado y la comparación se hace en la capa de negocio porque el
-        // sistema arrastra dos formatos históricos de normalización y hay que aceptar ambos.
         public string ObtenerHashRespuesta(string nombreUsuario, int idPregunta)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
@@ -529,7 +492,6 @@ namespace Datos
             }
         }
 
-        // Este método obtiene el correo electrónico asociado al usuario.
         public string ObtenerCorreoUsuario(string nombreUsuario)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
@@ -553,7 +515,6 @@ namespace Datos
             }
         }
 
-        // Este método obtiene los datos personales asociados a un usuario.
         public Persona ObtenerPersona(int idUsuario)
         {
             Persona persona = null;

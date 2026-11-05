@@ -11,8 +11,6 @@ namespace Vista
         private int idProductoSeleccionado = 0;
         private int idCategoriaSeleccionada = 0;
 
-        // Estado de la edición: al elegir un registro los datos quedan bloqueados;
-        // se habilitan con Agregar o con Modificar y se cierran con Guardar/Confirmar o Cancelar.
         private enum Modo { Consulta, Agregando, Modificando }
 
         private Modo modoProducto = Modo.Consulta;
@@ -37,7 +35,6 @@ namespace Vista
             Grillas.Configurar(dgvProductos);
             Grillas.Configurar(dgvCategorias);
 
-            // Cada vez que se recargan las grillas se traducen los títulos de las columnas.
             dgvProductos.DataBindingComplete += Grilla_DataBindingComplete;
             dgvCategorias.DataBindingComplete += Grilla_DataBindingComplete;
 
@@ -49,8 +46,6 @@ namespace Vista
             LimpiarCategoria();
         }
 
-        // Proveedores para asociar al producto. Se cargan todos para poder mostrar el de cada producto
-        // aunque esté dado de baja (con la aclaración); al guardar solo se acepta uno activo.
         private void CargarProveedores()
         {
             try
@@ -124,8 +119,6 @@ namespace Vista
             }
         }
 
-        // Consulta: datos bloqueados, Agregar y (con un producto elegido) Modificar.
-        // Agregando: Guardar y Cancelar. Modificando: Confirmar y Cancelar.
         private void AplicarModoProducto(Modo modo)
         {
             modoProducto = modo;
@@ -139,8 +132,6 @@ namespace Vista
             cmbCategoria.Enabled = editando;
             cmbProveedor.Enabled = editando;
 
-            // Mientras se edita no se puede elegir otro producto (la grilla sigue habilitada
-            // para poder desplazarla; los clics se ignoran en dgvProductos_CellClick).
             txtBuscar.Enabled = !editando;
 
             btnNuevo.Visible = modo == Modo.Consulta;
@@ -149,7 +140,6 @@ namespace Vista
             btnConfirmar.Visible = modo == Modo.Modificando;
             btnCancelarEdicion.Visible = editando;
 
-            // Inactivar (rojo) si el producto está activo; Activar (verde) si está dado de baja.
             btnEstadoProducto.Visible = modo == Modo.Consulta && idProductoSeleccionado != 0;
             btnEstadoProducto.Text = productoActivo ? Idioma.Texto("Btn_Inactivar", "Inactivar") : Idioma.Texto("Btn_Activar", "Activar");
             btnEstadoProducto.BackColor = productoActivo ? ROJO : VERDE;
@@ -170,7 +160,6 @@ namespace Vista
             }
         }
 
-        // Aviso en naranja mientras se está editando.
         private static void AvisoEdicion(Label destino, string texto)
         {
             destino.ForeColor = NARANJA;
@@ -244,7 +233,6 @@ namespace Vista
             txtNombreProducto.Focus();
         }
 
-        // Guarda los cambios del producto que se está modificando.
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             if (idProductoSeleccionado == 0)
@@ -285,8 +273,6 @@ namespace Vista
 
         private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Escudo protector contra clics en los encabezados de columna.
-            // Mientras se agrega o modifica no se puede elegir otro producto.
             if (e.RowIndex < 0 || modoProducto != Modo.Consulta)
             {
                 return;
@@ -296,7 +282,6 @@ namespace Vista
             MostrarProducto(dgvProductos.Rows[e.RowIndex]);
         }
 
-        // Carga en los campos (bloqueados) los datos del producto elegido.
         private void MostrarProducto(DataGridViewRow fila)
         {
             if (fila.Cells["Id_Producto"].Value != null && fila.Cells["Id_Producto"].Value != DBNull.Value)
@@ -335,7 +320,6 @@ namespace Vista
                 cmbCategoria.SelectedIndex = -1;
             }
 
-            // Proveedor asociado (si está dado de baja no figura en el combo y hay que elegir otro al modificar).
             cmbProveedor.SelectedIndex = -1;
             if (fila.Cells["Id_Proveedor"].Value != null && fila.Cells["Id_Proveedor"].Value != DBNull.Value)
             {
@@ -353,7 +337,6 @@ namespace Vista
             cmbCategoria.Focus();
         }
 
-        // Descarta lo que se estaba cargando o modificando y vuelve a bloquear los datos.
         private void btnCancelarEdicion_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -379,8 +362,6 @@ namespace Vista
             this.Close();
         }
 
-        // Lee los campos del producto. Todos son obligatorios y los números tienen que ser números
-        // (antes un precio con letras se guardaba como 0 sin avisar).
         private Producto LeerProducto()
         {
             if (cmbCategoria.SelectedValue == null)
@@ -416,21 +397,17 @@ namespace Vista
                 Precio_Venta = precio,
                 Stock_Actual = stockActual,
                 Stock_Minimo = stockMinimo,
-                // Al modificar se mantiene el estado que tenía (un inactivo sigue inactivo).
                 Activo = modoProducto == Modo.Agregando || productoActivo
             };
         }
 
-        // Acepta el precio con coma o con punto decimal (15000,50 o 15000.50) y con punto de miles (15.000 o 15.000,50).
         private static bool LeerPrecio(string texto, out decimal precio)
         {
             texto = texto.Trim().Replace("$", string.Empty).Replace(" ", string.Empty);
 
-            // Si hay coma, la coma es el decimal y los puntos son de miles (formato argentino).
             if (texto.Contains(','))
                 return decimal.TryParse(texto, System.Globalization.NumberStyles.Number, new System.Globalization.CultureInfo("es-AR"), out precio);
 
-            // Un solo punto seguido de 1 o 2 dígitos es el decimal (15000.50); si no, los puntos son de miles (15.000).
             int punto = texto.LastIndexOf('.');
             bool puntoDecimal = punto >= 0 && texto.IndexOf('.') == punto && texto.Length - punto - 1 <= 2;
 
@@ -440,7 +417,6 @@ namespace Vista
             return decimal.TryParse(texto, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out precio);
         }
 
-        // Inactivar (baja lógica) o Activar, según el estado del producto elegido.
         private void btnEstadoProducto_Click(object? sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -494,11 +470,6 @@ namespace Vista
             CargarProductos();
         }
 
-        // ---------------------------------------------
-        // Idioma (CU18)
-        // ---------------------------------------------
-
-        // El formulario siempre abre en Español; el combo permite pasarlo a Inglés.
         private void CargarComboLenguajes()
         {
             Idioma.Actual = Idioma.ESPANOL;
@@ -524,7 +495,6 @@ namespace Vista
             DataGridView grilla = (DataGridView)sender!;
             Idioma.TraducirColumnas(grilla);
 
-            // Los productos dados de baja se ven en gris.
             if (grilla == dgvProductos && grilla.Columns.Contains("Activo"))
             {
                 foreach (DataGridViewRow fila in grilla.Rows)
@@ -535,12 +505,6 @@ namespace Vista
             }
         }
 
-        // ---------------------------------------------
-        // Categorías
-        // ---------------------------------------------
-
-        // Igual que en productos: el nombre queda bloqueado hasta Agregar o Modificar.
-        // Eliminar (rojo, aparte) solo aparece con una categoría elegida y sin editar.
         private void AplicarModoCategoria(Modo modo)
         {
             modoCategoria = modo;
@@ -581,7 +545,6 @@ namespace Vista
             AplicarModoCategoria(Modo.Consulta);
         }
 
-        // Recarga las categorías en la grilla y en el combo de productos.
         private void RefrescarCategorias()
         {
             CargarCategorias();
@@ -645,7 +608,6 @@ namespace Vista
             txtNombreCategoria.Focus();
         }
 
-        // Guarda el nuevo nombre de la categoría que se está modificando.
         private void btnConfirmarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -670,7 +632,6 @@ namespace Vista
             }
         }
 
-        // Descarta los cambios y vuelve a mostrar la categoría como estaba.
         private void btnCancelarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);

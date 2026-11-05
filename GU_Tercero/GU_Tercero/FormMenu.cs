@@ -11,10 +11,8 @@ namespace GU_Tercero
         private Usuario usuarioLogueado;
         public bool EsCierreSesion { get; private set; } = false;
 
-        // Lo marca el acceso rápido "Verificar Alertas de Stock".
         private bool abrirAlertasStock = false;
 
-        // Textos que muestran los paneles del resumen diario.
         private Label lblValorVentas = new Label();
         private Label lblDetalleVentas = new Label();
         private Label lblValorTaller = new Label();
@@ -43,7 +41,6 @@ namespace GU_Tercero
             return usuarioLogueado?.Nombre_Rol ?? "Administrador";
         }
 
-        // Cada vez que se vuelve al menú desde otro formulario se actualizan los totales.
         private void FormMenu_VisibleChanged(object sender, EventArgs e)
         {
             if (this.Visible)
@@ -52,7 +49,6 @@ namespace GU_Tercero
             }
         }
 
-        // Cada rol ve solo los paneles que tienen que ver con su trabajo.
         private void CrearPaneles()
         {
             string rol = ObtenerRol();
@@ -69,7 +65,6 @@ namespace GU_Tercero
                 CrearPanel("VENTAS DEL DÍA", Color.FromArgb(59, 130, 246), 0, 0, lblValorVentas, lblDetalleVentas);
                 CrearPanel("ALERTAS DE STOCK", Color.FromArgb(239, 68, 68), 1, 0, lblValorStock, lblDetalleStock);
 
-                // Con dos paneles alcanza una sola fila.
                 tlpPaneles.RowStyles[1].Height = 0;
             }
             else
@@ -81,7 +76,6 @@ namespace GU_Tercero
             }
         }
 
-        // Arma un panel de color con un título, el valor principal y una línea de detalle.
         private void CrearPanel(string titulo, Color color, int columna, int fila, Label lblValor, Label lblDetalle)
         {
             Panel panel = new Panel();
@@ -109,7 +103,6 @@ namespace GU_Tercero
             lblDetalle.ForeColor = Color.FromArgb(241, 245, 249);
             lblDetalle.Font = new Font("Segoe UI", 9.5F);
 
-            // Se agregan al revés porque con Dock = Top el último queda arriba.
             panel.Controls.Add(lblDetalle);
             panel.Controls.Add(lblValor);
             panel.Controls.Add(lblTituloPanel);
@@ -195,8 +188,6 @@ namespace GU_Tercero
 
         private void AplicarPermisosPorRol()
         {
-            // Los permisos de cada rol están en Navegacion, así el menú principal
-            // y el menú de cada pantalla muestran lo mismo.
             string rol = ObtenerRol();
 
             gestionDeUsuariosToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.USUARIOS);
@@ -207,12 +198,10 @@ namespace GU_Tercero
             comprasToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
             cajaToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CAJA);
             tallerToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
-            clientesToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CLIENTES);
             bitacoraToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.BITACORA);
             miPerfilToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.MI_PERFIL);
             configuraciónDelSistemaToolStripMenuItem.Visible = Navegacion.PuedeVer(rol, Navegacion.CONFIGURACION);
 
-            // Los accesos rápidos siguen los mismos permisos que el menú.
             btnAccesoVenta.Visible = Navegacion.PuedeVer(rol, Navegacion.VENTAS);
             btnAccesoTaller.Visible = Navegacion.PuedeVer(rol, Navegacion.TALLER);
             btnAccesoStock.Visible = Navegacion.PuedeVer(rol, Navegacion.CONSULTA_STOCK);
@@ -244,8 +233,6 @@ namespace GU_Tercero
             catch { }
         }
 
-        // Abre la pantalla elegida. Si desde su menú el usuario elige otra pantalla,
-        // se cierra la actual y se abre la nueva sin pasar por el menú principal.
         private void AbrirPantalla(string pantalla)
         {
             this.Hide();
@@ -280,7 +267,6 @@ namespace GU_Tercero
             if (pantalla == Navegacion.PRODUCTOS) return new FormProductos();
             if (pantalla == Navegacion.CONSULTA_STOCK)
             {
-                // El acceso rápido de alertas abre la consulta mostrando solo el stock bajo.
                 bool soloBajoMinimo = abrirAlertasStock;
                 abrirAlertasStock = false;
                 return new FormConsultaStock(usuarioLogueado, soloBajoMinimo);
@@ -290,7 +276,6 @@ namespace GU_Tercero
             if (pantalla == Navegacion.COMPRAS) return new FormCompras(usuarioLogueado);
             if (pantalla == Navegacion.CAJA) return new FormCaja(usuarioLogueado);
             if (pantalla == Navegacion.TALLER) return new FormTaller(usuarioLogueado);
-            if (pantalla == Navegacion.CLIENTES) return new FormClientes();
             if (pantalla == Navegacion.BITACORA) return new FormBitacora();
             if (pantalla == Navegacion.MI_PERFIL) return new FormUsuario(usuarioLogueado);
             return new FormConfiguracion();
@@ -330,7 +315,6 @@ namespace GU_Tercero
 
         private void FormMenu_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Si la ventana se cierra por la cruz (X) y NO por cerrar sesión, salimos del proceso completo
             if (!EsCierreSesion)
             {
                 Application.Exit();
@@ -365,11 +349,6 @@ namespace GU_Tercero
         private void bitacoraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.BITACORA);
-        }
-
-        private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AbrirPantalla(Navegacion.CLIENTES);
         }
 
         private void tallerToolStripMenuItem_Click(object sender, EventArgs e)

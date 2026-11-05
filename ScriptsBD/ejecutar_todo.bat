@@ -2,10 +2,6 @@
 chcp 65001 > nul
 echo Ejecutando scripts en la base de datos...
 
-rem Los scripts se ejecutan en orden numerico explicito.
-rem -f 65001 hace que sqlcmd lea los .sql como UTF-8.
-rem Sin esta opcion los acentos se guardan corruptos en la base.
-
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp001_Tablas.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp002_Tabla_ApIBigStored.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp003_StoreProcedure.sql"
@@ -22,7 +18,6 @@ sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp013_SP_Stock.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp014_SP_Taller.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp015_SP_Caja.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp016_SP_2FA.sql"
-sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp017_SP_Clientes.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp018_SP_Backup.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp019_SP_Bitacora.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp020_DigitoVerificador_Password.sql"

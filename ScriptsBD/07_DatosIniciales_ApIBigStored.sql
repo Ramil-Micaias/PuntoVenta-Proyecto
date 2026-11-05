@@ -1,10 +1,6 @@
 USE GU_Tercero;
 GO
 
-------------------------------------------
--- 0. MIGRACION: el negocio trabaja solo con productos Apple
--- Renombra los datos de prueba de Samsung que ya existan en la base.
-------------------------------------------
 UPDATE Producto
 SET Nombre_Producto = 'Batería iPhone 12',
     Descripcion = 'Batería Homologada iPhone 12'
@@ -25,61 +21,53 @@ SET Marca = 'Apple', Modelo = 'iPhone 12'
 WHERE IMEI = '864209087654321' AND Marca = 'Samsung';
 GO
 
-------------------------------------------
--- 1. TABLAS MAESTRAS SIN DEPENDENCIAS
-------------------------------------------
-
--- Categorías de Productos
 IF NOT EXISTS (
-    SELECT 1 
-    FROM CategoriaProducto 
+    SELECT 1
+    FROM CategoriaProducto
     WHERE Nombre_Categoria = 'Fundas y Protectores'
 )
     INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
     VALUES ('Fundas y Protectores', 1);
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM CategoriaProducto 
+    SELECT 1
+    FROM CategoriaProducto
     WHERE Nombre_Categoria = 'Cargadores y Cables'
 )
     INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
     VALUES ('Cargadores y Cables', 1);
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM CategoriaProducto 
+    SELECT 1
+    FROM CategoriaProducto
     WHERE Nombre_Categoria = 'Módulos y Pantallas'
 )
     INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
     VALUES ('Módulos y Pantallas', 1);
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM CategoriaProducto 
+    SELECT 1
+    FROM CategoriaProducto
     WHERE Nombre_Categoria = 'Baterías'
 )
     INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
     VALUES ('Baterías', 1);
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM CategoriaProducto 
+    SELECT 1
+    FROM CategoriaProducto
     WHERE Nombre_Categoria = 'Auriculares'
 )
     INSERT INTO CategoriaProducto (Nombre_Categoria, Activo)
     VALUES ('Auriculares', 1);
 GO
 
-
--- Proveedores
--- Los CUIT de prueba anteriores no tenían un dígito verificador válido: se corrigen.
 UPDATE Proveedor SET CUIT = '30-71234567-1' WHERE CUIT = '30-71234567-8';
 UPDATE Proveedor SET CUIT = '30-88765432-4' WHERE CUIT = '30-88765432-1';
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM Proveedor 
+    SELECT 1
+    FROM Proveedor
     WHERE CUIT = '30-71234567-1'
        OR Razon_Social = 'Distribuidora Mobile S.A.'
 )
@@ -101,8 +89,8 @@ IF NOT EXISTS (
     );
 
 IF NOT EXISTS (
-    SELECT 1 
-    FROM Proveedor 
+    SELECT 1
+    FROM Proveedor
     WHERE CUIT = '30-88765432-4'
        OR Razon_Social = 'Importadora Repuestos Tech'
 )
@@ -123,11 +111,6 @@ IF NOT EXISTS (
         1
     );
 GO
-
-
-------------------------------------------
--- 2. CLIENTE Y EQUIPOS
-------------------------------------------
 
 DECLARE @IdPersonaAdmin INT =
 (
@@ -170,8 +153,6 @@ BEGIN
         );
     END;
 
-
-    -- Equipos del cliente
     IF NOT EXISTS (
         SELECT 1
         FROM Equipo
@@ -197,7 +178,6 @@ BEGIN
             'Negro',
             1
         );
-
 
     IF NOT EXISTS (
         SELECT 1
@@ -228,11 +208,6 @@ BEGIN
 END;
 GO
 
-
-------------------------------------------
--- 3. PRODUCTOS Y REPUESTOS
-------------------------------------------
-
 DECLARE @IdCatFundas INT =
 (
     SELECT Id_Categoria
@@ -261,7 +236,6 @@ DECLARE @IdCatBaterias INT =
     WHERE Nombre_Categoria = 'Baterías'
 );
 
-
 DECLARE @IdProvMobile INT =
 (
     SELECT Id_Proveedor
@@ -276,8 +250,6 @@ DECLARE @IdProvTech INT =
     WHERE CUIT = '30-88765432-4'
 );
 
-
--- Producto 1
 IF NOT EXISTS (
     SELECT 1
     FROM Producto
@@ -304,8 +276,6 @@ BEGIN
     );
 END;
 
-
--- Producto 2
 IF NOT EXISTS (
     SELECT 1
     FROM Producto
@@ -332,8 +302,6 @@ BEGIN
     );
 END;
 
-
--- Producto 3
 IF NOT EXISTS (
     SELECT 1
     FROM Producto
@@ -360,8 +328,6 @@ BEGIN
     );
 END;
 
-
--- Producto 4
 IF NOT EXISTS (
     SELECT 1
     FROM Producto
@@ -388,11 +354,6 @@ BEGIN
     );
 END;
 GO
-
-
-------------------------------------------
--- 3.1 RELACIÓN PRODUCTO - PROVEEDOR
-------------------------------------------
 
 DECLARE @IdProductoFunda INT =
 (
@@ -436,7 +397,6 @@ DECLARE @IdProvTech INT =
     WHERE CUIT = '30-88765432-4'
 );
 
-
 IF @IdProductoFunda IS NOT NULL
 AND @IdProvMobile IS NOT NULL
 AND NOT EXISTS (
@@ -457,7 +417,6 @@ BEGIN
         1
     );
 END;
-
 
 IF @IdProductoCargador IS NOT NULL
 AND @IdProvMobile IS NOT NULL
@@ -480,7 +439,6 @@ BEGIN
     );
 END;
 
-
 IF @IdProductoModulo IS NOT NULL
 AND @IdProvTech IS NOT NULL
 AND NOT EXISTS (
@@ -501,7 +459,6 @@ BEGIN
         1
     );
 END;
-
 
 IF @IdProductoBateria IS NOT NULL
 AND @IdProvTech IS NOT NULL
@@ -524,11 +481,6 @@ BEGIN
     );
 END;
 GO
-
-
-------------------------------------------
--- 4. ORDEN DE REPARACIÓN Y DETALLE
-------------------------------------------
 
 DECLARE @IdEquipo INT =
 (
@@ -559,7 +511,6 @@ DECLARE @IdProductoModuloOrden INT =
     FROM Producto
     WHERE Nombre_Producto = 'Módulo iPhone 13'
 );
-
 
 IF NOT EXISTS (
     SELECT 1
@@ -595,9 +546,7 @@ BEGIN
         '2026-09-10'
     );
 
-
     DECLARE @IdOrden INT = SCOPE_IDENTITY();
-
 
     INSERT INTO DetalleOrdenRepuesto (
         Id_Orden,
@@ -614,11 +563,6 @@ BEGIN
 
 END;
 GO
-
-
-------------------------------------------
--- 5. VENTA Y DETALLE DE VENTA
-------------------------------------------
 
 IF NOT EXISTS (
     SELECT 1
@@ -649,7 +593,6 @@ BEGIN
         WHERE Nombre = 'Efectivo'
     );
 
-
     DECLARE @IdProd1 INT =
     (
         SELECT Id_Producto
@@ -663,7 +606,6 @@ BEGIN
         FROM Producto
         WHERE Nombre_Producto = 'Cargador 20W'
     );
-
 
     INSERT INTO Venta (
         Numero_Factura,
@@ -686,9 +628,7 @@ BEGIN
         0
     );
 
-
     DECLARE @IdVenta INT = SCOPE_IDENTITY();
-
 
     INSERT INTO DetalleVenta (
         Id_Venta,

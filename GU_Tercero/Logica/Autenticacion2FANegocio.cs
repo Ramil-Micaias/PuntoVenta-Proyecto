@@ -6,9 +6,6 @@ using System;
 
 namespace Logica
 {
-    // Autenticación en dos pasos: si está habilitada en la Configuración del Sistema,
-    // después de validar usuario y contraseña se envía un código al correo del usuario
-    // y se pide ingresarlo para terminar el inicio de sesión.
     public class Autenticacion2FANegocio
     {
         public const int MINUTOS_VALIDEZ = 5;
@@ -24,8 +21,6 @@ namespace Logica
             return configuracion != null && configuracion.Habilitar_2FA;
         }
 
-        // Genera un código nuevo, lo guarda y lo envía por correo.
-        // Si el correo no sale, el código se invalida y el resultado trae el motivo.
         public ResultadoEnvioEmail EnviarCodigo(Usuario usuario)
         {
             string correo = usuarioDAO.ObtenerCorreoUsuario(usuario.Nombre_Usuario);
@@ -57,7 +52,6 @@ namespace Logica
             return envio;
         }
 
-        // Devuelve null si el código es correcto, o el mensaje a mostrar si no lo es.
         public string? ValidarCodigo(Usuario usuario, string codigo)
         {
             codigo = (codigo ?? string.Empty).Trim();
@@ -65,7 +59,6 @@ namespace Logica
             if (codigo.Length == 0)
                 return "Ingrese el código de verificación.";
 
-            // El dígito verificador (DigitoVerificador) detecta errores de tipeo sin consultar la base.
             if (!Autenticacion2FAHelper.TieneFormatoValido(codigo))
                 return "El código no es válido. Revise que haya copiado los " + Autenticacion2FAHelper.LARGO_CODIGO + " dígitos correctamente.";
 
@@ -85,7 +78,6 @@ namespace Logica
             codigoDAO.InvalidarCodigos(usuario.Id_Usuario);
         }
 
-        // Muestra el correo sin revelarlo completo. Ejemplo: d*******0@gmail.com
         public string ObtenerCorreoEnmascarado(Usuario usuario)
         {
             string correo = usuarioDAO.ObtenerCorreoUsuario(usuario.Nombre_Usuario);

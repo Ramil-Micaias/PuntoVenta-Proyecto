@@ -2,15 +2,8 @@ namespace Vista
 {
     partial class FormConsultaStock
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace Vista
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelHeader = new Panel();
@@ -46,9 +35,6 @@ namespace Vista
             grpExistencias.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStock).BeginInit();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -56,9 +42,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(960, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -67,9 +50,6 @@ namespace Vista
             lblTitulo.Size = new Size(360, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "CONSULTA DE STOCK E INVENTARIO";
-            //
-            // grpFiltros
-            //
             grpFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpFiltros.Controls.Add(btnAplicarFiltros);
             grpFiltros.Controls.Add(chkSoloBajoMinimo);
@@ -85,9 +65,6 @@ namespace Vista
             grpFiltros.TabIndex = 1;
             grpFiltros.TabStop = false;
             grpFiltros.Text = "Filtros de Búsqueda";
-            //
-            // lblBuscar
-            //
             lblBuscar.AutoSize = true;
             lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
@@ -96,18 +73,12 @@ namespace Vista
             lblBuscar.Size = new Size(118, 17);
             lblBuscar.TabIndex = 0;
             lblBuscar.Text = "Nombre o Código:";
-            //
-            // txtBuscar
-            //
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
             txtBuscar.Location = new Point(140, 30);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Ej: Batería iPhone";
             txtBuscar.Size = new Size(220, 24);
             txtBuscar.TabIndex = 1;
-            //
-            // lblCategoria
-            //
             lblCategoria.AutoSize = true;
             lblCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCategoria.ForeColor = Color.FromArgb(30, 41, 59);
@@ -116,18 +87,12 @@ namespace Vista
             lblCategoria.Size = new Size(70, 17);
             lblCategoria.TabIndex = 2;
             lblCategoria.Text = "Categoría:";
-            //
-            // cmbCategoria
-            //
             cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategoria.Font = new Font("Segoe UI", 9.5F);
             cmbCategoria.Location = new Point(456, 29);
             cmbCategoria.Name = "cmbCategoria";
             cmbCategoria.Size = new Size(170, 25);
             cmbCategoria.TabIndex = 3;
-            //
-            // chkSoloBajoMinimo
-            //
             chkSoloBajoMinimo.AutoSize = true;
             chkSoloBajoMinimo.Font = new Font("Segoe UI", 9.5F);
             chkSoloBajoMinimo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -137,9 +102,6 @@ namespace Vista
             chkSoloBajoMinimo.TabIndex = 4;
             chkSoloBajoMinimo.Text = "Ver solo stock bajo mínimo";
             chkSoloBajoMinimo.UseVisualStyleBackColor = true;
-            //
-            // btnAplicarFiltros
-            //
             btnAplicarFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAplicarFiltros.BackColor = Color.FromArgb(37, 99, 235);
             btnAplicarFiltros.FlatAppearance.BorderSize = 0;
@@ -152,9 +114,6 @@ namespace Vista
             btnAplicarFiltros.TabIndex = 5;
             btnAplicarFiltros.Text = "Aplicar";
             btnAplicarFiltros.UseVisualStyleBackColor = false;
-            //
-            // grpExistencias
-            //
             grpExistencias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpExistencias.Controls.Add(lblResumen);
             grpExistencias.Controls.Add(btnVolver);
@@ -167,18 +126,12 @@ namespace Vista
             grpExistencias.TabIndex = 2;
             grpExistencias.TabStop = false;
             grpExistencias.Text = "Existencias en Depósito";
-            //
-            // dgvStock
-            //
             dgvStock.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvStock.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStock.Location = new Point(14, 28);
             dgvStock.Name = "dgvStock";
             dgvStock.Size = new Size(900, 346);
             dgvStock.TabIndex = 0;
-            //
-            // lblResumen
-            //
             lblResumen.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResumen.AutoSize = true;
             lblResumen.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -188,9 +141,6 @@ namespace Vista
             lblResumen.Size = new Size(80, 17);
             lblResumen.TabIndex = 1;
             lblResumen.Text = "Productos: 0";
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -203,9 +153,6 @@ namespace Vista
             btnVolver.TabIndex = 2;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            //
-            // FormConsultaStock
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

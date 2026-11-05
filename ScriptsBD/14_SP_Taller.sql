@@ -1,16 +1,6 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: TALLER (CU05, CU08 y CU09)
--- Órdenes de reparación: alta, consulta y actualización de estado.
--- Lo usan FormTaller, FormOrdenReparacion, GestorTaller y TallerDAO.
--- ============================================================
-
--- ------------------------------------------------------------
--- 1. TABLA: historial de estados de cada orden (CU09)
---    Guarda qué estado se puso, quién y cuándo.
--- ------------------------------------------------------------
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'HistorialEstadoOrden')
 BEGIN
     CREATE TABLE HistorialEstadoOrden (
@@ -27,15 +17,10 @@ BEGIN
 END
 GO
 
--- Tipo de teléfono que se usa al dar de alta clientes desde el taller
 IF NOT EXISTS (SELECT 1 FROM TipoTelefono WHERE Descripcion = 'Celular')
     INSERT INTO TipoTelefono (Descripcion, Activo) VALUES ('Celular', 1);
 GO
 
-
--- ------------------------------------------------------------
--- 2. SP: Clientes del taller (para el combo de la orden)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerClientesTaller
 AS
 BEGIN
@@ -55,11 +40,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 3. SP: Alta de cliente
---    Si la persona ya existe (por ejemplo un empleado) solo se la marca como cliente.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_InsertarClienteTaller
     @Apellido NVARCHAR(50),
     @Nombre NVARCHAR(50),
@@ -93,7 +73,6 @@ BEGIN
 
         DECLARE @Id_Cliente INT = SCOPE_IDENTITY();
 
-        -- El teléfono es opcional
         IF @Telefono IS NOT NULL AND LTRIM(RTRIM(@Telefono)) <> ''
         BEGIN
             DECLARE @Id_Telefono INT = (SELECT Id_Telefono FROM Telefono WHERE Numero = @Telefono);
@@ -122,10 +101,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 4. SP: Equipos de un cliente
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerEquiposCliente
     @Id_Cliente INT
 AS
@@ -144,10 +119,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 5. SP: Alta de equipo
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_InsertarEquipo
     @Id_Cliente INT,
     @Tipo_Dispositivo NVARCHAR(50),
@@ -180,10 +151,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 6. SP: Técnicos activos
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerTecnicos
 AS
 BEGIN
@@ -202,10 +169,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 7. SP: Estados de una orden
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerEstadosOrden
 AS
 BEGIN
@@ -217,10 +180,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 8. SP: Productos que se pueden usar como repuesto
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerRepuestos
 AS
 BEGIN
@@ -237,13 +196,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 9. SP: Guardar orden (alta CU05 y actualización CU09)
---    @Id_Orden = 0 da de alta una orden nueva.
---    Los repuestos vienen en JSON: [{"Id_Producto":1,"Cantidad":2,"Precio":5000}]
---    El stock se ajusta según la diferencia con lo que la orden ya tenía.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_GuardarOrdenReparacion
     @Id_Orden INT = 0,
     @Id_Equipo INT,
@@ -286,7 +238,6 @@ BEGIN
             IF @Estado_Anterior IS NULL
                 RAISERROR('La orden no existe.', 16, 1);
 
-            -- Una orden entregada o cancelada ya está cerrada
             IF EXISTS (
                 SELECT 1 FROM EstadoOrden
                 WHERE Id_Estado = @Estado_Anterior AND Nombre_Estado IN ('Entregado', 'Cancelado')
@@ -294,7 +245,6 @@ BEGIN
                 RAISERROR('La orden ya está entregada o cancelada y no se puede modificar.', 16, 1);
         END
 
-        -- Repuestos nuevos
         DECLARE @Nuevos TABLE (Id_Producto INT, Cantidad INT, Precio DECIMAL(12,2));
 
         INSERT INTO @Nuevos (Id_Producto, Cantidad, Precio)
@@ -307,14 +257,12 @@ BEGIN
         )
         GROUP BY Id_Producto;
 
-        -- Si la orden se cancela, los repuestos vuelven al stock
         IF @Nombre_Estado = 'Cancelado'
             DELETE FROM @Nuevos;
 
         IF EXISTS (SELECT 1 FROM @Nuevos WHERE Id_Producto IS NULL OR Cantidad <= 0 OR Precio < 0)
             RAISERROR('Los repuestos tienen datos inválidos.', 16, 1);
 
-        -- Repuestos que la orden ya tenía (para devolverlos al stock antes de descontar los nuevos)
         DECLARE @Anteriores TABLE (Id_Producto INT, Cantidad INT);
 
         INSERT INTO @Anteriores (Id_Producto, Cantidad)
@@ -323,7 +271,6 @@ BEGIN
         WHERE Id_Orden = @Id_Orden
         GROUP BY Id_Producto;
 
-        -- Control de stock: lo disponible + lo que ya estaba reservado en esta orden
         IF EXISTS (
             SELECT 1
             FROM @Nuevos n
@@ -382,7 +329,6 @@ BEGIN
             WHERE Id_Orden = @Id_Orden;
         END
 
-        -- Devuelve al stock los repuestos anteriores y descuenta los nuevos
         UPDATE p
         SET p.Stock_Actual = p.Stock_Actual + a.Cantidad
         FROM Producto p
@@ -399,7 +345,6 @@ BEGIN
         FROM Producto p
         INNER JOIN @Nuevos n ON n.Id_Producto = p.Id_Producto;
 
-        -- Fechas según el estado
         IF @Nombre_Estado = 'Reparado'
             UPDATE OrdenReparacion SET Fecha_Finalizado = ISNULL(Fecha_Finalizado, GETDATE()) WHERE Id_Orden = @Id_Orden;
 
@@ -409,7 +354,6 @@ BEGIN
                 Fecha_Entrega = GETDATE()
             WHERE Id_Orden = @Id_Orden;
 
-        -- Historial: se registra al crear la orden y cada vez que cambia el estado
         IF @Estado_Anterior IS NULL OR @Estado_Anterior <> @Id_Estado
             INSERT INTO HistorialEstadoOrden (Id_Orden, Id_Estado, Id_Usuario, Fecha, Observacion)
             VALUES (@Id_Orden, @Id_Estado, @Id_Usuario, GETDATE(), @Observacion);
@@ -429,10 +373,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 10. SP: Consulta de órdenes (CU08)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ConsultarOrdenes
     @Filtro NVARCHAR(100) = '',
     @Id_Estado INT = NULL,
@@ -478,10 +418,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 11. SP: Datos de una orden (para abrirla y actualizarla)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerOrden
     @Id_Orden INT
 AS
@@ -553,10 +489,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- Datos de un cliente (para corregirlos desde la orden de reparación)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerClienteTaller
     @Id_Cliente INT
 AS
@@ -578,10 +510,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- Modificar un cliente: apellido, nombre, DNI y teléfono
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ModificarClienteTaller
     @Id_Cliente INT,
     @Apellido NVARCHAR(50),
@@ -600,7 +528,6 @@ BEGIN
         IF @Id_Persona IS NULL
             RAISERROR('El cliente no existe.', 16, 1);
 
-        -- El DNI no puede ser de otra persona (cliente o usuario)
         IF EXISTS (SELECT 1 FROM Persona WHERE DNI = @DNI AND Id_Persona <> @Id_Persona)
             RAISERROR('Ya existe otra persona registrada con ese DNI.', 16, 1);
 
@@ -610,7 +537,6 @@ BEGIN
             DNI = @DNI
         WHERE Id_Persona = @Id_Persona;
 
-        -- El teléfono es opcional: se reemplaza el que tenía por el nuevo
         DELETE FROM PersonaTelefono WHERE Id_Persona = @Id_Persona;
 
         IF @Telefono IS NOT NULL AND LTRIM(RTRIM(@Telefono)) <> ''

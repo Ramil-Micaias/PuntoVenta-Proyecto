@@ -52,7 +52,6 @@ namespace Vista
             txtBuscar.Focus();
         }
 
-        // Sin la caja del día abierta no se puede vender (las ventas se registran en la caja).
         private bool HayCajaAbierta()
         {
             try
@@ -120,7 +119,6 @@ namespace Vista
             EncabezadoColumna(dgvCarrito, "Subtotal", "Subtotal", 4, "0.##");
         }
 
-        // Lista de pagos de la venta (se usa cuando se paga con más de un método).
         private void CrearPagos()
         {
             pagos.Columns.Add("Id_MetodoPago", typeof(int));
@@ -168,7 +166,6 @@ namespace Vista
                 cmbMetodoPago.ValueMember = "Id_MetodoPago";
                 cmbMetodoPago.DataSource = gestorVentas.ObtenerMetodosPago();
 
-                // Arranca vacío: el método de pago se elige siempre (no queda Efectivo por defecto).
                 cmbMetodoPago.SelectedIndex = -1;
             }
             catch (Exception ex)
@@ -331,7 +328,6 @@ namespace Vista
             ActualizarResumen();
         }
 
-        // Saca el comprobante de la venta anterior y vuelve a mostrar la ayuda.
         private void OcultarResultado()
         {
             lblResultado.Visible = false;
@@ -402,7 +398,6 @@ namespace Vista
             return pagado;
         }
 
-        // Muestra cuánto falta pagar cuando se carga más de un pago.
         private void ActualizarPagos()
         {
             if (pagos.Rows.Count == 0)
@@ -431,8 +426,6 @@ namespace Vista
             }
         }
 
-        // Agrega un pago con el método y el importe elegidos.
-        // Si el importe queda vacío se agrega lo que falta pagar.
         private void AgregarPago()
         {
             if (carrito.Rows.Count == 0)
@@ -483,7 +476,6 @@ namespace Vista
 
             int idMetodo = Convert.ToInt32(cmbMetodoPago.SelectedValue);
 
-            // Si el método ya estaba en la lista se suma al pago existente.
             DataRow? existente = null;
             foreach (DataRow pago in pagos.Rows)
             {
@@ -547,7 +539,6 @@ namespace Vista
                 return;
             }
 
-            // Sin pagos agregados se cobra todo con el método del combo: tiene que estar elegido.
             if (pagos.Rows.Count == 0 && (cmbMetodoPago.SelectedValue == null || cmbMetodoPago.SelectedValue == DBNull.Value))
             {
                 MessageBox.Show(
@@ -605,7 +596,6 @@ namespace Vista
 
             if (pagos.Rows.Count == 0)
             {
-                // Un solo método: se cobra todo con el método elegido.
                 venta.Pagos.Add(new PagoVenta
                 {
                     Id_MetodoPago = Convert.ToInt32(cmbMetodoPago.SelectedValue),
@@ -626,7 +616,6 @@ namespace Vista
                 }
             }
 
-            // La venta queda registrada con el método del pago más grande.
             PagoVenta principal = venta.Pagos[0];
             foreach (PagoVenta pago in venta.Pagos)
             {
@@ -662,7 +651,6 @@ namespace Vista
                 LimpiarVenta();
                 BuscarProductos();
 
-                // El comprobante queda escrito en la pantalla (en lugar del ayuda).
                 lblAyuda.Visible = false;
                 Mensajes.Exito(lblResultado,
                     "Venta registrada con éxito.\n" +
@@ -777,7 +765,6 @@ namespace Vista
             }
         }
 
-        // Doble clic en un pago para quitarlo.
         private void dgvPagos_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             QuitarPago(e.RowIndex);

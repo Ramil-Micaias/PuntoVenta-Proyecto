@@ -1,15 +1,5 @@
------------------------------------------------------
--- PROYECTO: GU_Tercero
--- MODULO: STORED PROCEDURES
--- MOTOR: SQL SERVER
--- AUTOR: Esteban, Luciano, Micaias, Franco, Leandro
------------------------------------------------------
 USE GU_Tercero;
 GO
-
--------------------
--- CONFIGURACION --
--------------------
 
 CREATE OR ALTER PROCEDURE sp_ObtenerConfiguracion
 AS
@@ -36,7 +26,6 @@ GO
 CREATE OR ALTER PROCEDURE sp_GuardarConfiguracion
 (
     @Id_Configuracion INT,
-    -- Opcionales: la pantalla de Configuración no los edita; si no vienen se conserva el valor guardado.
     @Nombre_Empresa NVARCHAR(100) = NULL,
     @Email_Emisor NVARCHAR(150) = NULL,
     @Min_Caracteres INT,
@@ -82,13 +71,9 @@ BEGIN
 END;
 GO
 
---------------
--- USUARIOS --
---------------
-
 CREATE OR ALTER PROCEDURE sp_ObtenerUsuarios
 AS
-BEGIN 
+BEGIN
     SET NOCOUNT ON;
 
     SELECT
@@ -139,8 +124,6 @@ BEGIN
         DECLARE @IdUsuario INT;
         DECLARE @IdTipoCorreo INT;
 
-        -- 1. Persona: la misma persona puede ser cliente del taller y usuario.
-        --    Si el DNI ya existe se reutiliza esa persona (DNI es único en Persona).
         SELECT @IdPersona = Id_Persona FROM Persona WHERE DNI = @DNI;
 
         IF @IdPersona IS NOT NULL
@@ -165,7 +148,6 @@ BEGIN
             WHERE Id_Persona = @IdPersona;
         END
 
-        -- 2. Insertar Correo (si esa persona todavía no lo tiene)
         SELECT TOP 1 @IdTipoCorreo = Id_TipoCorreo FROM TipoCorreo WHERE Activo = 1;
 
         IF NOT EXISTS (SELECT 1 FROM Correo WHERE Id_Persona = @IdPersona AND Direccion_Correo = @Direccion_Correo)
@@ -179,7 +161,6 @@ BEGIN
             WHERE Id_Persona = @IdPersona AND Direccion_Correo = @Direccion_Correo;
         END
 
-        -- 3. Insertar Usuario
         INSERT INTO Usuario (
             Id_Persona,
             Nombre_Usuario,
@@ -207,7 +188,6 @@ BEGIN
 
         SET @IdUsuario = SCOPE_IDENTITY();
 
-        -- 4. Asignar Rol
         INSERT INTO UsuarioRol (Id_Usuario, Id_Rol, Fecha_Asignacion)
         VALUES (@IdUsuario, @IdRol, GETDATE());
 
@@ -249,7 +229,6 @@ BEGIN
         FROM Usuario
         WHERE Id_Usuario = @IdUsuario;
 
-        -- Actualizar Persona
         UPDATE Persona
         SET
             Apellido = @Apellido,
@@ -257,12 +236,10 @@ BEGIN
             DNI = @DNI
         WHERE Id_Persona = @IdPersona;
 
-        -- Actualizar Correo
         UPDATE Correo
         SET Direccion_Correo = @Correo
         WHERE Id_Persona = @IdPersona AND Activo = 1;
 
-        -- Actualizar Usuario
         UPDATE Usuario
         SET
             Nombre_Usuario = @NombreUsuario,
@@ -270,7 +247,6 @@ BEGIN
             Bloqueado = @Bloqueado
         WHERE Id_Usuario = @IdUsuario;
 
-        -- Actualizar Rol
         UPDATE UsuarioRol
         SET Id_Rol = @IdRol
         WHERE Id_Usuario = @IdUsuario;
@@ -328,10 +304,6 @@ BEGIN
 END;
 GO
 
------------
--- LOGIN --
------------
-
 CREATE OR ALTER PROCEDURE sp_LoginUsuario
     @NombreUsuario NVARCHAR(50)
 AS
@@ -358,14 +330,10 @@ BEGIN
 END;
 GO
 
-------------------
--- LOGIN SEGURO --
-------------------
-
 CREATE OR ALTER PROCEDURE sp_AumentarIntentos
-    @IdUsuario INT 
+    @IdUsuario INT
 AS
-BEGIN 
+BEGIN
     SET NOCOUNT ON;
 
     UPDATE Usuario
@@ -377,10 +345,10 @@ GO
 CREATE OR ALTER PROCEDURE sp_ReiniciarIntentos
     @IdUsuario INT
 AS
-BEGIN 
+BEGIN
     SET NOCOUNT ON;
 
-    UPDATE Usuario 
+    UPDATE Usuario
     SET Intentos_Fallidos = 0
     WHERE Id_Usuario = @IdUsuario;
 END;
@@ -389,11 +357,11 @@ GO
 CREATE OR ALTER PROCEDURE sp_BloquearUsuario
     @IdUsuario INT
 AS
-BEGIN 
+BEGIN
     SET NOCOUNT ON;
 
     UPDATE Usuario
-    SET 
+    SET
         Bloqueado = 1,
         Fecha_Bloqueo = GETDATE(),
         Intentos_Fallidos = 3
@@ -404,7 +372,7 @@ GO
 CREATE OR ALTER PROCEDURE sp_ActualizarUltimoLogin
     @IdUsuario INT
 AS
-BEGIN 
+BEGIN
     SET NOCOUNT ON;
 
     UPDATE Usuario
@@ -413,19 +381,15 @@ BEGIN
 END;
 GO
 
-------------------------
--- SEGURIDAD PASSWORD --
-------------------------
-
 CREATE OR ALTER PROCEDURE sp_CambiarPassword
     @IdUsuario INT,
     @PasswordHash NVARCHAR(255)
-AS 
+AS
 BEGIN
-    SET NOCOUNT ON; 
+    SET NOCOUNT ON;
 
     UPDATE Usuario
-    SET 
+    SET
         PasswordHash = @PasswordHash,
         Fecha_Ultimo_Cambio = GETDATE(),
         Es_Primer_Ingreso = 0,
@@ -467,17 +431,13 @@ BEGIN
     SET NOCOUNT ON;
 
     UPDATE Usuario
-    SET 
+    SET
         Bloqueado = 0,
         Intentos_Fallidos = 0,
         Fecha_Bloqueo = NULL
     WHERE Id_Usuario = @IdUsuario;
 END;
 GO
-
-----------------------
--- ROLES Y PERMISOS --
-----------------------
 
 CREATE OR ALTER PROCEDURE sp_AsignarRolUsuario
     @IdUsuario INT,
@@ -502,10 +462,6 @@ BEGIN
     VALUES (@IdRol, @IdPermiso);
 END;
 GO
-
-------------------------
--- HISTORIAL USUARIO --
-------------------------
 
 CREATE OR ALTER PROCEDURE sp_RegistrarHistorialUsuario
     @IdUsuario INT,
@@ -536,10 +492,6 @@ BEGIN
 END;
 GO
 
---------------------------------
--- RECUPERACION DE CONTRASEÑA --
---------------------------------
-
 CREATE OR ALTER PROCEDURE sp_ValidarPreguntaSeguridad
     @NombreUsuario NVARCHAR(50),
     @IdPregunta INT,
@@ -557,8 +509,6 @@ BEGIN
       AND UPS.RespuestaHash = @RespuestaHash;
 END;
 GO
-
--- sp_GenerarCodigo2FA y sp_ValidarCodigo2FA estan en 16_SP_2FA.sql
 
 CREATE OR ALTER PROCEDURE sp_ReestablecerPassword
     @NombreUsuario NVARCHAR(50),
@@ -637,10 +587,6 @@ BEGIN
       AND C.Activo = 1;
 END;
 GO
-
---------------------------
--- CONSULTAS Y REPORTES --
---------------------------
 
 CREATE OR ALTER PROCEDURE sp_ObtenerUsuariosBloqueados
 AS

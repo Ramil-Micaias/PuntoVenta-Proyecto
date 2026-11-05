@@ -44,9 +44,6 @@ namespace Vista
             grpMovimientos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMovimientos).BeginInit();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -54,9 +51,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -65,9 +59,6 @@ namespace Vista
             lblTitulo.Size = new Size(140, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "CAJA DIARIA";
-            //
-            // grpResumen
-            //
             grpResumen.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpResumen.Controls.Add(lblEstado);
             grpResumen.Controls.Add(btnHistorial);
@@ -87,9 +78,6 @@ namespace Vista
             grpResumen.TabIndex = 0;
             grpResumen.TabStop = false;
             grpResumen.Text = "Caja de la Jornada";
-            //
-            // lblEstado
-            //
             lblEstado.AutoSize = true;
             lblEstado.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblEstado.ForeColor = Color.FromArgb(30, 41, 59);
@@ -97,9 +85,6 @@ namespace Vista
             lblEstado.Name = "lblEstado";
             lblEstado.Size = new Size(10, 17);
             lblEstado.TabIndex = 0;
-            // 
-            // btnHistorial
-            // 
             btnHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnHistorial.BackColor = Color.FromArgb(37, 99, 235);
             btnHistorial.FlatAppearance.BorderSize = 0;
@@ -112,9 +97,6 @@ namespace Vista
             btnHistorial.TabIndex = 9;
             btnHistorial.Text = "Historial";
             btnHistorial.UseVisualStyleBackColor = false;
-            //
-            // lblSaldoInicialTitulo
-            //
             lblSaldoInicialTitulo.AutoSize = true;
             lblSaldoInicialTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblSaldoInicialTitulo.ForeColor = Color.FromArgb(100, 116, 139);
@@ -123,9 +105,6 @@ namespace Vista
             lblSaldoInicialTitulo.Size = new Size(87, 17);
             lblSaldoInicialTitulo.TabIndex = 1;
             lblSaldoInicialTitulo.Text = "Saldo Inicial";
-            //
-            // lblSaldoInicialValor
-            //
             lblSaldoInicialValor.AutoSize = true;
             lblSaldoInicialValor.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblSaldoInicialValor.ForeColor = Color.FromArgb(15, 23, 42);
@@ -134,9 +113,6 @@ namespace Vista
             lblSaldoInicialValor.Size = new Size(60, 25);
             lblSaldoInicialValor.TabIndex = 2;
             lblSaldoInicialValor.Text = "$0,00";
-            //
-            // lblIngresosTitulo
-            //
             lblIngresosTitulo.AutoSize = true;
             lblIngresosTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblIngresosTitulo.ForeColor = Color.FromArgb(100, 116, 139);
@@ -145,9 +121,6 @@ namespace Vista
             lblIngresosTitulo.Size = new Size(62, 17);
             lblIngresosTitulo.TabIndex = 3;
             lblIngresosTitulo.Text = "Ingresos";
-            //
-            // lblIngresosValor
-            //
             lblIngresosValor.AutoSize = true;
             lblIngresosValor.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblIngresosValor.ForeColor = Color.FromArgb(16, 185, 129);
@@ -156,9 +129,6 @@ namespace Vista
             lblIngresosValor.Size = new Size(60, 25);
             lblIngresosValor.TabIndex = 4;
             lblIngresosValor.Text = "$0,00";
-            //
-            // lblEgresosTitulo
-            //
             lblEgresosTitulo.AutoSize = true;
             lblEgresosTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblEgresosTitulo.ForeColor = Color.FromArgb(100, 116, 139);
@@ -167,9 +137,6 @@ namespace Vista
             lblEgresosTitulo.Size = new Size(58, 17);
             lblEgresosTitulo.TabIndex = 5;
             lblEgresosTitulo.Text = "Egresos";
-            //
-            // lblEgresosValor
-            //
             lblEgresosValor.AutoSize = true;
             lblEgresosValor.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblEgresosValor.ForeColor = Color.FromArgb(239, 68, 68);
@@ -178,9 +145,6 @@ namespace Vista
             lblEgresosValor.Size = new Size(60, 25);
             lblEgresosValor.TabIndex = 6;
             lblEgresosValor.Text = "$0,00";
-            //
-            // lblSaldoTitulo
-            //
             lblSaldoTitulo.AutoSize = true;
             lblSaldoTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblSaldoTitulo.ForeColor = Color.FromArgb(100, 116, 139);
@@ -189,9 +153,6 @@ namespace Vista
             lblSaldoTitulo.Size = new Size(114, 17);
             lblSaldoTitulo.TabIndex = 7;
             lblSaldoTitulo.Text = "Saldo Disponible (efectivo)";
-            //
-            // lblSaldoValor
-            //
             lblSaldoValor.AutoSize = true;
             lblSaldoValor.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblSaldoValor.ForeColor = Color.FromArgb(37, 99, 235);
@@ -200,9 +161,6 @@ namespace Vista
             lblSaldoValor.Size = new Size(60, 25);
             lblSaldoValor.TabIndex = 8;
             lblSaldoValor.Text = "$0,00";
-            //
-            // grpMovimientos
-            //
             grpMovimientos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpMovimientos.Controls.Add(lblResultado);
             grpMovimientos.Controls.Add(dgvMovimientos);
@@ -220,9 +178,6 @@ namespace Vista
             grpMovimientos.TabIndex = 1;
             grpMovimientos.TabStop = false;
             grpMovimientos.Text = "Movimientos Registrados";
-            //
-            // dgvMovimientos
-            //
             dgvMovimientos.AllowUserToAddRows = false;
             dgvMovimientos.AllowUserToDeleteRows = false;
             dgvMovimientos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -238,9 +193,6 @@ namespace Vista
             dgvMovimientos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMovimientos.Size = new Size(1016, 352);
             dgvMovimientos.TabIndex = 0;
-            //
-            // lblApertura
-            //
             lblApertura.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblApertura.AutoSize = true;
             lblApertura.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -250,9 +202,6 @@ namespace Vista
             lblApertura.Size = new Size(116, 17);
             lblApertura.TabIndex = 1;
             lblApertura.Text = "Saldo Inicial ($):";
-            //
-            // txtSaldoInicial
-            //
             txtSaldoInicial.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             txtSaldoInicial.Font = new Font("Segoe UI", 9.5F);
             txtSaldoInicial.Location = new Point(140, 400);
@@ -260,9 +209,6 @@ namespace Vista
             txtSaldoInicial.PlaceholderText = "Efectivo en caja. Ej: 20000";
             txtSaldoInicial.Size = new Size(200, 24);
             txtSaldoInicial.TabIndex = 2;
-            //
-            // btnAbrirCaja
-            //
             btnAbrirCaja.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAbrirCaja.BackColor = Color.FromArgb(37, 99, 235);
             btnAbrirCaja.FlatAppearance.BorderSize = 0;
@@ -275,9 +221,6 @@ namespace Vista
             btnAbrirCaja.TabIndex = 3;
             btnAbrirCaja.Text = "Abrir Caja";
             btnAbrirCaja.UseVisualStyleBackColor = false;
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -290,9 +233,6 @@ namespace Vista
             btnVolver.TabIndex = 4;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            //
-            // btnCerrarCaja
-            //
             btnCerrarCaja.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCerrarCaja.BackColor = Color.FromArgb(239, 68, 68);
             btnCerrarCaja.FlatAppearance.BorderSize = 0;
@@ -305,9 +245,6 @@ namespace Vista
             btnCerrarCaja.TabIndex = 5;
             btnCerrarCaja.Text = "Cerrar Caja";
             btnCerrarCaja.UseVisualStyleBackColor = false;
-            //
-            // btnRegistrarMovimiento
-            //
             btnRegistrarMovimiento.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRegistrarMovimiento.BackColor = Color.FromArgb(16, 185, 129);
             btnRegistrarMovimiento.FlatAppearance.BorderSize = 0;
@@ -320,9 +257,6 @@ namespace Vista
             btnRegistrarMovimiento.TabIndex = 6;
             btnRegistrarMovimiento.Text = "Registrar Movimiento";
             btnRegistrarMovimiento.UseVisualStyleBackColor = false;
-            //
-            // lblResultado
-            //
             lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
@@ -330,9 +264,6 @@ namespace Vista
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(520, 36);
             lblResultado.Visible = false;
-            //
-            // FormCaja
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

@@ -2,15 +2,8 @@
 {
     partial class FormTaller
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelHeader = new Panel();
@@ -53,9 +42,6 @@
             grpOrdenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrdenes).BeginInit();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -63,9 +49,6 @@
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -74,9 +57,6 @@
             lblTitulo.Size = new Size(350, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "TALLER - ÓRDENES DE REPARACIÓN";
-            //
-            // grpFiltros
-            //
             grpFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpFiltros.Controls.Add(lblLeyenda);
             grpFiltros.Controls.Add(chkMisOrdenes);
@@ -96,9 +76,6 @@
             grpFiltros.TabIndex = 1;
             grpFiltros.TabStop = false;
             grpFiltros.Text = "Búsqueda de Órdenes";
-            //
-            // lblBuscar
-            //
             lblBuscar.AutoSize = true;
             lblBuscar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscar.ForeColor = Color.FromArgb(30, 41, 59);
@@ -107,18 +84,12 @@
             lblBuscar.Size = new Size(50, 17);
             lblBuscar.TabIndex = 0;
             lblBuscar.Text = "Buscar:";
-            //
-            // txtBuscar
-            //
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
             txtBuscar.Location = new Point(80, 30);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Cliente, DNI, equipo, IMEI o N° de orden";
             txtBuscar.Size = new Size(330, 24);
             txtBuscar.TabIndex = 1;
-            //
-            // lblEstado
-            //
             lblEstado.AutoSize = true;
             lblEstado.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblEstado.ForeColor = Color.FromArgb(30, 41, 59);
@@ -127,9 +98,6 @@
             lblEstado.Size = new Size(51, 17);
             lblEstado.TabIndex = 0;
             lblEstado.Text = "Estado:";
-            //
-            // cmbEstado
-            //
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font("Segoe UI", 9.5F);
             cmbEstado.FormattingEnabled = true;
@@ -137,9 +105,6 @@
             cmbEstado.Name = "cmbEstado";
             cmbEstado.Size = new Size(170, 25);
             cmbEstado.TabIndex = 2;
-            //
-            // lblTecnico
-            //
             lblTecnico.AutoSize = true;
             lblTecnico.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblTecnico.ForeColor = Color.FromArgb(30, 41, 59);
@@ -148,9 +113,6 @@
             lblTecnico.Size = new Size(58, 17);
             lblTecnico.TabIndex = 0;
             lblTecnico.Text = "Técnico:";
-            //
-            // cmbTecnico
-            //
             cmbTecnico.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTecnico.Font = new Font("Segoe UI", 9.5F);
             cmbTecnico.FormattingEnabled = true;
@@ -158,9 +120,6 @@
             cmbTecnico.Name = "cmbTecnico";
             cmbTecnico.Size = new Size(200, 25);
             cmbTecnico.TabIndex = 3;
-            //
-            // btnBuscar
-            //
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.BackColor = Color.FromArgb(37, 99, 235);
             btnBuscar.FlatAppearance.BorderSize = 0;
@@ -173,9 +132,6 @@
             btnBuscar.TabIndex = 4;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = false;
-            //
-            // chkSoloPendientes
-            //
             chkSoloPendientes.AutoSize = true;
             chkSoloPendientes.Checked = true;
             chkSoloPendientes.CheckState = CheckState.Checked;
@@ -187,9 +143,6 @@
             chkSoloPendientes.TabIndex = 5;
             chkSoloPendientes.Text = "Solo pendientes (sin entregar ni cancelar)";
             chkSoloPendientes.UseVisualStyleBackColor = true;
-            //
-            // chkMisOrdenes
-            //
             chkMisOrdenes.AutoSize = true;
             chkMisOrdenes.Font = new Font("Segoe UI", 9.5F);
             chkMisOrdenes.ForeColor = Color.FromArgb(30, 41, 59);
@@ -200,9 +153,6 @@
             chkMisOrdenes.Text = "Solo mis órdenes";
             chkMisOrdenes.UseVisualStyleBackColor = true;
             chkMisOrdenes.Visible = false;
-            //
-            // lblLeyenda
-            //
             lblLeyenda.AutoSize = true;
             lblLeyenda.Font = new Font("Segoe UI", 9F);
             lblLeyenda.ForeColor = Color.FromArgb(185, 28, 28);
@@ -211,9 +161,6 @@
             lblLeyenda.Size = new Size(286, 15);
             lblLeyenda.TabIndex = 0;
             lblLeyenda.Text = "Las filas en rojo tienen la fecha prometida vencida.";
-            //
-            // grpOrdenes
-            //
             grpOrdenes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpOrdenes.Controls.Add(btnVolver);
             grpOrdenes.Controls.Add(btnVerOrden);
@@ -229,18 +176,12 @@
             grpOrdenes.TabIndex = 2;
             grpOrdenes.TabStop = false;
             grpOrdenes.Text = "Órdenes de Reparación";
-            //
-            // dgvOrdenes
-            //
             dgvOrdenes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvOrdenes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvOrdenes.Location = new Point(16, 28);
             dgvOrdenes.Name = "dgvOrdenes";
             dgvOrdenes.Size = new Size(1016, 366);
             dgvOrdenes.TabIndex = 0;
-            //
-            // lblResumen
-            //
             lblResumen.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResumen.AutoSize = true;
             lblResumen.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -250,9 +191,6 @@
             lblResumen.Size = new Size(64, 17);
             lblResumen.TabIndex = 1;
             lblResumen.Text = "Órdenes: 0";
-            //
-            // lblResultado
-            //
             lblResultado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
@@ -260,9 +198,6 @@
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(570, 24);
             lblResultado.Visible = false;
-            //
-            // btnNuevaOrden
-            //
             btnNuevaOrden.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnNuevaOrden.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevaOrden.FlatAppearance.BorderSize = 0;
@@ -275,9 +210,6 @@
             btnNuevaOrden.TabIndex = 2;
             btnNuevaOrden.Text = "+ Nueva Orden";
             btnNuevaOrden.UseVisualStyleBackColor = false;
-            //
-            // btnVerOrden
-            //
             btnVerOrden.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVerOrden.BackColor = Color.FromArgb(16, 185, 129);
             btnVerOrden.FlatAppearance.BorderSize = 0;
@@ -290,9 +222,6 @@
             btnVerOrden.TabIndex = 3;
             btnVerOrden.Text = "Ver / Actualizar";
             btnVerOrden.UseVisualStyleBackColor = false;
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -305,9 +234,6 @@
             btnVolver.TabIndex = 4;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            //
-            // FormTaller
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

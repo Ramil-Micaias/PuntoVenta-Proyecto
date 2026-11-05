@@ -18,7 +18,6 @@ namespace GU_Tercero
 
         private void FormCambioPassword_Load(object sender, EventArgs e)
         {
-            // Si es primer ingreso o debe cambiar la contraseña, deshabilitamos Cancelar
             if (usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
             {
                 btnCancelar.Enabled = false;
@@ -27,7 +26,6 @@ namespace GU_Tercero
 
         private void FormCambioPassword_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Si aún debe cambiar la contraseña y el cierre fue iniciado por el usuario (la cruz X)
             if ((usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
                 && e.CloseReason == CloseReason.UserClosing)
             {
@@ -39,12 +37,10 @@ namespace GU_Tercero
 
                 if (respuesta == DialogResult.Yes)
                 {
-                    // Si decide salir, cerramos la aplicación completa para no dejar el Login colgado
                     Application.Exit();
                 }
                 else
                 {
-                    // Cancelamos el evento de cierre y permanece en la pantalla de cambio
                     e.Cancel = true;
                 }
             }
@@ -78,7 +74,6 @@ namespace GU_Tercero
 
             MessageBox.Show("Contraseña actualizada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Indicamos a Form1 que este paso se completó con éxito
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

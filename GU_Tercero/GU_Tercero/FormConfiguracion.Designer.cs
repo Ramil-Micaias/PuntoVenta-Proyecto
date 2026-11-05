@@ -2,15 +2,8 @@ namespace GU_Tercero
 {
     partial class FormConfiguracion
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace GU_Tercero
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             panelHeader = new Panel();
@@ -60,9 +49,6 @@ namespace GU_Tercero
             grpPolitasSeguridad.SuspendLayout();
             grpBaseDatos.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -70,9 +56,6 @@ namespace GU_Tercero
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(760, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -81,9 +64,6 @@ namespace GU_Tercero
             lblTitulo.Size = new Size(316, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "CONFIGURACIÓN DEL SISTEMA";
-            //
-            // grpContrasenas
-            //
             grpContrasenas.Controls.Add(nudHistorialCantidadContraseña);
             grpContrasenas.Controls.Add(lblHistorial);
             grpContrasenas.Controls.Add(nudCantidadPreguntas);
@@ -98,9 +78,6 @@ namespace GU_Tercero
             grpContrasenas.TabIndex = 1;
             grpContrasenas.TabStop = false;
             grpContrasenas.Text = "Contraseñas";
-            //
-            // lblMinCaracteres
-            //
             lblMinCaracteres.AutoSize = true;
             lblMinCaracteres.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMinCaracteres.ForeColor = Color.FromArgb(30, 41, 59);
@@ -109,17 +86,11 @@ namespace GU_Tercero
             lblMinCaracteres.Size = new Size(182, 17);
             lblMinCaracteres.TabIndex = 0;
             lblMinCaracteres.Text = "Cantidad mínima caracteres:";
-            //
-            // nudCantidadMinimaCaracteres
-            //
             nudCantidadMinimaCaracteres.Font = new Font("Segoe UI", 9.5F);
             nudCantidadMinimaCaracteres.Location = new Point(250, 37);
             nudCantidadMinimaCaracteres.Name = "nudCantidadMinimaCaracteres";
             nudCantidadMinimaCaracteres.Size = new Size(86, 24);
             nudCantidadMinimaCaracteres.TabIndex = 1;
-            //
-            // lblCantidadPreguntas
-            //
             lblCantidadPreguntas.AutoSize = true;
             lblCantidadPreguntas.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCantidadPreguntas.ForeColor = Color.FromArgb(30, 41, 59);
@@ -128,17 +99,11 @@ namespace GU_Tercero
             lblCantidadPreguntas.Size = new Size(154, 17);
             lblCantidadPreguntas.TabIndex = 2;
             lblCantidadPreguntas.Text = "Preguntas al recuperar:";
-            //
-            // nudCantidadPreguntas
-            //
             nudCantidadPreguntas.Font = new Font("Segoe UI", 9.5F);
             nudCantidadPreguntas.Location = new Point(250, 87);
             nudCantidadPreguntas.Name = "nudCantidadPreguntas";
             nudCantidadPreguntas.Size = new Size(86, 24);
             nudCantidadPreguntas.TabIndex = 3;
-            //
-            // lblHistorial
-            //
             lblHistorial.AutoSize = true;
             lblHistorial.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblHistorial.ForeColor = Color.FromArgb(30, 41, 59);
@@ -147,17 +112,11 @@ namespace GU_Tercero
             lblHistorial.Size = new Size(205, 17);
             lblHistorial.TabIndex = 4;
             lblHistorial.Text = "Historial (contraseñas a recordar):";
-            //
-            // nudHistorialCantidadContraseña
-            //
             nudHistorialCantidadContraseña.Font = new Font("Segoe UI", 9.5F);
             nudHistorialCantidadContraseña.Location = new Point(250, 137);
             nudHistorialCantidadContraseña.Name = "nudHistorialCantidadContraseña";
             nudHistorialCantidadContraseña.Size = new Size(86, 24);
             nudHistorialCantidadContraseña.TabIndex = 5;
-            //
-            // grpPolitasSeguridad
-            //
             grpPolitasSeguridad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpPolitasSeguridad.Controls.Add(chkMayusculas);
             grpPolitasSeguridad.Controls.Add(chkNumeros);
@@ -173,9 +132,6 @@ namespace GU_Tercero
             grpPolitasSeguridad.TabIndex = 2;
             grpPolitasSeguridad.TabStop = false;
             grpPolitasSeguridad.Text = "Políticas de Seguridad";
-            //
-            // chkMayusculas
-            //
             chkMayusculas.AutoSize = true;
             chkMayusculas.Font = new Font("Segoe UI", 9.5F);
             chkMayusculas.ForeColor = Color.FromArgb(30, 41, 59);
@@ -185,9 +141,6 @@ namespace GU_Tercero
             chkMayusculas.TabIndex = 0;
             chkMayusculas.Text = "Requerir mayúsculas";
             chkMayusculas.UseVisualStyleBackColor = true;
-            //
-            // chkNumeros
-            //
             chkNumeros.AutoSize = true;
             chkNumeros.Font = new Font("Segoe UI", 9.5F);
             chkNumeros.ForeColor = Color.FromArgb(30, 41, 59);
@@ -197,9 +150,6 @@ namespace GU_Tercero
             chkNumeros.TabIndex = 1;
             chkNumeros.Text = "Requerir números";
             chkNumeros.UseVisualStyleBackColor = true;
-            //
-            // chkEspecial
-            //
             chkEspecial.AutoSize = true;
             chkEspecial.Font = new Font("Segoe UI", 9.5F);
             chkEspecial.ForeColor = Color.FromArgb(30, 41, 59);
@@ -209,9 +159,6 @@ namespace GU_Tercero
             chkEspecial.TabIndex = 2;
             chkEspecial.Text = "Requerir carácter especial";
             chkEspecial.UseVisualStyleBackColor = true;
-            //
-            // chk2FA
-            //
             chk2FA.AutoSize = true;
             chk2FA.Font = new Font("Segoe UI", 9.5F);
             chk2FA.ForeColor = Color.FromArgb(30, 41, 59);
@@ -221,9 +168,6 @@ namespace GU_Tercero
             chk2FA.TabIndex = 3;
             chk2FA.Text = "Autenticación en dos pasos";
             chk2FA.UseVisualStyleBackColor = true;
-            //
-            // chkNoRepetir
-            //
             chkNoRepetir.AutoSize = true;
             chkNoRepetir.Font = new Font("Segoe UI", 9.5F);
             chkNoRepetir.ForeColor = Color.FromArgb(30, 41, 59);
@@ -233,9 +177,6 @@ namespace GU_Tercero
             chkNoRepetir.TabIndex = 4;
             chkNoRepetir.Text = "No permitir repetir contraseñas";
             chkNoRepetir.UseVisualStyleBackColor = true;
-            //
-            // chkDatosPersonales
-            //
             chkDatosPersonales.AutoSize = true;
             chkDatosPersonales.Font = new Font("Segoe UI", 9.5F);
             chkDatosPersonales.ForeColor = Color.FromArgb(30, 41, 59);
@@ -245,9 +186,6 @@ namespace GU_Tercero
             chkDatosPersonales.TabIndex = 5;
             chkDatosPersonales.Text = "Validar datos personales";
             chkDatosPersonales.UseVisualStyleBackColor = true;
-            //
-            // btnRestaurar
-            //
             btnRestaurar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRestaurar.BackColor = Color.FromArgb(37, 99, 235);
             btnRestaurar.FlatAppearance.BorderSize = 0;
@@ -261,9 +199,6 @@ namespace GU_Tercero
             btnRestaurar.Text = "Restaurar valores";
             btnRestaurar.UseVisualStyleBackColor = false;
             btnRestaurar.Click += btnRestaurar_Click;
-            //
-            // btnCancelar
-            //
             btnCancelar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -277,9 +212,6 @@ namespace GU_Tercero
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
-            //
-            // btnGuardar
-            //
             btnGuardar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
@@ -293,18 +225,12 @@ namespace GU_Tercero
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            //
-            // lblResultado
-            //
             lblResultado.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblResultado.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
             lblResultado.Location = new Point(16, 388);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(290, 42);
-            //
-            // grpBaseDatos
-            //
             grpBaseDatos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpBaseDatos.Controls.Add(btnBackup);
             grpBaseDatos.Controls.Add(lblBackup);
@@ -317,9 +243,6 @@ namespace GU_Tercero
             grpBaseDatos.TabIndex = 7;
             grpBaseDatos.TabStop = false;
             grpBaseDatos.Text = "Base de datos";
-            //
-            // btnBackup
-            //
             btnBackup.BackColor = Color.FromArgb(37, 99, 235);
             btnBackup.FlatAppearance.BorderSize = 0;
             btnBackup.FlatStyle = FlatStyle.Flat;
@@ -332,9 +255,6 @@ namespace GU_Tercero
             btnBackup.Text = "Generar backup";
             btnBackup.UseVisualStyleBackColor = false;
             btnBackup.Click += btnBackup_Click;
-            //
-            // lblBackup
-            //
             lblBackup.AutoSize = true;
             lblBackup.Font = new Font("Segoe UI", 9.5F);
             lblBackup.ForeColor = Color.FromArgb(30, 41, 59);
@@ -343,9 +263,6 @@ namespace GU_Tercero
             lblBackup.Size = new Size(320, 17);
             lblBackup.TabIndex = 1;
             lblBackup.Text = "Guarda una copia completa de la base de datos (.bak).";
-            //
-            // lblResultadoBackup
-            //
             lblResultadoBackup.AutoSize = true;
             lblResultadoBackup.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblResultadoBackup.ForeColor = Color.FromArgb(16, 185, 129);
@@ -354,9 +271,6 @@ namespace GU_Tercero
             lblResultadoBackup.Size = new Size(0, 17);
             lblResultadoBackup.TabIndex = 2;
             lblResultadoBackup.Visible = false;
-            //
-            // FormConfiguracion
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

@@ -77,9 +77,6 @@ namespace Vista
             ((System.ComponentModel.ISupportInitialize)dgvHistorial).BeginInit();
             grpTotales.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -87,9 +84,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1000, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -98,9 +92,6 @@ namespace Vista
             lblTitulo.Size = new Size(320, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "NUEVA ORDEN DE REPARACIÓN";
-            //
-            // grpEquipo
-            //
             grpEquipo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpEquipo.Controls.Add(dtpPrometida);
             grpEquipo.Controls.Add(lblPrometida);
@@ -124,9 +115,6 @@ namespace Vista
             grpEquipo.TabIndex = 1;
             grpEquipo.TabStop = false;
             grpEquipo.Text = "Cliente, Equipo y Estado";
-            //
-            // lblCliente
-            //
             lblCliente.AutoSize = true;
             lblCliente.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCliente.ForeColor = Color.FromArgb(30, 41, 59);
@@ -135,9 +123,6 @@ namespace Vista
             lblCliente.Size = new Size(52, 17);
             lblCliente.TabIndex = 0;
             lblCliente.Text = "Cliente:";
-            //
-            // cmbCliente
-            //
             cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCliente.Font = new Font("Segoe UI", 9.5F);
             cmbCliente.FormattingEnabled = true;
@@ -145,9 +130,6 @@ namespace Vista
             cmbCliente.Name = "cmbCliente";
             cmbCliente.Size = new Size(226, 25);
             cmbCliente.TabIndex = 1;
-            //
-            // btnNuevoCliente
-            //
             btnNuevoCliente.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevoCliente.FlatAppearance.BorderSize = 0;
             btnNuevoCliente.FlatStyle = FlatStyle.Flat;
@@ -159,9 +141,6 @@ namespace Vista
             btnNuevoCliente.TabIndex = 2;
             btnNuevoCliente.Text = "+ Nuevo";
             btnNuevoCliente.UseVisualStyleBackColor = false;
-            //
-            // btnEditarCliente
-            //
             btnEditarCliente.BackColor = Color.FromArgb(100, 116, 139);
             btnEditarCliente.FlatAppearance.BorderSize = 0;
             btnEditarCliente.FlatStyle = FlatStyle.Flat;
@@ -173,9 +152,6 @@ namespace Vista
             btnEditarCliente.TabIndex = 3;
             btnEditarCliente.Text = "Editar";
             btnEditarCliente.UseVisualStyleBackColor = false;
-            //
-            // lblEquipo
-            //
             lblEquipo.AutoSize = true;
             lblEquipo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblEquipo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -184,9 +160,6 @@ namespace Vista
             lblEquipo.Size = new Size(51, 17);
             lblEquipo.TabIndex = 0;
             lblEquipo.Text = "Equipo:";
-            //
-            // cmbEquipo
-            //
             cmbEquipo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEquipo.Font = new Font("Segoe UI", 9.5F);
             cmbEquipo.FormattingEnabled = true;
@@ -194,9 +167,6 @@ namespace Vista
             cmbEquipo.Name = "cmbEquipo";
             cmbEquipo.Size = new Size(300, 25);
             cmbEquipo.TabIndex = 3;
-            //
-            // btnNuevoEquipo
-            //
             btnNuevoEquipo.BackColor = Color.FromArgb(37, 99, 235);
             btnNuevoEquipo.FlatAppearance.BorderSize = 0;
             btnNuevoEquipo.FlatStyle = FlatStyle.Flat;
@@ -208,9 +178,6 @@ namespace Vista
             btnNuevoEquipo.TabIndex = 4;
             btnNuevoEquipo.Text = "+ Nuevo";
             btnNuevoEquipo.UseVisualStyleBackColor = false;
-            //
-            // lblRecepcion
-            //
             lblRecepcion.Font = new Font("Segoe UI", 9F);
             lblRecepcion.ForeColor = Color.FromArgb(71, 85, 105);
             lblRecepcion.Location = new Point(16, 104);
@@ -218,9 +185,6 @@ namespace Vista
             lblRecepcion.Size = new Size(482, 20);
             lblRecepcion.TabIndex = 0;
             lblRecepcion.Text = "Recibe:";
-            //
-            // lblTecnico
-            //
             lblTecnico.AutoSize = true;
             lblTecnico.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblTecnico.ForeColor = Color.FromArgb(30, 41, 59);
@@ -229,9 +193,6 @@ namespace Vista
             lblTecnico.Size = new Size(58, 17);
             lblTecnico.TabIndex = 0;
             lblTecnico.Text = "Técnico:";
-            //
-            // cmbTecnico
-            //
             cmbTecnico.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTecnico.Font = new Font("Segoe UI", 9.5F);
             cmbTecnico.FormattingEnabled = true;
@@ -239,9 +200,6 @@ namespace Vista
             cmbTecnico.Name = "cmbTecnico";
             cmbTecnico.Size = new Size(310, 25);
             cmbTecnico.TabIndex = 5;
-            //
-            // lblEstado
-            //
             lblEstado.AutoSize = true;
             lblEstado.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblEstado.ForeColor = Color.FromArgb(30, 41, 59);
@@ -250,9 +208,6 @@ namespace Vista
             lblEstado.Size = new Size(51, 17);
             lblEstado.TabIndex = 0;
             lblEstado.Text = "Estado:";
-            //
-            // cmbEstado
-            //
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font("Segoe UI", 9.5F);
             cmbEstado.FormattingEnabled = true;
@@ -260,9 +215,6 @@ namespace Vista
             cmbEstado.Name = "cmbEstado";
             cmbEstado.Size = new Size(310, 25);
             cmbEstado.TabIndex = 6;
-            //
-            // lblPrometida
-            //
             lblPrometida.AutoSize = true;
             lblPrometida.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPrometida.ForeColor = Color.FromArgb(30, 41, 59);
@@ -271,9 +223,6 @@ namespace Vista
             lblPrometida.Size = new Size(108, 17);
             lblPrometida.TabIndex = 0;
             lblPrometida.Text = "Prometida:";
-            //
-            // dtpPrometida
-            //
             dtpPrometida.Font = new Font("Segoe UI", 9.5F);
             dtpPrometida.Format = DateTimePickerFormat.Short;
             dtpPrometida.Location = new Point(640, 101);
@@ -281,9 +230,6 @@ namespace Vista
             dtpPrometida.ShowCheckBox = true;
             dtpPrometida.Size = new Size(160, 24);
             dtpPrometida.TabIndex = 7;
-            //
-            // grpDiagnostico
-            //
             grpDiagnostico.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpDiagnostico.Controls.Add(txtObservacion);
             grpDiagnostico.Controls.Add(lblObservacion);
@@ -301,9 +247,6 @@ namespace Vista
             grpDiagnostico.TabIndex = 2;
             grpDiagnostico.TabStop = false;
             grpDiagnostico.Text = "Falla y Diagnóstico";
-            //
-            // lblFalla
-            //
             lblFalla.AutoSize = true;
             lblFalla.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblFalla.ForeColor = Color.FromArgb(30, 41, 59);
@@ -312,9 +255,6 @@ namespace Vista
             lblFalla.Size = new Size(105, 17);
             lblFalla.TabIndex = 0;
             lblFalla.Text = "Falla declarada:";
-            //
-            // txtFalla
-            //
             txtFalla.Font = new Font("Segoe UI", 9.5F);
             txtFalla.Location = new Point(16, 46);
             txtFalla.MaxLength = 500;
@@ -323,9 +263,6 @@ namespace Vista
             txtFalla.PlaceholderText = "Qué problema informa el cliente";
             txtFalla.Size = new Size(460, 50);
             txtFalla.TabIndex = 1;
-            //
-            // lblDiagnostico
-            //
             lblDiagnostico.AutoSize = true;
             lblDiagnostico.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDiagnostico.ForeColor = Color.FromArgb(30, 41, 59);
@@ -334,9 +271,6 @@ namespace Vista
             lblDiagnostico.Size = new Size(129, 17);
             lblDiagnostico.TabIndex = 0;
             lblDiagnostico.Text = "Diagnóstico técnico:";
-            //
-            // txtDiagnostico
-            //
             txtDiagnostico.Font = new Font("Segoe UI", 9.5F);
             txtDiagnostico.Location = new Point(492, 46);
             txtDiagnostico.MaxLength = 500;
@@ -345,9 +279,6 @@ namespace Vista
             txtDiagnostico.PlaceholderText = "Lo completa el técnico al revisar el equipo";
             txtDiagnostico.Size = new Size(458, 50);
             txtDiagnostico.TabIndex = 2;
-            //
-            // lblPatron
-            //
             lblPatron.AutoSize = true;
             lblPatron.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPatron.ForeColor = Color.FromArgb(30, 41, 59);
@@ -356,9 +287,6 @@ namespace Vista
             lblPatron.Size = new Size(97, 17);
             lblPatron.TabIndex = 0;
             lblPatron.Text = "Patrón / Clave:";
-            //
-            // txtPatron
-            //
             txtPatron.Font = new Font("Segoe UI", 9.5F);
             txtPatron.Location = new Point(126, 110);
             txtPatron.MaxLength = 50;
@@ -366,9 +294,6 @@ namespace Vista
             txtPatron.PlaceholderText = "Para desbloquear el equipo";
             txtPatron.Size = new Size(350, 24);
             txtPatron.TabIndex = 3;
-            //
-            // lblObservacion
-            //
             lblObservacion.AutoSize = true;
             lblObservacion.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblObservacion.ForeColor = Color.FromArgb(30, 41, 59);
@@ -377,9 +302,6 @@ namespace Vista
             lblObservacion.Size = new Size(85, 17);
             lblObservacion.TabIndex = 0;
             lblObservacion.Text = "Observación:";
-            //
-            // txtObservacion
-            //
             txtObservacion.Font = new Font("Segoe UI", 9.5F);
             txtObservacion.Location = new Point(590, 110);
             txtObservacion.MaxLength = 255;
@@ -387,9 +309,6 @@ namespace Vista
             txtObservacion.PlaceholderText = "Comentario para el historial (opcional)";
             txtObservacion.Size = new Size(360, 24);
             txtObservacion.TabIndex = 4;
-            //
-            // tabDetalle
-            //
             tabDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabDetalle.Controls.Add(tabRepuestos);
             tabDetalle.Controls.Add(tabHistorial);
@@ -399,9 +318,6 @@ namespace Vista
             tabDetalle.SelectedIndex = 0;
             tabDetalle.Size = new Size(640, 290);
             tabDetalle.TabIndex = 3;
-            //
-            // tabRepuestos
-            //
             tabRepuestos.BackColor = Color.FromArgb(241, 245, 249);
             tabRepuestos.Controls.Add(dgvRepuestos);
             tabRepuestos.Controls.Add(btnQuitarRepuesto);
@@ -418,9 +334,6 @@ namespace Vista
             tabRepuestos.Size = new Size(632, 260);
             tabRepuestos.TabIndex = 0;
             tabRepuestos.Text = "Repuestos";
-            //
-            // lblRepuesto
-            //
             lblRepuesto.AutoSize = true;
             lblRepuesto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblRepuesto.ForeColor = Color.FromArgb(30, 41, 59);
@@ -429,9 +342,6 @@ namespace Vista
             lblRepuesto.Size = new Size(66, 17);
             lblRepuesto.TabIndex = 0;
             lblRepuesto.Text = "Repuesto:";
-            //
-            // cmbRepuesto
-            //
             cmbRepuesto.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRepuesto.Font = new Font("Segoe UI", 9.5F);
             cmbRepuesto.FormattingEnabled = true;
@@ -439,9 +349,6 @@ namespace Vista
             cmbRepuesto.Name = "cmbRepuesto";
             cmbRepuesto.Size = new Size(330, 25);
             cmbRepuesto.TabIndex = 1;
-            //
-            // lblCantidad
-            //
             lblCantidad.AutoSize = true;
             lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCantidad.ForeColor = Color.FromArgb(30, 41, 59);
@@ -450,9 +357,6 @@ namespace Vista
             lblCantidad.Size = new Size(65, 17);
             lblCantidad.TabIndex = 0;
             lblCantidad.Text = "Cantidad:";
-            //
-            // numCantidad
-            //
             numCantidad.Font = new Font("Segoe UI", 9.5F);
             numCantidad.Location = new Point(500, 11);
             numCantidad.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
@@ -461,9 +365,6 @@ namespace Vista
             numCantidad.Size = new Size(70, 24);
             numCantidad.TabIndex = 2;
             numCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            //
-            // lblPrecio
-            //
             lblPrecio.AutoSize = true;
             lblPrecio.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblPrecio.ForeColor = Color.FromArgb(30, 41, 59);
@@ -472,18 +373,12 @@ namespace Vista
             lblPrecio.Size = new Size(49, 17);
             lblPrecio.TabIndex = 0;
             lblPrecio.Text = "Precio:";
-            //
-            // txtPrecio
-            //
             txtPrecio.Font = new Font("Segoe UI", 9.5F);
             txtPrecio.Location = new Point(84, 48);
             txtPrecio.Name = "txtPrecio";
             txtPrecio.PlaceholderText = "Precio por unidad";
             txtPrecio.Size = new Size(140, 24);
             txtPrecio.TabIndex = 3;
-            //
-            // btnAgregarRepuesto
-            //
             btnAgregarRepuesto.BackColor = Color.FromArgb(37, 99, 235);
             btnAgregarRepuesto.FlatAppearance.BorderSize = 0;
             btnAgregarRepuesto.FlatStyle = FlatStyle.Flat;
@@ -495,9 +390,6 @@ namespace Vista
             btnAgregarRepuesto.TabIndex = 4;
             btnAgregarRepuesto.Text = "+ Agregar Repuesto";
             btnAgregarRepuesto.UseVisualStyleBackColor = false;
-            //
-            // btnQuitarRepuesto
-            //
             btnQuitarRepuesto.BackColor = Color.FromArgb(239, 68, 68);
             btnQuitarRepuesto.FlatAppearance.BorderSize = 0;
             btnQuitarRepuesto.FlatStyle = FlatStyle.Flat;
@@ -509,18 +401,12 @@ namespace Vista
             btnQuitarRepuesto.TabIndex = 5;
             btnQuitarRepuesto.Text = "Quitar Seleccionado";
             btnQuitarRepuesto.UseVisualStyleBackColor = false;
-            //
-            // dgvRepuestos
-            //
             dgvRepuestos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvRepuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvRepuestos.Location = new Point(10, 84);
             dgvRepuestos.Name = "dgvRepuestos";
             dgvRepuestos.Size = new Size(612, 166);
             dgvRepuestos.TabIndex = 6;
-            //
-            // tabHistorial
-            //
             tabHistorial.BackColor = Color.FromArgb(241, 245, 249);
             tabHistorial.Controls.Add(dgvHistorial);
             tabHistorial.Location = new Point(4, 26);
@@ -529,18 +415,12 @@ namespace Vista
             tabHistorial.Size = new Size(632, 260);
             tabHistorial.TabIndex = 1;
             tabHistorial.Text = "Historial de estados";
-            //
-            // dgvHistorial
-            //
             dgvHistorial.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvHistorial.Dock = DockStyle.Fill;
             dgvHistorial.Location = new Point(10, 10);
             dgvHistorial.Name = "dgvHistorial";
             dgvHistorial.Size = new Size(612, 240);
             dgvHistorial.TabIndex = 0;
-            //
-            // grpTotales
-            //
             grpTotales.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             grpTotales.Controls.Add(btnVolver);
             grpTotales.Controls.Add(btnGuardar);
@@ -559,9 +439,6 @@ namespace Vista
             grpTotales.TabIndex = 4;
             grpTotales.TabStop = false;
             grpTotales.Text = "Presupuesto";
-            //
-            // lblManoObra
-            //
             lblManoObra.AutoSize = true;
             lblManoObra.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblManoObra.ForeColor = Color.FromArgb(30, 41, 59);
@@ -570,18 +447,12 @@ namespace Vista
             lblManoObra.Size = new Size(97, 17);
             lblManoObra.TabIndex = 0;
             lblManoObra.Text = "Mano de obra:";
-            //
-            // txtManoObra
-            //
             txtManoObra.Font = new Font("Segoe UI", 9.5F);
             txtManoObra.Location = new Point(16, 50);
             txtManoObra.Name = "txtManoObra";
             txtManoObra.PlaceholderText = "Ej: 15000";
             txtManoObra.Size = new Size(284, 24);
             txtManoObra.TabIndex = 1;
-            //
-            // lblRepuestosTitulo
-            //
             lblRepuestosTitulo.AutoSize = true;
             lblRepuestosTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblRepuestosTitulo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -590,9 +461,6 @@ namespace Vista
             lblRepuestosTitulo.Size = new Size(71, 17);
             lblRepuestosTitulo.TabIndex = 0;
             lblRepuestosTitulo.Text = "Repuestos:";
-            //
-            // lblRepuestosValor
-            //
             lblRepuestosValor.AutoSize = true;
             lblRepuestosValor.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblRepuestosValor.ForeColor = Color.FromArgb(15, 23, 42);
@@ -601,9 +469,6 @@ namespace Vista
             lblRepuestosValor.Size = new Size(24, 19);
             lblRepuestosValor.TabIndex = 0;
             lblRepuestosValor.Text = "$0";
-            //
-            // lblTotalTitulo
-            //
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
@@ -612,9 +477,6 @@ namespace Vista
             lblTotalTitulo.Size = new Size(185, 21);
             lblTotalTitulo.TabIndex = 0;
             lblTotalTitulo.Text = "TOTAL PRESUPUESTO:";
-            //
-            // lblTotalValor
-            //
             lblTotalValor.AutoSize = true;
             lblTotalValor.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             lblTotalValor.ForeColor = Color.FromArgb(16, 185, 129);
@@ -623,9 +485,6 @@ namespace Vista
             lblTotalValor.Size = new Size(46, 37);
             lblTotalValor.TabIndex = 0;
             lblTotalValor.Text = "$0";
-            //
-            // lblAviso
-            //
             lblAviso.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             lblAviso.ForeColor = Color.FromArgb(220, 38, 38);
             lblAviso.Location = new Point(16, 186);
@@ -634,9 +493,6 @@ namespace Vista
             lblAviso.TabIndex = 0;
             lblAviso.Text = "La orden está cerrada (entregada o cancelada) y ya no se puede modificar.";
             lblAviso.Visible = false;
-            //
-            // btnGuardar
-            //
             btnGuardar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
@@ -649,9 +505,6 @@ namespace Vista
             btnGuardar.TabIndex = 2;
             btnGuardar.Text = "GUARDAR ORDEN";
             btnGuardar.UseVisualStyleBackColor = false;
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -664,9 +517,6 @@ namespace Vista
             btnVolver.TabIndex = 3;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            //
-            // FormOrdenReparacion
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

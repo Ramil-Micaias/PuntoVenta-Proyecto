@@ -7,24 +7,18 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // CU05: registrar una orden de reparación.
-    // CU09: abrir una orden existente para actualizar su estado, diagnóstico y repuestos.
     public partial class FormOrdenReparacion : Form
     {
-        // Texto del resultado al guardar; lo muestra en verde la pantalla del Taller.
         public string MensajeResultado { get; private set; } = string.Empty;
 
         private readonly GestorTaller gestorTaller = new GestorTaller();
         private readonly DataTable repuestos = new DataTable();
         private Usuario usuarioLogueado;
 
-        // 0 = orden nueva.
         private int idOrden;
 
-        // Repuestos que la orden tenía al abrirla: ese stock ya está reservado para esta orden.
         private DataTable repuestosOriginales = new DataTable();
 
-        // Evita recargar los equipos mientras se llenan los combos.
         private bool cargando = false;
 
         public FormOrdenReparacion(Usuario usuario, int idOrden)
@@ -84,8 +78,6 @@ namespace Vista
 
             ActualizarTotales();
         }
-
-        // ---------------- carga de combos ----------------
 
         private void CargarClientes()
         {
@@ -163,8 +155,6 @@ namespace Vista
             }
         }
 
-        // ---------------- orden nueva / existente ----------------
-
         private void PrepararOrdenNueva()
         {
             lblTitulo.Text = "NUEVA ORDEN DE REPARACIÓN";
@@ -172,7 +162,6 @@ namespace Vista
 
             SeleccionarEstado("Ingresado");
 
-            // Si quien recibe es un técnico, la orden queda asignada a él.
             if (usuarioLogueado.Nombre_Rol == "Tecnico")
             {
                 cmbTecnico.SelectedValue = usuarioLogueado.Id_Usuario;
@@ -182,7 +171,6 @@ namespace Vista
             dtpPrometida.Value = DateTime.Today.AddDays(3);
             dtpPrometida.Checked = false;
 
-            // En el alta no hay historial que mostrar ni observación de cambio de estado.
             tabDetalle.TabPages.Remove(tabHistorial);
             lblObservacion.Visible = false;
             txtObservacion.Visible = false;
@@ -235,8 +223,6 @@ namespace Vista
                 int idTecnico = Convert.ToInt32(orden["Id_Tecnico"]);
                 cmbTecnico.SelectedValue = idTecnico;
 
-                // La orden puede estar asignada a alguien que hoy no tiene el rol Técnico:
-                // se lo agrega a la lista para no perder la asignación al guardar.
                 if (cmbTecnico.SelectedIndex < 0)
                 {
                     DataTable tecnicos = (DataTable)cmbTecnico.DataSource;
@@ -276,8 +262,6 @@ namespace Vista
             txtDiagnostico.Text = Convert.ToString(orden["Diagnostico_Tecnico"]);
             txtManoObra.Text = Convert.ToDecimal(orden["Costo_Mano_Obra"]).ToString("0.##", CultureInfo.CurrentCulture);
 
-            // El cliente y el equipo no se cambian en una orden ya registrada
-            // (los datos del cliente sí se pueden corregir con "Editar").
             cmbCliente.Enabled = false;
             cmbEquipo.Enabled = false;
             btnNuevoCliente.Visible = false;
@@ -307,7 +291,6 @@ namespace Vista
             }
         }
 
-        // Una orden entregada o cancelada se puede consultar pero no modificar.
         private void BloquearOrden()
         {
             grpEquipo.Enabled = false;
@@ -324,8 +307,6 @@ namespace Vista
             btnGuardar.Visible = false;
             lblAviso.Visible = true;
         }
-
-        // ---------------- repuestos ----------------
 
         private int CantidadOriginal(int idProducto)
         {
@@ -389,7 +370,6 @@ namespace Vista
                 cantidadTotal += Convert.ToInt32(existente["Cantidad"]);
             }
 
-            // Disponible = stock actual + lo que esta orden ya tenía reservado.
             int disponible = Convert.ToInt32(fila["Stock_Actual"]) + CantidadOriginal(idProducto);
 
             if (cantidadTotal > disponible)
@@ -425,7 +405,6 @@ namespace Vista
             ActualizarTotales();
         }
 
-        // El combo muestra "Batería iPhone 12 (stock 6)"; en la grilla va solo el nombre.
         private static string QuitarStockDelNombre(string texto)
         {
             int posicion = texto.LastIndexOf(" (stock ");
@@ -457,8 +436,6 @@ namespace Vista
                 ActualizarTotales();
             }
         }
-
-        // ---------------- totales y guardado ----------------
 
         private decimal ManoDeObra()
         {
@@ -558,7 +535,6 @@ namespace Vista
             {
                 ResultadoOperacion resultado = gestorTaller.GuardarOrden(orden);
 
-                // Una orden cancelada no tiene presupuesto que informar.
                 MensajeResultado = cmbEstado.Text == "Cancelado"
                     ? "Orden " + resultado.Comprobante + " cancelada correctamente."
                     : "Orden " + resultado.Comprobante + " guardada correctamente. Total del presupuesto: " +
@@ -601,8 +577,6 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
-        // ---------------- eventos ----------------
-
         private void cmbCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!cargando)
@@ -634,7 +608,6 @@ namespace Vista
             }
         }
 
-        // Corrige los datos del cliente elegido (apellido, nombre, DNI y teléfono).
         private void btnEditarCliente_Click(object? sender, EventArgs e)
         {
             if (cmbCliente.SelectedValue == null || cmbCliente.SelectedIndex < 0)
@@ -654,7 +627,6 @@ namespace Vista
             {
                 if (formCliente.ShowDialog() == DialogResult.OK)
                 {
-                    // Se recarga la lista para ver el nombre corregido, sin perder el equipo elegido.
                     object? equipo = cmbEquipo.SelectedValue;
                     cargando = true;
                     CargarClientes();

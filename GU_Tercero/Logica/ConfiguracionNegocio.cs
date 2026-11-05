@@ -4,22 +4,17 @@ using Logica.Seguridad;
 
 namespace Logica
 {
-    // La clase ConfiguracionNegocio pertenece a la capa de negocio y se
-    // encarga de coordinar la obtención y actualización de la configuración
-    // del sistema entre la Vista y la capa de Datos.
     public class ConfiguracionNegocio
     {
         ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
         
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        // Obtiene la configuración actual del sistema.
         public ConfiguracionSistema ObtenerConfiguracion()
         {
             return configuracionDAO.ObtenerConfiguracion();
         }
 
-        // Guarda la configuración modificada por el administrador.
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
             var antes = GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion());
@@ -30,7 +25,6 @@ namespace Logica
                 GestorBitacora.CRITICA, antes, GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion()));
         }
 
-        //Este método valida que la contraseña cumpla con las políticas de seguridad configuradas.
         public string ValidarPassword(string password, Usuario usuario)
         {
             ConfiguracionSistema configuracion = configuracionDAO.ObtenerConfiguracion();
@@ -80,7 +74,6 @@ namespace Logica
                 }
             }
 
-            // Verifica que la contraseña contenga al menos un carácter especial.
             if (configuracion.Requiere_Especial)
                 {
                     bool tieneCaracterEspecial = false;

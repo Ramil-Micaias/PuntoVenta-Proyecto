@@ -8,13 +8,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // CU10: Historial de Caja. Consulta las cajas y todo lo que se vendió, compró
-    // y movió en un período, con filtro por medio de pago. No modifica nada.
     public partial class FormHistorialCaja : Form
     {
         private readonly GestorCaja gestorCaja = new GestorCaja();
 
-        // Lo último que trajo la base; los filtros de hora, texto e importe se aplican sobre esto.
         private DataTable movimientosActuales = new DataTable();
         private string tituloActual = string.Empty;
 
@@ -37,11 +34,9 @@ namespace Vista
             Grillas.Configurar(dgvCajas);
             Grillas.Configurar(dgvMovimientos);
 
-            // Por defecto, el mes actual.
             dtpDesde.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             dtpHasta.Value = DateTime.Today;
 
-            // Por defecto, el día completo.
             dtpHoraDesde.Value = DateTime.Today;
             dtpHoraHasta.Value = DateTime.Today.AddHours(23).AddMinutes(59);
 
@@ -82,7 +77,6 @@ namespace Vista
             return null;
         }
 
-        // Cajas del período y todos sus movimientos.
         private void Buscar()
         {
             try
@@ -108,7 +102,6 @@ namespace Vista
             }
         }
 
-        // Al tocar una caja se ven solo sus movimientos (por ejemplo, la de un día anterior).
         private void dgvCajas_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -118,8 +111,6 @@ namespace Vista
 
             DataGridViewRow fila = dgvCajas.Rows[e.RowIndex];
 
-            // Id_Desde e Id_Hasta son el inicio y el fin del período de la caja
-            // (empiezan con "Id_" para que la grilla no los muestre).
             DateTime inicio = Convert.ToDateTime(fila.Cells["Id_Desde"].Value);
             DateTime fin = Convert.ToDateTime(fila.Cells["Id_Hasta"].Value);
             DateTime apertura = Convert.ToDateTime(fila.Cells["Fecha_Apertura"].Value);
@@ -142,7 +133,6 @@ namespace Vista
             AplicarFiltros();
         }
 
-        // Filtros de hora, texto (comprobante, detalle, usuario o medio) e importe.
         private void AplicarFiltros()
         {
             TimeSpan horaDesde = dtpHoraDesde.Value.TimeOfDay;
@@ -196,7 +186,6 @@ namespace Vista
             FormatoColumna(dgvMovimientos, "Fecha", "Fecha y Hora", "dd/MM/yyyy HH:mm");
             FormatoColumna(dgvMovimientos, "Importe", "Importe", "N2");
 
-            // En las ventas se ven sus productos, uno debajo del otro en la misma celda; en los manuales, el motivo.
             if (dgvMovimientos.Columns.Contains("Detalle"))
             {
                 dgvMovimientos.Columns["Detalle"].HeaderText = "Productos / Motivo";
@@ -214,7 +203,6 @@ namespace Vista
             lblResumen.Text = ArmarResumen(filtrados);
         }
 
-        // Vacío = sin filtro. Devuelve false si se escribió algo que no es un número.
         private static bool LeerImporte(string texto, out decimal? importe)
         {
             importe = null;
@@ -233,7 +221,6 @@ namespace Vista
             return false;
         }
 
-        // Enter en los filtros de texto o importe los aplica sin volver a consultar la base.
         private void Filtro_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -243,7 +230,6 @@ namespace Vista
             }
         }
 
-        // Cantidad de ventas, total vendido, ticket promedio, desglose por medio de pago y compras.
         private static string ArmarResumen(DataTable movimientos)
         {
             HashSet<string> ventas = new HashSet<string>();
@@ -314,8 +300,6 @@ namespace Vista
             grid.Columns[nombre].DefaultCellStyle.Format = formato;
         }
 
-        // Importes de ingresos en verde y de egresos en rojo (igual que Caja Diaria).
-        // Las compras se muestran en gris: son informativas, no salen de la caja.
         private void dgvMovimientos_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Importe") || e.ColumnIndex != dgvMovimientos.Columns["Importe"].Index)

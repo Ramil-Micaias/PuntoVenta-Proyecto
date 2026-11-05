@@ -1,34 +1,18 @@
 USE GU_Tercero;
 GO
 
--- ============================================================
--- MODULO: VENTAS (CU01)
--- Migraciones de esquema necesarias + Stored Procedures requeridos
--- por FormVentas, MetodoPagoDAO y ProductoDAO (POS)
--- ============================================================
-
--- ------------------------------------------------------------
--- 1. MIGRACIONES DE ESQUEMA (Idempotentes)
--- ------------------------------------------------------------
-
--- Precio de costo: lo usa el sistema de inventario y compras
 IF COL_LENGTH('Producto', 'Precio_Costo') IS NULL
     ALTER TABLE Producto ADD Precio_Costo DECIMAL(12,2) NULL;
 GO
 
--- Código de barras o código interno: lo usa el buscador del POS
 IF COL_LENGTH('Producto', 'Codigo_Barras') IS NULL
     ALTER TABLE Producto ADD Codigo_Barras NVARCHAR(50) NULL;
 GO
 
--- Descuento aplicado a la venta en cabecera
 IF COL_LENGTH('Venta', 'Descuento') IS NULL
     ALTER TABLE Venta ADD Descuento DECIMAL(12,2) NOT NULL DEFAULT 0;
 GO
 
--- Pagos de cada venta: una venta se puede pagar con varios métodos
--- (por ejemplo una parte en efectivo y el resto con tarjeta).
--- Venta.Id_MetodoPago queda con el método del pago más grande.
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PagoVenta')
 BEGIN
     CREATE TABLE PagoVenta (
@@ -43,7 +27,6 @@ BEGIN
 END
 GO
 
--- Las ventas anteriores se pagaron con un solo método: se registra ese pago.
 INSERT INTO PagoVenta (Id_Venta, Id_MetodoPago, Importe)
 SELECT v.Id_Venta, v.Id_MetodoPago, v.Total
 FROM Venta v
@@ -51,10 +34,6 @@ WHERE v.Total > 0
   AND NOT EXISTS (SELECT 1 FROM PagoVenta pv WHERE pv.Id_Venta = v.Id_Venta);
 GO
 
-
--- ------------------------------------------------------------
--- 2. REPARACIÓN DE ACENTOS (Idempotente)
--- ------------------------------------------------------------
 CREATE OR ALTER FUNCTION dbo.fn_UnMojibake(@texto NVARCHAR(4000))
 RETURNS NVARCHAR(4000)
 AS
@@ -64,26 +43,26 @@ BEGIN
            AND @texto NOT LIKE N'%' + NCHAR(194) + N'%')
         RETURN @texto;
 
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(161), NCHAR(225));  -- á
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(169), NCHAR(233));  -- é
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(173), NCHAR(237));  -- í
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(179), NCHAR(243));  -- ó
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(186), NCHAR(250));  -- ú
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(188), NCHAR(252));  -- ü
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(177), NCHAR(241));  -- ñ
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(167), NCHAR(231));  -- ç
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(129), NCHAR(193));  -- Á
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(137), NCHAR(201));  -- É
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(141), NCHAR(205));  -- Í
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(147), NCHAR(211));  -- Ó
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(154), NCHAR(218));  -- Ú
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(156), NCHAR(220));  -- Ü
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(145), NCHAR(209));  -- Ñ
-    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(161), NCHAR(161));  -- ¡
-    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(191), NCHAR(191));  -- ¿
-    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(176), NCHAR(176));  -- °
-    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(186), NCHAR(186));  -- º
-    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(8220), NCHAR(243));  -- ó
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(161), NCHAR(225));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(169), NCHAR(233));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(173), NCHAR(237));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(179), NCHAR(243));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(186), NCHAR(250));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(188), NCHAR(252));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(177), NCHAR(241));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(167), NCHAR(231));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(129), NCHAR(193));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(137), NCHAR(201));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(141), NCHAR(205));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(147), NCHAR(211));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(154), NCHAR(218));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(156), NCHAR(220));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(145), NCHAR(209));
+    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(161), NCHAR(161));
+    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(191), NCHAR(191));
+    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(176), NCHAR(176));
+    SET @texto = REPLACE(@texto, NCHAR(194) + NCHAR(186), NCHAR(186));
+    SET @texto = REPLACE(@texto, NCHAR(195) + NCHAR(8220), NCHAR(243));
 
     RETURN @texto;
 END
@@ -111,10 +90,6 @@ SET Razon_Social = dbo.fn_UnMojibake(Razon_Social)
 WHERE Razon_Social LIKE N'%' + NCHAR(195) + N'%';
 GO
 
-
--- ------------------------------------------------------------
--- 3. SP: Métodos de pago
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_ObtenerMetodosPago
 AS
 BEGIN
@@ -128,10 +103,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 4. SP: Buscar clientes (el POS ya no pide cliente; se conserva para el módulo de Taller)
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_BuscarClientes
     @Filtro NVARCHAR(100) = ''
 AS
@@ -160,7 +131,6 @@ BEGIN
 END
 GO
 
--- Compatibilidad: sp_BuscarCliente (singular)
 CREATE OR ALTER PROCEDURE sp_BuscarCliente
     @Filtro NVARCHAR(100) = ''
 AS
@@ -170,8 +140,6 @@ BEGIN
 END
 GO
 
--- Procedimiento de soporte: sp_mercadopago / sp_MercadoPago
--- Retorna la información del método de pago de Mercado Pago o lo registra si no existe
 CREATE OR ALTER PROCEDURE sp_mercadopago
 AS
 BEGIN
@@ -198,11 +166,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 5. SP: Buscar productos para el POS
---    Búsqueda por nombre, descripción o código, con categoría opcional
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_BuscarProductosPOS
     @Filtro NVARCHAR(100) = '',
     @Id_Categoria INT = NULL
@@ -242,13 +205,6 @@ BEGIN
 END
 GO
 
-
--- ------------------------------------------------------------
--- 6. SP: Registrar venta
---    Utilizado por VentaDAO (ejecuta con JSON en @Detalles y en @Pagos)
---    @Pagos: lista de pagos [{Id_MetodoPago, Importe}]. Si no viene,
---    se toma un solo pago con @Id_MetodoPago por el total.
--- ------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_RegistrarVenta
     @Numero_Factura NVARCHAR(20) = NULL,
     @Id_Cliente INT = NULL,
@@ -265,7 +221,6 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- No se puede vender sin la caja del día abierta (CU06)
         IF NOT EXISTS (SELECT 1 FROM Caja
                        WHERE Abierta = 1
                          AND CAST(Fecha_Apertura AS DATE) = CAST(ISNULL(@Fecha, GETDATE()) AS DATE))
@@ -273,26 +228,22 @@ BEGIN
             RAISERROR('No hay una caja abierta. Abra la caja del día en "Caja Diaria" antes de vender.', 16, 1);
         END
 
-        -- Valida método de pago
         IF NOT EXISTS (SELECT 1 FROM MetodoPago WHERE Id_MetodoPago = @Id_MetodoPago)
         BEGIN
             RAISERROR('El método de pago seleccionado no es válido.', 16, 1);
         END
 
-        -- Valida cliente (solo si vino informado)
         IF @Id_Cliente IS NOT NULL
            AND NOT EXISTS (SELECT 1 FROM Cliente WHERE Id_Cliente = @Id_Cliente AND Activo = 1)
         BEGIN
             RAISERROR('El cliente seleccionado no existe o está inactivo.', 16, 1);
         END
 
-        -- Valida usuario vendedor
         IF NOT EXISTS (SELECT 1 FROM Usuario WHERE Id_Usuario = @Id_Usuario AND Activo = 1)
         BEGIN
             RAISERROR('El usuario vendedor no es válido. Inicie sesión nuevamente.', 16, 1);
         END
 
-        -- Valida descuento (Resumen de Pago)
         IF @DescuentoPorcentaje IS NULL
            OR @DescuentoPorcentaje < 0
            OR @DescuentoPorcentaje > 100
@@ -300,7 +251,6 @@ BEGIN
             RAISERROR('El descuento debe estar entre 0 y 100 por ciento.', 16, 1);
         END
 
-        -- Deserializa el detalle
         DECLARE @Detalle TABLE (
             Id_Producto INT,
             Cantidad INT,
@@ -326,7 +276,6 @@ BEGIN
             RAISERROR('El detalle de la venta contiene datos inválidos.', 16, 1);
         END
 
-        -- Producto inexistente o inactivo
         IF EXISTS (
             SELECT 1
             FROM @Detalle d
@@ -337,7 +286,6 @@ BEGIN
             RAISERROR('Uno de los productos de la venta no existe o está inactivo.', 16, 1);
         END
 
-        -- Validación de stock
         DECLARE @MensajeError NVARCHAR(300);
 
         IF EXISTS (
@@ -367,7 +315,6 @@ BEGIN
             RAISERROR(@MensajeError, 16, 1);
         END
 
-        -- Totales calculados por el sistema
         DECLARE @Subtotal DECIMAL(12,2);
         DECLARE @MontoDescuento DECIMAL(12,2);
         DECLARE @TotalNeto DECIMAL(12,2);
@@ -388,7 +335,6 @@ BEGIN
             RAISERROR('El descuento aplicado deja el total de la venta en cero.', 16, 1);
         END
 
-        -- Pagos de la venta (uno o varios métodos)
         DECLARE @PagosVenta TABLE (
             Id_MetodoPago INT,
             Importe DECIMAL(12,2)
@@ -440,12 +386,10 @@ BEGIN
             RAISERROR(@MensajePagos, 16, 1);
         END
 
-        -- La cabecera guarda el método del pago más grande
         SELECT TOP 1 @Id_MetodoPago = Id_MetodoPago
         FROM @PagosVenta
         ORDER BY Importe DESC;
 
-        -- Cabecera de la venta
         DECLARE @IdVenta INT;
         DECLARE @FechaVenta DATETIME = ISNULL(@Fecha, GETDATE());
 
@@ -472,7 +416,6 @@ BEGIN
 
         SET @IdVenta = SCOPE_IDENTITY();
 
-        -- Comprobante interno automático si no se ingresó uno manual
         IF @Numero_Factura IS NULL OR LTRIM(RTRIM(@Numero_Factura)) = ''
         BEGIN
             UPDATE Venta
@@ -480,18 +423,15 @@ BEGIN
             WHERE Id_Venta = @IdVenta;
         END
 
-        -- Detalle
         INSERT INTO DetalleVenta (Id_Venta, Id_Producto, Cantidad, Precio_Unitario)
         SELECT @IdVenta, Id_Producto, Cantidad, Precio
         FROM @Detalle;
 
-        -- Pagos (si un método se repite, se suma en un solo pago)
         INSERT INTO PagoVenta (Id_Venta, Id_MetodoPago, Importe)
         SELECT @IdVenta, Id_MetodoPago, SUM(Importe)
         FROM @PagosVenta
         GROUP BY Id_MetodoPago;
 
-        -- Descuento de stock
         UPDATE p
         SET p.Stock_Actual = p.Stock_Actual - req.Requerido
         FROM Producto p

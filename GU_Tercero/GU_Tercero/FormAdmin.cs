@@ -5,11 +5,8 @@ using Vista;
 
 namespace GU_Tercero
 {
-    //FormAdmin: Funciona como panel central de administración del sistema, permitiendo gestionar usuarios, roles y estados mediante una interfaz gráfica.
     public partial class FormAdmin : Form
     {
-        // Consulta: los campos están bloqueados. Agregando (Nuevo) o Modificando: se habilitan
-        // y Guardar graba el alta o la modificación según corresponda.
         private enum Modo { Consulta, Agregando, Modificando }
 
         private static readonly Color ROJO = Color.FromArgb(239, 68, 68);
@@ -17,7 +14,6 @@ namespace GU_Tercero
 
         private Modo modo = Modo.Consulta;
 
-        // Usuario elegido en la grilla (0 = ninguno). El ID ya no se muestra en pantalla.
         private int idUsuarioSeleccionado = 0;
         private bool activoSeleccionado = true;
         private bool bloqueadoSeleccionado = false;
@@ -29,13 +25,11 @@ namespace GU_Tercero
             txtDni.KeyPress += txtDni_KeyPress;
         }
 
-        // En el DNI solo se pueden escribir números (máximo 8, por MaxLength).
         private void txtDni_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-        //Este metodo obtiene los roles desde SQL SERVER, luego muestra en el ComboBox.
         private void CargarRoles()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -47,7 +41,6 @@ namespace GU_Tercero
             cmbRol.ValueMember = "Id_Rol";
         }
 
-        //Este metodo Restablece los CONTROLES.
         private void LimpiarControles()
         {
             idUsuarioSeleccionado = 0;
@@ -62,7 +55,6 @@ namespace GU_Tercero
             cmbRol.SelectedIndex = -1;
         }
 
-        //Este metodo obtiene los usuarios desde la capa de negocio y los muestra en el DataGridView.
         private void CargarUsuarios()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -77,7 +69,6 @@ namespace GU_Tercero
             AplicarModo(Modo.Consulta);
         }
 
-        // Bloquea o habilita los campos y muestra solo los botones que sirven en cada momento.
         private void AplicarModo(Modo nuevoModo)
         {
             modo = nuevoModo;
@@ -91,10 +82,6 @@ namespace GU_Tercero
             txtNombreUsuario.ReadOnly = !editando;
             cmbRol.Enabled = editando;
 
-            // Mientras se edita no se puede elegir otro usuario: la grilla sigue habilitada para
-            // poder desplazarla, pero los clics se ignoran en dgvUsuarios_CellClick.
-
-            // Al tocar Nuevo desaparece Modificar y al tocar Modificar desaparece Nuevo.
             btnNuevo.Visible = modo != Modo.Modificando;
             btnModificar.Visible = modo == Modo.Modificando || (modo == Modo.Consulta && haySeleccion);
             btnGuardar.Visible = editando;
@@ -120,8 +107,6 @@ namespace GU_Tercero
             }
         }
 
-        // Inactivar (rojo) si el usuario está activo; Activar (verde) si está dado de baja;
-        // Desbloquear (verde) si está activo pero bloqueado por intentos fallidos.
         private void ActualizarBotonEstado()
         {
             if (!activoSeleccionado)
@@ -141,10 +126,8 @@ namespace GU_Tercero
             }
         }
 
-        // Ubica los botones visibles uno debajo del otro, sin huecos (Volver queda fijo abajo).
         private void AcomodarBotones()
         {
-            // Se usa el modo y no boton.Visible, que es false mientras la pantalla todavía no se mostró.
             bool editando = modo != Modo.Consulta;
             bool haySeleccion = idUsuarioSeleccionado != 0;
 
@@ -157,8 +140,6 @@ namespace GU_Tercero
                 (btnEliminar, modo == Modo.Consulta && haySeleccion),
             };
 
-            // Las medidas salen del alto real del botón (en el diseño: arriba 22, alto 32, paso 38),
-            // así se respetan con el zoom de pantalla (125%, 150%...).
             int alto = btnNuevo.Height;
             int y = alto * 22 / 32;
             foreach (var (boton, visible) in botones)
@@ -171,7 +152,6 @@ namespace GU_Tercero
             }
         }
 
-        //Cuando el administrador hace clic sobre un usuario:se cargan automáticamente los datos en pantalla.
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && modo == Modo.Consulta)
@@ -211,7 +191,6 @@ namespace GU_Tercero
                 return;
             }
 
-            // Modificar solo habilita los campos; los cambios se graban con Guardar.
             AplicarModo(Modo.Modificando);
         }
 
@@ -245,7 +224,6 @@ namespace GU_Tercero
             {
                 UsuarioNegocio negocio = new UsuarioNegocio();
 
-                // InsertarUsuarioCompleto valida todos los datos antes de guardar.
                 string passwordTemporal = negocio.InsertarUsuarioCompleto(
                     txtApellido.Text.Trim(),
                     txtNombre.Text.Trim(),
@@ -255,8 +233,6 @@ namespace GU_Tercero
                     cmbRol.SelectedIndex == -1 ? 0 : Convert.ToInt32(cmbRol.SelectedValue)
                 );
 
-                // La contraseña temporal se envía al correo del usuario nuevo.
-                // Solo si el correo no sale se muestra en pantalla, para que no quede sin acceso.
                 Cursor = Cursors.WaitCursor;
                 ResultadoEnvioEmail envio = negocio.EnviarPasswordInicial(txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(), passwordTemporal);
                 Cursor = Cursors.Default;
@@ -295,7 +271,6 @@ namespace GU_Tercero
             {
                 UsuarioNegocio negocio = new UsuarioNegocio();
 
-                // El estado (activo / bloqueado) no se cambia acá: se mantiene el que tenía.
                 negocio.ModificarUsuario(idUsuarioSeleccionado, txtApellido.Text.Trim(), txtNombre.Text.Trim(), txtDni.Text.Trim(),
                     txtCorreo.Text.Trim(), txtNombreUsuario.Text.Trim(),
                     cmbRol.SelectedIndex == -1 ? 0 : Convert.ToInt32(cmbRol.SelectedValue),
@@ -312,7 +287,6 @@ namespace GU_Tercero
             }
         }
 
-        // Botón de estado: Inactivar (baja lógica), Activar o Desbloquear según el usuario elegido.
         private void btnEliminar_Click_1(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);

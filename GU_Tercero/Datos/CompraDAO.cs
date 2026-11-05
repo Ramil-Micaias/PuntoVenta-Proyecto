@@ -7,7 +7,6 @@ namespace Datos
 {
     public class CompraDAO
     {
-        // Productos activos con su precio de venta y el proveedor que tienen asignado (sp_BuscarProductosCompra).
         public DataTable BuscarProductosCompra()
         {
             DataTable tabla = new DataTable();
@@ -32,7 +31,6 @@ namespace Datos
 
                 try
                 {
-                    // 1. Ejecutar la Cabecera de Compra
                     SqlCommand cmdCompra = new SqlCommand("sp_RegistrarCompra", conn, transaccion);
                     cmdCompra.CommandType = CommandType.StoredProcedure;
 
@@ -45,7 +43,6 @@ namespace Datos
                     cmdCompra.Parameters.Add("@Total", SqlDbType.Decimal).Value = compra.Total;
                     cmdCompra.Parameters.Add("@Fecha_Compra", SqlDbType.DateTime).Value = compra.Fecha_Compra;
 
-                    // Parámetro de salida para recuperar el ID generado
                     SqlParameter paramIdCompra = new SqlParameter("@Id_CompraGenerado", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -56,7 +53,6 @@ namespace Datos
 
                     int idCompraGenerado = Convert.ToInt32(cmdCompra.Parameters["@Id_CompraGenerado"].Value);
 
-                    // 2. Iterar y registrar cada ítem del detalle
                     foreach (DetalleCompra item in compra.Detalles)
                     {
                         SqlCommand cmdDetalle = new SqlCommand("sp_RegistrarDetalleCompra", conn, transaccion);
@@ -70,7 +66,6 @@ namespace Datos
                         cmdDetalle.ExecuteNonQuery();
                     }
 
-                    // 3. Registrar cada pago (puede ser uno solo o varios métodos)
                     foreach (PagoCompra pago in compra.Pagos)
                     {
                         SqlCommand cmdPago = new SqlCommand("sp_RegistrarPagoCompra", conn, transaccion);
@@ -83,13 +78,11 @@ namespace Datos
                         cmdPago.ExecuteNonQuery();
                     }
 
-                    // Confirmamos la transacción
                     transaccion.Commit();
 
                     return new ResultadoOperacion
                     {
                         Id_Operacion = idCompraGenerado,
-                        // Mismo formato que arma sp_RegistrarCompra cuando no se envía comprobante (COM-00000001)
                         Comprobante = "COM-" + idCompraGenerado.ToString("00000000"),
                         Subtotal = compra.Subtotal,
                         Descuento = 0,
@@ -98,7 +91,6 @@ namespace Datos
                 }
                 catch (Exception)
                 {
-                    // Cancela error
                     transaccion.Rollback();
                     throw;
                 }

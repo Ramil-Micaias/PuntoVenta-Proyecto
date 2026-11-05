@@ -22,7 +22,6 @@ namespace Datos
             return tabla;
         }
 
-
         public DataTable ObtenerCategorias()
         {
             DataTable tabla = new DataTable();
@@ -38,7 +37,6 @@ namespace Datos
 
             return tabla;
         }
-
 
         public DataTable BuscarProductos(string filtro)
         {
@@ -58,7 +56,6 @@ namespace Datos
 
             return tabla;
         }
-
 
         public DataTable BuscarProductosPOS(string filtro, int? idCategoria)
         {
@@ -81,7 +78,6 @@ namespace Datos
 
             return tabla;
         }
-
 
         public DataTable ConsultarStock(string filtro, int? idCategoria, bool soloBajoMinimo)
         {
@@ -141,7 +137,6 @@ namespace Datos
             }
         }
 
-
         public void ModificarProducto(Producto producto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -181,7 +176,6 @@ namespace Datos
             }
         }
 
-
         public void InactivarProducto(int idProducto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -197,7 +191,6 @@ namespace Datos
             }
         }
 
-        // Vuelve a activar un producto dado de baja (sp_ReactivarProducto).
         public void ReactivarProducto(int idProducto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -213,7 +206,6 @@ namespace Datos
             }
         }
 
-
         public void RegistrarCategoria(string nombreCategoria)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -228,7 +220,6 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
-
 
         public void ModificarCategoria(int idCategoria, string nombreCategoria)
         {
@@ -247,7 +238,6 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
-
 
         public void InactivarCategoria(int idCategoria)
         {

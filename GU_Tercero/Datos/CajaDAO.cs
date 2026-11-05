@@ -7,7 +7,6 @@ namespace Datos
 {
     public class CajaDAO
     {
-        // Devuelve la caja de hoy o null si todavía no se abrió.
         public Caja? ObtenerCajaActual()
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -76,7 +75,6 @@ namespace Datos
             }
         }
 
-        // Cierra la caja y devuelve el saldo con el que quedó.
         public decimal CerrarCaja(int idCaja, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -92,7 +90,6 @@ namespace Datos
             }
         }
 
-        // Cajas abiertas entre dos días (Historial de Caja).
         public DataTable ListarCajas(DateTime desde, DateTime hasta)
         {
             DataTable tabla = new DataTable();
@@ -111,7 +108,6 @@ namespace Datos
             return tabla;
         }
 
-        // Ventas, compras y movimientos manuales entre dos momentos. idMetodoPago null = todos.
         public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
         {
             DataTable tabla = new DataTable();
@@ -132,7 +128,6 @@ namespace Datos
             return tabla;
         }
 
-        // Vuelve a abrir la caja de hoy que se cerró por error.
         public void ReabrirCaja(int idCaja, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -148,7 +143,6 @@ namespace Datos
             }
         }
 
-        // Registra el movimiento y devuelve el saldo actualizado de la caja.
         public decimal RegistrarMovimiento(MovimientoCaja movimiento)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

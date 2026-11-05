@@ -29,5 +29,3 @@ namespace Datos.Entidades
             public int Cantidad_Preguntas { get; set; }
         }
 }
-
-

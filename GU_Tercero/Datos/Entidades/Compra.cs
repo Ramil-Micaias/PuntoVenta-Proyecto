@@ -15,7 +15,6 @@ namespace Datos.Entidades
 
         public List<DetalleCompra> Detalles { get; set; } = new List<DetalleCompra>();
 
-        // Pagos de la compra: uno o varios métodos (por ejemplo efectivo + transferencia).
         public List<PagoCompra> Pagos { get; set; } = new List<PagoCompra>();
 
         public decimal TotalPagos

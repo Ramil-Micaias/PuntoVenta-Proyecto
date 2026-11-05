@@ -3,7 +3,6 @@ using System.Data;
 
 namespace Datos
 {
-    // Acceso a la tabla Bitacora (CU19).
     public class BitacoraDAO
     {
         public void Registrar(string usuario, string? apellidoNombre, string? rol, string modulo, string operacion,
@@ -28,7 +27,6 @@ namespace Datos
             }
         }
 
-        // Los filtros en null no se aplican.
         public DataTable Listar(DateTime desde, DateTime hasta, string? criticidad, string? modulo, string? texto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

@@ -66,9 +66,6 @@
             ((System.ComponentModel.ISupportInitialize)numDescuento).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPagos).BeginInit();
             SuspendLayout();
-            // 
-            // panelHeader
-            // 
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -76,9 +73,6 @@
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            // 
-            // lblTitulo
-            // 
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -87,9 +81,6 @@
             lblTitulo.Size = new Size(279, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "REGISTRO DE VENTAS (POS)";
-            // 
-            // panelIzq
-            // 
             panelIzq.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelIzq.Controls.Add(grpBusqueda);
             panelIzq.Controls.Add(grpCarrito);
@@ -97,9 +88,6 @@
             panelIzq.Name = "panelIzq";
             panelIzq.Size = new Size(690, 576);
             panelIzq.TabIndex = 1;
-            // 
-            // grpBusqueda
-            // 
             grpBusqueda.Controls.Add(btnAgregarCarrito);
             grpBusqueda.Controls.Add(numCantidad);
             grpBusqueda.Controls.Add(lblCantidad);
@@ -118,9 +106,6 @@
             grpBusqueda.TabIndex = 0;
             grpBusqueda.TabStop = false;
             grpBusqueda.Text = "Búsqueda de Productos";
-            // 
-            // btnAgregarCarrito
-            // 
             btnAgregarCarrito.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnAgregarCarrito.BackColor = Color.FromArgb(37, 99, 235);
             btnAgregarCarrito.FlatAppearance.BorderSize = 0;
@@ -133,9 +118,6 @@
             btnAgregarCarrito.TabIndex = 8;
             btnAgregarCarrito.Text = "Agregar al Carrito";
             btnAgregarCarrito.UseVisualStyleBackColor = false;
-            // 
-            // numCantidad
-            // 
             numCantidad.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             numCantidad.Font = new Font("Segoe UI", 9.5F);
             numCantidad.Location = new Point(84, 335);
@@ -145,9 +127,6 @@
             numCantidad.Size = new Size(70, 24);
             numCantidad.TabIndex = 7;
             numCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
-            // lblCantidad
-            // 
             lblCantidad.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblCantidad.AutoSize = true;
             lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -157,9 +136,6 @@
             lblCantidad.Size = new Size(65, 17);
             lblCantidad.TabIndex = 6;
             lblCantidad.Text = "Cantidad:";
-            // 
-            // dgvResultados
-            // 
             dgvResultados.AllowUserToAddRows = false;
             dgvResultados.AllowUserToDeleteRows = false;
             dgvResultados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -175,9 +151,6 @@
             dgvResultados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvResultados.Size = new Size(658, 262);
             dgvResultados.TabIndex = 5;
-            // 
-            // btnBuscar
-            // 
             btnBuscar.BackColor = Color.FromArgb(37, 99, 235);
             btnBuscar.FlatAppearance.BorderSize = 0;
             btnBuscar.FlatStyle = FlatStyle.Flat;
@@ -189,9 +162,6 @@
             btnBuscar.TabIndex = 4;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = false;
-            // 
-            // cmbCategoria
-            // 
             cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategoria.Font = new Font("Segoe UI", 9.5F);
             cmbCategoria.FormattingEnabled = true;
@@ -199,9 +169,6 @@
             cmbCategoria.Name = "cmbCategoria";
             cmbCategoria.Size = new Size(126, 25);
             cmbCategoria.TabIndex = 3;
-            // 
-            // lblCategoria
-            // 
             lblCategoria.AutoSize = true;
             lblCategoria.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCategoria.ForeColor = Color.FromArgb(30, 41, 59);
@@ -210,18 +177,12 @@
             lblCategoria.Size = new Size(69, 17);
             lblCategoria.TabIndex = 2;
             lblCategoria.Text = "Categoría:";
-            // 
-            // txtBuscar
-            // 
             txtBuscar.Font = new Font("Segoe UI", 9.5F);
             txtBuscar.Location = new Point(210, 25);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Nombre o código del producto";
             txtBuscar.Size = new Size(190, 24);
             txtBuscar.TabIndex = 1;
-            // 
-            // lblBuscarNombre
-            // 
             lblBuscarNombre.AutoSize = true;
             lblBuscarNombre.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblBuscarNombre.ForeColor = Color.FromArgb(30, 41, 59);
@@ -230,9 +191,6 @@
             lblBuscarNombre.Size = new Size(185, 17);
             lblBuscarNombre.TabIndex = 0;
             lblBuscarNombre.Text = "Buscar por nombre o código:";
-            // 
-            // grpCarrito
-            // 
             grpCarrito.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpCarrito.Controls.Add(dgvCarrito);
             grpCarrito.Controls.Add(lblResumenCarrito);
@@ -245,9 +203,6 @@
             grpCarrito.TabIndex = 1;
             grpCarrito.TabStop = false;
             grpCarrito.Text = "Detalle del Carrito";
-            // 
-            // dgvCarrito
-            // 
             dgvCarrito.AllowUserToAddRows = false;
             dgvCarrito.AllowUserToDeleteRows = false;
             dgvCarrito.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -263,9 +218,6 @@
             dgvCarrito.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCarrito.Size = new Size(658, 130);
             dgvCarrito.TabIndex = 0;
-            // 
-            // lblResumenCarrito
-            // 
             lblResumenCarrito.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblResumenCarrito.AutoSize = true;
             lblResumenCarrito.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -275,9 +227,6 @@
             lblResumenCarrito.Size = new Size(75, 17);
             lblResumenCarrito.TabIndex = 1;
             lblResumenCarrito.Text = "Artículos: 0";
-            // 
-            // btnQuitarSeleccionado
-            // 
             btnQuitarSeleccionado.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuitarSeleccionado.BackColor = Color.FromArgb(239, 68, 68);
             btnQuitarSeleccionado.FlatAppearance.BorderSize = 0;
@@ -290,18 +239,12 @@
             btnQuitarSeleccionado.TabIndex = 2;
             btnQuitarSeleccionado.Text = "Quitar Seleccionado";
             btnQuitarSeleccionado.UseVisualStyleBackColor = false;
-            // 
-            // panelDer
-            // 
             panelDer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panelDer.Controls.Add(grpResumen);
             panelDer.Location = new Point(714, 68);
             panelDer.Name = "panelDer";
             panelDer.Size = new Size(350, 576);
             panelDer.TabIndex = 2;
-            // 
-            // grpResumen
-            // 
             grpResumen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpResumen.Controls.Add(lblResultado);
             grpResumen.Controls.Add(lblAyuda);
@@ -329,9 +272,6 @@
             grpResumen.TabIndex = 0;
             grpResumen.TabStop = false;
             grpResumen.Text = "Resumen de Pago";
-            // 
-            // lblAyuda
-            // 
             lblAyuda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblAyuda.Font = new Font("Segoe UI", 8.5F);
             lblAyuda.ForeColor = Color.FromArgb(100, 116, 139);
@@ -340,9 +280,6 @@
             lblAyuda.Size = new Size(318, 40);
             lblAyuda.TabIndex = 13;
             lblAyuda.Text = "Sin pagos agregados se cobra todo con el método elegido. Doble clic en un pago para quitarlo.";
-            // 
-            // btnVolver
-            // 
             btnVolver.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -355,9 +292,6 @@
             btnVolver.TabIndex = 12;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            // 
-            // btnCancelarOperacion
-            // 
             btnCancelarOperacion.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnCancelarOperacion.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelarOperacion.FlatAppearance.BorderSize = 0;
@@ -370,9 +304,6 @@
             btnCancelarOperacion.TabIndex = 11;
             btnCancelarOperacion.Text = "CANCELAR OPERACIÓN";
             btnCancelarOperacion.UseVisualStyleBackColor = false;
-            // 
-            // btnConfirmarVenta
-            // 
             btnConfirmarVenta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnConfirmarVenta.BackColor = Color.FromArgb(16, 185, 129);
             btnConfirmarVenta.FlatAppearance.BorderSize = 0;
@@ -385,9 +316,6 @@
             btnConfirmarVenta.TabIndex = 10;
             btnConfirmarVenta.Text = "CONFIRMAR VENTA";
             btnConfirmarVenta.UseVisualStyleBackColor = false;
-            // 
-            // lblTotalNeto
-            // 
             lblTotalNeto.AutoSize = true;
             lblTotalNeto.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblTotalNeto.ForeColor = Color.FromArgb(16, 185, 129);
@@ -396,9 +324,6 @@
             lblTotalNeto.Size = new Size(94, 41);
             lblTotalNeto.TabIndex = 9;
             lblTotalNeto.Text = "$0,00";
-            // 
-            // lblTotalTitulo
-            // 
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTitulo.ForeColor = Color.FromArgb(15, 23, 42);
@@ -407,18 +332,12 @@
             lblTotalTitulo.Size = new Size(106, 21);
             lblTotalTitulo.TabIndex = 8;
             lblTotalTitulo.Text = "TOTAL NETO:";
-            // 
-            // numDescuento
-            // 
             numDescuento.DecimalPlaces = 2;
             numDescuento.Font = new Font("Segoe UI", 9.5F);
             numDescuento.Location = new Point(140, 80);
             numDescuento.Name = "numDescuento";
             numDescuento.Size = new Size(90, 24);
             numDescuento.TabIndex = 7;
-            // 
-            // lblDescuentoTitulo
-            // 
             lblDescuentoTitulo.AutoSize = true;
             lblDescuentoTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDescuentoTitulo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -427,9 +346,6 @@
             lblDescuentoTitulo.Size = new Size(98, 17);
             lblDescuentoTitulo.TabIndex = 6;
             lblDescuentoTitulo.Text = "Descuento (%):";
-            // 
-            // lblDescuentoAyuda
-            // 
             lblDescuentoAyuda.Font = new Font("Segoe UI", 8.5F);
             lblDescuentoAyuda.ForeColor = Color.FromArgb(100, 116, 139);
             lblDescuentoAyuda.Location = new Point(16, 108);
@@ -437,9 +353,6 @@
             lblDescuentoAyuda.Size = new Size(318, 30);
             lblDescuentoAyuda.TabIndex = 14;
             lblDescuentoAyuda.Text = "Porcentaje que se resta del subtotal. Ej: 10 = 10% menos. Con 0 no se aplica descuento.";
-            // 
-            // lblSubtotalValor
-            // 
             lblSubtotalValor.AutoSize = true;
             lblSubtotalValor.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblSubtotalValor.ForeColor = Color.FromArgb(15, 23, 42);
@@ -448,9 +361,6 @@
             lblSubtotalValor.Size = new Size(49, 20);
             lblSubtotalValor.TabIndex = 5;
             lblSubtotalValor.Text = "$0,00";
-            // 
-            // lblSubtotalTitulo
-            // 
             lblSubtotalTitulo.AutoSize = true;
             lblSubtotalTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblSubtotalTitulo.ForeColor = Color.FromArgb(30, 41, 59);
@@ -459,9 +369,6 @@
             lblSubtotalTitulo.Size = new Size(62, 17);
             lblSubtotalTitulo.TabIndex = 4;
             lblSubtotalTitulo.Text = "Subtotal:";
-            // 
-            // cmbMetodoPago
-            // 
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
             cmbMetodoPago.FormattingEnabled = true;
@@ -469,9 +376,6 @@
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(150, 25);
             cmbMetodoPago.TabIndex = 3;
-            // 
-            // lblMetodoPago
-            // 
             lblMetodoPago.AutoSize = true;
             lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
@@ -480,18 +384,12 @@
             lblMetodoPago.Size = new Size(113, 17);
             lblMetodoPago.TabIndex = 2;
             lblMetodoPago.Text = "Pagos (método e importe):";
-            // 
-            // txtImportePago
-            // 
             txtImportePago.Font = new Font("Segoe UI", 9.5F);
             txtImportePago.Location = new Point(172, 232);
             txtImportePago.Name = "txtImportePago";
             txtImportePago.PlaceholderText = "Importe";
             txtImportePago.Size = new Size(90, 24);
             txtImportePago.TabIndex = 15;
-            // 
-            // btnAgregarPago
-            // 
             btnAgregarPago.BackColor = Color.FromArgb(37, 99, 235);
             btnAgregarPago.FlatAppearance.BorderSize = 0;
             btnAgregarPago.FlatStyle = FlatStyle.Flat;
@@ -503,9 +401,6 @@
             btnAgregarPago.TabIndex = 16;
             btnAgregarPago.Text = "Agregar";
             btnAgregarPago.UseVisualStyleBackColor = false;
-            // 
-            // dgvPagos
-            // 
             dgvPagos.BackgroundColor = Color.FromArgb(226, 232, 240);
             dgvPagos.BorderStyle = BorderStyle.None;
             dgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -513,27 +408,18 @@
             dgvPagos.Name = "dgvPagos";
             dgvPagos.Size = new Size(318, 72);
             dgvPagos.TabIndex = 17;
-            // 
-            // lblFaltaPagar
-            // 
             lblFaltaPagar.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblFaltaPagar.ForeColor = Color.FromArgb(100, 116, 139);
             lblFaltaPagar.Location = new Point(16, 342);
             lblFaltaPagar.Name = "lblFaltaPagar";
             lblFaltaPagar.Size = new Size(318, 22);
             lblFaltaPagar.TabIndex = 18;
-            //
-            // lblResultado
-            //
             lblResultado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             lblResultado.ForeColor = Color.FromArgb(16, 185, 129);
             lblResultado.Location = new Point(16, 504);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(318, 66);
             lblResultado.Visible = false;
-            // 
-            // FormVentas
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

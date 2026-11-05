@@ -1,17 +1,10 @@
 USE GU_Tercero;
 GO
 
--- =============================================
--- 1. SP: Obtener Productos
--- =============================================
--- Proveedor de un producto: el de la última compra de ese producto; si nunca se
--- compró, el proveedor vinculado en ProductoProveedor. Aunque el proveedor esté
--- dado de baja se muestra igual (se le compró a él), con la aclaración.
 CREATE OR ALTER FUNCTION dbo.fn_ProveedorProducto(@Id_Producto INT)
 RETURNS NVARCHAR(130)
 AS
 BEGIN
-    -- Primero el proveedor asociado al producto (se elige en la pantalla Productos).
     DECLARE @IdProveedor INT = (
         SELECT TOP 1 Id_Proveedor
         FROM ProductoProveedor
@@ -20,7 +13,6 @@ BEGIN
         ORDER BY Id_ProductoProveedor DESC
     );
 
-    -- Si no tiene uno asociado, el de la última compra.
     IF @IdProveedor IS NULL
         SET @IdProveedor = (
             SELECT TOP 1 c.Id_Proveedor
@@ -46,7 +38,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         p.Id_Producto,
         p.Id_Categoria,
         p.Nombre_Producto,
@@ -62,23 +54,18 @@ BEGIN
          WHERE pp.Id_Producto = p.Id_Producto AND pp.Activo = 1
          ORDER BY pp.Id_ProductoProveedor DESC) AS Id_Proveedor
     FROM Producto p
-    INNER JOIN CategoriaProducto c 
+    INNER JOIN CategoriaProducto c
         ON p.Id_Categoria = c.Id_Categoria
-    -- Se listan también los inactivos para poder volver a activarlos desde la pantalla.
     ORDER BY p.Activo DESC, p.Nombre_Producto ASC;
 END;
 GO
 
-
--- =============================================
--- 2. SP: Obtener Categorías
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerCategorias
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Categoria,
         Nombre_Categoria
     FROM CategoriaProducto
@@ -87,18 +74,13 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 3. SP: Buscar Productos
---    Busca por nombre del producto o por nombre de su categoría
--- =============================================
 CREATE OR ALTER PROCEDURE sp_BuscarProductos
     @Filtro NVARCHAR(100)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         p.Id_Producto,
         p.Id_Categoria,
         p.Nombre_Producto,
@@ -114,7 +96,7 @@ BEGIN
          WHERE pp.Id_Producto = p.Id_Producto AND pp.Activo = 1
          ORDER BY pp.Id_ProductoProveedor DESC) AS Id_Proveedor
     FROM Producto p
-    INNER JOIN CategoriaProducto c 
+    INNER JOIN CategoriaProducto c
         ON p.Id_Categoria = c.Id_Categoria
     WHERE p.Nombre_Producto LIKE '%' + @Filtro + '%'
        OR c.Nombre_Categoria LIKE '%' + @Filtro + '%'
@@ -122,10 +104,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 4. SP: Insertar Producto
--- =============================================
 CREATE OR ALTER PROCEDURE sp_InsertarProducto
     @Id_Categoria INT,
     @Nombre_Producto NVARCHAR(50),
@@ -138,8 +116,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Validar que no exista otro producto activo
-    -- con el mismo nombre
     IF EXISTS (
         SELECT 1
         FROM Producto
@@ -150,7 +126,6 @@ BEGIN
         THROW 50000, 'Ya existe un producto activo con ese nombre.', 1;
     END;
 
-    -- Cada producto debe tener un proveedor activo asociado
     IF NOT EXISTS (SELECT 1 FROM Proveedor WHERE Id_Proveedor = @Id_Proveedor AND Activo = 1)
     BEGIN
         THROW 50000, 'Debe elegir un proveedor activo para el producto.', 1;
@@ -180,7 +155,6 @@ BEGIN
 
         DECLARE @Id_Producto INT = SCOPE_IDENTITY();
 
-        -- El producto queda con un solo proveedor asociado: el elegido.
         UPDATE ProductoProveedor
         SET Activo = 0
         WHERE Id_Producto = @Id_Producto
@@ -205,10 +179,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 5. SP: Modificar Producto
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ModificarProducto
     @Id_Producto INT,
     @Id_Categoria INT,
@@ -223,8 +193,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Validar que no exista otro producto
-    -- activo con el mismo nombre
     IF EXISTS (
         SELECT 1
         FROM Producto
@@ -236,7 +204,6 @@ BEGIN
         THROW 50000, 'Ya existe otro producto activo con ese nombre.', 1;
     END;
 
-    -- Cada producto debe tener un proveedor activo asociado
     IF NOT EXISTS (SELECT 1 FROM Proveedor WHERE Id_Proveedor = @Id_Proveedor AND Activo = 1)
     BEGIN
         THROW 50000, 'Debe elegir un proveedor activo para el producto.', 1;
@@ -256,7 +223,6 @@ BEGIN
             Activo = @Activo
         WHERE Id_Producto = @Id_Producto;
 
-        -- El producto queda con un solo proveedor asociado: el elegido.
         UPDATE ProductoProveedor
         SET Activo = 0
         WHERE Id_Producto = @Id_Producto
@@ -281,11 +247,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 6. SP: Inactivar Producto
---    Baja lógica
--- =============================================
 CREATE OR ALTER PROCEDURE sp_InactivarProducto
     @Id_Producto INT
 AS
@@ -298,10 +259,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 6 b. SP: Reactivar Producto (vuelve a darlo de alta)
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ReactivarProducto
     @Id_Producto INT
 AS
@@ -327,10 +284,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 7. SP: Obtener Proveedores de un Producto
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerProveedoresProducto
     @Id_Producto INT
 AS
@@ -354,16 +307,12 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 8. SP: Obtener Proveedores Activos
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerProveedores
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Proveedor,
         Razon_Social,
         CUIT,
@@ -378,10 +327,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 9. SP: Asociar Producto con Proveedor
--- =============================================
 CREATE OR ALTER PROCEDURE sp_AsignarProveedorProducto
     @Id_Producto INT,
     @Id_Proveedor INT
@@ -389,7 +334,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Verificar que el producto exista
     IF NOT EXISTS (
         SELECT 1
         FROM Producto
@@ -399,7 +343,6 @@ BEGIN
         THROW 50000, 'El producto no existe.', 1;
     END;
 
-    -- Verificar que el proveedor exista
     IF NOT EXISTS (
         SELECT 1
         FROM Proveedor
@@ -410,8 +353,6 @@ BEGIN
         THROW 50000, 'El proveedor no existe o está inactivo.', 1;
     END;
 
-    -- Si ya existe la relación pero estaba inactiva,
-    -- se vuelve a activar.
     IF EXISTS (
         SELECT 1
         FROM ProductoProveedor
@@ -440,10 +381,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 10. SP: Desasociar Producto de Proveedor
--- =============================================
 CREATE OR ALTER PROCEDURE sp_DesasignarProveedorProducto
     @Id_Producto INT,
     @Id_Proveedor INT
@@ -458,11 +395,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 11. SP: Insertar Categoría
---     Si existe una categoría inactiva con el mismo nombre, se reactiva.
--- =============================================
 CREATE OR ALTER PROCEDURE sp_InsertarCategoria
     @Nombre_Categoria NVARCHAR(50)
 AS
@@ -497,10 +429,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 12. SP: Modificar Categoría
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ModificarCategoria
     @Id_Categoria INT,
     @Nombre_Categoria NVARCHAR(50)
@@ -524,11 +452,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 13. SP: Inactivar Categoría
---     Baja lógica. No se permite si tiene productos activos.
--- =============================================
 CREATE OR ALTER PROCEDURE sp_InactivarCategoria
     @Id_Categoria INT
 AS

@@ -6,9 +6,6 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // Consulta de la bitácora del sistema (CU19). Solo la ven los usuarios con el
-    // permiso VER_BITACORA. Una sola grilla con todos los movimientos, del más nuevo
-    // al más viejo: quién hizo cada operación, cuándo, su criticidad y qué cambió.
     public partial class FormBitacora : Form
     {
         private static readonly Color ROJO = Color.FromArgb(185, 28, 28);
@@ -35,7 +32,6 @@ namespace Vista
             {
                 DataTable movimientos = GestorBitacora.ListarTodo();
 
-                // El estado anterior y el posterior se muestran como texto ("Rol: Tecnico").
                 movimientos.Columns.Add("Antes", typeof(string));
                 movimientos.Columns.Add("Despues", typeof(string));
                 foreach (DataRow fila in movimientos.Rows)
@@ -53,7 +49,6 @@ namespace Vista
             }
         }
 
-        // Títulos, anchos y colores: las operaciones críticas en rojo y las advertencias en naranja.
         private void dgvBitacora_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
             foreach (string columna in new[] { "Id_Bitacora", "Estado_Anterior", "Estado_Posterior" })
@@ -88,7 +83,6 @@ namespace Vista
             dgvBitacora.ClearSelection();
         }
 
-        // La grilla reparte el ancho según el peso de cada columna.
         private void Columna(string nombre, string titulo, int peso)
         {
             if (!dgvBitacora.Columns.Contains(nombre))

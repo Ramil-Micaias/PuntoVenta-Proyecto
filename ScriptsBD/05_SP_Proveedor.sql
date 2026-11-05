@@ -1,15 +1,12 @@
 USE GU_Tercero;
 GO
 
--- =============================================
--- 1. SP: Obtener Proveedores Activos
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerProveedores
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Proveedor,
         Razon_Social,
         CUIT,
@@ -24,16 +21,12 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 2. SP: Obtener Todos los Proveedores (Incluye inactivos)
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerTodosProveedores
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Proveedor,
         Razon_Social,
         CUIT,
@@ -47,18 +40,13 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 3. SP: Buscar Proveedores
---    Busca por Razón Social o CUIT
--- =============================================
 CREATE OR ALTER PROCEDURE sp_BuscarProveedores
     @Filtro NVARCHAR(100)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Proveedor,
         Razon_Social,
         CUIT,
@@ -77,17 +65,13 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 4. SP: Obtener Proveedor por Id
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerProveedorPorId
     @Id_Proveedor INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         Id_Proveedor,
         Razon_Social,
         CUIT,
@@ -101,14 +85,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 5. SP: Insertar Proveedor
--- =============================================
--- La restricción UNIQUE original del CUIT no deja tener más de un proveedor sin
--- CUIT (SQL Server cuenta el NULL como un valor). Se quita y el control de CUIT
--- repetido lo hacen sp_InsertarProveedor y sp_ModificarProveedor (contra todos
--- los proveedores, activos o dados de baja).
 DECLARE @RestriccionCuit SYSNAME = (
     SELECT TOP 1 kc.name
     FROM sys.key_constraints kc
@@ -121,10 +97,6 @@ IF @RestriccionCuit IS NOT NULL
 
 GO
 
--- Alta de proveedor. Si el proveedor ya existía y estaba dado de baja (mismo CUIT
--- o misma razón social), no se crea otro: se reactiva ese mismo con los datos
--- nuevos, así conserva su historial de compras y productos.
--- Devuelve Resultado = 'NUEVO' o 'REACTIVADO'.
 CREATE OR ALTER PROCEDURE sp_InsertarProveedor
     @Razon_Social NVARCHAR(100),
     @CUIT NVARCHAR(20) = NULL,
@@ -141,14 +113,12 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Validar que no exista otro proveedor activo con la misma Razon Social
         IF EXISTS (SELECT 1 FROM Proveedor WITH (UPDLOCK, HOLDLOCK)
                    WHERE Razon_Social = @Razon_Social AND Activo = 1)
         BEGIN
             RAISERROR('Ya existe un proveedor activo con esa Razón Social.', 16, 1);
         END
 
-        -- Validar CUIT duplicado si se ingresó
         IF @CUIT IS NOT NULL
            AND EXISTS (SELECT 1 FROM Proveedor WITH (UPDLOCK, HOLDLOCK)
                        WHERE CUIT = @CUIT AND Activo = 1)
@@ -156,7 +126,6 @@ BEGIN
             RAISERROR('Ya existe un proveedor activo con ese CUIT.', 16, 1);
         END
 
-        -- ¿Estaba dado de baja? Se busca primero por CUIT y después por razón social.
         DECLARE @IdDadoDeBaja INT = (
             SELECT TOP 1 Id_Proveedor
             FROM Proveedor
@@ -203,10 +172,6 @@ BEGIN
 END
 GO
 
-
--- =============================================
--- 6. SP: Modificar Proveedor
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ModificarProveedor
     @Id_Proveedor INT,
     @Razon_Social NVARCHAR(100),
@@ -219,7 +184,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Validar que no exista otro proveedor activo con la misma Razon Social
     IF EXISTS (
         SELECT 1
         FROM Proveedor
@@ -231,7 +195,6 @@ BEGIN
         THROW 50000, 'Ya existe otro proveedor activo con esa Razón Social.', 1;
     END;
 
-    -- Validar CUIT duplicado si se ingresó
     IF @CUIT IS NOT NULL AND LTRIM(RTRIM(@CUIT)) <> ''
     BEGIN
         IF EXISTS (
@@ -246,7 +209,7 @@ BEGIN
     END;
 
     UPDATE Proveedor
-    SET 
+    SET
         Razon_Social = @Razon_Social,
         CUIT = @CUIT,
         Telefono = @Telefono,
@@ -257,10 +220,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 7. SP: Inactivar Proveedor (Baja lógica)
--- =============================================
 CREATE OR ALTER PROCEDURE sp_InactivarProveedor
     @Id_Proveedor INT
 AS
@@ -273,10 +232,6 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 8. SP: Reactivar Proveedor
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ReactivarProveedor
     @Id_Proveedor INT
 AS
@@ -289,17 +244,13 @@ BEGIN
 END;
 GO
 
-
--- =============================================
--- 9. SP: Obtener Productos de un Proveedor
--- =============================================
 CREATE OR ALTER PROCEDURE sp_ObtenerProductosPorProveedor
     @Id_Proveedor INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         p.Id_Producto,
         p.Nombre_Producto,
         p.Descripcion,
@@ -308,7 +259,7 @@ BEGIN
         c.Nombre_Categoria,
         pp.Activo AS RelacionActiva
     FROM ProductoProveedor pp
-    INNER JOIN Producto p 
+    INNER JOIN Producto p
         ON pp.Id_Producto = p.Id_Producto
     INNER JOIN CategoriaProducto c
         ON p.Id_Categoria = c.Id_Categoria

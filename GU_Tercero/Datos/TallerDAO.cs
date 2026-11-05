@@ -7,7 +7,6 @@ using System.Text.Json;
 
 namespace Datos
 {
-    // Acceso a datos del taller: clientes, equipos y órdenes de reparación.
     public class TallerDAO
     {
         public DataTable ObtenerClientes()
@@ -26,26 +25,6 @@ namespace Datos
             return tabla;
         }
 
-
-        // Todos los clientes (activos o no) para la pantalla Clientes del administrador.
-        public DataTable ListarClientes(string filtro)
-        {
-            DataTable tabla = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
-            {
-                SqlCommand cmd = new SqlCommand("sp_ListarClientes", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@Filtro", SqlDbType.NVarChar, 100).Value = filtro ?? string.Empty;
-
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(tabla);
-            }
-
-            return tabla;
-        }
-
-        // Devuelve el Id del cliente nuevo.
         public int InsertarCliente(string apellido, string nombre, string dni, string? telefono)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -64,8 +43,6 @@ namespace Datos
             }
         }
 
-
-        // Apellido, nombre, DNI y teléfono de un cliente (sp_ObtenerClienteTaller).
         public DataTable ObtenerCliente(int idCliente)
         {
             DataTable tabla = new DataTable();
@@ -119,8 +96,6 @@ namespace Datos
             return tabla;
         }
 
-
-        // Devuelve el Id del equipo nuevo.
         public int InsertarEquipo(int idCliente, string tipo, string marca, string modelo, string? numeroSerie, string? imei, string? color)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -144,7 +119,6 @@ namespace Datos
             }
         }
 
-
         public DataTable ObtenerTecnicos()
         {
             DataTable tabla = new DataTable();
@@ -160,7 +134,6 @@ namespace Datos
 
             return tabla;
         }
-
 
         public DataTable ObtenerEstados()
         {
@@ -178,7 +151,6 @@ namespace Datos
             return tabla;
         }
 
-
         public DataTable ObtenerRepuestos()
         {
             DataTable tabla = new DataTable();
@@ -195,8 +167,6 @@ namespace Datos
             return tabla;
         }
 
-
-        // Alta (Id_Orden = 0) o actualización de una orden. Devuelve el número de orden y el total.
         public ResultadoOperacion GuardarOrden(OrdenReparacion orden)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -264,8 +234,6 @@ namespace Datos
             return JsonSerializer.Serialize(items);
         }
 
-
-        // CU08: listado de órdenes con filtros.
         public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes)
         {
             DataTable tabla = new DataTable();
@@ -289,7 +257,6 @@ namespace Datos
             return tabla;
         }
 
-
         public DataTable ObtenerOrden(int idOrden)
         {
             return ConsultarPorOrden("sp_ObtenerOrden", idOrden);
@@ -305,7 +272,6 @@ namespace Datos
             return ConsultarPorOrden("sp_ObtenerHistorialOrden", idOrden);
         }
 
-        // Los tres SP de arriba reciben solo el Id de la orden.
         private static DataTable ConsultarPorOrden(string procedimiento, int idOrden)
         {
             DataTable tabla = new DataTable();

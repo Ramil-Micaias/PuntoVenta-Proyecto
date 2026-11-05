@@ -2,15 +2,8 @@ namespace GU_Tercero
 {
     partial class FormMenu
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@ namespace GU_Tercero
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
@@ -42,7 +31,6 @@ namespace GU_Tercero
             comprasToolStripMenuItem = new ToolStripMenuItem();
             cajaToolStripMenuItem = new ToolStripMenuItem();
             tallerToolStripMenuItem = new ToolStripMenuItem();
-            clientesToolStripMenuItem = new ToolStripMenuItem();
             bitacoraToolStripMenuItem = new ToolStripMenuItem();
             lblBienvenido = new Label();
             lblNombreUsuario = new Label();
@@ -60,127 +48,70 @@ namespace GU_Tercero
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogoMenu).BeginInit();
             SuspendLayout();
-            // 
-            // menuStrip1
-            // 
             menuStrip1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             menuStrip1.ImageScalingSize = new Size(32, 32);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, clientesToolStripMenuItem, bitacoraToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { gestionDeUsuariosToolStripMenuItem, productoYStockToolStripMenuItem, proveedoresToolStripMenuItem, ventasToolStripMenuItem, comprasToolStripMenuItem, cajaToolStripMenuItem, tallerToolStripMenuItem, bitacoraToolStripMenuItem, configuraciónToolStripMenuItem, cerrarSesionToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1000, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
-            // 
-            // gestionDeUsuariosToolStripMenuItem
-            // 
             gestionDeUsuariosToolStripMenuItem.Name = "gestionDeUsuariosToolStripMenuItem";
             gestionDeUsuariosToolStripMenuItem.Size = new Size(125, 20);
             gestionDeUsuariosToolStripMenuItem.Text = "Gestion de Usuarios";
             gestionDeUsuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
-            // 
-            // 
-            // 
-            // productoYStockToolStripMenuItem
-            // 
             productoYStockToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { productosToolStripMenuItem, consultaStockToolStripMenuItem });
             productoYStockToolStripMenuItem.Name = "productoYStockToolStripMenuItem";
             productoYStockToolStripMenuItem.Size = new Size(108, 20);
             productoYStockToolStripMenuItem.Text = "Producto y Stock";
-            // 
-            // productosToolStripMenuItem
-            // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
             productosToolStripMenuItem.Size = new Size(200, 22);
             productosToolStripMenuItem.Text = "Productos y Categorías";
             productosToolStripMenuItem.Click += productoYStockToolStripMenuItem_Click;
-            // 
-            // consultaStockToolStripMenuItem
-            // 
             consultaStockToolStripMenuItem.Name = "consultaStockToolStripMenuItem";
             consultaStockToolStripMenuItem.Size = new Size(200, 22);
             consultaStockToolStripMenuItem.Text = "Consulta de Stock";
             consultaStockToolStripMenuItem.Click += consultaStockToolStripMenuItem_Click;
-            // 
-            // configuraciónToolStripMenuItem
-            // 
             configuraciónToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { miPerfilToolStripMenuItem, configuraciónDelSistemaToolStripMenuItem });
             configuraciónToolStripMenuItem.Name = "configuraciónToolStripMenuItem";
             configuraciónToolStripMenuItem.Size = new Size(96, 20);
             configuraciónToolStripMenuItem.Text = "Configuración";
-            // 
-            // miPerfilToolStripMenuItem
-            // 
             miPerfilToolStripMenuItem.Name = "miPerfilToolStripMenuItem";
             miPerfilToolStripMenuItem.Size = new Size(215, 22);
             miPerfilToolStripMenuItem.Text = "Mi Perfil";
             miPerfilToolStripMenuItem.Click += miPerfilToolStripMenuItem_Click;
-            // 
-            // configuraciónDelSistemaToolStripMenuItem
-            // 
             configuraciónDelSistemaToolStripMenuItem.Name = "configuraciónDelSistemaToolStripMenuItem";
             configuraciónDelSistemaToolStripMenuItem.Size = new Size(215, 22);
             configuraciónDelSistemaToolStripMenuItem.Text = "Configuración del Sistema";
             configuraciónDelSistemaToolStripMenuItem.Click += configuraciónDelSistemaToolStripMenuItem_Click;
-            // 
-            // cerrarSesionToolStripMenuItem
-            // 
             cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
             cerrarSesionToolStripMenuItem.Size = new Size(92, 20);
             cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             cerrarSesionToolStripMenuItem.Click += cerrarSesionToolStripMenuItem_Click;
-            // 
-            // proveedoresToolStripMenuItem
-            // 
             proveedoresToolStripMenuItem.Name = "proveedoresToolStripMenuItem";
             proveedoresToolStripMenuItem.Size = new Size(86, 20);
             proveedoresToolStripMenuItem.Text = "Proveedores";
             proveedoresToolStripMenuItem.Click += proveedoresToolStripMenuItem_Click;
-            // 
-            // ventasToolStripMenuItem
-            // 
             ventasToolStripMenuItem.Name = "ventasToolStripMenuItem";
             ventasToolStripMenuItem.Size = new Size(112, 20);
             ventasToolStripMenuItem.Text = "Ventas (POS)";
             ventasToolStripMenuItem.Click += ventasToolStripMenuItem_Click;
-            // 
-            // comprasToolStripMenuItem
-            // 
             comprasToolStripMenuItem.Name = "comprasToolStripMenuItem";
             comprasToolStripMenuItem.Size = new Size(78, 20);
             comprasToolStripMenuItem.Text = "Compras";
             comprasToolStripMenuItem.Click += comprasToolStripMenuItem_Click;
-            // 
-            // cajaToolStripMenuItem
-            // 
             cajaToolStripMenuItem.Name = "cajaToolStripMenuItem";
             cajaToolStripMenuItem.Size = new Size(84, 20);
             cajaToolStripMenuItem.Text = "Caja Diaria";
             cajaToolStripMenuItem.Click += cajaToolStripMenuItem_Click;
-            // 
-            // tallerToolStripMenuItem
-            // 
             tallerToolStripMenuItem.Name = "tallerToolStripMenuItem";
             tallerToolStripMenuItem.Size = new Size(58, 20);
             tallerToolStripMenuItem.Text = "Taller";
             tallerToolStripMenuItem.Click += tallerToolStripMenuItem_Click;
-            //
-            // clientesToolStripMenuItem
-            //
-            clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(70, 20);
-            clientesToolStripMenuItem.Text = "Clientes";
-            clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
-            //
-            // bitacoraToolStripMenuItem
-            //
             bitacoraToolStripMenuItem.Name = "bitacoraToolStripMenuItem";
             bitacoraToolStripMenuItem.Size = new Size(64, 20);
             bitacoraToolStripMenuItem.Text = "Bitácora";
             bitacoraToolStripMenuItem.Click += bitacoraToolStripMenuItem_Click;
-            // 
-            // lblBienvenido
-            // 
             lblBienvenido.AutoSize = true;
             lblBienvenido.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
             lblBienvenido.ForeColor = Color.FromArgb(15, 23, 42);
@@ -189,9 +120,6 @@ namespace GU_Tercero
             lblBienvenido.Size = new Size(110, 25);
             lblBienvenido.TabIndex = 1;
             lblBienvenido.Text = "Bienvenido,";
-            // 
-            // lblNombreUsuario
-            // 
             lblNombreUsuario.AutoSize = true;
             lblNombreUsuario.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
             lblNombreUsuario.ForeColor = Color.FromArgb(37, 99, 235);
@@ -200,9 +128,6 @@ namespace GU_Tercero
             lblNombreUsuario.Size = new Size(64, 25);
             lblNombreUsuario.TabIndex = 2;
             lblNombreUsuario.Text = "admin";
-            // 
-            // picLogoMenu
-            // 
             picLogoMenu.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             picLogoMenu.BackColor = Color.Transparent;
             picLogoMenu.Location = new Point(648, 410);
@@ -210,9 +135,6 @@ namespace GU_Tercero
             picLogoMenu.Size = new Size(328, 170);
             picLogoMenu.TabIndex = 3;
             picLogoMenu.TabStop = false;
-            // 
-            // lblResumen
-            // 
             lblResumen.AutoSize = true;
             lblResumen.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblResumen.ForeColor = Color.FromArgb(15, 23, 42);
@@ -221,9 +143,6 @@ namespace GU_Tercero
             lblResumen.Size = new Size(296, 30);
             lblResumen.TabIndex = 4;
             lblResumen.Text = "Resumen de Actividad Diaria";
-            // 
-            // tlpPaneles
-            // 
             tlpPaneles.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tlpPaneles.ColumnCount = 2;
             tlpPaneles.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -235,9 +154,6 @@ namespace GU_Tercero
             tlpPaneles.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpPaneles.Size = new Size(600, 440);
             tlpPaneles.TabIndex = 5;
-            // 
-            // grpAccesos
-            // 
             grpAccesos.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             grpAccesos.Controls.Add(flpAccesos);
             grpAccesos.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
@@ -248,9 +164,6 @@ namespace GU_Tercero
             grpAccesos.TabIndex = 6;
             grpAccesos.TabStop = false;
             grpAccesos.Text = "Accesos Rápidos";
-            // 
-            // flpAccesos
-            // 
             flpAccesos.Controls.Add(btnAccesoVenta);
             flpAccesos.Controls.Add(btnAccesoTaller);
             flpAccesos.Controls.Add(btnAccesoStock);
@@ -263,9 +176,6 @@ namespace GU_Tercero
             flpAccesos.Padding = new Padding(8);
             flpAccesos.TabIndex = 0;
             flpAccesos.WrapContents = false;
-            // 
-            // btnAccesoVenta
-            // 
             btnAccesoVenta.BackColor = Color.White;
             btnAccesoVenta.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnAccesoVenta.FlatStyle = FlatStyle.Flat;
@@ -278,9 +188,6 @@ namespace GU_Tercero
             btnAccesoVenta.Text = "Registrar Venta";
             btnAccesoVenta.UseVisualStyleBackColor = false;
             btnAccesoVenta.Click += ventasToolStripMenuItem_Click;
-            // 
-            // btnAccesoTaller
-            // 
             btnAccesoTaller.BackColor = Color.White;
             btnAccesoTaller.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnAccesoTaller.FlatStyle = FlatStyle.Flat;
@@ -293,9 +200,6 @@ namespace GU_Tercero
             btnAccesoTaller.Text = "Ingresar Equipo a Taller";
             btnAccesoTaller.UseVisualStyleBackColor = false;
             btnAccesoTaller.Click += tallerToolStripMenuItem_Click;
-            // 
-            // btnAccesoStock
-            // 
             btnAccesoStock.BackColor = Color.White;
             btnAccesoStock.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnAccesoStock.FlatStyle = FlatStyle.Flat;
@@ -308,9 +212,6 @@ namespace GU_Tercero
             btnAccesoStock.Text = "Verificar Alertas de Stock";
             btnAccesoStock.UseVisualStyleBackColor = false;
             btnAccesoStock.Click += btnAccesoStock_Click;
-            // 
-            // btnAccesoCompra
-            // 
             btnAccesoCompra.BackColor = Color.White;
             btnAccesoCompra.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnAccesoCompra.FlatStyle = FlatStyle.Flat;
@@ -323,9 +224,6 @@ namespace GU_Tercero
             btnAccesoCompra.Text = "Registrar Compra";
             btnAccesoCompra.UseVisualStyleBackColor = false;
             btnAccesoCompra.Click += comprasToolStripMenuItem_Click;
-            // 
-            // FormMenu
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);
@@ -371,7 +269,6 @@ namespace GU_Tercero
         private ToolStripMenuItem comprasToolStripMenuItem;
         private ToolStripMenuItem cajaToolStripMenuItem;
         private ToolStripMenuItem tallerToolStripMenuItem;
-        private ToolStripMenuItem clientesToolStripMenuItem;
         private ToolStripMenuItem bitacoraToolStripMenuItem;
         private ToolStripMenuItem miPerfilToolStripMenuItem;
         private Label lblResumen;

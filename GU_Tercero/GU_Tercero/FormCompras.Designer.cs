@@ -50,9 +50,6 @@ namespace Vista
             grpDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDetalle).BeginInit();
             SuspendLayout();
-            // 
-            // panelHeader
-            // 
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -60,9 +57,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1080, 56);
             panelHeader.TabIndex = 0;
-            // 
-            // lblTitulo
-            // 
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -71,9 +65,6 @@ namespace Vista
             lblTitulo.Size = new Size(513, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "REGISTRO DE COMPRAS (INGRESO DE MERCADERÍA)";
-            // 
-            // grpProveedor
-            // 
             grpProveedor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpProveedor.Controls.Add(cmbProveedor);
             grpProveedor.Controls.Add(lblProveedor);
@@ -84,9 +75,6 @@ namespace Vista
             grpProveedor.Size = new Size(1048, 64);
             grpProveedor.TabIndex = 0;
             grpProveedor.TabStop = false;
-            // 
-            // cmbProveedor
-            // 
             cmbProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProveedor.Font = new Font("Segoe UI", 9.5F);
             cmbProveedor.FormattingEnabled = true;
@@ -94,9 +82,6 @@ namespace Vista
             cmbProveedor.Name = "cmbProveedor";
             cmbProveedor.Size = new Size(300, 25);
             cmbProveedor.TabIndex = 1;
-            // 
-            // lblProveedor
-            // 
             lblProveedor.AutoSize = true;
             lblProveedor.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblProveedor.ForeColor = Color.FromArgb(30, 41, 59);
@@ -105,9 +90,6 @@ namespace Vista
             lblProveedor.Size = new Size(75, 17);
             lblProveedor.TabIndex = 0;
             lblProveedor.Text = "Proveedor:";
-            // 
-            // cmbMetodoPago
-            // 
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Font = new Font("Segoe UI", 9.5F);
             cmbMetodoPago.FormattingEnabled = true;
@@ -115,9 +97,6 @@ namespace Vista
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(200, 25);
             cmbMetodoPago.TabIndex = 3;
-            // 
-            // lblMetodoPago
-            // 
             lblMetodoPago.AutoSize = true;
             lblMetodoPago.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblMetodoPago.ForeColor = Color.FromArgb(30, 41, 59);
@@ -126,9 +105,6 @@ namespace Vista
             lblMetodoPago.Size = new Size(170, 17);
             lblMetodoPago.TabIndex = 2;
             lblMetodoPago.Text = "Pagos (método e importe):";
-            // 
-            // grpAgregar
-            // 
             grpAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpAgregar.Controls.Add(btnAgregarDetalle);
             grpAgregar.Controls.Add(lblMetodoPago);
@@ -152,9 +128,6 @@ namespace Vista
             grpAgregar.TabIndex = 1;
             grpAgregar.TabStop = false;
             grpAgregar.Text = "Agregar Insumos/Productos";
-            // 
-            // btnAgregarDetalle
-            // 
             btnAgregarDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnAgregarDetalle.BackColor = Color.FromArgb(37, 99, 235);
             btnAgregarDetalle.FlatAppearance.BorderSize = 0;
@@ -167,9 +140,6 @@ namespace Vista
             btnAgregarDetalle.TabIndex = 6;
             btnAgregarDetalle.Text = "Agregar al Detalle";
             btnAgregarDetalle.UseVisualStyleBackColor = false;
-            // 
-            // lblMensaje
-            // 
             lblMensaje.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblMensaje.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             lblMensaje.ForeColor = Color.FromArgb(16, 185, 129);
@@ -177,9 +147,6 @@ namespace Vista
             lblMensaje.Name = "lblMensaje";
             lblMensaje.Size = new Size(398, 62);
             lblMensaje.TabIndex = 7;
-            // 
-            // txtCantidad
-            // 
             txtCantidad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtCantidad.Font = new Font("Segoe UI", 9.5F);
             txtCantidad.Location = new Point(16, 174);
@@ -187,9 +154,6 @@ namespace Vista
             txtCantidad.PlaceholderText = "Unidades recibidas. Ej: 10";
             txtCantidad.Size = new Size(398, 24);
             txtCantidad.TabIndex = 5;
-            // 
-            // lblCantidad
-            // 
             lblCantidad.AutoSize = true;
             lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCantidad.ForeColor = Color.FromArgb(30, 41, 59);
@@ -198,9 +162,6 @@ namespace Vista
             lblCantidad.Size = new Size(119, 17);
             lblCantidad.TabIndex = 4;
             lblCantidad.Text = "Cantidad Recibida:";
-            // 
-            // txtCosto
-            // 
             txtCosto.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtCosto.Font = new Font("Segoe UI", 9.5F);
             txtCosto.Location = new Point(16, 112);
@@ -208,9 +169,6 @@ namespace Vista
             txtCosto.PlaceholderText = "Costo por unidad. Ej: 12500";
             txtCosto.Size = new Size(398, 24);
             txtCosto.TabIndex = 3;
-            // 
-            // lblCosto
-            // 
             lblCosto.AutoSize = true;
             lblCosto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblCosto.ForeColor = Color.FromArgb(30, 41, 59);
@@ -219,9 +177,6 @@ namespace Vista
             lblCosto.Size = new Size(97, 17);
             lblCosto.TabIndex = 2;
             lblCosto.Text = "Costo Unit. ($):";
-            // 
-            // cmbProducto
-            // 
             cmbProducto.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cmbProducto.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProducto.Font = new Font("Segoe UI", 9.5F);
@@ -230,9 +185,6 @@ namespace Vista
             cmbProducto.Name = "cmbProducto";
             cmbProducto.Size = new Size(398, 25);
             cmbProducto.TabIndex = 1;
-            // 
-            // lblProducto
-            // 
             lblProducto.AutoSize = true;
             lblProducto.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblProducto.ForeColor = Color.FromArgb(30, 41, 59);
@@ -241,18 +193,12 @@ namespace Vista
             lblProducto.Size = new Size(67, 17);
             lblProducto.TabIndex = 0;
             lblProducto.Text = "Producto:";
-            // 
-            // txtImportePago
-            //
             txtImportePago.Font = new Font("Segoe UI", 9.5F);
             txtImportePago.Location = new Point(222, 370);
             txtImportePago.Name = "txtImportePago";
             txtImportePago.PlaceholderText = "Importe";
             txtImportePago.Size = new Size(110, 24);
             txtImportePago.TabIndex = 9;
-            //
-            // btnAgregarPago
-            //
             btnAgregarPago.BackColor = Color.FromArgb(37, 99, 235);
             btnAgregarPago.FlatAppearance.BorderSize = 0;
             btnAgregarPago.FlatStyle = FlatStyle.Flat;
@@ -264,18 +210,12 @@ namespace Vista
             btnAgregarPago.TabIndex = 10;
             btnAgregarPago.Text = "Agregar";
             btnAgregarPago.UseVisualStyleBackColor = false;
-            //
-            // dgvPagos
-            //
             dgvPagos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPagos.Location = new Point(16, 402);
             dgvPagos.Name = "dgvPagos";
             dgvPagos.Size = new Size(398, 72);
             dgvPagos.TabIndex = 11;
-            //
-            // lblFaltaPagar
-            //
             lblFaltaPagar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblFaltaPagar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             lblFaltaPagar.ForeColor = Color.FromArgb(100, 116, 139);
@@ -284,9 +224,6 @@ namespace Vista
             lblFaltaPagar.Size = new Size(398, 20);
             lblFaltaPagar.TabIndex = 12;
             lblFaltaPagar.Text = "Sin pagos agregados se paga todo con el método elegido.";
-            //
-            // grpDetalle
-            // 
             grpDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpDetalle.Controls.Add(dgvDetalle);
             grpDetalle.Controls.Add(lblTotalTitulo);
@@ -302,9 +239,6 @@ namespace Vista
             grpDetalle.TabIndex = 2;
             grpDetalle.TabStop = false;
             grpDetalle.Text = "Detalle del Ingreso";
-            // 
-            // dgvDetalle
-            // 
             dgvDetalle.AllowUserToAddRows = false;
             dgvDetalle.AllowUserToDeleteRows = false;
             dgvDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -320,9 +254,6 @@ namespace Vista
             dgvDetalle.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDetalle.Size = new Size(578, 352);
             dgvDetalle.TabIndex = 0;
-            // 
-            // lblTotalTitulo
-            // 
             lblTotalTitulo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalTitulo.AutoSize = true;
             lblTotalTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -332,9 +263,6 @@ namespace Vista
             lblTotalTitulo.Size = new Size(56, 21);
             lblTotalTitulo.TabIndex = 1;
             lblTotalTitulo.Text = "TOTAL";
-            // 
-            // lblTotalValor
-            // 
             lblTotalValor.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalValor.AutoSize = true;
             lblTotalValor.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
@@ -344,9 +272,6 @@ namespace Vista
             lblTotalValor.Size = new Size(71, 30);
             lblTotalValor.TabIndex = 2;
             lblTotalValor.Text = "$0,00";
-            // 
-            // btnVolver
-            // 
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -359,9 +284,6 @@ namespace Vista
             btnVolver.TabIndex = 3;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            // 
-            // btnCancelar
-            // 
             btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancelar.BackColor = Color.FromArgb(239, 68, 68);
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -374,9 +296,6 @@ namespace Vista
             btnCancelar.TabIndex = 4;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            // 
-            // btnRegistrar
-            // 
             btnRegistrar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRegistrar.BackColor = Color.FromArgb(16, 185, 129);
             btnRegistrar.FlatAppearance.BorderSize = 0;
@@ -389,9 +308,6 @@ namespace Vista
             btnRegistrar.TabIndex = 5;
             btnRegistrar.Text = "Registrar Compra";
             btnRegistrar.UseVisualStyleBackColor = false;
-            // 
-            // FormCompras
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

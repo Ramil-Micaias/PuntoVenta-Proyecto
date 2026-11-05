@@ -3,10 +3,8 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // Estilo y comportamiento comunes para las grillas del sistema.
     public static class Grillas
     {
-        // Aplica el estilo de la aplicación y oculta las columnas de ID cada vez que la grilla se carga.
         public static void Configurar(DataGridView grid)
         {
             grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -32,7 +30,6 @@ namespace Vista
             grid.DataBindingComplete += Grilla_DataBindingComplete;
         }
 
-        // Alto de fila según la fuente, para que el texto no se corte con escalado de pantalla alto.
         public static int AltoFila(DataGridView grid)
         {
             return grid.DefaultCellStyle.Font.Height + 12;
@@ -46,7 +43,6 @@ namespace Vista
             TitulosLegibles(grid);
         }
 
-        // Oculta todas las columnas de identificadores internos (Id_...).
         public static void OcultarIds(DataGridView grid)
         {
             foreach (DataGridViewColumn columna in grid.Columns)
@@ -58,8 +54,6 @@ namespace Vista
             }
         }
 
-        // Cambia los nombres de columna de la base por títulos legibles.
-        // Ejemplo: "Razon_Social" pasa a "Razon Social".
         private static void TitulosLegibles(DataGridView grid)
         {
             foreach (DataGridViewColumn columna in grid.Columns)

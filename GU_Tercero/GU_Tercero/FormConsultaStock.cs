@@ -7,14 +7,11 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // CU07: consulta de las existencias de productos y repuestos.
-    // La pueden usar todos los roles; el precio de costo solo lo ve el administrador.
     public partial class FormConsultaStock : Form
     {
         private readonly GestorProducto gestorProducto = new GestorProducto();
         private Usuario? usuarioLogueado;
 
-        // Color de las filas que están en el stock mínimo o por debajo.
         private readonly Color colorStockBajo = Color.FromArgb(254, 226, 226);
 
         public FormConsultaStock()
@@ -29,8 +26,6 @@ namespace Vista
             this.dgvStock.CellFormatting += dgvStock_CellFormatting;
         }
 
-        // soloBajoMinimo: la pantalla abre mostrando solo las alertas de stock
-        // (lo usa el acceso rápido "Verificar Alertas de Stock").
         public FormConsultaStock(Usuario? usuario, bool soloBajoMinimo) : this()
         {
             usuarioLogueado = usuario;
@@ -123,7 +118,6 @@ namespace Vista
             if (dgvStock.Columns.Contains("Precio_Costo"))
             {
                 dgvStock.Columns["Precio_Costo"].DefaultCellStyle.Format = "0.##";
-                // El costo es un dato sensible del negocio: solo lo ve el administrador.
                 dgvStock.Columns["Precio_Costo"].Visible = EsAdministrador();
             }
 
@@ -154,7 +148,6 @@ namespace Vista
             return Convert.ToInt32(stockActual) <= Convert.ToInt32(stockMinimo);
         }
 
-        // Pinta de rojo claro las filas que necesitan reposición.
         private void dgvStock_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvStock.Columns.Contains("Stock_Actual"))
@@ -185,7 +178,6 @@ namespace Vista
 
         private void chkSoloBajoMinimo_CheckedChanged(object sender, EventArgs e)
         {
-            // Mientras la pantalla se está abriendo todavía no hay que consultar.
             if (this.Visible)
                 CargarStock();
         }

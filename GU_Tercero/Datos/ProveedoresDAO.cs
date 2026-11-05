@@ -22,7 +22,6 @@ namespace Datos
             return tabla;
         }
 
-
         public DataTable ObtenerTodosProveedores()
         {
             DataTable tabla = new DataTable();
@@ -38,7 +37,6 @@ namespace Datos
 
             return tabla;
         }
-
 
         public DataTable BuscarProveedores(string filtro)
         {
@@ -59,8 +57,6 @@ namespace Datos
             return tabla;
         }
 
-
-        // Devuelve true si el proveedor ya existía dado de baja y se reactivó.
         public bool RegistrarProveedor(Proveedor proveedor)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -87,7 +83,6 @@ namespace Datos
                 return Convert.ToString(cmd.ExecuteScalar()) == "REACTIVADO";
             }
         }
-
 
         public void ModificarProveedor(Proveedor proveedor)
         {
@@ -122,7 +117,6 @@ namespace Datos
             }
         }
 
-
         public void InactivarProveedor(int idProveedor)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -138,7 +132,6 @@ namespace Datos
             }
         }
 
-        // Vuelve a activar un proveedor dado de baja (sp_ReactivarProveedor).
         public void ReactivarProveedor(int idProveedor)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

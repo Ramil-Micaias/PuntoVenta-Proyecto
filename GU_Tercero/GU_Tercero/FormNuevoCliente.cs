@@ -5,13 +5,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
-    // Alta rápida de un cliente desde la orden de reparación, o corrección de sus datos (modo edición).
     public partial class FormNuevoCliente : Form
     {
-        // Id del cliente que se acaba de crear (lo usa la orden para seleccionarlo).
         public int IdClienteNuevo { get; private set; }
 
-        // 0 = alta de un cliente nuevo; mayor a 0 = se corrigen los datos de ese cliente.
         private readonly int idClienteEditado;
 
         public FormNuevoCliente()
@@ -19,7 +16,6 @@ namespace Vista
             InitializeComponent();
         }
 
-        // Modo edición: muestra los datos actuales del cliente para corregirlos.
         public FormNuevoCliente(int idCliente) : this()
         {
             idClienteEditado = idCliente;

@@ -1,8 +1,3 @@
-; Instalador de AplBigStore (se compila con Inno Setup 6).
-; Antes de compilar: publicar el programa en la carpeta "publicado"
-;   dotnet publish ..\GU_Tercero\GU_Tercero\Vista.csproj -c Release -r win-x64 --self-contained true -o publicado
-; Resultado: Instalar_AplBigStore.exe en esta misma carpeta.
-
 #define NombreApp "AplBigStore"
 #define VersionApp "1.0"
 #define ExeApp "Vista.exe"
@@ -36,11 +31,9 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "escritorio"; Description: "Crear un acceso directo en el Escritorio"; GroupDescription: "Accesos directos:"
 
 [Files]
-; Programa publicado (incluye .NET 8, no hace falta instalarlo aparte)
 Source: "publicado\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\GU_Tercero\GU_Tercero\loguito trtansparente.png"; DestDir: "{app}"; Flags: ignoreversion
 Source: "AplBigStore.ico"; DestDir: "{app}"; Flags: ignoreversion
-; Scripts de la base de datos
 Source: "..\ScriptsBD\*.sql"; DestDir: "{app}\ScriptsBD"; Flags: ignoreversion
 Source: "..\ScriptsBD\ejecutar_todo.bat"; DestDir: "{app}\ScriptsBD"; Flags: ignoreversion
 
@@ -55,7 +48,6 @@ Filename: "{app}\ScriptsBD\ejecutar_todo.bat"; WorkingDir: "{app}\ScriptsBD"; De
 Filename: "{app}\{#ExeApp}"; WorkingDir: "{app}"; Description: "Abrir {#NombreApp}"; Flags: postinstall nowait skipifsilent unchecked
 
 [Code]
-// El programa se conecta a la instancia .\SQLEXPRESS. Si no está instalada, se avisa antes de seguir.
 function SqlExpressInstalado(): Boolean;
 var
   Valor: String;

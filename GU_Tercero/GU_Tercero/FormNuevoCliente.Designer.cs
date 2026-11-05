@@ -31,9 +31,6 @@ namespace Vista
             btnCancelar = new Button();
             panelHeader.SuspendLayout();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -41,9 +38,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(420, 50);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -52,9 +46,6 @@ namespace Vista
             lblTitulo.Size = new Size(141, 25);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "NUEVO CLIENTE";
-            //
-            // lblApellido
-            //
             lblApellido.AutoSize = true;
             lblApellido.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblApellido.ForeColor = Color.FromArgb(30, 41, 59);
@@ -63,9 +54,6 @@ namespace Vista
             lblApellido.Size = new Size(60, 17);
             lblApellido.TabIndex = 0;
             lblApellido.Text = "Apellido:";
-            //
-            // txtApellido
-            //
             txtApellido.Font = new Font("Segoe UI", 9.5F);
             txtApellido.Location = new Point(130, 70);
             txtApellido.MaxLength = 50;
@@ -73,9 +61,6 @@ namespace Vista
             txtApellido.PlaceholderText = "Ej: Gómez";
             txtApellido.Size = new Size(260, 24);
             txtApellido.TabIndex = 1;
-            //
-            // lblNombre
-            //
             lblNombre.AutoSize = true;
             lblNombre.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblNombre.ForeColor = Color.FromArgb(30, 41, 59);
@@ -84,9 +69,6 @@ namespace Vista
             lblNombre.Size = new Size(59, 17);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
-            //
-            // txtNombre
-            //
             txtNombre.Font = new Font("Segoe UI", 9.5F);
             txtNombre.Location = new Point(130, 108);
             txtNombre.MaxLength = 50;
@@ -94,9 +76,6 @@ namespace Vista
             txtNombre.PlaceholderText = "Ej: Ana";
             txtNombre.Size = new Size(260, 24);
             txtNombre.TabIndex = 2;
-            //
-            // lblDni
-            //
             lblDni.AutoSize = true;
             lblDni.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblDni.ForeColor = Color.FromArgb(30, 41, 59);
@@ -105,9 +84,6 @@ namespace Vista
             lblDni.Size = new Size(33, 17);
             lblDni.TabIndex = 0;
             lblDni.Text = "DNI:";
-            //
-            // txtDni
-            //
             txtDni.Font = new Font("Segoe UI", 9.5F);
             txtDni.Location = new Point(130, 146);
             txtDni.MaxLength = 8;
@@ -115,9 +91,6 @@ namespace Vista
             txtDni.PlaceholderText = "Sin puntos. Ej: 40111222";
             txtDni.Size = new Size(260, 24);
             txtDni.TabIndex = 3;
-            //
-            // lblTelefono
-            //
             lblTelefono.AutoSize = true;
             lblTelefono.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             lblTelefono.ForeColor = Color.FromArgb(30, 41, 59);
@@ -126,9 +99,6 @@ namespace Vista
             lblTelefono.Size = new Size(62, 17);
             lblTelefono.TabIndex = 0;
             lblTelefono.Text = "Teléfono:";
-            //
-            // txtTelefono
-            //
             txtTelefono.Font = new Font("Segoe UI", 9.5F);
             txtTelefono.Location = new Point(130, 184);
             txtTelefono.MaxLength = 15;
@@ -136,9 +106,6 @@ namespace Vista
             txtTelefono.PlaceholderText = "Opcional. Ej: 1155550000";
             txtTelefono.Size = new Size(260, 24);
             txtTelefono.TabIndex = 4;
-            //
-            // btnGuardar
-            //
             btnGuardar.BackColor = Color.FromArgb(16, 185, 129);
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.FlatStyle = FlatStyle.Flat;
@@ -151,9 +118,6 @@ namespace Vista
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
-            //
-            // btnCancelar
-            //
             btnCancelar.BackColor = Color.FromArgb(100, 116, 139);
             btnCancelar.DialogResult = DialogResult.Cancel;
             btnCancelar.FlatAppearance.BorderSize = 0;
@@ -166,9 +130,6 @@ namespace Vista
             btnCancelar.TabIndex = 6;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            //
-            // FormNuevoCliente
-            //
             AcceptButton = btnGuardar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;

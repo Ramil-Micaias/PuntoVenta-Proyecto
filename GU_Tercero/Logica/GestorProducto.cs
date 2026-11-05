@@ -20,7 +20,6 @@ namespace Logica
                 GestorBitacora.INFORMATIVA, null, EstadoProducto(producto));
         }
 
-        // Datos del producto para la bitácora.
         private static Dictionary<string, object?> EstadoProducto(Producto producto)
         {
             return new Dictionary<string, object?>
@@ -63,7 +62,6 @@ namespace Logica
                 new Dictionary<string, object?> { ["Activo"] = true }, new Dictionary<string, object?> { ["Activo"] = false });
         }
 
-        // Vuelve a activar un producto dado de baja (no se permite si hay otro activo con el mismo nombre).
         public void ActivarProducto(int idProducto)
         {
             if (idProducto <= 0)
@@ -162,7 +160,6 @@ namespace Logica
             if (producto.Nombre_Producto.Length < 3 || producto.Nombre_Producto.Length > 50)
                 throw new Exception("El nombre del producto debe tener entre 3 y 50 caracteres.");
 
-            // Un nombre hecho solo de números o símbolos no describe un producto.
             if (!producto.Nombre_Producto.Any(char.IsLetter))
                 throw new Exception("El nombre del producto debe contener letras.");
 
@@ -174,7 +171,6 @@ namespace Logica
             if (producto.Descripcion.Length > 120)
                 throw new Exception("La descripción no puede superar los 120 caracteres.");
 
-            // Cada producto tiene que tener un proveedor asociado.
             if (producto.Id_Proveedor == null || producto.Id_Proveedor <= 0)
                 throw new Exception("Debe seleccionar el proveedor del producto.");
 

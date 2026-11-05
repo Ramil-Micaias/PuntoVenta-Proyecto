@@ -25,9 +25,6 @@ namespace Vista
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvBitacora).BeginInit();
             SuspendLayout();
-            //
-            // panelHeader
-            //
             panelHeader.BackColor = Color.FromArgb(15, 23, 42);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Dock = DockStyle.Top;
@@ -35,9 +32,6 @@ namespace Vista
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1100, 56);
             panelHeader.TabIndex = 0;
-            //
-            // lblTitulo
-            //
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
@@ -46,18 +40,12 @@ namespace Vista
             lblTitulo.Size = new Size(250, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "BITÁCORA DEL SISTEMA";
-            //
-            // dgvBitacora
-            //
             dgvBitacora.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvBitacora.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBitacora.Location = new Point(16, 72);
             dgvBitacora.Name = "dgvBitacora";
             dgvBitacora.Size = new Size(1068, 500);
             dgvBitacora.TabIndex = 1;
-            //
-            // lblCantidad
-            //
             lblCantidad.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblCantidad.AutoSize = true;
             lblCantidad.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
@@ -67,9 +55,6 @@ namespace Vista
             lblCantidad.Size = new Size(160, 17);
             lblCantidad.TabIndex = 2;
             lblCantidad.Text = "Movimientos: 0";
-            //
-            // btnVolver
-            //
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVolver.BackColor = Color.FromArgb(100, 116, 139);
             btnVolver.FlatAppearance.BorderSize = 0;
@@ -82,9 +67,6 @@ namespace Vista
             btnVolver.TabIndex = 3;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = false;
-            //
-            // FormBitacora
-            //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(241, 245, 249);

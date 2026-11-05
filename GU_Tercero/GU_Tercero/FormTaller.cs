@@ -8,14 +8,11 @@ using Vista;
 
 namespace GU_Tercero
 {
-    // CU08: consulta de órdenes de reparación.
-    // Desde acá se registra una orden nueva (CU05) y se abre una existente para actualizarla (CU09).
     public partial class FormTaller : Form
     {
         private readonly GestorTaller gestorTaller = new GestorTaller();
         private Usuario? usuarioLogueado;
 
-        // Color de las órdenes pendientes cuya fecha prometida ya pasó.
         private readonly Color colorVencida = Color.FromArgb(254, 226, 226);
 
         public FormTaller()
@@ -49,7 +46,6 @@ namespace GU_Tercero
             Grillas.Configurar(dgvOrdenes);
             CargarFiltros();
 
-            // El técnico arranca viendo solo las órdenes que tiene asignadas.
             if (EsTecnico())
             {
                 chkMisOrdenes.Visible = true;
@@ -114,7 +110,6 @@ namespace GU_Tercero
                 int? idEstado = ValorSeleccionado(cmbEstado);
                 int? idTecnico = ValorSeleccionado(cmbTecnico);
 
-                // "Solo mis órdenes" pisa el combo de técnico.
                 cmbTecnico.Enabled = !chkMisOrdenes.Checked;
                 if (chkMisOrdenes.Checked && usuarioLogueado != null)
                 {
@@ -166,7 +161,6 @@ namespace GU_Tercero
                 dgvOrdenes.Columns["Total"].DefaultCellStyle.Format = "0.##";
         }
 
-        // Una orden está vencida si sigue pendiente y la fecha prometida ya pasó.
         private static bool EstaVencida(object prometida, object estado)
         {
             if (prometida == null || prometida == DBNull.Value)
@@ -215,7 +209,6 @@ namespace GU_Tercero
                 {
                     CargarOrdenes();
 
-                    // El resultado de la orden queda escrito en esta pantalla.
                     Mensajes.Exito(lblResultado, formOrden.MensajeResultado);
                 }
             }
@@ -254,7 +247,6 @@ namespace GU_Tercero
 
         private void Filtro_CheckedChanged(object sender, EventArgs e)
         {
-            // Mientras la pantalla se está abriendo todavía no hay que consultar.
             if (this.Visible)
                 CargarOrdenes();
         }
