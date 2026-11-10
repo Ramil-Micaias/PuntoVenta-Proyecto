@@ -15,8 +15,14 @@ namespace Logica
             return configuracionDAO.ObtenerConfiguracion();
         }
 
+        public const int MINIMO_PREGUNTAS_RECUPERAR = 2;
+        public const int MAXIMO_PREGUNTAS_RECUPERAR = 3;
+
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
+            if (configuracion.Cantidad_Preguntas < MINIMO_PREGUNTAS_RECUPERAR || configuracion.Cantidad_Preguntas > MAXIMO_PREGUNTAS_RECUPERAR)
+                throw new Exception("La cantidad de preguntas al recuperar debe ser " + MINIMO_PREGUNTAS_RECUPERAR + " o " + MAXIMO_PREGUNTAS_RECUPERAR + ".");
+
             var antes = GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion());
 
             configuracionDAO.GuardarConfiguracion(configuracion);

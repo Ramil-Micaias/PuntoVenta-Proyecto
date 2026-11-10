@@ -49,7 +49,7 @@ namespace GU_Tercero
             if (EsTecnico())
             {
                 chkMisOrdenes.Visible = true;
-                chkMisOrdenes.Checked = true;
+                chkMisOrdenes.Checked = false;
             }
 
             CargarOrdenes();
@@ -110,17 +110,21 @@ namespace GU_Tercero
                 int? idEstado = ValorSeleccionado(cmbEstado);
                 int? idTecnico = ValorSeleccionado(cmbTecnico);
 
+                int? idUsuarioPropio = null;
+
                 cmbTecnico.Enabled = !chkMisOrdenes.Checked;
                 if (chkMisOrdenes.Checked && usuarioLogueado != null)
                 {
-                    idTecnico = usuarioLogueado.Id_Usuario;
+                    idTecnico = null;
+                    idUsuarioPropio = usuarioLogueado.Id_Usuario;
                 }
 
                 DataTable ordenes = gestorTaller.ConsultarOrdenes(
                     txtBuscar.Text.Trim(),
                     idEstado,
                     idTecnico,
-                    chkSoloPendientes.Checked
+                    chkSoloPendientes.Checked,
+                    idUsuarioPropio
                 );
 
                 dgvOrdenes.DataSource = ordenes;
@@ -156,6 +160,9 @@ namespace GU_Tercero
 
             if (dgvOrdenes.Columns.Contains("Tecnico"))
                 dgvOrdenes.Columns["Tecnico"].HeaderText = "Técnico";
+
+            if (dgvOrdenes.Columns.Contains("Recibio"))
+                dgvOrdenes.Columns["Recibio"].HeaderText = "Recibió";
 
             if (dgvOrdenes.Columns.Contains("Total"))
                 dgvOrdenes.Columns["Total"].DefaultCellStyle.Format = "0.##";

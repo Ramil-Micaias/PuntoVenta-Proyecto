@@ -377,7 +377,8 @@ CREATE OR ALTER PROCEDURE sp_ConsultarOrdenes
     @Filtro NVARCHAR(100) = '',
     @Id_Estado INT = NULL,
     @Id_Tecnico INT = NULL,
-    @Solo_Pendientes BIT = 0
+    @Solo_Pendientes BIT = 0,
+    @Id_Usuario_Propio INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -391,6 +392,7 @@ BEGIN
         pc.Apellido + ', ' + pc.Nombre AS Cliente,
         eq.Marca + ' ' + eq.Modelo AS Equipo,
         ISNULL(pt.Apellido + ', ' + pt.Nombre, 'Sin asignar') AS Tecnico,
+        pr.Apellido + ', ' + pr.Nombre AS Recibio,
         e.Nombre_Estado AS Estado,
         o.Fecha_Prometida AS Prometida,
         o.Total_Presupuesto AS Total
@@ -401,8 +403,11 @@ BEGIN
     INNER JOIN EstadoOrden e ON e.Id_Estado = o.Id_Estado
     LEFT JOIN Usuario ut ON ut.Id_Usuario = o.Id_Tecnico
     LEFT JOIN Persona pt ON pt.Id_Persona = ut.Id_Persona
+    LEFT JOIN Usuario urc ON urc.Id_Usuario = o.Id_Usuario_Recepcion
+    LEFT JOIN Persona pr ON pr.Id_Persona = urc.Id_Persona
     WHERE (@Id_Estado IS NULL OR o.Id_Estado = @Id_Estado)
       AND (@Id_Tecnico IS NULL OR o.Id_Tecnico = @Id_Tecnico)
+      AND (@Id_Usuario_Propio IS NULL OR o.Id_Tecnico = @Id_Usuario_Propio OR o.Id_Usuario_Recepcion = @Id_Usuario_Propio)
       AND (@Solo_Pendientes = 0 OR e.Nombre_Estado NOT IN ('Entregado', 'Cancelado'))
       AND (
             @Filtro = ''

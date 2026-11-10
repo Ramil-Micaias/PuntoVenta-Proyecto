@@ -19,7 +19,7 @@ namespace GU_Tercero
 
             nudCantidadMinimaCaracteres.Value = configuracion.Min_Caracteres;
 
-            nudCantidadPreguntas.Value = configuracion.Cantidad_Preguntas;
+            nudCantidadPreguntas.Value = Math.Max(nudCantidadPreguntas.Minimum, Math.Min(nudCantidadPreguntas.Maximum, configuracion.Cantidad_Preguntas));
 
             nudHistorialCantidadContraseña.Value = configuracion.Cantidad_HistorialPasswords;
 

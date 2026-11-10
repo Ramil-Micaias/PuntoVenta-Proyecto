@@ -101,9 +101,9 @@ namespace Logica
             return tallerDAO.GuardarOrden(orden);
         }
 
-        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes)
+        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes, int? idUsuarioPropio = null)
         {
-            return tallerDAO.ConsultarOrdenes(filtro, idEstado, idTecnico, soloPendientes);
+            return tallerDAO.ConsultarOrdenes(filtro, idEstado, idTecnico, soloPendientes, idUsuarioPropio);
         }
 
         public DataTable ObtenerOrden(int idOrden)

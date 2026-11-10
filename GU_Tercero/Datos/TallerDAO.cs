@@ -234,7 +234,7 @@ namespace Datos
             return JsonSerializer.Serialize(items);
         }
 
-        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes)
+        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes, int? idUsuarioPropio = null)
         {
             DataTable tabla = new DataTable();
 
@@ -249,6 +249,8 @@ namespace Datos
                 cmd.Parameters.Add("@Id_Tecnico", SqlDbType.Int).Value =
                     idTecnico.HasValue ? idTecnico.Value : DBNull.Value;
                 cmd.Parameters.Add("@Solo_Pendientes", SqlDbType.Bit).Value = soloPendientes;
+                cmd.Parameters.Add("@Id_Usuario_Propio", SqlDbType.Int).Value =
+                    idUsuarioPropio.HasValue ? idUsuarioPropio.Value : DBNull.Value;
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tabla);

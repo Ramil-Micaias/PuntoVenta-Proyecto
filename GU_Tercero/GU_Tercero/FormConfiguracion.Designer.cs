@@ -101,6 +101,8 @@ namespace GU_Tercero
             lblCantidadPreguntas.Text = "Preguntas al recuperar:";
             nudCantidadPreguntas.Font = new Font("Segoe UI", 9.5F);
             nudCantidadPreguntas.Location = new Point(250, 87);
+            nudCantidadPreguntas.Minimum = 2;
+            nudCantidadPreguntas.Maximum = 3;
             nudCantidadPreguntas.Name = "nudCantidadPreguntas";
             nudCantidadPreguntas.Size = new Size(86, 24);
             nudCantidadPreguntas.TabIndex = 3;
