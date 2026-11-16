@@ -142,6 +142,56 @@ namespace Logica
             return bitacoraDAO.Listar(new DateTime(2000, 1, 1), DateTime.Today, null, null, null);
         }
 
+        public static List<string> UsuariosDe(DataTable movimientos)
+        {
+            return movimientos.AsEnumerable()
+                .Select(fila => (fila["Usuario"] as string ?? string.Empty).Trim())
+                .Where(usuario => usuario != string.Empty)
+                .Distinct()
+                .OrderBy(usuario => usuario)
+                .ToList();
+        }
+
+        public static DataTable Filtrar(DataTable movimientos, string? usuario, DateTime? fecha,
+            TimeSpan? horaDesde, TimeSpan? horaHasta, string? movimiento, string? criticidad)
+        {
+            if (horaDesde.HasValue && horaHasta.HasValue && horaDesde.Value > horaHasta.Value)
+                throw new Exception("La hora desde no puede ser posterior a la hora hasta.");
+
+            string texto = (movimiento ?? string.Empty).Trim();
+            DataTable resultado = movimientos.Clone();
+
+            foreach (DataRow fila in movimientos.Rows)
+            {
+                DateTime fechaHora = Convert.ToDateTime(fila["Fecha_Hora"]);
+                TimeSpan hora = new TimeSpan(fechaHora.Hour, fechaHora.Minute, 0);
+
+                if (!string.IsNullOrEmpty(usuario) && (fila["Usuario"] as string ?? string.Empty).Trim() != usuario)
+                    continue;
+                if (fecha.HasValue && fechaHora.Date != fecha.Value.Date)
+                    continue;
+                if (horaDesde.HasValue && hora < horaDesde.Value)
+                    continue;
+                if (horaHasta.HasValue && hora > horaHasta.Value)
+                    continue;
+                if (!string.IsNullOrEmpty(criticidad) && (fila["Criticidad"] as string) != criticidad)
+                    continue;
+                if (texto != string.Empty
+                    && !Contiene(fila["Operacion"] as string, texto)
+                    && !Contiene(fila["Modulo"] as string, texto))
+                    continue;
+
+                resultado.ImportRow(fila);
+            }
+
+            return resultado;
+        }
+
+        private static bool Contiene(string? valor, string texto)
+        {
+            return valor != null && valor.Contains(texto, StringComparison.OrdinalIgnoreCase);
+        }
+
         public static string TextoEstado(string? json)
         {
             if (string.IsNullOrWhiteSpace(json))

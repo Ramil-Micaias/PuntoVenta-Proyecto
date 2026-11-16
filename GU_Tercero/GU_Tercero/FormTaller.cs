@@ -18,6 +18,8 @@ namespace GU_Tercero
         public FormTaller()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvOrdenes,
+                (Leyenda.FONDO_ROJO, true, "Orden vencida (pasó la fecha prometida)"));
 
             this.Load += FormTaller_Load;
             this.btnBuscar.Click += btnBuscar_Click;

@@ -119,8 +119,9 @@ namespace GU_Tercero
             }
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void btnVolver_Click(object sender, EventArgs e)
         {
+            Navegacion.Destino = Navegacion.MENU_PRINCIPAL;
             this.Close();
         }
     }

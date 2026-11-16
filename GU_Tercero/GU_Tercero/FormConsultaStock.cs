@@ -17,6 +17,8 @@ namespace Vista
         public FormConsultaStock()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvStock,
+                (Leyenda.FONDO_ROJO, true, "Stock en el mínimo o por debajo"));
 
             this.Load += FormConsultaStock_Load;
             this.btnAplicarFiltros.Click += btnAplicarFiltros_Click;

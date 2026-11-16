@@ -143,9 +143,16 @@ namespace Logica
             return usuarioDAO.ObtenerUsuarios();
         }
 
+        public const string ROL_NO_ASIGNABLE = "Usuario";
+
         public DataTable ObtenerRoles()
         {
-            return usuarioDAO.ObtenerRoles();
+            DataTable roles = usuarioDAO.ObtenerRoles();
+
+            foreach (DataRow fila in roles.Select("Nombre_Rol = '" + ROL_NO_ASIGNABLE + "'"))
+                roles.Rows.Remove(fila);
+
+            return roles;
         }
 
         private string GenerarPasswordTemporal(ConfiguracionSistema configuracion)
@@ -245,6 +252,9 @@ namespace Logica
             if (string.IsNullOrWhiteSpace(apellido) || string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(dni)
                 || string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(nombreUsuario) || idRol <= 0)
                 throw new Exception("Debe completar todos los campos obligatorios.");
+
+            if (ObtenerRoles().Select("Id_Rol = " + idRol).Length == 0)
+                throw new Exception("Debe elegir un rol válido.");
 
             if (!Validaciones.EsNombreValido(apellido))
                 throw new Exception("El apellido solo puede tener letras y espacios (hasta 50 caracteres).");

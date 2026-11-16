@@ -25,6 +25,8 @@ namespace Vista
         public FormProductos()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvProductos,
+                (Leyenda.LETRA_GRIS, false, "Producto inactivo"));
 
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             cmbIdioma.SelectionChangeCommitted += cmbIdioma_SelectionChangeCommitted;

@@ -43,6 +43,7 @@ namespace Vista
 
         private void FormOrdenReparacion_Load(object sender, EventArgs e)
         {
+            Navegacion.AjustarAPantalla(this);
             Grillas.Configurar(dgvRepuestos);
             Grillas.Configurar(dgvHistorial);
             CrearTablaRepuestos();

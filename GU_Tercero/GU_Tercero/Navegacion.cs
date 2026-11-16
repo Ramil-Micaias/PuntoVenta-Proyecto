@@ -137,6 +137,21 @@ namespace Vista
                     control.Top += alto;
                 }
             }
+
+            AjustarAPantalla(form);
+        }
+
+        public static void AjustarAPantalla(Form form)
+        {
+            Rectangle pantalla = Screen.FromControl(form).WorkingArea;
+
+            if (form.Width <= pantalla.Width && form.Height <= pantalla.Height)
+            {
+                return;
+            }
+
+            form.MinimumSize = new Size(Math.Min(form.MinimumSize.Width, pantalla.Width), Math.Min(form.MinimumSize.Height, pantalla.Height));
+            form.Bounds = new Rectangle(pantalla.Left, pantalla.Top, Math.Min(form.Width, pantalla.Width), Math.Min(form.Height, pantalla.Height));
         }
     }
 }

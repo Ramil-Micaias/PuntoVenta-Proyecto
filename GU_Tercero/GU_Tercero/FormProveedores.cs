@@ -23,6 +23,8 @@ namespace Vista
         public FormProveedores()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvProveedores,
+                (Leyenda.LETRA_GRIS, false, "Proveedor inactivo"));
 
             this.Load += FormProveedores_Load;
             this.dgvProveedores.CellClick += dgvProveedores_CellClick;

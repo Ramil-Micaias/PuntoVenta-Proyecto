@@ -17,6 +17,10 @@ namespace Vista
         public FormCaja()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvMovimientos,
+                (Leyenda.LETRA_VERDE, false, "Ingreso o venta en efectivo"),
+                (Leyenda.LETRA_ROJA, false, "Egreso"),
+                (Leyenda.LETRA_GRIS, false, "Cobro con otro medio (no entra en la caja)"));
 
             this.btnAbrirCaja.Click += btnAbrirCaja_Click;
             this.btnCerrarCaja.Click += btnCerrarCaja_Click;

@@ -18,6 +18,10 @@ namespace Vista
         public FormHistorialCaja()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvMovimientos,
+                (Leyenda.LETRA_VERDE, false, "Ingreso o venta"),
+                (Leyenda.LETRA_ROJA, false, "Egreso"),
+                (Leyenda.LETRA_GRIS_OSCURO, false, "Compra"));
 
             this.Load += FormHistorialCaja_Load;
             this.btnBuscar.Click += btnBuscar_Click;
@@ -31,6 +35,7 @@ namespace Vista
 
         private void FormHistorialCaja_Load(object? sender, EventArgs e)
         {
+            Navegacion.AjustarAPantalla(this);
             Grillas.Configurar(dgvCajas);
             Grillas.Configurar(dgvMovimientos);
 
