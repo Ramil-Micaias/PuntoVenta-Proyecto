@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // relacion entre usuario y rol
     public class UsuarioRol
     {
         public int Id_UsuarioRol {  get; set; }

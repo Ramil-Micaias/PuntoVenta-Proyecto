@@ -34,17 +34,13 @@ Name: "escritorio"; Description: "Crear un acceso directo en el Escritorio"; Gro
 Source: "publicado\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\GU_Tercero\GU_Tercero\loguito trtansparente.png"; DestDir: "{app}"; Flags: ignoreversion
 Source: "AplBigStore.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\ScriptsBD\*.sql"; DestDir: "{app}\ScriptsBD"; Flags: ignoreversion
-Source: "..\ScriptsBD\ejecutar_todo.bat"; DestDir: "{app}\ScriptsBD"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#NombreApp}"; Filename: "{app}\{#ExeApp}"; WorkingDir: "{app}"; IconFilename: "{app}\AplBigStore.ico"
-Name: "{group}\Crear o actualizar la base de datos"; Filename: "{app}\ScriptsBD\ejecutar_todo.bat"; WorkingDir: "{app}\ScriptsBD"
 Name: "{group}\Desinstalar {#NombreApp}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#NombreApp}"; Filename: "{app}\{#ExeApp}"; WorkingDir: "{app}"; IconFilename: "{app}\AplBigStore.ico"; Tasks: escritorio
 
 [Run]
-Filename: "{app}\ScriptsBD\ejecutar_todo.bat"; WorkingDir: "{app}\ScriptsBD"; Description: "Crear o actualizar la base de datos ahora"; Flags: postinstall shellexec skipifsilent waituntilterminated
 Filename: "{app}\{#ExeApp}"; WorkingDir: "{app}"; Description: "Abrir {#NombreApp}"; Flags: postinstall nowait skipifsilent unchecked
 
 [Code]
@@ -62,6 +58,6 @@ begin
   if not SqlExpressInstalado() then
     Result := MsgBox('No se encontró SQL Server Express (instancia SQLEXPRESS) en esta computadora.' + #13#10 + #13#10 +
                      'AplBigStore se puede instalar igual, pero para usarlo primero hay que instalar SQL Server Express ' +
-                     'y después crear la base de datos (ver el Manual de Instalación).' + #13#10 + #13#10 +
+                     'y después restaurar la base de datos (ver el Manual de Instalación).' + #13#10 + #13#10 +
                      '¿Desea continuar con la instalación?', mbConfirmation, MB_YESNO) = IDYES;
 end;

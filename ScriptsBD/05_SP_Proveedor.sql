@@ -40,51 +40,6 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE sp_BuscarProveedores
-    @Filtro NVARCHAR(100)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        Id_Proveedor,
-        Razon_Social,
-        CUIT,
-        Telefono,
-        Email,
-        Direccion,
-        Fecha_Alta,
-        Activo
-    FROM Proveedor
-    WHERE Activo = 1
-      AND (
-          Razon_Social LIKE '%' + @Filtro + '%'
-          OR CUIT LIKE '%' + @Filtro + '%'
-      )
-    ORDER BY Razon_Social ASC;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerProveedorPorId
-    @Id_Proveedor INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        Id_Proveedor,
-        Razon_Social,
-        CUIT,
-        Telefono,
-        Email,
-        Direccion,
-        Fecha_Alta,
-        Activo
-    FROM Proveedor
-    WHERE Id_Proveedor = @Id_Proveedor;
-END;
-GO
-
 DECLARE @RestriccionCuit SYSNAME = (
     SELECT TOP 1 kc.name
     FROM sys.key_constraints kc
@@ -241,31 +196,5 @@ BEGIN
     UPDATE Proveedor
     SET Activo = 1
     WHERE Id_Proveedor = @Id_Proveedor;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerProductosPorProveedor
-    @Id_Proveedor INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        p.Id_Producto,
-        p.Nombre_Producto,
-        p.Descripcion,
-        p.Precio_Venta,
-        p.Stock_Actual,
-        c.Nombre_Categoria,
-        pp.Activo AS RelacionActiva
-    FROM ProductoProveedor pp
-    INNER JOIN Producto p
-        ON pp.Id_Producto = p.Id_Producto
-    INNER JOIN CategoriaProducto c
-        ON p.Id_Categoria = c.Id_Categoria
-    WHERE pp.Id_Proveedor = @Id_Proveedor
-      AND pp.Activo = 1
-      AND p.Activo = 1
-    ORDER BY p.Nombre_Producto ASC;
 END;
 GO

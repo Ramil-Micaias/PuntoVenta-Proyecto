@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // rol del usuario (Administrador, Vendedor, Tecnico)
     public class Rol
     {
         public int Id_Rol { get; set; }

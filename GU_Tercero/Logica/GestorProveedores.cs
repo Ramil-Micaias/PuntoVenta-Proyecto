@@ -5,10 +5,12 @@ using System.Data;
 
 namespace Logica
 {
+    // logica de proveedores
     public class GestorProveedores
     {
         private readonly ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
 
+        // valida y da de alta el proveedor
         public bool RegistrarProveedor(Proveedor proveedor)
         {
             ValidarProveedor(proveedor);
@@ -21,6 +23,7 @@ namespace Logica
             return reactivado;
         }
 
+        // valida y modifica el proveedor
         public void ModificarProveedor(Proveedor proveedor)
         {
             if (proveedor.Id_Proveedor <= 0)
@@ -37,6 +40,7 @@ namespace Logica
                 GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", proveedor.Id_Proveedor));
         }
 
+        // baja logica del proveedor
         public void InactivarProveedor(int idProveedor)
         {
             if (idProveedor <= 0)
@@ -51,6 +55,7 @@ namespace Logica
                 GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor));
         }
 
+        // vuelve a activar el proveedor
         public void ActivarProveedor(int idProveedor)
         {
             if (idProveedor <= 0)
@@ -76,21 +81,13 @@ namespace Logica
                 GestorBitacora.EstadoDeFila(proveedoresDAO.ObtenerTodosProveedores(), "Id_Proveedor", idProveedor));
         }
 
-        public DataTable ObtenerProveedores()
-        {
-            return proveedoresDAO.ObtenerProveedores();
-        }
-
+        // activos e inactivos
         public DataTable ObtenerTodosProveedores()
         {
             return proveedoresDAO.ObtenerTodosProveedores();
         }
 
-        public DataTable BuscarProveedores(string filtro)
-        {
-            return proveedoresDAO.BuscarProveedores(filtro);
-        }
-
+        // controla razon social, CUIT, telefono y correo
         private void ValidarProveedor(Proveedor proveedor)
         {
             if (proveedor == null)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // que proveedor vende cada producto
     public class ProductoProveedor
     {
         public int Id_ProductoProveedor { get; set; }

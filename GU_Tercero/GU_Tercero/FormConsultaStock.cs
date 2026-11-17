@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // consulta de stock con filtros
     public partial class FormConsultaStock : Form
     {
         private readonly GestorProducto gestorProducto = new GestorProducto();
@@ -14,9 +15,12 @@ namespace Vista
 
         private readonly Color colorStockBajo = Color.FromArgb(254, 226, 226);
 
+        // constructor: referencia de colores y eventos
         public FormConsultaStock()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvStock,
+                (Leyenda.FONDO_ROJO, true, "Stock en el mínimo o por debajo"));
 
             this.Load += FormConsultaStock_Load;
             this.btnAplicarFiltros.Click += btnAplicarFiltros_Click;
@@ -26,12 +30,14 @@ namespace Vista
             this.dgvStock.CellFormatting += dgvStock_CellFormatting;
         }
 
+        // desde el menu se puede abrir mostrando solo lo que esta bajo el minimo
         public FormConsultaStock(Usuario? usuario, bool soloBajoMinimo) : this()
         {
             usuarioLogueado = usuario;
             chkSoloBajoMinimo.Checked = soloBajoMinimo;
         }
 
+        // al abrir carga categorias y stock
         private void FormConsultaStock_Load(object sender, EventArgs e)
         {
             Grillas.Configurar(dgvStock);
@@ -40,11 +46,13 @@ namespace Vista
             txtBuscar.Focus();
         }
 
+        // true si el usuario es administrador
         private bool EsAdministrador()
         {
             return usuarioLogueado == null || usuarioLogueado.Nombre_Rol == "Administrador";
         }
 
+        // llena el combo de categorias
         private void CargarCategorias()
         {
             try
@@ -71,6 +79,7 @@ namespace Vista
             }
         }
 
+        // trae el stock con los filtros elegidos
         private void CargarStock()
         {
             try
@@ -104,6 +113,7 @@ namespace Vista
             }
         }
 
+        // titulos y formatos de la grilla
         private void ConfigurarColumnas()
         {
             if (dgvStock.Columns.Contains("Codigo"))
@@ -125,6 +135,7 @@ namespace Vista
                 dgvStock.Columns["Precio_Venta"].DefaultCellStyle.Format = "0.##";
         }
 
+        // muestra cuantos productos hay y cuantos estan en el minimo
         private void ActualizarResumen(DataTable stock)
         {
             int bajoMinimo = 0;
@@ -140,6 +151,7 @@ namespace Vista
             lblResumen.Text = "Productos: " + stock.Rows.Count + "   |   En el mínimo o por debajo: " + bajoMinimo;
         }
 
+        // true si el stock actual es menor o igual al minimo
         private static bool EstaBajoMinimo(object stockActual, object stockMinimo)
         {
             if (stockActual == DBNull.Value || stockMinimo == DBNull.Value)
@@ -148,6 +160,7 @@ namespace Vista
             return Convert.ToInt32(stockActual) <= Convert.ToInt32(stockMinimo);
         }
 
+        // pinta de rojo claro las filas con poco stock
         private void dgvStock_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvStock.Columns.Contains("Stock_Actual"))
@@ -162,11 +175,13 @@ namespace Vista
             }
         }
 
+        // boton Aplicar
         private void btnAplicarFiltros_Click(object sender, EventArgs e)
         {
             CargarStock();
         }
 
+        // Enter en la busqueda filtra
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -176,12 +191,14 @@ namespace Vista
             }
         }
 
+        // al tildar o destildar vuelve a filtrar
         private void chkSoloBajoMinimo_CheckedChanged(object sender, EventArgs e)
         {
             if (this.Visible)
                 CargarStock();
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

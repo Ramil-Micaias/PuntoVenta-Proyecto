@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // historial de cajas y movimientos de un periodo
     public partial class FormHistorialCaja : Form
     {
         private readonly GestorCaja gestorCaja = new GestorCaja();
@@ -15,9 +16,14 @@ namespace Vista
         private DataTable movimientosActuales = new DataTable();
         private string tituloActual = string.Empty;
 
+        // constructor: referencia de colores y eventos
         public FormHistorialCaja()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvMovimientos,
+                (Leyenda.LETRA_VERDE, false, "Ingreso o venta"),
+                (Leyenda.LETRA_ROJA, false, "Egreso"),
+                (Leyenda.LETRA_GRIS_OSCURO, false, "Compra"));
 
             this.Load += FormHistorialCaja_Load;
             this.btnBuscar.Click += btnBuscar_Click;
@@ -29,8 +35,10 @@ namespace Vista
             this.txtImporteHasta.KeyDown += Filtro_KeyDown;
         }
 
+        // al abrir arranca con el mes actual
         private void FormHistorialCaja_Load(object? sender, EventArgs e)
         {
+            Navegacion.AjustarAPantalla(this);
             Grillas.Configurar(dgvCajas);
             Grillas.Configurar(dgvMovimientos);
 
@@ -44,6 +52,7 @@ namespace Vista
             Buscar();
         }
 
+        // llena el combo de medios de pago
         private void CargarMediosDePago()
         {
             try
@@ -65,6 +74,7 @@ namespace Vista
             }
         }
 
+        // id del medio elegido o null si es Todos
         private int? MedioSeleccionado()
         {
             object? valor = cmbMedio.SelectedValue;
@@ -77,6 +87,7 @@ namespace Vista
             return null;
         }
 
+        // busca las cajas y los movimientos del periodo
         private void Buscar()
         {
             try
@@ -102,6 +113,7 @@ namespace Vista
             }
         }
 
+        // al elegir una caja muestra solo sus movimientos
         private void dgvCajas_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -126,6 +138,7 @@ namespace Vista
             }
         }
 
+        // carga los movimientos en la grilla
         private void MostrarMovimientos(DataTable movimientos, string titulo)
         {
             movimientosActuales = movimientos;
@@ -133,6 +146,7 @@ namespace Vista
             AplicarFiltros();
         }
 
+        // filtra los movimientos por hora, texto e importe
         private void AplicarFiltros()
         {
             TimeSpan horaDesde = dtpHoraDesde.Value.TimeOfDay;
@@ -203,6 +217,7 @@ namespace Vista
             lblResumen.Text = ArmarResumen(filtrados);
         }
 
+        // lee un importe del filtro, vacio quiere decir sin filtro
         private static bool LeerImporte(string texto, out decimal? importe)
         {
             importe = null;
@@ -221,6 +236,7 @@ namespace Vista
             return false;
         }
 
+        // Enter en un filtro aplica los filtros
         private void Filtro_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -230,6 +246,7 @@ namespace Vista
             }
         }
 
+        // arma el texto con los totales de los movimientos que se ven
         private static string ArmarResumen(DataTable movimientos)
         {
             HashSet<string> ventas = new HashSet<string>();
@@ -289,6 +306,7 @@ namespace Vista
                    ", egresos $" + egresosManuales.ToString("N2");
         }
 
+        // titulo y formato de una columna
         private static void FormatoColumna(DataGridView grid, string nombre, string titulo, string formato)
         {
             if (!grid.Columns.Contains(nombre))
@@ -300,6 +318,7 @@ namespace Vista
             grid.Columns[nombre].DefaultCellStyle.Format = formato;
         }
 
+        // importe verde ingreso, rojo egreso y gris compra
         private void dgvMovimientos_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Importe") || e.ColumnIndex != dgvMovimientos.Columns["Importe"].Index)
@@ -316,11 +335,13 @@ namespace Vista
                     : Color.FromArgb(16, 185, 129);
         }
 
+        // boton Buscar
         private void btnBuscar_Click(object? sender, EventArgs e)
         {
             Buscar();
         }
 
+        // cierra el historial
         private void btnVolver_Click(object? sender, EventArgs e)
         {
             this.Close();

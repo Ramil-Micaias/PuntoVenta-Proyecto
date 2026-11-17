@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // permisos especiales de un usuario
     public class UsuarioPermiso
     {
         public int Id_UsuarioPermiso {  get; set; }

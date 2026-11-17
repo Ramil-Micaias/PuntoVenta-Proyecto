@@ -8,6 +8,7 @@ using Logica;
 
 namespace GU_Tercero
 {
+    // recuperar la contrasenia respondiendo las preguntas de seguridad
     public partial class FormRecuperoContraseña : Form
     {
         private ConfiguracionSistema configuracion = null!;
@@ -15,8 +16,10 @@ namespace GU_Tercero
         private string? avisoSinPreguntas;
         private int intentosFallidos = 0;
         private bool operacionEnCurso = false;
+        // intentos para responder las preguntas
         private const int MaximoIntentos = 3;
 
+        // constructor: engancha los eventos
         public FormRecuperoContraseña()
         {
             InitializeComponent();
@@ -24,6 +27,7 @@ namespace GU_Tercero
             txtNombreUsuario.TextChanged += txtNombreUsuario_TextChanged;
         }
 
+        // Enter aprieta Validar
         protected override bool ProcessDialogKey(Keys keyData)
         {
             if (keyData == Keys.Enter && !btnCancelar.Focused && btnValidar.Enabled)
@@ -35,6 +39,7 @@ namespace GU_Tercero
             return base.ProcessDialogKey(keyData);
         }
 
+        // al abrir lee la configuracion y oculta las preguntas hasta que busque el usuario
         private void FormRecuperoContraseña_Load(object sender, EventArgs e)
         {
             ConfiguracionNegocio configuracionNegocio = new ConfiguracionNegocio();
@@ -49,6 +54,7 @@ namespace GU_Tercero
             txtNombreUsuario.Focus();
         }
 
+        // si cambia el usuario se esconden las preguntas
         private void txtNombreUsuario_TextChanged(object? sender, EventArgs e)
         {
             if (idsPreguntasCargadas.Count > 0)
@@ -57,6 +63,7 @@ namespace GU_Tercero
             }
         }
 
+        // trae las preguntas del usuario (la cantidad que dice la configuracion)
         private void CargarPreguntasDelUsuario()
         {
             string usuario = txtNombreUsuario.Text.Trim();
@@ -98,6 +105,7 @@ namespace GU_Tercero
             OcultarPreguntasNoUsadas();
         }
 
+        // deja la pregunta con los signos de pregunta
         private static string PrepararTextoPregunta(string texto)
         {
             string limpio = texto.Replace("\u00C2", string.Empty).Trim();
@@ -115,6 +123,7 @@ namespace GU_Tercero
             return limpio;
         }
 
+        // muestra una pregunta en su label
         private void AsignarPregunta(int indice, string texto)
         {
             switch (indice)
@@ -131,6 +140,7 @@ namespace GU_Tercero
             }
         }
 
+        // esconde todas las preguntas
         private void OcultarPreguntas()
         {
             idsPreguntasCargadas.Clear();
@@ -138,6 +148,7 @@ namespace GU_Tercero
             OcultarPreguntasNoUsadas();
         }
 
+        // esconde las que sobran si se piden menos de 3
         private void OcultarPreguntasNoUsadas()
         {
             bool mostrarPrimera = idsPreguntasCargadas.Count >= 1;
@@ -157,6 +168,7 @@ namespace GU_Tercero
             ReubicarControles();
         }
 
+        // acomoda los botones segun cuantas preguntas se muestran
         private void ReubicarControles()
         {
             Label[] etiquetas = { lblPregunta1, lblPregunta2, lblPregunta3 };
@@ -190,6 +202,7 @@ namespace GU_Tercero
             btnCancelar.Location = new Point(btnValidar.Right + LogicalToDeviceUnits(15), y);
         }
 
+        // primero busca el usuario y despues valida las respuestas y manda la contrasenia nueva
         private void btnValidar_Click(object sender, EventArgs e)
         {
             string usuario = txtNombreUsuario.Text.Trim();
@@ -299,6 +312,7 @@ namespace GU_Tercero
             }
         }
 
+        // muestra si se mando el mail o el error
         private void MostrarResultado(ResultadoRecuperacionPassword resultado)
         {
             if (resultado.Exitoso)
@@ -345,6 +359,7 @@ namespace GU_Tercero
             LimpiarRespuestas();
         }
 
+        // borra las respuestas
         private void LimpiarRespuestas()
         {
             txtRespuesta1.Clear();
@@ -353,6 +368,7 @@ namespace GU_Tercero
             txtRespuesta1.Focus();
         }
 
+        // vuelve al login
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -5,12 +5,15 @@ using System.IO;
 
 namespace Logica
 {
+    // logica del backup de la base de datos
     public class GestorBackup
     {
+        // carpeta que se propone para guardar los backups
         public const string CARPETA_POR_DEFECTO = @"C:\BackupsAplBigStore";
 
         private readonly BackupDAO backupDAO = new BackupDAO();
 
+        // crea la carpeta por defecto si no existe y la devuelve
         public string ObtenerCarpetaPorDefecto()
         {
             try
@@ -23,6 +26,7 @@ namespace Logica
             return CARPETA_POR_DEFECTO;
         }
 
+        // genera el backup, lo registra en la bitacora y devuelve el mensaje para mostrar
         public string GenerarBackup(string carpeta)
         {
             if (string.IsNullOrWhiteSpace(carpeta))

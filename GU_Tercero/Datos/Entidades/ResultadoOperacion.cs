@@ -1,5 +1,6 @@
 namespace Datos.Entidades
 {
+    // lo que devuelven los sp de venta, compra y orden: id, comprobante y totales
     public class ResultadoOperacion
     {
         public int Id_Operacion { get; set; }

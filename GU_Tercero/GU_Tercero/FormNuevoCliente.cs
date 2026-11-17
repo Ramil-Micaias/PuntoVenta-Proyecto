@@ -5,17 +5,21 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // alta o edicion de un cliente del taller
     public partial class FormNuevoCliente : Form
     {
+        // id del cliente guardado, lo lee la orden de reparacion
         public int IdClienteNuevo { get; private set; }
 
         private readonly int idClienteEditado;
 
+        // modo alta
         public FormNuevoCliente()
         {
             InitializeComponent();
         }
 
+        // modo edicion: carga los datos del cliente
         public FormNuevoCliente(int idCliente) : this()
         {
             idClienteEditado = idCliente;
@@ -35,6 +39,7 @@ namespace Vista
             }
         }
 
+        // valida y guarda el cliente
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try

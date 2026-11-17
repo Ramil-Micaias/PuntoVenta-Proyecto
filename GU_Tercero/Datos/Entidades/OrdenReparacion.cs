@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Datos.Entidades
 {
+    // orden de reparacion del taller con sus repuestos
     public class OrdenReparacion
     {
         public int Id_Orden { get; set; }

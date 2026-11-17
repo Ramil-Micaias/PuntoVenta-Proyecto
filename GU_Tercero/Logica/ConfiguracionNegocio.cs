@@ -4,19 +4,29 @@ using Logica.Seguridad;
 
 namespace Logica
 {
+    // logica de la configuracion del sistema y de las politicas de contrasenia
     public class ConfiguracionNegocio
     {
         ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
         
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+        // lee la configuracion
         public ConfiguracionSistema ObtenerConfiguracion()
         {
             return configuracionDAO.ObtenerConfiguracion();
         }
 
+        // al recuperar la contrasenia se piden 2 o 3 preguntas
+        public const int MINIMO_PREGUNTAS_RECUPERAR = 2;
+        public const int MAXIMO_PREGUNTAS_RECUPERAR = 3;
+
+        // valida y guarda la configuracion, queda en la bitacora como critica
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
+            if (configuracion.Cantidad_Preguntas < MINIMO_PREGUNTAS_RECUPERAR || configuracion.Cantidad_Preguntas > MAXIMO_PREGUNTAS_RECUPERAR)
+                throw new Exception("La cantidad de preguntas al recuperar debe ser " + MINIMO_PREGUNTAS_RECUPERAR + " o " + MAXIMO_PREGUNTAS_RECUPERAR + ".");
+
             var antes = GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion());
 
             configuracionDAO.GuardarConfiguracion(configuracion);
@@ -25,6 +35,7 @@ namespace Logica
                 GestorBitacora.CRITICA, antes, GestorBitacora.EstadoDeObjeto(configuracionDAO.ObtenerConfiguracion()));
         }
 
+        // revisa que la contrasenia cumpla las politicas, devuelve OK o el mensaje de error
         public string ValidarPassword(string password, Usuario usuario)
         {
             ConfiguracionSistema configuracion = configuracionDAO.ObtenerConfiguracion();
@@ -93,6 +104,7 @@ namespace Logica
                     }
                 }
 
+            // no puede tener el nombre, el apellido ni el DNI
             if (configuracion.Validar_DatosPersonales)
             {
                 if (!string.IsNullOrWhiteSpace(persona.Nombre))
@@ -120,6 +132,7 @@ namespace Logica
                 }
             }
 
+            // no puede ser una contrasenia que ya uso
             if (configuracion.No_RepetirPasswords)
             {
                 string passwordHash = HashHelper.GenerarHashPassword(usuario.Nombre_Usuario, password);

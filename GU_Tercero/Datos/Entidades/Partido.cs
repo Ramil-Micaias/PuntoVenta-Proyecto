@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // partido, pertenece a una provincia
     public class Partido
     {
         public int Id_Partido { get; set; }

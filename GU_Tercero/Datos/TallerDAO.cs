@@ -7,8 +7,10 @@ using System.Text.Json;
 
 namespace Datos
 {
+    // acceso a datos del taller: clientes, equipos y ordenes de reparacion
     public class TallerDAO
     {
+        // clientes del taller para el combo de la orden
         public DataTable ObtenerClientes()
         {
             DataTable tabla = new DataTable();
@@ -25,6 +27,7 @@ namespace Datos
             return tabla;
         }
 
+        // alta de cliente, devuelve el id nuevo
         public int InsertarCliente(string apellido, string nombre, string dni, string? telefono)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -43,6 +46,7 @@ namespace Datos
             }
         }
 
+        // trae un cliente para poder editarlo
         public DataTable ObtenerCliente(int idCliente)
         {
             DataTable tabla = new DataTable();
@@ -59,6 +63,7 @@ namespace Datos
             return tabla;
         }
 
+        // guarda los datos corregidos del cliente
         public void ModificarCliente(int idCliente, string apellido, string nombre, string dni, string? telefono)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -78,6 +83,7 @@ namespace Datos
             }
         }
 
+        // equipos que tiene cargados un cliente
         public DataTable ObtenerEquipos(int idCliente)
         {
             DataTable tabla = new DataTable();
@@ -96,6 +102,7 @@ namespace Datos
             return tabla;
         }
 
+        // alta de un equipo del cliente, devuelve el id
         public int InsertarEquipo(int idCliente, string tipo, string marca, string modelo, string? numeroSerie, string? imei, string? color)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -119,6 +126,7 @@ namespace Datos
             }
         }
 
+        // usuarios con rol tecnico para asignar la orden
         public DataTable ObtenerTecnicos()
         {
             DataTable tabla = new DataTable();
@@ -135,6 +143,7 @@ namespace Datos
             return tabla;
         }
 
+        // estados posibles de la orden (recibido, en reparacion, etc)
         public DataTable ObtenerEstados()
         {
             DataTable tabla = new DataTable();
@@ -151,6 +160,7 @@ namespace Datos
             return tabla;
         }
 
+        // productos que se pueden usar como repuesto
         public DataTable ObtenerRepuestos()
         {
             DataTable tabla = new DataTable();
@@ -167,6 +177,7 @@ namespace Datos
             return tabla;
         }
 
+        // crea o actualiza la orden (si Id_Orden es 0 es nueva) junto con los repuestos
         public ResultadoOperacion GuardarOrden(OrdenReparacion orden)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -194,6 +205,7 @@ namespace Datos
                     orden.Fecha_Prometida.HasValue ? orden.Fecha_Prometida.Value : DBNull.Value;
                 cmd.Parameters.Add("@Observacion", SqlDbType.NVarChar, 255).Value =
                     string.IsNullOrWhiteSpace(orden.Observacion) ? DBNull.Value : orden.Observacion;
+                // los repuestos van todos juntos en un json
                 cmd.Parameters.Add("@Repuestos", SqlDbType.NVarChar, -1).Value = SerializarRepuestos(orden);
 
                 conn.Open();
@@ -217,6 +229,7 @@ namespace Datos
             throw new Exception("La orden no pudo guardarse. Intente nuevamente.");
         }
 
+        // arma el json con los repuestos de la orden para mandarlo al sp
         private static string SerializarRepuestos(OrdenReparacion orden)
         {
             List<object> items = new List<object>();
@@ -234,7 +247,8 @@ namespace Datos
             return JsonSerializer.Serialize(items);
         }
 
-        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes)
+        // ordenes para la grilla del taller con los filtros elegidos
+        public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes, int? idUsuarioPropio = null)
         {
             DataTable tabla = new DataTable();
 
@@ -249,6 +263,8 @@ namespace Datos
                 cmd.Parameters.Add("@Id_Tecnico", SqlDbType.Int).Value =
                     idTecnico.HasValue ? idTecnico.Value : DBNull.Value;
                 cmd.Parameters.Add("@Solo_Pendientes", SqlDbType.Bit).Value = soloPendientes;
+                cmd.Parameters.Add("@Id_Usuario_Propio", SqlDbType.Int).Value =
+                    idUsuarioPropio.HasValue ? idUsuarioPropio.Value : DBNull.Value;
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tabla);
@@ -257,21 +273,25 @@ namespace Datos
             return tabla;
         }
 
+        // datos de una orden
         public DataTable ObtenerOrden(int idOrden)
         {
             return ConsultarPorOrden("sp_ObtenerOrden", idOrden);
         }
 
+        // repuestos usados en una orden
         public DataTable ObtenerRepuestosOrden(int idOrden)
         {
             return ConsultarPorOrden("sp_ObtenerRepuestosOrden", idOrden);
         }
 
+        // historial de cambios de estado de la orden
         public DataTable ObtenerHistorialOrden(int idOrden)
         {
             return ConsultarPorOrden("sp_ObtenerHistorialOrden", idOrden);
         }
 
+        // metodo comun para los sp que reciben solo el id de la orden
         private static DataTable ConsultarPorOrden(string procedimiento, int idOrden)
         {
             DataTable tabla = new DataTable();

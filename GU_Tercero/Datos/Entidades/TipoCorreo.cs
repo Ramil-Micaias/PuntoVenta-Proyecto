@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // tipo de correo (personal, laboral)
     public class TipoCorreo
     {
         public int Id_TipoCorreo {  get; set; }

@@ -284,29 +284,6 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE sp_ObtenerProveedoresProducto
-    @Id_Producto INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        pp.Id_ProductoProveedor,
-        pp.Id_Producto,
-        pp.Id_Proveedor,
-        p.Razon_Social,
-        p.CUIT,
-        pp.Activo
-    FROM ProductoProveedor pp
-    INNER JOIN Proveedor p
-        ON pp.Id_Proveedor = p.Id_Proveedor
-    WHERE pp.Id_Producto = @Id_Producto
-      AND pp.Activo = 1
-      AND p.Activo = 1
-    ORDER BY p.Razon_Social ASC;
-END;
-GO
-
 CREATE OR ALTER PROCEDURE sp_ObtenerProveedores
 AS
 BEGIN
@@ -324,74 +301,6 @@ BEGIN
     FROM Proveedor
     WHERE Activo = 1
     ORDER BY Razon_Social ASC;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_AsignarProveedorProducto
-    @Id_Producto INT,
-    @Id_Proveedor INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM Producto
-        WHERE Id_Producto = @Id_Producto
-    )
-    BEGIN
-        THROW 50000, 'El producto no existe.', 1;
-    END;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM Proveedor
-        WHERE Id_Proveedor = @Id_Proveedor
-          AND Activo = 1
-    )
-    BEGIN
-        THROW 50000, 'El proveedor no existe o está inactivo.', 1;
-    END;
-
-    IF EXISTS (
-        SELECT 1
-        FROM ProductoProveedor
-        WHERE Id_Producto = @Id_Producto
-          AND Id_Proveedor = @Id_Proveedor
-    )
-    BEGIN
-        UPDATE ProductoProveedor
-        SET Activo = 1
-        WHERE Id_Producto = @Id_Producto
-          AND Id_Proveedor = @Id_Proveedor;
-
-        RETURN;
-    END;
-
-    INSERT INTO ProductoProveedor (
-        Id_Producto,
-        Id_Proveedor,
-        Activo
-    )
-    VALUES (
-        @Id_Producto,
-        @Id_Proveedor,
-        1
-    );
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_DesasignarProveedorProducto
-    @Id_Producto INT,
-    @Id_Proveedor INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    UPDATE ProductoProveedor
-    SET Activo = 0
-    WHERE Id_Producto = @Id_Producto
-      AND Id_Proveedor = @Id_Proveedor;
 END;
 GO
 

@@ -6,16 +6,19 @@ using Logica.Seguridad;
 
 namespace GU_Tercero
 {
+    // cambio de contrasenia obligatorio (primer ingreso o contrasenia temporal)
     public partial class FormCambioPassword : Form
     {
         private Usuario usuarioLogueado;
 
+        // recibe el usuario que tiene que cambiar la contrasenia
         public FormCambioPassword(Usuario usuario)
         {
             InitializeComponent();
             usuarioLogueado = usuario;
         }
 
+        // si el cambio es obligatorio no deja cancelar
         private void FormCambioPassword_Load(object sender, EventArgs e)
         {
             if (usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
@@ -24,6 +27,7 @@ namespace GU_Tercero
             }
         }
 
+        // si intenta cerrar sin cambiarla le pregunta si quiere salir del sistema
         private void FormCambioPassword_FormClosing(object sender, FormClosingEventArgs e)
         {
             if ((usuarioLogueado.Es_Primer_Ingreso || usuarioLogueado.Debe_Cambiar_Password)
@@ -46,6 +50,7 @@ namespace GU_Tercero
             }
         }
 
+        // valida la contrasenia nueva con las politicas y la guarda
         private void btnCambiarPassword_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNuevaPassword.Text))
@@ -78,6 +83,7 @@ namespace GU_Tercero
             this.Close();
         }
 
+        // cierra la pantalla
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();

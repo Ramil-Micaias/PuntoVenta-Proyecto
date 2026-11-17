@@ -5,8 +5,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de la caja diaria
     public class CajaDAO
     {
+        // trae la caja abierta, si no hay ninguna devuelve null
         public Caja? ObtenerCajaActual()
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -41,6 +43,7 @@ namespace Datos
             return null;
         }
 
+        // movimientos de una caja (ingresos, egresos y ventas)
         public DataTable ListarMovimientos(int idCaja)
         {
             DataTable tabla = new DataTable();
@@ -58,6 +61,7 @@ namespace Datos
             return tabla;
         }
 
+        // abre la caja del dia con el saldo inicial
         public void AbrirCaja(int idUsuario, decimal saldoInicial)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -75,6 +79,7 @@ namespace Datos
             }
         }
 
+        // cierra la caja y devuelve el saldo final que calcula el sp
         public decimal CerrarCaja(int idCaja, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -90,6 +95,7 @@ namespace Datos
             }
         }
 
+        // cajas abiertas entre dos fechas, para el historial
         public DataTable ListarCajas(DateTime desde, DateTime hasta)
         {
             DataTable tabla = new DataTable();
@@ -108,6 +114,7 @@ namespace Datos
             return tabla;
         }
 
+        // todos los movimientos de un periodo, se puede filtrar por medio de pago
         public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
         {
             DataTable tabla = new DataTable();
@@ -128,6 +135,7 @@ namespace Datos
             return tabla;
         }
 
+        // vuelve a abrir una caja que ya estaba cerrada
         public void ReabrirCaja(int idCaja, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -143,6 +151,7 @@ namespace Datos
             }
         }
 
+        // guarda un ingreso o egreso manual y devuelve el saldo actualizado
         public decimal RegistrarMovimiento(MovimientoCaja movimiento)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

@@ -6,12 +6,14 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // ventana para registrar un ingreso o egreso de caja
     public partial class FormMovimientoCaja : Form
     {
         private readonly GestorCaja gestorCaja = new GestorCaja();
         private readonly Caja caja;
         private readonly Usuario usuario;
 
+        // recibe la caja abierta y el usuario
         public FormMovimientoCaja(Caja caja, Usuario usuario)
         {
             InitializeComponent();
@@ -25,6 +27,7 @@ namespace Vista
             this.btnCancelar.Click += btnCancelar_Click;
         }
 
+        // valida el importe y el motivo y guarda el movimiento
         private void Guardar()
         {
             if (!rbIngreso.Checked && !rbEgreso.Checked)
@@ -64,11 +67,13 @@ namespace Vista
             }
         }
 
+        // muestra un aviso
         private static void Avisar(string mensaje)
         {
             MessageBox.Show(mensaje, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
+        // convierte el texto a numero aceptando coma o punto
         private static bool IntentarParsearDecimal(string texto, out decimal valor)
         {
             valor = 0;
@@ -87,11 +92,13 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
+        // boton Guardar
         private void btnGuardar_Click(object? sender, EventArgs e)
         {
             Guardar();
         }
 
+        // cierra sin guardar
         private void btnCancelar_Click(object? sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

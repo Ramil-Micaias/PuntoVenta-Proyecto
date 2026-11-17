@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace GU_Tercero
 {
+    // pantalla para ingresar el codigo de verificacion en dos pasos
     public partial class FormAutenticacion2FA : Form
     {
         private readonly Autenticacion2FANegocio negocio = new Autenticacion2FANegocio();
@@ -15,6 +16,7 @@ namespace GU_Tercero
 
         public bool CodigoValidado { get; private set; } = false;
 
+        // recibe el usuario que se esta logueando
         public FormAutenticacion2FA(Usuario usuario)
         {
             InitializeComponent();
@@ -23,6 +25,7 @@ namespace GU_Tercero
             txtCodigo.KeyPress += txtCodigo_KeyPress;
         }
 
+        // al abrir muestra el correo con asteriscos y cuanto dura el codigo
         private void FormAutenticacion2FA_Load(object sender, EventArgs e)
         {
             lblCorreo.Text = negocio.ObtenerCorreoEnmascarado(usuario);
@@ -30,6 +33,7 @@ namespace GU_Tercero
             txtCodigo.Focus();
         }
 
+        // solo numeros en el codigo
         private void txtCodigo_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
@@ -38,6 +42,7 @@ namespace GU_Tercero
             }
         }
 
+        // valida el codigo, si se equivoca 3 veces se cancela
         private void btnVerificar_Click(object sender, EventArgs e)
         {
             string? error;
@@ -89,6 +94,7 @@ namespace GU_Tercero
             txtCodigo.Focus();
         }
 
+        // manda un codigo nuevo
         private void lnkReenviar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -117,6 +123,7 @@ namespace GU_Tercero
             lblVencimiento.Text = "Se envió un código nuevo (el anterior ya no sirve). Vence en " + Autenticacion2FANegocio.MINUTOS_VALIDEZ + " minutos.";
         }
 
+        // cancela el ingreso y anula el codigo
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             negocio.CancelarVerificacion(usuario);

@@ -5,10 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace Logica
 {
+    // validaciones de formato que usan varias pantallas
     public static class Validaciones
     {
+        // prefijos validos de CUIT/CUIL
         private static readonly string[] PrefijosCuit = { "20", "23", "24", "27", "30", "33", "34" };
 
+        // formato de correo valido
         public static bool EsEmailValido(string? email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -29,11 +32,13 @@ namespace Logica
             }
         }
 
+        // DNI de 7 u 8 numeros
         public static bool EsDniValido(string? dni)
         {
             return !string.IsNullOrWhiteSpace(dni) && Regex.IsMatch(dni.Trim(), @"^[0-9]{7,8}$");
         }
 
+        // solo letras y espacios, hasta 50 caracteres
         public static bool EsNombreValido(string? texto)
         {
             return !string.IsNullOrWhiteSpace(texto)
@@ -41,11 +46,13 @@ namespace Logica
                 && Regex.IsMatch(texto.Trim(), @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' \-]+$");
         }
 
+        // letras, numeros, punto y guion bajo
         public static bool EsNombreUsuarioValido(string? usuario)
         {
             return !string.IsNullOrWhiteSpace(usuario) && Regex.IsMatch(usuario.Trim(), @"^[A-Za-z0-9._\-]{3,50}$");
         }
 
+        // telefono con numeros y algunos simbolos
         public static bool EsTelefonoValido(string? telefono)
         {
             if (string.IsNullOrWhiteSpace(telefono))
@@ -60,6 +67,7 @@ namespace Logica
             return digitos >= 8 && digitos <= 15;
         }
 
+        // valida el CUIT con su digito verificador y lo devuelve con guiones
         public static bool EsCuitValido(string? cuit, out string normalizado)
         {
             normalizado = string.Empty;
@@ -75,6 +83,7 @@ namespace Logica
             if (!PrefijosCuit.Contains(limpio.Substring(0, 2)))
                 return false;
 
+            // calculo del digito verificador del CUIT (modulo 11)
             int[] multiplicadores = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
             int suma = 0;
 

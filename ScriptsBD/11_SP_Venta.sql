@@ -103,69 +103,6 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE sp_BuscarClientes
-    @Filtro NVARCHAR(100) = ''
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SET @Filtro = LTRIM(RTRIM(ISNULL(@Filtro, '')));
-
-    SELECT TOP 50
-        c.Id_Cliente,
-        p.Apellido,
-        p.Nombre,
-        p.DNI,
-        p.Apellido + ', ' + p.Nombre AS NombreCompleto
-    FROM Cliente c
-    INNER JOIN Persona p ON c.Id_Persona = p.Id_Persona
-    WHERE c.Activo = 1
-      AND p.Activo = 1
-      AND (
-            @Filtro = ''
-         OR p.DNI LIKE '%' + @Filtro + '%'
-         OR p.Nombre LIKE '%' + @Filtro + '%'
-         OR p.Apellido LIKE '%' + @Filtro + '%'
-      )
-    ORDER BY p.Apellido ASC, p.Nombre ASC;
-END
-GO
-
-CREATE OR ALTER PROCEDURE sp_BuscarCliente
-    @Filtro NVARCHAR(100) = ''
-AS
-BEGIN
-    SET NOCOUNT ON;
-    EXEC sp_BuscarClientes @Filtro;
-END
-GO
-
-CREATE OR ALTER PROCEDURE sp_mercadopago
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    IF NOT EXISTS (SELECT 1 FROM MetodoPago WHERE Nombre = 'Mercado Pago')
-    BEGIN
-        INSERT INTO MetodoPago (Nombre) VALUES ('Mercado Pago');
-    END
-
-    SELECT
-        Id_MetodoPago,
-        Nombre
-    FROM MetodoPago
-    WHERE Nombre = 'Mercado Pago';
-END
-GO
-
-CREATE OR ALTER PROCEDURE sp_MercadoPago
-AS
-BEGIN
-    SET NOCOUNT ON;
-    EXEC sp_mercadopago;
-END
-GO
-
 CREATE OR ALTER PROCEDURE sp_BuscarProductosPOS
     @Filtro NVARCHAR(100) = '',
     @Id_Categoria INT = NULL

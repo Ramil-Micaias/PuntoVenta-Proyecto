@@ -5,8 +5,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de compras a proveedores
     public class CompraDAO
     {
+        // productos para el combo de compras, con su proveedor
         public DataTable BuscarProductosCompra()
         {
             DataTable tabla = new DataTable();
@@ -22,11 +24,13 @@ namespace Datos
             return tabla;
         }
 
+        // guarda la compra completa: cabecera, detalle y pagos
         public ResultadoOperacion RegistrarCompra(Compra compra)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
                 conn.Open();
+                // usamos una transaccion asi si falla algo no queda la compra a medias
                 SqlTransaction transaccion = conn.BeginTransaction();
 
                 try
@@ -51,8 +55,10 @@ namespace Datos
 
                     cmdCompra.ExecuteNonQuery();
 
+                    // el sp devuelve el id de la compra nueva por parametro de salida
                     int idCompraGenerado = Convert.ToInt32(cmdCompra.Parameters["@Id_CompraGenerado"].Value);
 
+                    // un registro por cada producto comprado
                     foreach (DetalleCompra item in compra.Detalles)
                     {
                         SqlCommand cmdDetalle = new SqlCommand("sp_RegistrarDetalleCompra", conn, transaccion);
@@ -66,6 +72,7 @@ namespace Datos
                         cmdDetalle.ExecuteNonQuery();
                     }
 
+                    // un registro por cada forma de pago
                     foreach (PagoCompra pago in compra.Pagos)
                     {
                         SqlCommand cmdPago = new SqlCommand("sp_RegistrarPagoCompra", conn, transaccion);

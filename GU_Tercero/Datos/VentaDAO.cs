@@ -7,8 +7,10 @@ using System.Text.Json;
 
 namespace Datos
 {
+    // acceso a datos de ventas
     public class VentaDAO
     {
+        // guarda la venta con su detalle y pagos en un solo sp y devuelve los totales
         public ResultadoOperacion RegistrarVenta(Venta venta)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -36,6 +38,7 @@ namespace Datos
                 cmd.Parameters.Add("@Fecha", SqlDbType.DateTime)
                     .Value = venta.Fecha_Venta;
 
+                // el detalle y los pagos se mandan como json
                 cmd.Parameters.Add("@Detalles", SqlDbType.NVarChar, -1)
                     .Value = SerializarDetalle(venta);
 
@@ -67,6 +70,7 @@ namespace Datos
             throw new Exception("La venta no pudo registrarse. Intente nuevamente.");
         }
 
+        // arma el json con los productos vendidos
         private static string SerializarDetalle(Venta venta)
         {
             List<object> items = new List<object>();
@@ -84,6 +88,7 @@ namespace Datos
             return JsonSerializer.Serialize(items);
         }
 
+        // arma el json con los pagos (puede haber varios medios)
         private static string SerializarPagos(Venta venta)
         {
             List<object> pagos = new List<object>();

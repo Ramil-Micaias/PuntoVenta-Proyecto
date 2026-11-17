@@ -5,14 +5,17 @@ using Seguridad;
 
 namespace GU_Tercero
 {
+    // pantalla de inicio de sesion
     public partial class Form1 : Form
     {
+        // constructor: arma la pantalla y engancha los eventos
         public Form1()
         {
             InitializeComponent();
             txtUsuario.KeyDown += txtUsuario_KeyDown;
         }
 
+        // con Enter en el usuario pasa a la contrasenia
         private void txtUsuario_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -22,11 +25,13 @@ namespace GU_Tercero
             }
         }
 
+        // muestra u oculta la contrasenia
         private void chkMostrarPassword_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.PasswordChar = chkMostrarPassword.Checked ? '\0' : '*';
         }
 
+        // borra usuario y contrasenia
         private void LimpiarCampos()
         {
             txtUsuario.Text = string.Empty;
@@ -34,6 +39,7 @@ namespace GU_Tercero
             txtUsuario.Focus();
         }
 
+        // abre el menu segun el rol, al cerrarlo vuelve al login o sale
         private void AbrirMenu(Usuario usuario)
         {
             if (usuario.Nombre_Rol == "Administrador" || usuario.Nombre_Rol == "Vendedor" || usuario.Nombre_Rol == "Tecnico")
@@ -76,6 +82,7 @@ namespace GU_Tercero
             }
         }
 
+        // boton Ingresar: valida el login, el 2FA y si tiene que cambiar la contrasenia o cargar las preguntas
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -133,6 +140,7 @@ namespace GU_Tercero
             }
         }
 
+        // si el 2FA esta activo abre la pantalla del codigo, devuelve true si lo valido
         private bool VerificarDosPasos(Usuario usuario)
         {
             Autenticacion2FANegocio negocio2FA = new Autenticacion2FANegocio();
@@ -176,11 +184,13 @@ namespace GU_Tercero
             }
         }
 
+        // al abrir carga el logo
         private void Form1_Load(object sender, EventArgs e)
         {
             CargarLogo();
         }
 
+        // carga la imagen del logo desde la carpeta del programa
         private void CargarLogo()
         {
             try
@@ -206,6 +216,7 @@ namespace GU_Tercero
             catch { }
         }
 
+        // abre la pantalla para recuperar la contrasenia
         private void llb_OlvidoContraseña_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FormRecuperoContraseña formrecupero = new FormRecuperoContraseña();

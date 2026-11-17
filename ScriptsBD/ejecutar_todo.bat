@@ -21,6 +21,8 @@ sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp016_SP_2FA.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp018_SP_Backup.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp019_SP_Bitacora.sql"
 sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp020_DigitoVerificador_Password.sql"
+sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp021_SP_Validaciones_Usuario.sql"
+sqlcmd -S .\SQLEXPRESS -E -C -f 65001 -i "%~dp022_Limpieza_SP_Sin_Uso.sql"
 
 echo.
 echo ¡Proceso terminado con exito!

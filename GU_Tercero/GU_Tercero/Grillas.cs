@@ -3,8 +3,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // formato comun para todas las grillas del programa
     public static class Grillas
     {
+        // colores, fuente, seleccion por fila y solo lectura
         public static void Configurar(DataGridView grid)
         {
             grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -30,11 +32,13 @@ namespace Vista
             grid.DataBindingComplete += Grilla_DataBindingComplete;
         }
 
+        // alto de las filas segun la fuente
         public static int AltoFila(DataGridView grid)
         {
             return grid.DefaultCellStyle.Font.Height + 12;
         }
 
+        // cada vez que se cargan datos oculta los Id y arregla los titulos
         private static void Grilla_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             DataGridView grid = (DataGridView)sender;
@@ -43,6 +47,7 @@ namespace Vista
             TitulosLegibles(grid);
         }
 
+        // oculta las columnas que empiezan con Id_
         public static void OcultarIds(DataGridView grid)
         {
             foreach (DataGridViewColumn columna in grid.Columns)
@@ -54,6 +59,7 @@ namespace Vista
             }
         }
 
+        // cambia los guiones bajos por espacios en los titulos
         private static void TitulosLegibles(DataGridView grid)
         {
             foreach (DataGridViewColumn columna in grid.Columns)

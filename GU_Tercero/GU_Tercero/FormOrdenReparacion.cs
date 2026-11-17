@@ -7,11 +7,13 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // alta y seguimiento de una orden de reparacion
     public partial class FormOrdenReparacion : Form
     {
         public string MensajeResultado { get; private set; } = string.Empty;
 
         private readonly GestorTaller gestorTaller = new GestorTaller();
+        // repuestos cargados en la orden
         private readonly DataTable repuestos = new DataTable();
         private Usuario usuarioLogueado;
 
@@ -21,6 +23,7 @@ namespace Vista
 
         private bool cargando = false;
 
+        // idOrden 0 es una orden nueva, si no se abre la existente
         public FormOrdenReparacion(Usuario usuario, int idOrden)
         {
             InitializeComponent();
@@ -41,8 +44,10 @@ namespace Vista
             this.btnVolver.Click += btnVolver_Click;
         }
 
+        // al abrir carga los combos y la orden
         private void FormOrdenReparacion_Load(object sender, EventArgs e)
         {
+            Navegacion.AjustarAPantalla(this);
             Grillas.Configurar(dgvRepuestos);
             Grillas.Configurar(dgvHistorial);
             CrearTablaRepuestos();
@@ -79,6 +84,7 @@ namespace Vista
             ActualizarTotales();
         }
 
+        // combo de clientes
         private void CargarClientes()
         {
             cmbCliente.DisplayMember = "Cliente";
@@ -87,6 +93,7 @@ namespace Vista
             cmbCliente.SelectedIndex = -1;
         }
 
+        // combo de equipos del cliente elegido
         private void CargarEquipos()
         {
             cmbEquipo.DataSource = null;
@@ -103,6 +110,7 @@ namespace Vista
             cmbEquipo.DataSource = gestorTaller.ObtenerEquipos(idCliente);
         }
 
+        // combo de tecnicos
         private void CargarTecnicos()
         {
             DataTable tecnicos = gestorTaller.ObtenerTecnicos();
@@ -117,6 +125,7 @@ namespace Vista
             cmbTecnico.DataSource = tecnicos;
         }
 
+        // combo de estados
         private void CargarEstados()
         {
             cmbEstado.DisplayMember = "Nombre_Estado";
@@ -124,6 +133,7 @@ namespace Vista
             cmbEstado.DataSource = gestorTaller.ObtenerEstados();
         }
 
+        // combo de repuestos con su stock
         private void CargarRepuestos()
         {
             cmbRepuesto.DisplayMember = "Producto";
@@ -133,6 +143,7 @@ namespace Vista
             txtPrecio.Clear();
         }
 
+        // columnas de la tabla de repuestos
         private void CrearTablaRepuestos()
         {
             repuestos.Columns.Add("Id_Producto", typeof(int));
@@ -155,6 +166,7 @@ namespace Vista
             }
         }
 
+        // valores por defecto de una orden nueva
         private void PrepararOrdenNueva()
         {
             lblTitulo.Text = "NUEVA ORDEN DE REPARACIÓN";
@@ -176,6 +188,7 @@ namespace Vista
             txtObservacion.Visible = false;
         }
 
+        // elige un estado del combo por su nombre
         private void SeleccionarEstado(string nombreEstado)
         {
             for (int i = 0; i < cmbEstado.Items.Count; i++)
@@ -190,6 +203,7 @@ namespace Vista
             }
         }
 
+        // carga los datos de una orden existente con sus repuestos e historial
         private void CargarOrden()
         {
             DataTable datos = gestorTaller.ObtenerOrden(idOrden);
@@ -291,6 +305,7 @@ namespace Vista
             }
         }
 
+        // si la orden esta entregada o cancelada ya no se puede modificar
         private void BloquearOrden()
         {
             grpEquipo.Enabled = false;
@@ -308,6 +323,7 @@ namespace Vista
             lblAviso.Visible = true;
         }
 
+        // cuantos de ese repuesto tenia la orden guardada (para controlar el stock)
         private int CantidadOriginal(int idProducto)
         {
             int cantidad = 0;
@@ -323,6 +339,7 @@ namespace Vista
             return cantidad;
         }
 
+        // agrega un repuesto controlando el stock
         private void AgregarRepuesto()
         {
             DataRowView? fila = cmbRepuesto.SelectedItem as DataRowView;
@@ -405,6 +422,7 @@ namespace Vista
             ActualizarTotales();
         }
 
+        // saca el "(stock N)" del nombre que se muestra en el combo
         private static string QuitarStockDelNombre(string texto)
         {
             int posicion = texto.LastIndexOf(" (stock ");
@@ -417,6 +435,7 @@ namespace Vista
             return texto;
         }
 
+        // saca el repuesto elegido
         private void QuitarRepuesto()
         {
             if (dgvRepuestos.CurrentRow == null)
@@ -437,6 +456,7 @@ namespace Vista
             }
         }
 
+        // lee el costo de mano de obra
         private decimal ManoDeObra()
         {
             if (IntentarParsearDecimal(txtManoObra.Text, out decimal valor) && valor >= 0)
@@ -447,6 +467,7 @@ namespace Vista
             return 0;
         }
 
+        // total = repuestos + mano de obra
         private void ActualizarTotales()
         {
             decimal totalRepuestos = 0;
@@ -460,6 +481,7 @@ namespace Vista
             lblTotalValor.Text = FormatoMoneda(totalRepuestos + ManoDeObra());
         }
 
+        // arma la orden con los datos de la pantalla y la guarda
         private void GuardarOrden()
         {
             if (txtManoObra.Text.Trim() != "" && (!IntentarParsearDecimal(txtManoObra.Text, out decimal mano) || mano < 0))
@@ -554,11 +576,13 @@ namespace Vista
             }
         }
 
+        // formato de pesos
         private static string FormatoMoneda(decimal valor)
         {
             return "$" + valor.ToString("0.##");
         }
 
+        // convierte texto a decimal
         private static bool IntentarParsearDecimal(string texto, out decimal valor)
         {
             valor = 0;
@@ -577,6 +601,7 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
+        // al cambiar el cliente carga sus equipos
         private void cmbCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!cargando)
@@ -585,6 +610,7 @@ namespace Vista
             }
         }
 
+        // al elegir un repuesto pone su precio
         private void cmbRepuesto_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbRepuesto.SelectedItem is DataRowView fila)
@@ -593,6 +619,7 @@ namespace Vista
             }
         }
 
+        // abre la ventana de cliente nuevo y lo deja elegido
         private void btnNuevoCliente_Click(object sender, EventArgs e)
         {
             using (FormNuevoCliente formCliente = new FormNuevoCliente())
@@ -608,6 +635,7 @@ namespace Vista
             }
         }
 
+        // abre el cliente elegido para corregir sus datos
         private void btnEditarCliente_Click(object? sender, EventArgs e)
         {
             if (cmbCliente.SelectedValue == null || cmbCliente.SelectedIndex < 0)
@@ -641,6 +669,7 @@ namespace Vista
             }
         }
 
+        // abre la ventana de equipo nuevo
         private void btnNuevoEquipo_Click(object sender, EventArgs e)
         {
             if (cmbCliente.SelectedValue == null || cmbCliente.SelectedIndex < 0)
@@ -666,26 +695,31 @@ namespace Vista
             }
         }
 
+        // boton Agregar repuesto
         private void btnAgregarRepuesto_Click(object sender, EventArgs e)
         {
             AgregarRepuesto();
         }
 
+        // boton Quitar repuesto
         private void btnQuitarRepuesto_Click(object sender, EventArgs e)
         {
             QuitarRepuesto();
         }
 
+        // al cambiar la mano de obra recalcula el total
         private void txtManoObra_TextChanged(object sender, EventArgs e)
         {
             ActualizarTotales();
         }
 
+        // boton Guardar
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             GuardarOrden();
         }
 
+        // cierra la orden
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -4,6 +4,7 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // punto de entrada del programa
     internal static class Program
     {
         [STAThread]
@@ -13,6 +14,7 @@ namespace GU_Tercero
 
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // arranca con la pantalla de login
             Application.Run(new Form1());
         }
     }

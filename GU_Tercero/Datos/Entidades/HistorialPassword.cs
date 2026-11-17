@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // contrasenias anteriores del usuario
     public class HistorialPassword
     {
         public int Id_HistorialPassword {  get; set; }

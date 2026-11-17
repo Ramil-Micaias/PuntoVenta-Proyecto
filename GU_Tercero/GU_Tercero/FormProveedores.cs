@@ -7,8 +7,10 @@ using Logica;
 
 namespace Vista
 {
+    // ABM de proveedores
     public partial class FormProveedores : Form
     {
+        // modos de la pantalla
         private enum Modo { Consulta, Agregando, Modificando }
 
         private static readonly Color ROJO = Color.FromArgb(239, 68, 68);
@@ -20,9 +22,12 @@ namespace Vista
         private bool activoSeleccionado = true;
         private readonly GestorProveedores gestorProveedores = new GestorProveedores();
 
+        // constructor: referencia de colores y eventos
         public FormProveedores()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvProveedores,
+                (Leyenda.LETRA_GRIS, false, "Proveedor inactivo"));
 
             this.Load += FormProveedores_Load;
             this.dgvProveedores.CellClick += dgvProveedores_CellClick;
@@ -35,6 +40,7 @@ namespace Vista
             this.txtBuscar.TextChanged += txtBuscar_TextChanged;
         }
 
+        // al abrir carga los proveedores
         private void FormProveedores_Load(object sender, EventArgs e)
         {
             Grillas.Configurar(dgvProveedores);
@@ -43,6 +49,7 @@ namespace Vista
             AplicarModo(Modo.Consulta);
         }
 
+        // habilita o bloquea los campos segun el modo
         private void AplicarModo(Modo nuevoModo)
         {
             modo = nuevoModo;
@@ -82,6 +89,7 @@ namespace Vista
             }
         }
 
+        // carga la grilla, con la busqueda si hay texto
         private void CargarProveedores()
         {
             try
@@ -108,6 +116,7 @@ namespace Vista
             }
         }
 
+        // titulos de columnas y letra gris para los inactivos
         private void dgvProveedores_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (dgvProveedores.Columns.Contains("Razon_Social"))
@@ -137,6 +146,7 @@ namespace Vista
             }
         }
 
+        // deja los campos vacios
         private void LimpiarControles()
         {
             idProveedorSeleccionado = 0;
@@ -151,6 +161,7 @@ namespace Vista
             dgvProveedores.ClearSelection();
         }
 
+        // arma el proveedor con lo escrito en los campos
         private Proveedor LeerProveedor()
         {
             return new Proveedor()
@@ -165,6 +176,7 @@ namespace Vista
             };
         }
 
+        // guarda el alta o la modificacion
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -207,6 +219,7 @@ namespace Vista
             }
         }
 
+        // pasa a modo modificacion
         private void btnModificar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -225,6 +238,7 @@ namespace Vista
             AplicarModo(Modo.Modificando);
         }
 
+        // descarta los cambios
         private void btnCancelar_Click(object? sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -232,6 +246,7 @@ namespace Vista
             AplicarModo(Modo.Consulta);
         }
 
+        // inactiva o reactiva el proveedor (pide confirmacion)
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -288,6 +303,7 @@ namespace Vista
             }
         }
 
+        // al elegir un proveedor carga sus datos
         private void dgvProveedores_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || modo != Modo.Consulta)
@@ -315,12 +331,14 @@ namespace Vista
             AplicarModo(Modo.Consulta);
         }
 
+        // valor de una celda como texto
         private static string Texto(DataGridViewRow fila, string columna)
         {
             object? valor = fila.Cells[columna].Value;
             return valor == null || valor == DBNull.Value ? "" : valor.ToString() ?? "";
         }
 
+        // pasa a modo alta
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -329,11 +347,13 @@ namespace Vista
             AplicarModo(Modo.Agregando);
         }
 
+        // busca mientras se escribe
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             CargarProveedores();
         }
 
+        // vuelve al menu
         private void btnVolverMenu_Click(object sender, EventArgs e)
         {
             this.Close();

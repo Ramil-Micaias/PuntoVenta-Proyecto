@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // provincia
     public class Provincia
     {
         public int Id_Provincia {  get; set; }

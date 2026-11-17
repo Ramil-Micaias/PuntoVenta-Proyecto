@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // relacion entre persona y telefono
     public class PersonaTelefono
     {
         public int Id_PersonaTelefono { get; set; }

@@ -2,6 +2,7 @@ using System;
 
 namespace Datos.Entidades
 {
+    // una caja diaria: apertura, cierre y saldos
     public class Caja
     {
         public int Id_Caja { get; set; }

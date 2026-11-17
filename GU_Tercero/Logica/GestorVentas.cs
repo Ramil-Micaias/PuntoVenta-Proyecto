@@ -5,12 +5,14 @@ using System.Data;
 
 namespace Logica
 {
+    // logica de ventas (POS)
     public class GestorVentas
     {
         private readonly VentaDAO ventaDAO = new VentaDAO();
         private readonly MetodoPagoDAO metodoPagoDAO = new MetodoPagoDAO();
         private readonly ProductoDAO productoDAO = new ProductoDAO();
 
+        // valida la venta, la guarda y la registra en la bitacora
         public ResultadoOperacion RegistrarVenta(Venta venta)
         {
             ValidarVenta(venta);
@@ -28,21 +30,25 @@ namespace Logica
             return resultado;
         }
 
+        // metodos de pago para el combo
         public DataTable ObtenerMetodosPago()
         {
             return metodoPagoDAO.ObtenerMetodosPago();
         }
 
+        // categorias para filtrar productos
         public DataTable ObtenerCategorias()
         {
             return productoDAO.ObtenerCategorias();
         }
 
+        // busca productos para agregar a la venta
         public DataTable BuscarProductos(string filtro, int? idCategoria)
         {
             return productoDAO.BuscarProductosPOS(filtro, idCategoria);
         }
 
+        // controla que la venta tenga productos, cantidades validas y que los pagos cubran el total
         private void ValidarVenta(Venta venta)
         {
             if (venta == null)

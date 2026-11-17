@@ -6,17 +6,20 @@ using Logica.Seguridad;
 
 namespace GU_Tercero
 {
+    // carga de las 3 preguntas de seguridad en el primer ingreso
     public partial class FormPreguntasSeguridad : Form
     {
         private Usuario usuarioLogueado;
         private bool preguntasGuardadas = false;
 
+        // recibe el usuario que tiene que cargar las preguntas
         public FormPreguntasSeguridad(Usuario usuario)
         {
             InitializeComponent();
             usuarioLogueado = usuario;
         }
 
+        // pone el texto de las 3 preguntas y no deja cancelar
         private void FormPreguntasSeguridad_Load(object sender, EventArgs e)
         {
             lblPreguntaUno.Text = "¿Nombre de tu primera mascota?";
@@ -29,6 +32,7 @@ namespace GU_Tercero
             btnCancelar.Enabled = false;
         }
 
+        // controla que responda las 3 y guarda las respuestas hasheadas
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtRespuestaUno.Text) || string.IsNullOrWhiteSpace(txtRespuestaDos.Text)
@@ -57,26 +61,7 @@ namespace GU_Tercero
             this.Close();
         }
 
-        private void FormPreguntasSeguridad_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!preguntasGuardadas && e.CloseReason == CloseReason.UserClosing)
-            {
-                DialogResult respuesta = MessageBox.Show(
-                    "Debe configurar sus preguntas de seguridad para continuar. ¿Desea salir del sistema?",
-                    "Configuración Obligatoria",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (respuesta == DialogResult.Yes)
-                {
-                    Application.Exit();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
+        // cierra la pantalla
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -4,14 +4,17 @@ using System.Text;
 
 namespace Seguridad
 {
+    // manda mails por el SMTP de gmail
     public static class EmailHelper
     {
+        // datos de la cuenta que manda los mails
         private const string ServidorSmtp = "smtp.gmail.com";
         private const int PuertoSmtp = 587;
         private const string Remitente = "sistemaanalista52@gmail.com";
         private const string CredencialRemitente = "joxy grrq mqdp kgky";
         private const int TimeoutMilisegundos = 20000;
 
+        // manda un mail y devuelve si se pudo enviar
         public static ResultadoEnvioEmail EnviarCorreo(string? destino, string asunto, string mensaje)
         {
             ResultadoEnvioEmail resultado = new ResultadoEnvioEmail();

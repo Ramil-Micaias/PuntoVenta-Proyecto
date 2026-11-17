@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // datos personales: nombre, apellido y DNI
     public class Persona
     {
         public int Id_Persona {  get; set; }

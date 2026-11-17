@@ -8,10 +8,12 @@ using System.Text;
 
 namespace Logica
 {
+    // logica de usuarios: login, contrasenias, preguntas y ABM
     public class UsuarioNegocio
     {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+        // valida usuario y contrasenia, si esta mal suma intentos y al tercero lo bloquea
         public Usuario ValidarLogin(string nombreUsuario, string password)
         {
             Usuario usuario = usuarioDAO.Login(nombreUsuario);
@@ -30,6 +32,7 @@ namespace Logica
                 return null;
             }
 
+            // si el digito verificador no coincide es porque alguien toco la contrasenia en la base
             if (!HashHelper.DigitoVerificadorValido(usuario.PasswordHash))
             {
                 GestorBitacora.RegistrarParaUsuario(usuario.Nombre_Usuario, GestorBitacora.SEGURIDAD,
@@ -47,6 +50,7 @@ namespace Logica
                 return usuario;
             }
 
+            // contrasenia incorrecta: sumamos el intento y lo volvemos a leer para saber cuantos lleva
             usuarioDAO.AumentarIntentos(usuario.Id_Usuario);
 
             usuario = usuarioDAO.Login(nombreUsuario);
@@ -66,8 +70,10 @@ namespace Logica
             return null;
         }
 
+        // a los 3 intentos fallidos se bloquea
         public const int INTENTOS_MAXIMOS_LOGIN = 3;
 
+        // arma el mensaje con los intentos que le quedan
         public string MensajeLoginFallido(string nombreUsuario)
         {
             Usuario usuario = usuarioDAO.Login(nombreUsuario);
@@ -92,6 +98,7 @@ namespace Logica
                 + "Intentos restantes: " + restantes + ". Si se agotan, el usuario se bloquea.";
         }
 
+        // cambia la contrasenia y lo registra en la bitacora
         public void CambiarPassword(int idUsuario, string passwordHash)
         {
             UsuarioDAO dao = new UsuarioDAO();
@@ -104,6 +111,7 @@ namespace Logica
             GestorBitacora.RegistrarParaUsuario(nombreUsuario, GestorBitacora.SEGURIDAD, "Cambio de contraseña.", GestorBitacora.ADVERTENCIA);
         }
 
+        // datos del usuario para la bitacora
         private Dictionary<string, object?>? EstadoUsuario(int idUsuario)
         {
             try
@@ -116,38 +124,48 @@ namespace Logica
             }
         }
         
+        // guarda la contrasenia en el historial
         public void RegistrarHistorialPassword(int idUsuario, string passwordHash)
         {
             usuarioDAO.RegistrarHistorialPassword(idUsuario, passwordHash);
         }
 
-        public List<PreguntasSeguridad> ObtenerPreguntas()
-        {
-            return usuarioDAO.ObtenerPreguntas();
-        }
-
+        // guarda una respuesta del usuario
         public void GuardarPreguntaSeguridad(int idUsuario, int idPregunta, string respuestaHash)
         {
             usuarioDAO.GuardarPreguntaSeguridad(idUsuario, idPregunta, respuestaHash);
         }
 
+        // cada usuario carga siempre 3 preguntas
         public const int TOTAL_PREGUNTAS = 3;
 
+        // true si ya cargo las 3 preguntas
         public bool UsuarioTienePreguntas(int idUsuario)
         {
             return usuarioDAO.CantidadPreguntasUsuario(idUsuario) >= TOTAL_PREGUNTAS;
         }
 
+        // usuarios para la grilla
         public DataTable ObtenerUsuarios()
         {
             return usuarioDAO.ObtenerUsuarios();
         }
 
+        // el rol Usuario no se ofrece al crear o modificar
+        public const string ROL_NO_ASIGNABLE = "Usuario";
+
+        // roles que se pueden asignar (saca el rol Usuario)
         public DataTable ObtenerRoles()
         {
-            return usuarioDAO.ObtenerRoles();
+            DataTable roles = usuarioDAO.ObtenerRoles();
+
+            foreach (DataRow fila in roles.Select("Nombre_Rol = '" + ROL_NO_ASIGNABLE + "'"))
+                roles.Rows.Remove(fila);
+
+            return roles;
         }
 
+        // genera una contrasenia al azar que cumple la configuracion
         private string GenerarPasswordTemporal(ConfiguracionSistema configuracion)
         {
             const string mayusculas = "ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -179,6 +197,7 @@ namespace Logica
                 obligatorios.Add(Character(especiales));
             }
 
+            // el largo es el minimo configurado, o mas si hacen falta los caracteres obligatorios
             int longitud = Math.Max(configuracion.Min_Caracteres, obligatorios.Count + 4);
 
             char[] password = new char[longitud];
@@ -196,16 +215,13 @@ namespace Logica
             return new string(password);
         }
 
+        // devuelve un caracter al azar del conjunto
         private static char Character(string conjunto)
         {
             return conjunto[RandomNumberGenerator.GetInt32(conjunto.Length)];
         }
 
-        public bool ExisteDni(string dni)
-        {
-            return usuarioDAO.ExisteDni(dni);
-        }
-
+        // valida, crea el usuario con una contrasenia temporal y devuelve esa contrasenia
         public string InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
         {
             ValidarDatosUsuario(0, apellido, nombre, dni, correo, nombreUsuario, idRol);
@@ -224,6 +240,7 @@ namespace Logica
             return passwordTemporal;
         }
 
+        // valida y modifica el usuario, en la bitacora queda lo que cambio
         public void ModificarUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol, bool activo, bool bloqueado)
         {
             ValidarDatosUsuario(idUsuario, apellido, nombre, dni, correo, nombreUsuario, idRol);
@@ -240,11 +257,15 @@ namespace Logica
                 cambioRol ? GestorBitacora.CRITICA : GestorBitacora.ADVERTENCIA, antes, despues);
         }
 
+        // valida todos los datos del usuario y que no esten repetidos
         public void ValidarDatosUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol)
         {
             if (string.IsNullOrWhiteSpace(apellido) || string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(dni)
                 || string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(nombreUsuario) || idRol <= 0)
                 throw new Exception("Debe completar todos los campos obligatorios.");
+
+            if (ObtenerRoles().Select("Id_Rol = " + idRol).Length == 0)
+                throw new Exception("Debe elegir un rol válido.");
 
             if (!Validaciones.EsNombreValido(apellido))
                 throw new Exception("El apellido solo puede tener letras y espacios (hasta 50 caracteres).");
@@ -274,6 +295,7 @@ namespace Logica
                 throw new Exception("El nombre de usuario ya está en uso.");
         }
 
+        // baja logica del usuario
         public void DesactivarUsuario(int idUsuario)
         {
             var antes = EstadoUsuario(idUsuario);
@@ -283,6 +305,7 @@ namespace Logica
                 GestorBitacora.CRITICA, antes, EstadoUsuario(idUsuario));
         }
 
+        // vuelve a activar el usuario
         public void ActivarUsuario(int idUsuario)
         {
             var antes = EstadoUsuario(idUsuario);
@@ -294,6 +317,7 @@ namespace Logica
                 GestorBitacora.ADVERTENCIA, antes, EstadoUsuario(idUsuario));
         }
 
+        // desbloquea el usuario
         public void DesbloquearUsuario(int idUsuario)
         {
             var antes = EstadoUsuario(idUsuario);
@@ -304,11 +328,13 @@ namespace Logica
                 GestorBitacora.ADVERTENCIA, antes, EstadoUsuario(idUsuario));
         }
 
+        // preguntas del usuario para recuperar la contrasenia
         public DataTable ObtenerPreguntasUsuario(string nombreUsuario)
         {
             return usuarioDAO.ObtenerPreguntasUsuario(nombreUsuario);
         }
 
+        // compara la respuesta con la guardada
         public bool ValidarPreguntaSeguridad(string nombreUsuario, int idPregunta, string respuesta)
         {
             string hashGuardado = usuarioDAO.ObtenerHashRespuesta(nombreUsuario, idPregunta);
@@ -326,6 +352,7 @@ namespace Logica
             return HashHelper.CompararHashSeguro(hashGuardado, HashHelper.GenerarHashRespuestaLegado(respuesta));
         }
 
+        // genera una contrasenia temporal y se la manda por mail
         public ResultadoRecuperacionPassword RecuperarPassword(string nombreUsuario)
         {
             ResultadoRecuperacionPassword resultado = new ResultadoRecuperacionPassword();
@@ -360,6 +387,7 @@ namespace Logica
 
             ResultadoEnvioEmail envio = EmailHelper.EnviarCorreo(correo, "Recuperación de contraseña - Punto Venta", cuerpo);
 
+            // si no se pudo mandar el mail no se cambia la contrasenia
             if (!envio.Enviado)
             {
                 resultado.Error = envio.Error;
@@ -380,6 +408,7 @@ namespace Logica
             return resultado;
         }
 
+        // manda por mail la contrasenia temporal al usuario nuevo
         public ResultadoEnvioEmail EnviarPasswordInicial(string correo, string nombreUsuario, string passwordTemporal)
         {
             string cuerpo = "Hola " + nombreUsuario + "," + Environment.NewLine + Environment.NewLine
@@ -391,9 +420,5 @@ namespace Logica
             return EmailHelper.EnviarCorreo(correo, "Alta de usuario - Punto Venta", cuerpo);
         }
 
-        public string ObtenerCorreoUsuario(string nombreUsuario)
-        {
-            return usuarioDAO.ObtenerCorreoUsuario(nombreUsuario);
-        }
     }
 }

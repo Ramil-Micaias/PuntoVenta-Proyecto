@@ -8,15 +8,21 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // pantalla de caja diaria: abrir, cerrar y registrar movimientos
     public partial class FormCaja : Form
     {
         private readonly GestorCaja gestorCaja = new GestorCaja();
         private Usuario? usuarioLogueado;
         private Caja? cajaActual;
 
+        // constructor: referencias de colores y eventos
         public FormCaja()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvMovimientos,
+                (Leyenda.LETRA_VERDE, false, "Ingreso o venta en efectivo"),
+                (Leyenda.LETRA_ROJA, false, "Egreso"),
+                (Leyenda.LETRA_GRIS, false, "Cobro con otro medio (no entra en la caja)"));
 
             this.btnAbrirCaja.Click += btnAbrirCaja_Click;
             this.btnCerrarCaja.Click += btnCerrarCaja_Click;
@@ -27,11 +33,13 @@ namespace Vista
             this.dgvMovimientos.CellFormatting += dgvMovimientos_CellFormatting;
         }
 
+        // recibe el usuario logueado
         public FormCaja(Usuario? usuario) : this()
         {
             usuarioLogueado = usuario;
         }
 
+        // al abrir carga el estado de la caja
         private void FormCaja_Load(object sender, EventArgs e)
         {
             btnHistorial.Visible = usuarioLogueado == null || usuarioLogueado.Nombre_Rol == "Administrador";
@@ -40,6 +48,7 @@ namespace Vista
             CargarCaja();
         }
 
+        // muestra si la caja esta abierta o cerrada con sus totales
         private void CargarCaja()
         {
             try
@@ -105,6 +114,7 @@ namespace Vista
             CargarMovimientos();
         }
 
+        // muestra los botones segun si la caja esta abierta
         private void AcomodarBotones(bool abierta)
         {
             int x = dgvMovimientos.Right;
@@ -121,6 +131,7 @@ namespace Vista
             }
         }
 
+        // muestra saldo inicial, ingresos, egresos y saldo
         private void MostrarTotales(decimal saldoInicial, decimal ingresos, decimal egresos, decimal saldo)
         {
             lblSaldoInicialValor.Text = FormatoMoneda(saldoInicial);
@@ -129,6 +140,7 @@ namespace Vista
             lblSaldoValor.Text = FormatoMoneda(saldo);
         }
 
+        // carga los movimientos de la caja abierta
         private void CargarMovimientos()
         {
             try
@@ -149,6 +161,7 @@ namespace Vista
             }
         }
 
+        // titulo y formato de una columna
         private void EncabezadoColumna(string nombre, string texto, string formato)
         {
             if (!dgvMovimientos.Columns.Contains(nombre))
@@ -161,6 +174,7 @@ namespace Vista
             columna.DefaultCellStyle.Format = formato;
         }
 
+        // valida el saldo inicial y abre la caja
         private void AbrirCaja()
         {
             if (usuarioLogueado == null)
@@ -200,6 +214,7 @@ namespace Vista
             }
         }
 
+        // reabre la caja de hoy con sus movimientos (pide confirmacion)
         private void ReabrirCaja()
         {
             DialogResult respuesta = MessageBox.Show(
@@ -227,6 +242,7 @@ namespace Vista
             }
         }
 
+        // cierra la caja y muestra el saldo final
         private void CerrarCaja()
         {
             if (cajaActual == null || usuarioLogueado == null)
@@ -262,6 +278,7 @@ namespace Vista
             }
         }
 
+        // abre la ventana para cargar un ingreso o egreso
         private void RegistrarMovimiento()
         {
             Mensajes.Limpiar(lblResultado);
@@ -299,6 +316,7 @@ namespace Vista
                 "Movimiento registrado con éxito.\nSaldo disponible: " + FormatoMoneda(cajaActual!.Saldo_Disponible));
         }
 
+        // importe verde si es ingreso, rojo si es egreso y gris si no es en efectivo
         private void dgvMovimientos_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvMovimientos.Columns.Contains("Tipo") || !dgvMovimientos.Columns.Contains("Importe"))
@@ -325,6 +343,7 @@ namespace Vista
                 : Color.FromArgb(16, 185, 129);
         }
 
+        // convierte el texto a numero aceptando coma o punto
         private static bool IntentarParsearDecimal(string texto, out decimal valor)
         {
             valor = 0;
@@ -343,11 +362,13 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
+        // formato de pesos
         private static string FormatoMoneda(decimal valor)
         {
             return "$" + valor.ToString("N2");
         }
 
+        // Enter en el saldo inicial abre la caja
         private void txtSaldoInicial_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -357,21 +378,25 @@ namespace Vista
             }
         }
 
+        // boton Abrir caja (o Reabrir)
         private void btnAbrirCaja_Click(object? sender, EventArgs e)
         {
             AbrirCaja();
         }
 
+        // boton Cerrar caja
         private void btnCerrarCaja_Click(object? sender, EventArgs e)
         {
             CerrarCaja();
         }
 
+        // boton Registrar movimiento
         private void btnRegistrarMovimiento_Click(object? sender, EventArgs e)
         {
             RegistrarMovimiento();
         }
 
+        // abre el historial de caja
         private void btnHistorial_Click(object? sender, EventArgs e)
         {
             using (FormHistorialCaja historial = new FormHistorialCaja())
@@ -380,6 +405,7 @@ namespace Vista
             }
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object? sender, EventArgs e)
         {
             this.Close();

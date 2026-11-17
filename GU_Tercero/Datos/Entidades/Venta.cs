@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Datos.Entidades
 {
+    // venta con su detalle y sus pagos
     public class Venta
     {
         public int Id_Venta { get; set; }
@@ -19,6 +20,7 @@ namespace Datos.Entidades
 
         public List<PagoVenta> Pagos { get; set; } = new List<PagoVenta>();
 
+        // suma de los productos sin descuento
         public decimal Subtotal
         {
             get
@@ -34,6 +36,7 @@ namespace Datos.Entidades
             }
         }
 
+        // subtotal menos el descuento
         public decimal TotalNeto
         {
             get
@@ -42,6 +45,7 @@ namespace Datos.Entidades
             }
         }
 
+        // suma de los pagos cargados
         public decimal TotalPagos
         {
             get
@@ -57,6 +61,7 @@ namespace Datos.Entidades
             }
         }
 
+        // calcula el descuento redondeado a 2 decimales
         public static decimal CalcularDescuento(decimal subtotal, decimal porcentaje)
         {
             return Math.Round(subtotal * porcentaje / 100, 2, MidpointRounding.AwayFromZero);

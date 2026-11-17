@@ -5,23 +5,28 @@ using System.Data;
 
 namespace Logica
 {
+    // logica de la caja diaria
     public class GestorCaja
     {
+        // largo maximo del motivo de un movimiento
         public const int LARGO_MAXIMO_MOTIVO = 200;
 
         private readonly CajaDAO cajaDAO = new CajaDAO();
         private readonly MetodoPagoDAO metodoPagoDAO = new MetodoPagoDAO();
 
+        // caja abierta o null
         public Caja? ObtenerCajaActual()
         {
             return cajaDAO.ObtenerCajaActual();
         }
 
+        // movimientos de la caja
         public DataTable ListarMovimientos(int idCaja)
         {
             return cajaDAO.ListarMovimientos(idCaja);
         }
 
+        // valida el saldo inicial, abre la caja y lo deja en la bitacora
         public void AbrirCaja(int idUsuario, decimal saldoInicial)
         {
             if (idUsuario <= 0)
@@ -36,6 +41,7 @@ namespace Logica
                 new System.Collections.Generic.Dictionary<string, object?> { ["Saldo_Inicial"] = saldoInicial });
         }
 
+        // cierra la caja y devuelve el saldo final
         public decimal CerrarCaja(int idCaja, int idUsuario)
         {
             if (idUsuario <= 0)
@@ -50,34 +56,40 @@ namespace Logica
             return saldoFinal;
         }
 
+        // metodos de pago para el filtro del historial
         public DataTable ObtenerMetodosPago()
         {
             return metodoPagoDAO.ObtenerMetodosPago();
         }
 
+        // cajas de un periodo, valida las fechas antes
         public DataTable ListarCajas(DateTime desde, DateTime hasta)
         {
             ValidarPeriodo(desde, hasta);
             return cajaDAO.ListarCajas(desde, hasta);
         }
 
+        // movimientos de un periodo
         public DataTable ListarMovimientosPeriodo(DateTime desde, DateTime hasta, int? idMetodoPago)
         {
             ValidarPeriodo(desde, hasta);
             return cajaDAO.ListarMovimientosPeriodo(desde.Date, hasta.Date.AddDays(1), idMetodoPago);
         }
 
+        // movimientos entre la apertura y el cierre de una caja
         public DataTable ListarMovimientosDeCaja(DateTime inicio, DateTime fin, int? idMetodoPago)
         {
             return cajaDAO.ListarMovimientosPeriodo(inicio, fin, idMetodoPago);
         }
 
+        // la fecha desde no puede ser mayor que la hasta
         private static void ValidarPeriodo(DateTime desde, DateTime hasta)
         {
             if (desde.Date > hasta.Date)
                 throw new Exception("La fecha desde no puede ser posterior a la fecha hasta.");
         }
 
+        // reabre una caja cerrada, queda como operacion critica en la bitacora
         public void ReabrirCaja(int idCaja, int idUsuario)
         {
             if (idUsuario <= 0)
@@ -90,6 +102,7 @@ namespace Logica
                 new System.Collections.Generic.Dictionary<string, object?> { ["Estado"] = "Abierta" });
         }
 
+        // valida y guarda un ingreso o egreso manual
         public decimal RegistrarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)
         {
             ValidarMovimiento(movimiento, saldoDisponible);
@@ -103,6 +116,7 @@ namespace Logica
             return saldo;
         }
 
+        // importe mayor a cero, motivo obligatorio y que el egreso no supere el saldo
         private void ValidarMovimiento(MovimientoCaja movimiento, decimal saldoDisponible)
         {
             if (movimiento == null)

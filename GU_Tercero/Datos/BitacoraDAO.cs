@@ -3,8 +3,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de la bitacora
     public class BitacoraDAO
     {
+        // guarda un movimiento en la bitacora con sp_RegistrarBitacora
         public void Registrar(string usuario, string? apellidoNombre, string? rol, string modulo, string operacion,
             string criticidad, string? estadoAnterior, string? estadoPosterior)
         {
@@ -27,6 +29,7 @@ namespace Datos
             }
         }
 
+        // trae los movimientos entre dos fechas, con filtros opcionales (sp_ListarBitacora)
         public DataTable Listar(DateTime desde, DateTime hasta, string? criticidad, string? modulo, string? texto)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -46,6 +49,7 @@ namespace Datos
             }
         }
 
+        // se fija si el usuario tiene un permiso, por ejemplo VER_BITACORA
         public bool UsuarioTienePermiso(int idUsuario, string codigo)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

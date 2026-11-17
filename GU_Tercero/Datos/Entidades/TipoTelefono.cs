@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // tipo de telefono (celular, fijo)
     public class TipoTelefono
     {
         public int Id_TipoTelefono {  get; set; }

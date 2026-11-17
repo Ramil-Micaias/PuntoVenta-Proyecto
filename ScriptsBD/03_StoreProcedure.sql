@@ -439,77 +439,6 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE sp_AsignarRolUsuario
-    @IdUsuario INT,
-    @IdRol INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    INSERT INTO UsuarioRol (Id_Usuario, Id_Rol, Fecha_Asignacion)
-    VALUES (@IdUsuario, @IdRol, GETDATE());
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_AsignarPermisoRol
-    @IdRol INT,
-    @IdPermiso INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    INSERT INTO RolPermiso (Id_Rol, Id_Permiso)
-    VALUES (@IdRol, @IdPermiso);
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_RegistrarHistorialUsuario
-    @IdUsuario INT,
-    @TipoMovimiento NVARCHAR(50),
-    @Motivo NVARCHAR(255)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    INSERT INTO HistorialUsuario (Id_Usuario, Tipo_Movimiento, Fecha_Movimiento, Motivo)
-    VALUES (@IdUsuario, @TipoMovimiento, GETDATE(), @Motivo);
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerHistorialUsuario
-    @IdUsuario INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        Tipo_Movimiento,
-        Fecha_Movimiento,
-        Motivo
-    FROM HistorialUsuario
-    WHERE Id_Usuario = @IdUsuario
-    ORDER BY Fecha_Movimiento DESC;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ValidarPreguntaSeguridad
-    @NombreUsuario NVARCHAR(50),
-    @IdPregunta INT,
-    @RespuestaHash NVARCHAR(255)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT UPS.Id_UsuarioPregunta
-    FROM UsuarioPreguntaSeguridad UPS
-    INNER JOIN Usuario U
-        ON UPS.Id_Usuario = U.Id_Usuario
-    WHERE U.Nombre_Usuario = @NombreUsuario
-      AND UPS.Id_Pregunta = @IdPregunta
-      AND UPS.RespuestaHash = @RespuestaHash;
-END;
-GO
-
 CREATE OR ALTER PROCEDURE sp_ReestablecerPassword
     @NombreUsuario NVARCHAR(50),
     @PasswordHash NVARCHAR(255)
@@ -525,18 +454,6 @@ BEGIN
         Intentos_Fallidos = 0,
         Bloqueado = 0
     WHERE Nombre_Usuario = @NombreUsuario;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ExpirarCodigo2FA
-    @IdCodigo2FA INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    UPDATE Codigo2FA
-    SET Usado = 1
-    WHERE Id_Codigo2FA = @IdCodigo2FA;
 END;
 GO
 
@@ -585,104 +502,6 @@ BEGIN
         ON P.Id_Persona = C.Id_Persona
     WHERE U.Nombre_Usuario = @NombreUsuario
       AND C.Activo = 1;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerUsuariosBloqueados
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        U.Id_Usuario,
-        P.Apellido,
-        P.Nombre,
-        U.Nombre_Usuario,
-        U.Intentos_Fallidos,
-        U.Fecha_Bloqueo
-    FROM Usuario U
-    INNER JOIN Persona P
-        ON U.Id_Persona = P.Id_Persona
-    WHERE U.Bloqueado = 1;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerUsuariosActivos
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        U.Id_Usuario,
-        P.Apellido,
-        P.Nombre,
-        U.Nombre_Usuario,
-        U.Fecha_Alta
-    FROM Usuario U
-    INNER JOIN Persona P
-        ON U.Id_Persona = P.Id_Persona
-    WHERE U.Activo = 1;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerUsuariosPorRol
-    @IdRol INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        U.Id_Usuario,
-        P.Apellido,
-        P.Nombre,
-        U.Nombre_Usuario,
-        R.Nombre_Rol
-    FROM Usuario U
-    INNER JOIN Persona P
-        ON U.Id_Persona = P.Id_Persona
-    INNER JOIN UsuarioRol UR
-        ON U.Id_Usuario = UR.Id_Usuario
-    INNER JOIN Rol R
-        ON UR.Id_Rol = R.Id_Rol
-    WHERE R.Id_Rol = @IdRol;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerUltimosLogins
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        U.Nombre_Usuario,
-        U.Ultimo_Login
-    FROM Usuario U
-    WHERE U.Ultimo_Login IS NOT NULL
-    ORDER BY U.Ultimo_Login DESC;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerCantidadUsuarios
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT COUNT(*) AS Cantidad_Usuarios
-    FROM Usuario;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE sp_ObtenerPreguntasSeguridad
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        Id_Pregunta,
-        Pregunta,
-        Activo
-    FROM PreguntasSeguridad
-    WHERE Activo = 1;
 END;
 GO
 

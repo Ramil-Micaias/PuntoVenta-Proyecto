@@ -8,6 +8,7 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // listado de ordenes del taller
     public partial class FormTaller : Form
     {
         private readonly GestorTaller gestorTaller = new GestorTaller();
@@ -15,9 +16,12 @@ namespace GU_Tercero
 
         private readonly Color colorVencida = Color.FromArgb(254, 226, 226);
 
+        // constructor: referencia de colores y eventos
         public FormTaller()
         {
             InitializeComponent();
+            Leyenda.Agregar(dgvOrdenes,
+                (Leyenda.FONDO_ROJO, true, "Orden vencida (pasó la fecha prometida)"));
 
             this.Load += FormTaller_Load;
             this.btnBuscar.Click += btnBuscar_Click;
@@ -31,16 +35,19 @@ namespace GU_Tercero
             this.dgvOrdenes.CellFormatting += dgvOrdenes_CellFormatting;
         }
 
+        // recibe el usuario logueado
         public FormTaller(Usuario? usuario) : this()
         {
             usuarioLogueado = usuario;
         }
 
+        // true si el usuario es tecnico
         private bool EsTecnico()
         {
             return usuarioLogueado != null && usuarioLogueado.Nombre_Rol == "Tecnico";
         }
 
+        // al abrir carga los filtros y las ordenes
         private void FormTaller_Load(object sender, EventArgs e)
         {
             Grillas.Configurar(dgvOrdenes);
@@ -49,13 +56,14 @@ namespace GU_Tercero
             if (EsTecnico())
             {
                 chkMisOrdenes.Visible = true;
-                chkMisOrdenes.Checked = true;
+                chkMisOrdenes.Checked = false;
             }
 
             CargarOrdenes();
             txtBuscar.Focus();
         }
 
+        // llena los combos de estado y tecnico
         private void CargarFiltros()
         {
             try
@@ -91,6 +99,7 @@ namespace GU_Tercero
             }
         }
 
+        // id elegido en un combo o null si es Todos
         private static int? ValorSeleccionado(ComboBox combo)
         {
             object? valor = combo.SelectedValue;
@@ -103,6 +112,7 @@ namespace GU_Tercero
             return null;
         }
 
+        // carga las ordenes con los filtros elegidos
         private void CargarOrdenes()
         {
             try
@@ -110,17 +120,21 @@ namespace GU_Tercero
                 int? idEstado = ValorSeleccionado(cmbEstado);
                 int? idTecnico = ValorSeleccionado(cmbTecnico);
 
+                int? idUsuarioPropio = null;
+
                 cmbTecnico.Enabled = !chkMisOrdenes.Checked;
                 if (chkMisOrdenes.Checked && usuarioLogueado != null)
                 {
-                    idTecnico = usuarioLogueado.Id_Usuario;
+                    idTecnico = null;
+                    idUsuarioPropio = usuarioLogueado.Id_Usuario;
                 }
 
                 DataTable ordenes = gestorTaller.ConsultarOrdenes(
                     txtBuscar.Text.Trim(),
                     idEstado,
                     idTecnico,
-                    chkSoloPendientes.Checked
+                    chkSoloPendientes.Checked,
+                    idUsuarioPropio
                 );
 
                 dgvOrdenes.DataSource = ordenes;
@@ -146,6 +160,7 @@ namespace GU_Tercero
             }
         }
 
+        // titulos y formatos de la grilla
         private void ConfigurarColumnas()
         {
             if (dgvOrdenes.Columns.Contains("Ingreso"))
@@ -157,10 +172,14 @@ namespace GU_Tercero
             if (dgvOrdenes.Columns.Contains("Tecnico"))
                 dgvOrdenes.Columns["Tecnico"].HeaderText = "Técnico";
 
+            if (dgvOrdenes.Columns.Contains("Recibio"))
+                dgvOrdenes.Columns["Recibio"].HeaderText = "Recibió";
+
             if (dgvOrdenes.Columns.Contains("Total"))
                 dgvOrdenes.Columns["Total"].DefaultCellStyle.Format = "0.##";
         }
 
+        // vencida = paso la fecha prometida y no esta entregada ni cancelada
         private static bool EstaVencida(object prometida, object estado)
         {
             if (prometida == null || prometida == DBNull.Value)
@@ -174,6 +193,7 @@ namespace GU_Tercero
             return Convert.ToDateTime(prometida).Date < DateTime.Today;
         }
 
+        // pinta de rojo claro las ordenes vencidas
         private void dgvOrdenes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || !dgvOrdenes.Columns.Contains("Prometida"))
@@ -188,6 +208,7 @@ namespace GU_Tercero
             }
         }
 
+        // abre la orden (0 es nueva) y al volver recarga la grilla
         private void AbrirOrden(int idOrden)
         {
             if (usuarioLogueado == null)
@@ -214,6 +235,7 @@ namespace GU_Tercero
             }
         }
 
+        // abre la orden elegida en la grilla
         private void VerOrdenSeleccionada()
         {
             if (dgvOrdenes.CurrentRow == null)
@@ -231,11 +253,13 @@ namespace GU_Tercero
             AbrirOrden(idOrden);
         }
 
+        // boton Buscar
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarOrdenes();
         }
 
+        // Enter en la busqueda
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -245,22 +269,26 @@ namespace GU_Tercero
             }
         }
 
+        // al cambiar un filtro vuelve a cargar
         private void Filtro_CheckedChanged(object sender, EventArgs e)
         {
             if (this.Visible)
                 CargarOrdenes();
         }
 
+        // nueva orden
         private void btnNuevaOrden_Click(object sender, EventArgs e)
         {
             AbrirOrden(0);
         }
 
+        // ver la orden elegida
         private void btnVerOrden_Click(object sender, EventArgs e)
         {
             VerOrdenSeleccionada();
         }
 
+        // doble click tambien abre la orden
         private void dgvOrdenes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -269,6 +297,7 @@ namespace GU_Tercero
             }
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

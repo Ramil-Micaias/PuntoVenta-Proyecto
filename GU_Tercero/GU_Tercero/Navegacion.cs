@@ -4,8 +4,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // menu superior de todas las pantallas y permisos por rol
     public static class Navegacion
     {
+        // nombres de las pantallas
         public const string MENU_PRINCIPAL = "Inicio";
         public const string USUARIOS = "Usuarios";
         public const string PRODUCTOS = "Productos y Categorías";
@@ -20,8 +22,10 @@ namespace Vista
         public const string CONFIGURACION = "Configuración del Sistema";
         public const string CERRAR_SESION = "Cerrar Sesion";
 
+        // pantalla a la que hay que ir despues de cerrar la actual
         public static string Destino = MENU_PRINCIPAL;
 
+        // que pantallas puede ver cada rol
         public static bool PuedeVer(string rol, string pantalla)
         {
             if (pantalla == MENU_PRINCIPAL || pantalla == MI_PERFIL || pantalla == CERRAR_SESION || pantalla == CONSULTA_STOCK)
@@ -47,6 +51,7 @@ namespace Vista
             return true;
         }
 
+        // agrega el menu superior al formulario
         public static void AgregarMenu(Form form, string rol, string pantallaActual)
         {
             MenuStrip menu = new MenuStrip();
@@ -81,6 +86,7 @@ namespace Vista
             form.Load += Form_Load;
         }
 
+        // crea una opcion del menu, oculta si el rol no la puede ver
         private static ToolStripMenuItem CrearOpcion(string pantalla, string rol, string pantallaActual)
         {
             ToolStripMenuItem opcion = new ToolStripMenuItem(pantalla);
@@ -91,6 +97,7 @@ namespace Vista
             return opcion;
         }
 
+        // guarda el destino y cierra el formulario actual
         private static void Opcion_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem opcion = (ToolStripMenuItem)sender;
@@ -106,6 +113,7 @@ namespace Vista
             form.Close();
         }
 
+        // agranda el formulario y baja los controles para que el menu no tape nada
         private static void Form_Load(object sender, EventArgs e)
         {
             Form form = (Form)sender;
@@ -137,6 +145,22 @@ namespace Vista
                     control.Top += alto;
                 }
             }
+
+            AjustarAPantalla(form);
+        }
+
+        // si el formulario no entra en el monitor lo achica al tamanio de la pantalla
+        public static void AjustarAPantalla(Form form)
+        {
+            Rectangle pantalla = Screen.FromControl(form).WorkingArea;
+
+            if (form.Width <= pantalla.Width && form.Height <= pantalla.Height)
+            {
+                return;
+            }
+
+            form.MinimumSize = new Size(Math.Min(form.MinimumSize.Width, pantalla.Width), Math.Min(form.MinimumSize.Height, pantalla.Height));
+            form.Bounds = new Rectangle(pantalla.Left, pantalla.Top, Math.Min(form.Width, pantalla.Width), Math.Min(form.Height, pantalla.Height));
         }
     }
 }
