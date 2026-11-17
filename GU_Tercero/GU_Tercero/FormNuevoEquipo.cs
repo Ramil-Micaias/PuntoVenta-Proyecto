@@ -4,12 +4,15 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // alta de un equipo para un cliente
     public partial class FormNuevoEquipo : Form
     {
         private int idCliente;
 
+        // id del equipo guardado
         public int IdEquipoNuevo { get; private set; }
 
+        // recibe el cliente al que se le carga el equipo
         public FormNuevoEquipo(int idCliente, string nombreCliente)
         {
             InitializeComponent();
@@ -19,6 +22,7 @@ namespace Vista
             cmbTipo.SelectedIndex = 0;
         }
 
+        // valida y guarda el equipo
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try

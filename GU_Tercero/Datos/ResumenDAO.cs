@@ -5,8 +5,10 @@ using System.Data;
 
 namespace Datos
 {
+    // datos para los paneles del menu principal
     public class ResumenDAO
     {
+        // ventas, compras, ordenes y alertas de stock del dia
         public ResumenDiario ObtenerResumenDiario()
         {
             ResumenDiario resumen = new ResumenDiario();
@@ -35,6 +37,7 @@ namespace Datos
             return resumen;
         }
 
+        // resumen del tecnico: sus ordenes y su comision
         public ResumenTecnico ObtenerResumenTecnico(int idTecnico)
         {
             ResumenTecnico resumen = new ResumenTecnico();

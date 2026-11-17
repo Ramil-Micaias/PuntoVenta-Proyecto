@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // direccion (calle, numero, localidad)
     public class Direccion
     {
         public int Id_Direccion { get; set; }

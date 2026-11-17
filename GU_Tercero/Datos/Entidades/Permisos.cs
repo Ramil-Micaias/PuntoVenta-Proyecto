@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // permiso del sistema, por ejemplo VER_BITACORA
     public class Permisos
     {
         public int Id_Permiso {  get; set; }

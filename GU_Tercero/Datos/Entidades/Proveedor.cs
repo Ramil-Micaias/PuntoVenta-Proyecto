@@ -2,6 +2,7 @@ using System;
 
 namespace Datos.Entidades
 {
+    // proveedor del local
     public class Proveedor
     {
         public int Id_Proveedor { get; set; }

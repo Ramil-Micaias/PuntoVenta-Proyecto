@@ -1,5 +1,6 @@
 namespace Datos.Entidades
 {
+    // numeros del dia para el menu principal
     public class ResumenDiario
     {
         public decimal Total_Ventas_Dia { get; set; }

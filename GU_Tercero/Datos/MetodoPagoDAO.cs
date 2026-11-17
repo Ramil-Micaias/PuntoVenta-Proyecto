@@ -3,8 +3,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de los metodos de pago
     public class MetodoPagoDAO
     {
+        // trae los metodos de pago para los combos de ventas y compras
         public DataTable ObtenerMetodosPago()
         {
             DataTable tabla = new DataTable();

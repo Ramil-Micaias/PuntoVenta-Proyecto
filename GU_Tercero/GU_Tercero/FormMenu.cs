@@ -6,6 +6,7 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // menu principal con los paneles de resumen
     public partial class FormMenu : Form
     {
         private Usuario usuarioLogueado;
@@ -28,6 +29,7 @@ namespace GU_Tercero
         private Label lblValorComision = new Label();
         private Label lblDetalleComision = new Label();
 
+        // recibe el usuario logueado
         public FormMenu(Usuario usuario)
         {
             InitializeComponent();
@@ -36,11 +38,13 @@ namespace GU_Tercero
             this.VisibleChanged += FormMenu_VisibleChanged;
         }
 
+        // rol del usuario logueado
         private string ObtenerRol()
         {
             return usuarioLogueado?.Nombre_Rol ?? "Administrador";
         }
 
+        // cada vez que se vuelve al menu se actualizan los numeros
         private void FormMenu_VisibleChanged(object sender, EventArgs e)
         {
             if (this.Visible)
@@ -49,6 +53,7 @@ namespace GU_Tercero
             }
         }
 
+        // arma los paneles segun el rol
         private void CrearPaneles()
         {
             string rol = ObtenerRol();
@@ -76,6 +81,7 @@ namespace GU_Tercero
             }
         }
 
+        // crea un panel de color con titulo, valor y detalle
         private void CrearPanel(string titulo, Color color, int columna, int fila, Label lblValor, Label lblDetalle)
         {
             Panel panel = new Panel();
@@ -110,6 +116,7 @@ namespace GU_Tercero
             tlpPaneles.Controls.Add(panel, columna, fila);
         }
 
+        // carga los numeros del dia en los paneles
         private void CargarResumen()
         {
             try
@@ -145,6 +152,7 @@ namespace GU_Tercero
             }
         }
 
+        // numeros del tecnico: ordenes, progreso y comision
         private void CargarResumenTecnico(GestorResumen gestorResumen)
         {
             ResumenTecnico resumen = gestorResumen.ObtenerResumenTecnico(usuarioLogueado.Id_Usuario);
@@ -166,6 +174,7 @@ namespace GU_Tercero
             lblDetalleComision.Text = "10% del total de tus reparaciones";
         }
 
+        // al abrir arma los paneles, el menu y el logo
         private void FormMenu_Load(object sender, EventArgs e)
         {
             if (usuarioLogueado != null)
@@ -186,6 +195,7 @@ namespace GU_Tercero
             AplicarPermisosPorRol();
         }
 
+        // oculta las opciones del menu que el rol no puede usar
         private void AplicarPermisosPorRol()
         {
             string rol = ObtenerRol();
@@ -208,6 +218,7 @@ namespace GU_Tercero
             btnAccesoCompra.Visible = Navegacion.PuedeVer(rol, Navegacion.COMPRAS);
         }
 
+        // carga el logo
         private void CargarLogo()
         {
             try
@@ -233,6 +244,7 @@ namespace GU_Tercero
             catch { }
         }
 
+        // abre las pantallas una atras de otra hasta que se vuelve al inicio o se cierra sesion
         private void AbrirPantalla(string pantalla)
         {
             this.Hide();
@@ -261,6 +273,7 @@ namespace GU_Tercero
             this.Show();
         }
 
+        // crea el formulario que corresponde a cada opcion del menu
         private Form CrearPantalla(string pantalla)
         {
             if (pantalla == Navegacion.USUARIOS) return new FormAdmin();
@@ -281,76 +294,81 @@ namespace GU_Tercero
             return new FormConfiguracion();
         }
 
+        // abre Usuarios
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.USUARIOS);
         }
 
+        // abre Configuracion del Sistema
         private void configuraciónDelSistemaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.CONFIGURACION);
         }
 
+        // abre Productos y Categorias
         private void productoYStockToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.PRODUCTOS);
         }
 
+        // abre Consulta de Stock
         private void consultaStockToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.CONSULTA_STOCK);
         }
 
+        // acceso rapido a la consulta de stock bajo minimo
         private void btnAccesoStock_Click(object sender, EventArgs e)
         {
             abrirAlertasStock = true;
             AbrirPantalla(Navegacion.CONSULTA_STOCK);
         }
 
+        // cierra la sesion y vuelve al login
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EsCierreSesion = true;
             this.Close();
         }
 
-        private void FormMenu_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (!EsCierreSesion)
-            {
-                Application.Exit();
-            }
-        }
-
+        // abre Proveedores
         private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.PROVEEDORES);
         }
 
+        // abre Ventas
         private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.VENTAS);
         }
 
+        // abre Compras
         private void comprasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.COMPRAS);
         }
 
+        // abre Caja Diaria
         private void cajaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.CAJA);
         }
 
+        // abre Mi Perfil
         private void miPerfilToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.MI_PERFIL);
         }
 
+        // abre la Bitacora
         private void bitacoraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.BITACORA);
         }
 
+        // abre el Taller
         private void tallerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirPantalla(Navegacion.TALLER);

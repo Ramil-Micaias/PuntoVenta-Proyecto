@@ -8,15 +8,19 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // pantalla de compras a proveedores
     public partial class FormCompras : Form
     {
         private readonly GestorCompras gestorCompras = new GestorCompras();
+        // productos de la compra
         private readonly DataTable detalle = new DataTable();
 
+        // pagos de la compra
         private readonly DataTable pagos = new DataTable();
         private Usuario? usuarioLogueado;
         private DataTable productos = new DataTable();
 
+        // constructor: arma las tablas y engancha los eventos
         public FormCompras()
         {
             InitializeComponent();
@@ -34,11 +38,13 @@ namespace Vista
             this.dgvPagos.CellDoubleClick += dgvPagos_CellDoubleClick;
         }
 
+        // recibe el usuario que compra
         public FormCompras(Usuario? usuario) : this()
         {
             usuarioLogueado = usuario;
         }
 
+        // al abrir carga proveedores, productos y metodos de pago
         private void FormCompras_Load(object sender, EventArgs e)
         {
             ConfigurarGrid();
@@ -54,6 +60,7 @@ namespace Vista
             grpProveedor.Focus();
         }
 
+        // formato de las grillas
         private void ConfigurarGrid()
         {
             dgvDetalle.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -73,6 +80,7 @@ namespace Vista
             dgvDetalle.RowTemplate.Height = Grillas.AltoFila(dgvDetalle);
         }
 
+        // columnas de la tabla del detalle
         private void CrearDetalle()
         {
             detalle.Columns.Add("Id_Producto", typeof(int));
@@ -96,6 +104,7 @@ namespace Vista
             EncabezadoColumna(dgvDetalle, "Subtotal", "Subtotal", 5, "0.##");
         }
 
+        // columnas de la tabla de pagos
         private void CrearPagos()
         {
             Grillas.Configurar(dgvPagos);
@@ -111,6 +120,7 @@ namespace Vista
             EncabezadoColumna(dgvPagos, "Importe", "Importe", 1, "0.##");
         }
 
+        // suma de los pagos
         private decimal CalcularTotalPagado()
         {
             decimal pagado = 0;
@@ -123,6 +133,7 @@ namespace Vista
             return pagado;
         }
 
+        // muestra cuanto falta pagar
         private void ActualizarPagos()
         {
             if (pagos.Rows.Count == 0)
@@ -151,6 +162,7 @@ namespace Vista
             }
         }
 
+        // agrega un pago con el medio y el importe
         private void AgregarPago()
         {
             if (detalle.Rows.Count == 0)
@@ -219,6 +231,7 @@ namespace Vista
             ActualizarPagos();
         }
 
+        // saca un pago
         private void QuitarPago(int fila)
         {
             if (fila >= 0 && fila < pagos.Rows.Count)
@@ -228,6 +241,7 @@ namespace Vista
             }
         }
 
+        // combo de proveedores
         private void CargarProveedores()
         {
             try
@@ -247,6 +261,7 @@ namespace Vista
             }
         }
 
+        // combo de metodos de pago
         private void CargarMetodosPago()
         {
             try
@@ -268,6 +283,7 @@ namespace Vista
             }
         }
 
+        // combo de productos
         private void CargarProductos()
         {
             try
@@ -289,6 +305,7 @@ namespace Vista
             }
         }
 
+        // agrega el producto con su costo y cantidad (cada producto con su proveedor)
         private void AgregarAlDetalle()
         {
             DataRowView? fila = cmbProducto.SelectedItem as DataRowView;
@@ -374,6 +391,7 @@ namespace Vista
             txtCantidad.Focus();
         }
 
+        // saca el producto elegido del detalle
         private void QuitarSeleccionado()
         {
             if (dgvDetalle.CurrentRow == null)
@@ -394,6 +412,7 @@ namespace Vista
             }
         }
 
+        // total de la compra
         private decimal CalcularTotal()
         {
             decimal total = 0;
@@ -406,6 +425,7 @@ namespace Vista
             return total;
         }
 
+        // muestra el total
         private void ActualizarTotal()
         {
             lblTotalValor.Text = FormatoMoneda(CalcularTotal());
@@ -413,6 +433,7 @@ namespace Vista
             ActualizarPagos();
         }
 
+        // valida y guarda la compra
         private void RegistrarCompra()
         {
             if (detalle.Rows.Count == 0)
@@ -536,6 +557,7 @@ namespace Vista
             }
         }
 
+        // deja todo listo para una compra nueva
         private void LimpiarCompra()
         {
             detalle.Rows.Clear();
@@ -552,6 +574,7 @@ namespace Vista
             ActualizarTotal();
         }
 
+        // oculta una columna si existe
         private static void OcultarColumna(DataGridView grid, string nombre)
         {
             if (grid.Columns.Contains(nombre))
@@ -560,6 +583,7 @@ namespace Vista
             }
         }
 
+        // titulo, orden y formato de una columna
         private static void EncabezadoColumna(DataGridView grid, string nombre, string texto, int posicion, string? formato = null)
         {
             if (!grid.Columns.Contains(nombre))
@@ -577,6 +601,7 @@ namespace Vista
             }
         }
 
+        // convierte texto a decimal
         private static bool IntentarParsearDecimal(string texto, out decimal valor)
         {
             valor = 0;
@@ -595,6 +620,7 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
+        // convierte texto a entero
         private static bool IntentarParsearEntero(string texto, out int valor)
         {
             valor = 0;
@@ -613,11 +639,13 @@ namespace Vista
             return int.TryParse(texto, NumberStyles.Integer, CultureInfo.InvariantCulture, out valor);
         }
 
+        // formato de pesos
         private static string FormatoMoneda(decimal valor)
         {
             return "$" + valor.ToString("0.##");
         }
 
+        // si hay varios proveedores, la compra queda a nombre del que tiene mas importe
         private int ProveedorPrincipal()
         {
             var importes = new System.Collections.Generic.Dictionary<int, decimal>();
@@ -643,6 +671,7 @@ namespace Vista
             return principal;
         }
 
+        // al elegir un producto muestra su proveedor
         private void MostrarProveedorDelProducto()
         {
             int idProveedor = 0;
@@ -656,6 +685,7 @@ namespace Vista
                 cmbProveedor.SelectedIndex = -1;
         }
 
+        // cambia el producto elegido
         private void cmbProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
             MostrarProveedorDelProducto();
@@ -668,6 +698,7 @@ namespace Vista
             }
         }
 
+        // Enter agrega al detalle
         private void txtImporte_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -677,11 +708,13 @@ namespace Vista
             }
         }
 
+        // boton Agregar
         private void btnAgregarDetalle_Click(object sender, EventArgs e)
         {
             AgregarAlDetalle();
         }
 
+        // doble click quita el producto
         private void dgvDetalle_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -690,11 +723,13 @@ namespace Vista
             }
         }
 
+        // boton Agregar pago
         private void btnAgregarPago_Click(object? sender, EventArgs e)
         {
             AgregarPago();
         }
 
+        // Enter agrega el pago
         private void txtImportePago_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -704,16 +739,19 @@ namespace Vista
             }
         }
 
+        // doble click quita el pago
         private void dgvPagos_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             QuitarPago(e.RowIndex);
         }
 
+        // boton Registrar compra
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
             RegistrarCompra();
         }
 
+        // cancela la compra (pide confirmacion)
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             DialogResult respuesta = MessageBox.Show(
@@ -729,6 +767,7 @@ namespace Vista
             }
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

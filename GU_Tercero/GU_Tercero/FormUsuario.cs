@@ -7,24 +7,30 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // mi perfil: datos del usuario y cambio de contrasenia
     public partial class FormUsuario : Form
     {
         private Usuario usuarioLogueado;
 
+        // pasos para cambiar la contrasenia: inicio, respondiendo preguntas y contrasenia nueva
         private enum Paso { Inicio, Respondiendo, NuevaPassword }
 
+        // intentos para responder las preguntas
         private const int INTENTOS_MAXIMOS = 3;
 
         private Paso paso = Paso.Inicio;
         private int intentosFallidos = 0;
+        // ids de las preguntas que se muestran
         private readonly List<int> idsPreguntas = new List<int>();
 
+        // recibe el usuario logueado
         public FormUsuario(Usuario usuario)
         {
             InitializeComponent();
             usuarioLogueado = usuario;
         }
 
+        // al abrir muestra el usuario y el rol
         private void FormUsuario_Load(object sender, EventArgs e)
         {
             lblNombreUsuario.Text = usuarioLogueado.Nombre_Usuario;
@@ -34,6 +40,7 @@ namespace GU_Tercero
             CambiarPaso(Paso.Inicio);
         }
 
+        // muestra las 3 preguntas del usuario
         private void CargarPreguntas()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -55,6 +62,7 @@ namespace GU_Tercero
             }
         }
 
+        // habilita los controles segun el paso
         private void CambiarPaso(Paso nuevoPaso)
         {
             paso = nuevoPaso;
@@ -85,12 +93,14 @@ namespace GU_Tercero
                 txtNuevaPassword.Focus();
         }
 
+        // habilita el boton o lo pone gris
         private void HabilitarBoton(Button boton, bool habilitar, Color color)
         {
             boton.Enabled = habilitar;
             boton.BackColor = habilitar ? color : Color.FromArgb(148, 163, 184);
         }
 
+        // primero pide las respuestas y despues las verifica
         private void btnCambiarPassword_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
@@ -111,12 +121,14 @@ namespace GU_Tercero
             VerificarRespuestas();
         }
 
+        // guarda la contrasenia nueva
         private void btnConfirmarCambios_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultado);
             GuardarPassword();
         }
 
+        // compara las respuestas, con 3 errores vuelve al inicio
         private void VerificarRespuestas()
         {
             string[] respuestas = { txtRespuestaUno.Text, txtRespuestaDos.Text, txtRespuestaTres.Text };
@@ -166,6 +178,7 @@ namespace GU_Tercero
             txtRespuestaUno.Focus();
         }
 
+        // valida la contrasenia nueva y la guarda
         private void GuardarPassword()
         {
             if (txtNuevaPassword.Text.Trim() == "")
@@ -207,6 +220,7 @@ namespace GU_Tercero
             CambiarPaso(Paso.Inicio);
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -6,18 +6,23 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // pantalla de la bitacora con filtros
     public partial class FormBitacora : Form
     {
+        // primer item de los combos de filtro
         private const string TODOS = "Todos";
         private const string TODAS = "Todas";
 
+        // colores de fondo segun la criticidad (igual que en consulta de stock)
         private static readonly Color FONDO_CRITICA = Color.FromArgb(254, 226, 226);
         private static readonly Color SELECCION_CRITICA = Color.FromArgb(220, 38, 38);
         private static readonly Color FONDO_ADVERTENCIA = Color.FromArgb(254, 243, 199);
         private static readonly Color SELECCION_ADVERTENCIA = Color.FromArgb(217, 119, 6);
 
+        // aca quedan todos los movimientos, los filtros trabajan sobre esta tabla
         private DataTable movimientos = new DataTable();
 
+        // constructor: agrega la referencia de colores y engancha los eventos
         public FormBitacora()
         {
             InitializeComponent();
@@ -35,6 +40,7 @@ namespace Vista
             this.dgvBitacora.CellFormatting += dgvBitacora_CellFormatting;
         }
 
+        // al abrir deja las horas sin tildar y carga todo
         private void FormBitacora_Load(object? sender, EventArgs e)
         {
             Grillas.Configurar(dgvBitacora);
@@ -45,6 +51,7 @@ namespace Vista
             CargarMovimientos();
         }
 
+        // trae todos los movimientos y arma las columnas Antes y Despues en texto
         private void CargarMovimientos()
         {
             try
@@ -68,6 +75,7 @@ namespace Vista
             }
         }
 
+        // llena los combos de usuario y criticidad
         private void CargarCombos()
         {
             cmbUsuario.Items.Clear();
@@ -83,6 +91,7 @@ namespace Vista
             cmbCriticidad.SelectedIndex = 0;
         }
 
+        // muestra la tabla en la grilla y cuantos movimientos hay
         private void MostrarMovimientos(DataTable tabla)
         {
             dgvBitacora.DataSource = tabla;
@@ -93,6 +102,7 @@ namespace Vista
                 lblCantidad.Text = "Movimientos: " + tabla.Rows.Count + " de " + movimientos.Rows.Count;
         }
 
+        // lee los filtros elegidos y filtra con GestorBitacora.Filtrar
         private void AplicarFiltros()
         {
             try
@@ -112,16 +122,19 @@ namespace Vista
             }
         }
 
+        // saca la hora y los minutos del selector
         private static TimeSpan HoraDe(DateTimePicker selector)
         {
             return new TimeSpan(selector.Value.Hour, selector.Value.Minute, 0);
         }
 
+        // boton Aplicar
         private void btnAplicarFiltros_Click(object? sender, EventArgs e)
         {
             AplicarFiltros();
         }
 
+        // Enter en Movimiento tambien filtra
         private void txtMovimiento_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -131,6 +144,7 @@ namespace Vista
             }
         }
 
+        // saca todos los filtros y muestra todo de nuevo
         private void btnLimpiarFiltros_Click(object? sender, EventArgs e)
         {
             cmbUsuario.SelectedIndex = 0;
@@ -145,6 +159,7 @@ namespace Vista
             MostrarMovimientos(movimientos);
         }
 
+        // oculta columnas internas y pone los titulos
         private void dgvBitacora_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
             foreach (string columna in new[] { "Id_Bitacora", "Estado_Anterior", "Estado_Posterior" })
@@ -169,6 +184,7 @@ namespace Vista
             dgvBitacora.ClearSelection();
         }
 
+        // pinta el fondo de la fila segun la criticidad
         private void dgvBitacora_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.CellStyle == null || !dgvBitacora.Columns.Contains("Criticidad"))
@@ -188,6 +204,7 @@ namespace Vista
             }
         }
 
+        // pone el titulo y el ancho de una columna
         private void Columna(string nombre, string titulo, int peso)
         {
             if (!dgvBitacora.Columns.Contains(nombre))
@@ -197,6 +214,7 @@ namespace Vista
             dgvBitacora.Columns[nombre].FillWeight = peso;
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object? sender, EventArgs e)
         {
             this.Close();

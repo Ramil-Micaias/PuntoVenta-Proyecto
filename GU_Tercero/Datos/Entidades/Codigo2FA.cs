@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // codigo de verificacion en dos pasos que se manda por mail
     public class Codigo2FA
     {
         public int Id_Codigo2FA { get; set; }

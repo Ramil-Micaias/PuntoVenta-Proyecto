@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // permisos que tiene cada rol
     public class RolPermiso
     {
         public int Id_RolPermiso { get; set; }

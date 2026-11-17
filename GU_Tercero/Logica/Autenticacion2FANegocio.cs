@@ -6,14 +6,17 @@ using System;
 
 namespace Logica
 {
+    // logica de la verificacion en dos pasos
     public class Autenticacion2FANegocio
     {
+        // el codigo dura 5 minutos y hay 3 intentos
         public const int MINUTOS_VALIDEZ = 5;
         public const int INTENTOS_MAXIMOS = 3;
 
         private readonly Codigo2FADAO codigoDAO = new Codigo2FADAO();
         private readonly UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+        // true si el admin activo el 2FA en la configuracion
         public bool EstaHabilitada()
         {
             ConfiguracionSistema configuracion = new ConfiguracionNegocio().ObtenerConfiguracion();
@@ -21,6 +24,7 @@ namespace Logica
             return configuracion != null && configuracion.Habilitar_2FA;
         }
 
+        // genera el codigo, lo guarda y lo manda por mail
         public ResultadoEnvioEmail EnviarCodigo(Usuario usuario)
         {
             string correo = usuarioDAO.ObtenerCorreoUsuario(usuario.Nombre_Usuario);
@@ -52,6 +56,7 @@ namespace Logica
             return envio;
         }
 
+        // valida el codigo, devuelve null si esta bien o el mensaje de error
         public string? ValidarCodigo(Usuario usuario, string codigo)
         {
             codigo = (codigo ?? string.Empty).Trim();
@@ -73,11 +78,13 @@ namespace Logica
             return "El código ingresado es incorrecto.";
         }
 
+        // anula los codigos si cancela
         public void CancelarVerificacion(Usuario usuario)
         {
             codigoDAO.InvalidarCodigos(usuario.Id_Usuario);
         }
 
+        // muestra el correo con asteriscos, ej: l****o@gmail.com
         public string ObtenerCorreoEnmascarado(Usuario usuario)
         {
             string correo = usuarioDAO.ObtenerCorreoUsuario(usuario.Nombre_Usuario);

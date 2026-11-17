@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // correo electronico de una persona
     public class Correo
     {
         public int Id_Correo { get; set; }

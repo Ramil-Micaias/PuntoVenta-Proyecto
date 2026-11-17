@@ -3,8 +3,10 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // linea de referencias que explica los colores de una grilla
     public static class Leyenda
     {
+        // colores que se usan en las grillas
         public static readonly Color FONDO_ROJO = Color.FromArgb(254, 226, 226);
         public static readonly Color FONDO_AMARILLO = Color.FromArgb(254, 243, 199);
         public static readonly Color FONDO_BLANCO = Color.White;
@@ -13,9 +15,11 @@ namespace Vista
         public static readonly Color LETRA_GRIS = Color.FromArgb(148, 163, 184);
         public static readonly Color LETRA_GRIS_OSCURO = Color.FromArgb(100, 116, 139);
 
+        // alto de la linea y espacio con la grilla
         private const int ALTO = 20;
         private const int SEPARACION = 4;
 
+        // agrega las referencias abajo de la grilla, achicando un poco la grilla
         public static FlowLayoutPanel Agregar(DataGridView grilla, params (Color color, bool esFondo, string texto)[] items)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
@@ -52,6 +56,7 @@ namespace Vista
             return panel;
         }
 
+        // cuadradito de muestra: pintado si es fondo, con "Aa" si es color de letra
         private static Control CrearMuestra(Color color, bool esFondo)
         {
             Label muestra = new Label();
@@ -76,6 +81,7 @@ namespace Vista
             return muestra;
         }
 
+        // texto de la referencia
         private static Label CrearTexto(string texto)
         {
             Label etiqueta = new Label();

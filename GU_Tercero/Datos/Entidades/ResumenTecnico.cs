@@ -1,5 +1,6 @@
 namespace Datos.Entidades
 {
+    // numeros del tecnico para su menu
     public class ResumenTecnico
     {
         public int Ordenes_Asignadas { get; set; }

@@ -7,10 +7,12 @@ using System.Data;
 
 namespace Logica
 {
+    // logica de productos y categorias
     public class GestorProducto
     {
         private readonly ProductoDAO productoDAO = new ProductoDAO();
 
+        // valida y da de alta el producto
         public void RegistrarProducto(Producto producto)
         {
             ValidarProducto(producto);
@@ -20,6 +22,7 @@ namespace Logica
                 GestorBitacora.INFORMATIVA, null, EstadoProducto(producto));
         }
 
+        // arma los datos del producto para guardar en la bitacora
         private static Dictionary<string, object?> EstadoProducto(Producto producto)
         {
             return new Dictionary<string, object?>
@@ -33,6 +36,7 @@ namespace Logica
             };
         }
 
+        // valida, modifica y guarda en la bitacora solo lo que cambio
         public void ModificarProducto(Producto producto)
         {
             if (producto.Id_Producto <= 0)
@@ -48,6 +52,7 @@ namespace Logica
                 GestorBitacora.ADVERTENCIA, antes, GestorBitacora.EstadoDeFila(productoDAO.ObtenerProductos(), "Id_Producto", producto.Id_Producto));
         }
 
+        // da de baja el producto
         public void InactivarProducto(int idProducto)
         {
             if (idProducto <= 0)
@@ -62,6 +67,7 @@ namespace Logica
                 new Dictionary<string, object?> { ["Activo"] = true }, new Dictionary<string, object?> { ["Activo"] = false });
         }
 
+        // vuelve a activar el producto
         public void ActivarProducto(int idProducto)
         {
             if (idProducto <= 0)
@@ -76,26 +82,31 @@ namespace Logica
                 new Dictionary<string, object?> { ["Activo"] = false }, new Dictionary<string, object?> { ["Activo"] = true });
         }
 
+        // todos los productos
         public DataTable ObtenerProductos()
         {
             return productoDAO.ObtenerProductos();
         }
 
+        // categorias
         public DataTable ObtenerCategorias()
         {
             return productoDAO.ObtenerCategorias();
         }
 
+        // busqueda por nombre o codigo
         public DataTable BuscarProductos(string filtro)
         {
             return productoDAO.BuscarProductos(filtro);
         }
 
+        // stock con los filtros de la pantalla de consulta
         public DataTable ConsultarStock(string filtro, int? idCategoria, bool soloBajoMinimo)
         {
             return productoDAO.ConsultarStock(filtro, idCategoria, soloBajoMinimo);
         }
 
+        // alta de categoria
         public void RegistrarCategoria(string nombreCategoria)
         {
             productoDAO.RegistrarCategoria(ValidarNombreCategoria(nombreCategoria));
@@ -104,6 +115,7 @@ namespace Logica
                 GestorBitacora.INFORMATIVA);
         }
 
+        // cambia el nombre de la categoria
         public void ModificarCategoria(int idCategoria, string nombreCategoria)
         {
             if (idCategoria <= 0)
@@ -117,6 +129,7 @@ namespace Logica
                 GestorBitacora.ADVERTENCIA, antes, GestorBitacora.EstadoDeFila(productoDAO.ObtenerCategorias(), "Id_Categoria", idCategoria));
         }
 
+        // baja logica de la categoria
         public void InactivarCategoria(int idCategoria)
         {
             if (idCategoria <= 0)
@@ -131,6 +144,7 @@ namespace Logica
                 new Dictionary<string, object?> { ["Activo"] = true }, new Dictionary<string, object?> { ["Activo"] = false });
         }
 
+        // el nombre es obligatorio y tiene un largo maximo
         private static string ValidarNombreCategoria(string nombreCategoria)
         {
             if (string.IsNullOrWhiteSpace(nombreCategoria))
@@ -144,6 +158,7 @@ namespace Logica
             return nombreCategoria;
         }
 
+        // controla los datos del producto: nombre, codigo, precios y stock
         private void ValidarProducto(Producto producto)
         {
             if (producto == null)

@@ -5,15 +5,18 @@ using System.Data;
 
 namespace Logica
 {
+    // logica del taller: clientes, equipos y ordenes
     public class GestorTaller
     {
         private readonly TallerDAO tallerDAO = new TallerDAO();
 
+        // clientes del taller
         public DataTable ObtenerClientes()
         {
             return tallerDAO.ObtenerClientes();
         }
 
+        // valida y da de alta un cliente
         public int RegistrarCliente(string apellido, string nombre, string dni, string telefono)
         {
             ValidarCliente(ref apellido, ref nombre, ref dni, ref telefono);
@@ -21,11 +24,13 @@ namespace Logica
             return tallerDAO.InsertarCliente(apellido, nombre, dni, telefono);
         }
 
+        // datos de un cliente
         public DataTable ObtenerCliente(int idCliente)
         {
             return tallerDAO.ObtenerCliente(idCliente);
         }
 
+        // valida y guarda los cambios del cliente
         public void ModificarCliente(int idCliente, string apellido, string nombre, string dni, string telefono)
         {
             if (idCliente <= 0)
@@ -36,6 +41,7 @@ namespace Logica
             tallerDAO.ModificarCliente(idCliente, apellido, nombre, dni, telefono);
         }
 
+        // valida apellido, nombre, DNI y telefono (los recibe por ref para dejarlos limpios)
         private static void ValidarCliente(ref string apellido, ref string nombre, ref string dni, ref string telefono)
         {
             apellido = (apellido ?? string.Empty).Trim();
@@ -56,11 +62,13 @@ namespace Logica
                 throw new Exception("El teléfono no puede superar los 15 caracteres.");
         }
 
+        // equipos del cliente
         public DataTable ObtenerEquipos(int idCliente)
         {
             return tallerDAO.ObtenerEquipos(idCliente);
         }
 
+        // valida y da de alta un equipo
         public int RegistrarEquipo(int idCliente, string tipo, string marca, string modelo, string numeroSerie, string imei, string color)
         {
             if (idCliente <= 0)
@@ -80,47 +88,56 @@ namespace Logica
             return tallerDAO.InsertarEquipo(idCliente, tipo, marca, modelo, numeroSerie, imei, color);
         }
 
+        // tecnicos para asignar
         public DataTable ObtenerTecnicos()
         {
             return tallerDAO.ObtenerTecnicos();
         }
 
+        // estados de la orden
         public DataTable ObtenerEstados()
         {
             return tallerDAO.ObtenerEstados();
         }
 
+        // repuestos disponibles
         public DataTable ObtenerRepuestos()
         {
             return tallerDAO.ObtenerRepuestos();
         }
 
+        // valida y guarda la orden
         public ResultadoOperacion GuardarOrden(OrdenReparacion orden)
         {
             ValidarOrden(orden);
             return tallerDAO.GuardarOrden(orden);
         }
 
+        // ordenes con filtros
         public DataTable ConsultarOrdenes(string filtro, int? idEstado, int? idTecnico, bool soloPendientes, int? idUsuarioPropio = null)
         {
             return tallerDAO.ConsultarOrdenes(filtro, idEstado, idTecnico, soloPendientes, idUsuarioPropio);
         }
 
+        // una orden
         public DataTable ObtenerOrden(int idOrden)
         {
             return tallerDAO.ObtenerOrden(idOrden);
         }
 
+        // repuestos de la orden
         public DataTable ObtenerRepuestosOrden(int idOrden)
         {
             return tallerDAO.ObtenerRepuestosOrden(idOrden);
         }
 
+        // historial de la orden
         public DataTable ObtenerHistorialOrden(int idOrden)
         {
             return tallerDAO.ObtenerHistorialOrden(idOrden);
         }
 
+        // controla equipo, falla, costos, fecha prometida y repuestos
         private void ValidarOrden(OrdenReparacion orden)
         {
             if (orden == null)
@@ -177,6 +194,7 @@ namespace Logica
             }
         }
 
+        // true si el texto tiene solo digitos
         private static bool SoloNumeros(string texto)
         {
             foreach (char c in texto)

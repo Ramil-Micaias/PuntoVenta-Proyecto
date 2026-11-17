@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // producto del local con precio, stock y categoria
     public class Producto
     {
         public int Id_Producto { get; set; }

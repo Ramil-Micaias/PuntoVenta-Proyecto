@@ -5,8 +5,10 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // gestion de usuarios (solo administrador)
     public partial class FormAdmin : Form
     {
+        // modos de la pantalla: consultando, agregando o modificando
         private enum Modo { Consulta, Agregando, Modificando }
 
         private static readonly Color ROJO = Color.FromArgb(239, 68, 68);
@@ -18,6 +20,7 @@ namespace GU_Tercero
         private bool activoSeleccionado = true;
         private bool bloqueadoSeleccionado = false;
 
+        // constructor
         public FormAdmin()
         {
             InitializeComponent();
@@ -25,11 +28,13 @@ namespace GU_Tercero
             txtDni.KeyPress += txtDni_KeyPress;
         }
 
+        // en el DNI solo deja escribir numeros
         private void txtDni_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
+        // llena el combo de roles
         private void CargarRoles()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -41,6 +46,7 @@ namespace GU_Tercero
             cmbRol.ValueMember = "Id_Rol";
         }
 
+        // deja los campos vacios
         private void LimpiarControles()
         {
             idUsuarioSeleccionado = 0;
@@ -55,12 +61,14 @@ namespace GU_Tercero
             cmbRol.SelectedIndex = -1;
         }
 
+        // carga la grilla de usuarios
         private void CargarUsuarios()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
 
             dgvUsuarios.DataSource = negocio.ObtenerUsuarios();
         }
+        // al abrir configura la grilla y carga los datos
         private void FormAdmin_Load(object sender, EventArgs e)
         {
             CargarRoles();
@@ -69,6 +77,7 @@ namespace GU_Tercero
             AplicarModo(Modo.Consulta);
         }
 
+        // habilita o bloquea los campos segun el modo
         private void AplicarModo(Modo nuevoModo)
         {
             modo = nuevoModo;
@@ -107,6 +116,7 @@ namespace GU_Tercero
             }
         }
 
+        // cambia el boton a Inactivar, Activar o Desbloquear segun el usuario elegido
         private void ActualizarBotonEstado()
         {
             if (!activoSeleccionado)
@@ -126,6 +136,7 @@ namespace GU_Tercero
             }
         }
 
+        // muestra solo los botones que sirven en cada modo y los acomoda uno abajo del otro
         private void AcomodarBotones()
         {
             bool editando = modo != Modo.Consulta;
@@ -152,6 +163,7 @@ namespace GU_Tercero
             }
         }
 
+        // al elegir un usuario de la grilla carga sus datos
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && modo == Modo.Consulta)
@@ -173,6 +185,7 @@ namespace GU_Tercero
             }
         }
 
+        // pasa a modo alta
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);
@@ -181,6 +194,7 @@ namespace GU_Tercero
             AplicarModo(Modo.Agregando);
         }
 
+        // pasa a modo modificacion
         private void btnModificar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);
@@ -194,6 +208,7 @@ namespace GU_Tercero
             AplicarModo(Modo.Modificando);
         }
 
+        // descarta lo que se estaba editando
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);
@@ -202,6 +217,7 @@ namespace GU_Tercero
             AplicarModo(Modo.Consulta);
         }
 
+        // guarda segun si es alta o modificacion
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);
@@ -218,6 +234,7 @@ namespace GU_Tercero
             }
         }
 
+        // da de alta el usuario y le manda la contrasenia temporal por mail
         private void GuardarNuevo()
         {
             try
@@ -265,6 +282,7 @@ namespace GU_Tercero
             }
         }
 
+        // guarda los cambios del usuario
         private void GuardarModificacion()
         {
             try
@@ -287,6 +305,7 @@ namespace GU_Tercero
             }
         }
 
+        // inactiva, activa o desbloquea el usuario (pide confirmacion)
         private void btnEliminar_Click_1(object sender, EventArgs e)
         {
             Mensajes.Limpiar(txtResultado);
@@ -343,6 +362,7 @@ namespace GU_Tercero
             }
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

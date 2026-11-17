@@ -2,8 +2,10 @@ using System;
 
 namespace Datos.Entidades
 {
+    // ingreso o egreso de la caja
     public class MovimientoCaja
     {
+        // tipos de movimiento
         public const string INGRESO = "Ingreso";
         public const string EGRESO = "Egreso";
 

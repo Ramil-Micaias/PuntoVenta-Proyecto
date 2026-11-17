@@ -6,10 +6,11 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // multiidioma (espaniol e ingles) usando los archivos de recursos
     public class Idioma
     {
+        // idioma por defecto (espaniol)
         public const string ESPANOL = "es-AR";
-        public const string INGLES = "en-US";
 
         private static readonly ResourceManager Strings =
             new ResourceManager("Vista.Idiomas.Strings", typeof(Idioma).Assembly);
@@ -23,6 +24,7 @@ namespace Vista
 
         public static string Actual { get; set; } = ESPANOL;
 
+        // lista de idiomas para el combo
         public static List<Idioma> ObtenerIdiomas()
         {
             return new List<Idioma> {
@@ -43,6 +45,7 @@ namespace Vista
             };
         }
 
+        // traduce todos los controles del formulario
         public static void CargarIdioma(Control.ControlCollection controls, Form frm)
         {
             string? titulo = Texto(frm.Name);
@@ -54,16 +57,19 @@ namespace Vista
             CambiarTexto(controls);
         }
 
+        // texto traducido de una clave
         public static string? Texto(string clave)
         {
             return Strings.GetString(clave, new CultureInfo(Actual));
         }
 
+        // igual pero si no existe devuelve el texto por defecto
         public static string Texto(string clave, string porDefecto)
         {
             return Texto(clave) ?? porDefecto;
         }
 
+        // traduce los titulos de la grilla
         public static void TraducirColumnas(DataGridView grid)
         {
             foreach (DataGridViewColumn columna in grid.Columns)
@@ -76,6 +82,7 @@ namespace Vista
             }
         }
 
+        // recorre los controles (y sus hijos) cambiando el texto
         private static void CambiarTexto(Control.ControlCollection controls)
         {
             foreach (Control c in controls)

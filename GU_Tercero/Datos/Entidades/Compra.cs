@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Datos.Entidades
 {
+    // compra a proveedores con su detalle y sus pagos
     public class Compra
     {
         public int Id_Compra { get; set; }
@@ -17,6 +18,7 @@ namespace Datos.Entidades
 
         public List<PagoCompra> Pagos { get; set; } = new List<PagoCompra>();
 
+        // suma de lo que se pago
         public decimal TotalPagos
         {
             get
@@ -32,6 +34,7 @@ namespace Datos.Entidades
             }
         }
 
+        // suma de los subtotales del detalle
         public decimal Subtotal
         {
             get

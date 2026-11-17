@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
     {
+        // configuracion general: politicas de contrasenia, 2FA y preguntas
         public class ConfiguracionSistema
         {
             public int Id_Configuracion { get; set; }

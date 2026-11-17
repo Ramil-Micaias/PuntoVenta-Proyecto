@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // pregunta de seguridad para recuperar la contrasenia
     public class PreguntasSeguridad
     {
         public int Id_Pregunta { get; set; }

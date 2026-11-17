@@ -5,6 +5,7 @@ using System.Data;
 
 namespace Logica
 {
+    // logica de compras a proveedores
     public class GestorCompras
     {
         private readonly CompraDAO compraDAO = new CompraDAO();
@@ -12,6 +13,7 @@ namespace Logica
         private readonly ProductoDAO productoDAO = new ProductoDAO();
         private readonly ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
 
+        // valida y guarda la compra, despues la registra en la bitacora
         public ResultadoOperacion RegistrarCompra(Compra compra)
         {
             ValidarCompra(compra);
@@ -28,21 +30,25 @@ namespace Logica
             return resultado;
         }
 
+        // metodos de pago para el combo
         public DataTable ObtenerMetodosPago()
         {
             return metodoPagoDAO.ObtenerMetodosPago();
         }
 
+        // proveedores activos
         public DataTable ObtenerProveedores()
         {
             return proveedoresDAO.ObtenerProveedores();
         }
 
+        // productos que se pueden comprar
         public DataTable BuscarProductos()
         {
             return compraDAO.BuscarProductosCompra();
         }
 
+        // valida un producto antes de agregarlo al detalle, devuelve el error o null si esta bien
         public static string? ValidarRenglon(DataRow producto, decimal costo)
         {
             if (producto["Id_Proveedor"] == DBNull.Value)
@@ -58,6 +64,7 @@ namespace Logica
             return null;
         }
 
+        // controla el detalle y que los pagos sumen el total
         private void ValidarCompra(Compra compra)
         {
             if (compra == null)

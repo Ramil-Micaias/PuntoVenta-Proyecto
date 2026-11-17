@@ -4,8 +4,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de la configuracion del sistema
     public class ConfiguracionDAO
     {
+        // lee la configuracion guardada (politicas de contrasenia, 2FA, etc)
         public ConfiguracionSistema ObtenerConfiguracion()
         {
             ConfiguracionSistema configuracion = null;
@@ -49,6 +51,7 @@ namespace Datos
             return configuracion;
         }
 
+        // guarda los cambios de la configuracion
         public void GuardarConfiguracion(ConfiguracionSistema configuracion)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))

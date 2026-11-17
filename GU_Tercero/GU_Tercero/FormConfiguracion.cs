@@ -5,12 +5,15 @@ using Vista;
 
 namespace GU_Tercero
 {
+    // configuracion del sistema y backup (solo administrador)
     public partial class FormConfiguracion : Form
     {
+        // constructor
         public FormConfiguracion()
         {
             InitializeComponent();
         }
+        // muestra los valores guardados
         private void CargarConfiguracion()
         {
             ConfiguracionNegocio negocio = new ConfiguracionNegocio();
@@ -36,6 +39,7 @@ namespace GU_Tercero
             chkDatosPersonales.Checked = configuracion.Validar_DatosPersonales;
         }
 
+        // lee los controles y guarda la configuracion
         private void GuardarConfiguracion()
         {
             try
@@ -73,21 +77,25 @@ namespace GU_Tercero
                 MessageBox.Show("Ocurrió un error al guardar la configuración.\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        // al abrir carga la configuracion
         private void FormConfiguracion_Load(object sender, EventArgs e)
         {
             CargarConfiguracion();
         }
 
+        // boton Guardar
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             GuardarConfiguracion();
         }
 
+        // descarta los cambios y vuelve a mostrar lo guardado
         private void btnRestaurar_Click(object sender, EventArgs e)
         {
             CargarConfiguracion();
         }
 
+        // elige la carpeta y genera el backup
         private void btnBackup_Click(object sender, EventArgs e)
         {
             GestorBackup gestor = new GestorBackup();
@@ -119,6 +127,7 @@ namespace GU_Tercero
             }
         }
 
+        // vuelve al inicio
         private void btnVolver_Click(object sender, EventArgs e)
         {
             Navegacion.Destino = Navegacion.MENU_PRINCIPAL;

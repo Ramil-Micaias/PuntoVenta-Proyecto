@@ -8,14 +8,18 @@ using System.Windows.Forms;
 
 namespace Vista
 {
+    // pantalla de ventas (POS)
     public partial class FormVentas : Form
     {
         private readonly GestorVentas gestorVentas = new GestorVentas();
         private readonly GestorCaja gestorCaja = new GestorCaja();
+        // productos agregados a la venta
         private readonly DataTable carrito = new DataTable();
+        // pagos cargados (se puede pagar con varios medios)
         private readonly DataTable pagos = new DataTable();
         private Usuario? usuarioLogueado;
 
+        // constructor: arma las tablas y engancha los eventos
         public FormVentas()
         {
             InitializeComponent();
@@ -34,11 +38,13 @@ namespace Vista
             this.dgvPagos.CellDoubleClick += dgvPagos_CellDoubleClick;
         }
 
+        // recibe el usuario que vende
         public FormVentas(Usuario? usuario) : this()
         {
             usuarioLogueado = usuario;
         }
 
+        // al abrir carga combos, grillas y avisa si no hay caja abierta
         private void FormVentas_Load(object sender, EventArgs e)
         {
             ConfigurarGrids();
@@ -52,6 +58,7 @@ namespace Vista
             txtBuscar.Focus();
         }
 
+        // para vender tiene que haber una caja abierta
         private bool HayCajaAbierta()
         {
             try
@@ -65,6 +72,7 @@ namespace Vista
             }
         }
 
+        // muestra el aviso en rojo si la caja esta cerrada
         private void AvisarSiNoHayCaja()
         {
             if (HayCajaAbierta())
@@ -78,6 +86,7 @@ namespace Vista
             lblAyuda.Text = "No hay una caja abierta. Abra la caja del día en \"Caja Diaria\" para poder vender.";
         }
 
+        // formato de las grillas
         private void ConfigurarGrids()
         {
             foreach (DataGridView grid in new DataGridView[] { dgvResultados, dgvCarrito, dgvPagos })
@@ -100,6 +109,7 @@ namespace Vista
             }
         }
 
+        // columnas de la tabla del carrito
         private void CrearCarrito()
         {
             carrito.Columns.Add("Id_Producto", typeof(int));
@@ -119,6 +129,7 @@ namespace Vista
             EncabezadoColumna(dgvCarrito, "Subtotal", "Subtotal", 4, "0.##");
         }
 
+        // columnas de la tabla de pagos
         private void CrearPagos()
         {
             pagos.Columns.Add("Id_MetodoPago", typeof(int));
@@ -132,6 +143,7 @@ namespace Vista
             EncabezadoColumna(dgvPagos, "Importe", "Importe", 1, "0.##");
         }
 
+        // combo de categorias para filtrar
         private void CargarCategorias()
         {
             try
@@ -158,6 +170,7 @@ namespace Vista
             }
         }
 
+        // combo de metodos de pago
         private void CargarMetodosPago()
         {
             try
@@ -179,6 +192,7 @@ namespace Vista
             }
         }
 
+        // busca productos por nombre o codigo y categoria
         private void BuscarProductos()
         {
             try
@@ -217,6 +231,7 @@ namespace Vista
             }
         }
 
+        // columnas de la grilla de resultados
         private void ConfigurarColumnasProductos()
         {
             OcultarColumna(dgvResultados, "Id_Producto");
@@ -233,6 +248,7 @@ namespace Vista
             EncabezadoColumna(dgvResultados, "NombreCategoria", "Categoría", 4);
         }
 
+        // oculta una columna si existe
         private static void OcultarColumna(DataGridView grid, string nombre)
         {
             if (grid.Columns.Contains(nombre))
@@ -241,6 +257,7 @@ namespace Vista
             }
         }
 
+        // titulo, orden y formato de una columna
         private static void EncabezadoColumna(DataGridView grid, string nombre, string texto, int posicion, string? formato = null)
         {
             if (!grid.Columns.Contains(nombre))
@@ -258,6 +275,7 @@ namespace Vista
             }
         }
 
+        // agrega el producto elegido al carrito controlando el stock
         private void AgregarAlCarrito()
         {
             if (dgvResultados.CurrentRow == null)
@@ -296,6 +314,7 @@ namespace Vista
             int cantidadActual = existente == null ? 0 : Convert.ToInt32(existente["Cantidad"]);
             int cantidadTotal = cantidadActual + cantidad;
 
+            // no se puede vender mas de lo que hay en stock
             if (cantidadTotal > stockDisponible)
             {
                 MessageBox.Show(
@@ -308,6 +327,7 @@ namespace Vista
                 return;
             }
 
+            // si ya estaba en el carrito se suma la cantidad
             if (existente == null)
             {
                 DataRow nuevo = carrito.NewRow();
@@ -328,12 +348,14 @@ namespace Vista
             ActualizarResumen();
         }
 
+        // oculta el mensaje de la ultima venta
         private void OcultarResultado()
         {
             lblResultado.Visible = false;
             lblAyuda.Visible = true;
         }
 
+        // saca del carrito el producto elegido
         private void QuitarSeleccionado()
         {
             if (dgvCarrito.CurrentRow == null)
@@ -354,6 +376,7 @@ namespace Vista
             }
         }
 
+        // recalcula subtotal, descuento y total
         private void ActualizarResumen()
         {
             decimal subtotal = 0;
@@ -374,6 +397,7 @@ namespace Vista
             ActualizarPagos();
         }
 
+        // total con el descuento aplicado
         private decimal CalcularTotalNeto()
         {
             decimal subtotal = 0;
@@ -386,6 +410,7 @@ namespace Vista
             return subtotal - Venta.CalcularDescuento(subtotal, numDescuento.Value);
         }
 
+        // suma de los pagos cargados
         private decimal CalcularTotalPagado()
         {
             decimal pagado = 0;
@@ -398,6 +423,7 @@ namespace Vista
             return pagado;
         }
 
+        // muestra cuanto falta pagar o si se paso
         private void ActualizarPagos()
         {
             if (pagos.Rows.Count == 0)
@@ -426,6 +452,7 @@ namespace Vista
             }
         }
 
+        // agrega un pago con el medio y el importe elegidos
         private void AgregarPago()
         {
             if (carrito.Rows.Count == 0)
@@ -499,6 +526,7 @@ namespace Vista
             ActualizarPagos();
         }
 
+        // saca un pago de la lista
         private void QuitarPago(int fila)
         {
             if (fila >= 0 && fila < pagos.Rows.Count)
@@ -508,6 +536,7 @@ namespace Vista
             }
         }
 
+        // convierte el texto a numero aceptando coma o punto
         private static bool IntentarParsearDecimal(string texto, out decimal valor)
         {
             valor = 0;
@@ -526,6 +555,7 @@ namespace Vista
             return decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out valor);
         }
 
+        // valida todo, arma la venta y la guarda
         private void ConfirmarVenta()
         {
             if (carrito.Rows.Count == 0)
@@ -594,6 +624,7 @@ namespace Vista
                 Fecha_Venta = DateTime.Now
             };
 
+            // si no cargo pagos se toma el metodo del combo por el total
             if (pagos.Rows.Count == 0)
             {
                 venta.Pagos.Add(new PagoVenta
@@ -617,6 +648,7 @@ namespace Vista
             }
 
             PagoVenta principal = venta.Pagos[0];
+            // el metodo principal de la venta es el del pago mas grande
             foreach (PagoVenta pago in venta.Pagos)
             {
                 if (pago.Importe > principal.Importe)
@@ -668,6 +700,7 @@ namespace Vista
             }
         }
 
+        // deja todo listo para una venta nueva
         private void LimpiarVenta()
         {
             carrito.Rows.Clear();
@@ -688,16 +721,19 @@ namespace Vista
             txtBuscar.Focus();
         }
 
+        // formato de pesos
         private static string FormatoMoneda(decimal valor)
         {
             return "$" + valor.ToString("0.##");
         }
 
+        // boton Buscar
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             BuscarProductos();
         }
 
+        // Enter busca
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -707,11 +743,13 @@ namespace Vista
             }
         }
 
+        // boton Agregar al carrito
         private void btnAgregarCarrito_Click(object sender, EventArgs e)
         {
             AgregarAlCarrito();
         }
 
+        // doble click en un producto tambien lo agrega
         private void dgvResultados_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -720,21 +758,25 @@ namespace Vista
             }
         }
 
+        // boton Quitar seleccionado
         private void btnQuitarSeleccionado_Click(object sender, EventArgs e)
         {
             QuitarSeleccionado();
         }
 
+        // al cambiar el descuento se recalcula el total
         private void numDescuento_ValueChanged(object sender, EventArgs e)
         {
             ActualizarResumen();
         }
 
+        // boton Confirmar venta
         private void btnConfirmarVenta_Click(object sender, EventArgs e)
         {
             ConfirmarVenta();
         }
 
+        // descarta toda la venta (pide confirmacion)
         private void btnCancelarOperacion_Click(object sender, EventArgs e)
         {
             DialogResult respuesta = MessageBox.Show(
@@ -751,11 +793,13 @@ namespace Vista
             }
         }
 
+        // boton Agregar pago
         private void btnAgregarPago_Click(object? sender, EventArgs e)
         {
             AgregarPago();
         }
 
+        // Enter en el importe agrega el pago
         private void txtImportePago_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -765,11 +809,13 @@ namespace Vista
             }
         }
 
+        // doble click en un pago lo quita
         private void dgvPagos_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             QuitarPago(e.RowIndex);
         }
 
+        // vuelve al menu
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();

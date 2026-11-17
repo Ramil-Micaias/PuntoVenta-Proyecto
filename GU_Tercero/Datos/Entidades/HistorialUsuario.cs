@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // historial de cambios del usuario
     public class HistorialUsuario
     {
         public int Id_HistorialUsuario { get; set; }

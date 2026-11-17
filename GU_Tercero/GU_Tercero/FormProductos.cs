@@ -6,11 +6,13 @@ using Logica;
 
 namespace Vista
 {
+    // ABM de productos y categorias
     public partial class FormProductos : Form
     {
         private int idProductoSeleccionado = 0;
         private int idCategoriaSeleccionada = 0;
 
+        // modos de la pantalla
         private enum Modo { Consulta, Agregando, Modificando }
 
         private Modo modoProducto = Modo.Consulta;
@@ -22,6 +24,7 @@ namespace Vista
         private static readonly System.Drawing.Color VERDE = System.Drawing.Color.FromArgb(16, 185, 129);
         private static readonly System.Drawing.Color GRIS = System.Drawing.Color.FromArgb(148, 163, 184);
 
+        // constructor
         public FormProductos()
         {
             InitializeComponent();
@@ -32,6 +35,7 @@ namespace Vista
             cmbIdioma.SelectionChangeCommitted += cmbIdioma_SelectionChangeCommitted;
         }
 
+        // al abrir carga todo y el combo de idioma
         private void FormProductos_Load(object sender, EventArgs e)
         {
             Grillas.Configurar(dgvProductos);
@@ -48,6 +52,7 @@ namespace Vista
             LimpiarCategoria();
         }
 
+        // combo de proveedores
         private void CargarProveedores()
         {
             try
@@ -73,6 +78,7 @@ namespace Vista
             }
         }
 
+        // combo y grilla de categorias
         private void CargarCategorias()
         {
             try
@@ -99,6 +105,7 @@ namespace Vista
             }
         }
 
+        // grilla de productos
         private void CargarProductos()
         {
             try
@@ -121,6 +128,7 @@ namespace Vista
             }
         }
 
+        // los campos quedan bloqueados hasta tocar Agregar o Modificar
         private void AplicarModoProducto(Modo modo)
         {
             modoProducto = modo;
@@ -162,6 +170,7 @@ namespace Vista
             }
         }
 
+        // muestra en naranja que se esta editando
         private static void AvisoEdicion(Label destino, string texto)
         {
             destino.ForeColor = NARANJA;
@@ -169,6 +178,7 @@ namespace Vista
             destino.Visible = true;
         }
 
+        // deja los campos vacios
         private void LimpiarControles()
         {
             idProductoSeleccionado = 0;
@@ -187,6 +197,7 @@ namespace Vista
             AplicarModoProducto(Modo.Consulta);
         }
 
+        // guarda el producto nuevo
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -215,6 +226,7 @@ namespace Vista
             }
         }
 
+        // pasa a modo modificacion del producto elegido
         private void btnModificar_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -235,6 +247,7 @@ namespace Vista
             txtNombreProducto.Focus();
         }
 
+        // guarda los cambios del producto elegido
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             if (idProductoSeleccionado == 0)
@@ -273,6 +286,7 @@ namespace Vista
             }
         }
 
+        // al elegir un producto muestra sus datos
         private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || modoProducto != Modo.Consulta)
@@ -284,6 +298,7 @@ namespace Vista
             MostrarProducto(dgvProductos.Rows[e.RowIndex]);
         }
 
+        // pasa los datos de la fila a los campos
         private void MostrarProducto(DataGridViewRow fila)
         {
             if (fila.Cells["Id_Producto"].Value != null && fila.Cells["Id_Producto"].Value != DBNull.Value)
@@ -331,6 +346,7 @@ namespace Vista
             AplicarModoProducto(Modo.Consulta);
         }
 
+        // boton Agregar: limpia los campos y pasa a modo alta
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -339,6 +355,7 @@ namespace Vista
             cmbCategoria.Focus();
         }
 
+        // descarta lo que se estaba editando
         private void btnCancelarEdicion_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -359,11 +376,13 @@ namespace Vista
             LimpiarControles();
         }
 
+        // vuelve al menu
         private void btnVolverMenu_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        // arma el producto con lo escrito en los campos
         private Producto LeerProducto()
         {
             if (cmbCategoria.SelectedValue == null)
@@ -403,6 +422,7 @@ namespace Vista
             };
         }
 
+        // convierte el precio aceptando coma o punto
         private static bool LeerPrecio(string texto, out decimal precio)
         {
             texto = texto.Trim().Replace("$", string.Empty).Replace(" ", string.Empty);
@@ -419,6 +439,7 @@ namespace Vista
             return decimal.TryParse(texto, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out precio);
         }
 
+        // inactiva o activa el producto (pide confirmacion)
         private void btnEstadoProducto_Click(object? sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoProducto);
@@ -467,11 +488,13 @@ namespace Vista
             }
         }
 
+        // busca mientras se escribe
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             CargarProductos();
         }
 
+        // combo de idioma (espaniol / ingles)
         private void CargarComboLenguajes()
         {
             Idioma.Actual = Idioma.ESPANOL;
@@ -484,6 +507,7 @@ namespace Vista
             Idioma.CargarIdioma(this.Controls, this);
         }
 
+        // al cambiar el idioma traduce la pantalla
         private void cmbIdioma_SelectionChangeCommitted(object? sender, EventArgs e)
         {
             Idioma.Actual = cmbIdioma.SelectedValue?.ToString() ?? Idioma.ESPANOL;
@@ -492,6 +516,7 @@ namespace Vista
             AplicarModoCategoria(modoCategoria);
         }
 
+        // traduce las columnas y pone en gris los productos inactivos
         private void Grilla_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
         {
             DataGridView grilla = (DataGridView)sender!;
@@ -507,6 +532,7 @@ namespace Vista
             }
         }
 
+        // modo de la pestania de categorias
         private void AplicarModoCategoria(Modo modo)
         {
             modoCategoria = modo;
@@ -539,6 +565,7 @@ namespace Vista
             }
         }
 
+        // limpia el campo de categoria
         private void LimpiarCategoria()
         {
             idCategoriaSeleccionada = 0;
@@ -547,6 +574,7 @@ namespace Vista
             AplicarModoCategoria(Modo.Consulta);
         }
 
+        // vuelve a cargar las categorias
         private void RefrescarCategorias()
         {
             CargarCategorias();
@@ -555,6 +583,7 @@ namespace Vista
             LimpiarCategoria();
         }
 
+        // al elegir una categoria muestra su nombre
         private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -571,6 +600,7 @@ namespace Vista
             AplicarModoCategoria(Modo.Consulta);
         }
 
+        // limpia el campo y pasa a modo alta de categoria
         private void btnNuevaCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -579,6 +609,7 @@ namespace Vista
             txtNombreCategoria.Focus();
         }
 
+        // guarda la categoria nueva
         private void btnGuardarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -603,6 +634,7 @@ namespace Vista
             }
         }
 
+        // pasa a modo modificacion de categoria
         private void btnModificarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -610,6 +642,7 @@ namespace Vista
             txtNombreCategoria.Focus();
         }
 
+        // guarda los cambios de la categoria
         private void btnConfirmarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -634,6 +667,7 @@ namespace Vista
             }
         }
 
+        // descarta los cambios de la categoria
         private void btnCancelarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);
@@ -654,6 +688,7 @@ namespace Vista
             LimpiarCategoria();
         }
 
+        // da de baja la categoria (pide confirmacion)
         private void btnEliminarCategoria_Click(object sender, EventArgs e)
         {
             Mensajes.Limpiar(lblResultadoCategoria);

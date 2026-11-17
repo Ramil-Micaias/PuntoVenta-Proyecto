@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // telefono de una persona
     public class Telefono
     {
         public int Id_Telefono { get; set; }

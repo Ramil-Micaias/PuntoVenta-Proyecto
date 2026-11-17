@@ -4,8 +4,10 @@ using System.Data;
 
 namespace Datos
 {
+    // acceso a datos de usuarios, login, contrasenias y preguntas de seguridad
     public class UsuarioDAO
     {
+        // busca el usuario por nombre para el login, si no existe devuelve null
         public Usuario Login(string nombreUsuario)
         {
             Usuario usuario = null;
@@ -49,6 +51,7 @@ namespace Datos
             }
             return usuario;
         }
+        // suma un intento fallido de login
         public void AumentarIntentos(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -64,6 +67,7 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+        // bloquea el usuario cuando se pasa de intentos
         public void BloquearUsuario(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -79,6 +83,7 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+        // pone los intentos en cero cuando entra bien
         public void ReiniciarIntentos(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -92,6 +97,7 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+        // guarda la fecha del ultimo ingreso
         public void ActualizarUltimoLogin(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -105,6 +111,7 @@ namespace Datos
                 cmd.ExecuteNonQuery();
             }
         }
+        // guarda la contrasenia nueva (ya viene hasheada)
         public void CambiarPassword(int idUsuario, string passwordHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -120,6 +127,7 @@ namespace Datos
             }
         }
         
+        // guarda la contrasenia en el historial para no repetirla
         public void RegistrarHistorialPassword(int idUsuario, string passwordHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -138,6 +146,7 @@ namespace Datos
             }
         }
 
+        // se fija si la contrasenia ya se uso antes
         public bool ExistePasswordHistorial(int idUsuario, string passwordHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -158,37 +167,7 @@ namespace Datos
             }
         }
         
-        public List<PreguntasSeguridad> ObtenerPreguntas()
-        {
-            List<PreguntasSeguridad> lista = new List<PreguntasSeguridad>();
-
-            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
-            {
-                SqlCommand cmd = new SqlCommand("sp_ObtenerPreguntasSeguridad", conn);
-
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                conn.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    PreguntasSeguridad pregunta = new PreguntasSeguridad();
-
-                    pregunta.Id_Pregunta = Convert.ToInt32(reader["Id_Pregunta"]);
-
-                    pregunta.Pregunta = reader["Pregunta"].ToString()!;
-
-                    pregunta.Activo = Convert.ToBoolean(reader["Activo"]);
-
-                    lista.Add(pregunta);
-                }
-            }
-
-            return lista;
-        }
-
+        // guarda la respuesta (hasheada) de una pregunta del usuario
         public void GuardarPreguntaSeguridad(int idUsuario, int idPregunta, string respuestaHash)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -207,6 +186,7 @@ namespace Datos
             }
         }
 
+        // cuantas preguntas tiene cargadas el usuario
         public int CantidadPreguntasUsuario(int idUsuario)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
@@ -223,6 +203,7 @@ namespace Datos
             }
         }
 
+        // usuarios para la grilla de gestion de usuarios
         public DataTable ObtenerUsuarios()
         {
             DataTable tabla = new DataTable();
@@ -241,6 +222,7 @@ namespace Datos
             return tabla;
         }
 
+        // roles para el combo
         public DataTable ObtenerRoles()
         {
             DataTable tabla = new DataTable();
@@ -257,83 +239,69 @@ namespace Datos
             return tabla;
         }
 
-        public bool ExisteDni(string dni)
-        {
-            using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
-            {
-                string query = "SELECT COUNT(1) FROM Usuario U INNER JOIN Persona P ON P.Id_Persona = U.Id_Persona WHERE P.DNI = @DNI";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@DNI", dni);
-
-                conn.Open();
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count > 0;
-            }
-        }
-
+        // igual que el anterior pero sin contar al usuario que se esta modificando (sp_ExisteDniEnOtroUsuario)
         public bool ExisteDniEnOtroUsuario(string dni, int idUsuarioExcluido)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Usuario U INNER JOIN Persona P ON P.Id_Persona = U.Id_Persona "
-                    + "WHERE P.DNI = @DNI AND U.Id_Usuario <> @IdUsuario";
-                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlCommand cmd = new SqlCommand("sp_ExisteDniEnOtroUsuario", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DNI", dni);
-                cmd.Parameters.AddWithValue("@IdUsuario", idUsuarioExcluido);
+                cmd.Parameters.AddWithValue("@IdUsuarioExcluido", idUsuarioExcluido);
 
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                return Convert.ToBoolean(cmd.ExecuteScalar());
             }
         }
 
-        private const string PERSONA_PROPIA =
-            "COALESCE((SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario), "
-            + "(SELECT Id_Persona FROM Persona WHERE DNI = @DNI), -1)";
-
+        // true si el correo ya lo tiene otra persona (sp_ExisteCorreoDeOtraPersona)
+        // el sp averigua cual es la persona propia: la del usuario o, si es un alta, la que ya tiene ese DNI
         public bool ExisteCorreoDeOtraPersona(string correo, string dni, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Correo WHERE Direccion_Correo = @Correo AND Id_Persona <> " + PERSONA_PROPIA;
-                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlCommand cmd = new SqlCommand("sp_ExisteCorreoDeOtraPersona", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Correo", correo);
                 cmd.Parameters.AddWithValue("@DNI", dni);
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                return Convert.ToBoolean(cmd.ExecuteScalar());
             }
         }
 
+        // true si el DNI ya es de otra persona (sp_ExisteDniDeOtraPersona)
         public bool ExisteDniDeOtraPersona(string dni, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Persona WHERE DNI = @DNI "
-                    + "AND Id_Persona <> (SELECT Id_Persona FROM Usuario WHERE Id_Usuario = @IdUsuario)";
-                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlCommand cmd = new SqlCommand("sp_ExisteDniDeOtraPersona", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@DNI", dni);
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                return Convert.ToBoolean(cmd.ExecuteScalar());
             }
         }
 
+        // true si el nombre de usuario ya esta usado por otro (sp_ExisteNombreUsuario)
         public bool ExisteNombreUsuario(string nombreUsuario, int idUsuarioExcluido)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = "SELECT COUNT(1) FROM Usuario WHERE Nombre_Usuario = @NombreUsuario AND Id_Usuario <> @IdUsuario";
-                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlCommand cmd = new SqlCommand("sp_ExisteNombreUsuario", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@NombreUsuario", nombreUsuario);
-                cmd.Parameters.AddWithValue("@IdUsuario", idUsuarioExcluido);
+                cmd.Parameters.AddWithValue("@IdUsuarioExcluido", idUsuarioExcluido);
 
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                return Convert.ToBoolean(cmd.ExecuteScalar());
             }
         }
 
+        // alta del usuario con su persona y su correo, devuelve el id
         public int InsertarUsuarioCompleto(string apellido, string nombre, string dni, string correo, string nombreUsuario, string passwordHash, int idRol)
         {
             try
@@ -364,6 +332,7 @@ namespace Datos
             }
         }
 
+        // modifica los datos del usuario y de su persona
         public void ModificarUsuario(int idUsuario, string apellido, string nombre, string dni, string correo, string nombreUsuario, int idRol, bool activo, bool bloqueado)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -387,6 +356,7 @@ namespace Datos
             }
         }
         
+        // baja logica del usuario
         public void DesactivarUsuario(int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -403,16 +373,19 @@ namespace Datos
             }
         }
 
+        // vuelve a activar el usuario
         public void ActivarUsuario(int idUsuario)
         {
             EjecutarPorId("sp_ActivarUsuario", idUsuario);
         }
 
+        // desbloquea el usuario y le reinicia los intentos
         public void DesbloquearUsuario(int idUsuario)
         {
             EjecutarPorId("sp_DesbloquearUsuario", idUsuario);
         }
 
+        // ejecuta un sp que solo recibe el id del usuario
         private void EjecutarPorId(string procedimiento, int idUsuario)
         {
             using (SqlConnection conn = new SqlConnection(ConexionBD.cadenaConexion))
@@ -426,6 +399,7 @@ namespace Datos
             }
         }
 
+        // preguntas que cargo el usuario, para recuperar la contrasenia
         public DataTable ObtenerPreguntasUsuario(string nombreUsuario)
         {
             DataTable tabla = new DataTable();
@@ -444,19 +418,13 @@ namespace Datos
             return tabla;
         }
 
+        // trae el hash de la respuesta guardada para compararla (sp_ObtenerHashRespuesta)
         public string ObtenerHashRespuesta(string nombreUsuario, int idPregunta)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
             {
-                string query = @"
-                    SELECT UPS.RespuestaHash
-                    FROM UsuarioPreguntaSeguridad UPS
-                    INNER JOIN Usuario U
-                        ON UPS.Id_Usuario = U.Id_Usuario
-                    WHERE U.Nombre_Usuario = @NombreUsuario
-                      AND UPS.Id_Pregunta = @IdPregunta";
-
-                SqlCommand cmd = new SqlCommand(query, conexion);
+                SqlCommand cmd = new SqlCommand("sp_ObtenerHashRespuesta", conexion);
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@NombreUsuario", nombreUsuario);
                 cmd.Parameters.AddWithValue("@IdPregunta", idPregunta);
@@ -465,6 +433,7 @@ namespace Datos
 
                 object resultado = cmd.ExecuteScalar();
 
+                // si el usuario no tiene esa pregunta cargada devolvemos vacio
                 if (resultado == null || resultado == DBNull.Value)
                 {
                     return string.Empty;
@@ -474,6 +443,7 @@ namespace Datos
             }
         }
 
+        // pone la contrasenia nueva cuando la recupera
         public void ReestablecerPassword(string nombreUsuario, string passwordHash)
         {
             using (SqlConnection conexion = new SqlConnection (ConexionBD.cadenaConexion))
@@ -492,6 +462,7 @@ namespace Datos
             }
         }
 
+        // correo del usuario, para mandarle mails
         public string ObtenerCorreoUsuario(string nombreUsuario)
         {
             using (SqlConnection conexion = new SqlConnection(ConexionBD.cadenaConexion))
@@ -515,6 +486,7 @@ namespace Datos
             }
         }
 
+        // datos personales del usuario (nombre, apellido, DNI)
         public Persona ObtenerPersona(int idUsuario)
         {
             Persona persona = null;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // usuario del sistema con su rol y el estado del login (intentos, bloqueo)
     public class Usuario
     {
         public int Id_Usuario {  get; set; }

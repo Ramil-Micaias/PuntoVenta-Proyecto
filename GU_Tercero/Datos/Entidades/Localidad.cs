@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // localidad, pertenece a un partido
     public class Localidad
     {
         public int Id_Localidad {  get; set; }

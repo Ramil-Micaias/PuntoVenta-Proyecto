@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Entidades
 {
+    // respuesta del usuario a una pregunta de seguridad
     public class UsuarioPreguntaSeguridad
     {
         public int Id_UsuarioPregunta { get; set; }
